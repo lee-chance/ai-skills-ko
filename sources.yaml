@@ -25,3 +25,12 @@ sources:
     local_korean: benjitaylor-skills-ko
     last_synced_sha: 299140fafd08df55a9c234e610c3f64af3f45531
     description: Benji Taylor의 AI 스킬 모음
+
+  - id: agent-skills
+    name: Addy Osmani Agent Skills
+    upstream_repo: https://github.com/addyosmani/agent-skills
+    upstream_path: .
+    local_original: agent-skills
+    local_korean: agent-skills-ko
+    last_synced_sha: 301b02b12bff98e4688e6984af6556802322bbde
+    description: Addy Osmani의 프로덕션급 엔지니어링 스킬 모음
