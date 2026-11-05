@@ -1,14 +1,14 @@
-# Render a chart
+# 차트 렌더링
 
-Render each `.mmd` file that you show with the npm package `pele@1.9.0`, and give the user the SVG. Install Pele once, outside the repo. Write each SVG next to its `.mmd` file, with the same name. The API is at https://pele.run/api. Pass `{ limit: 1_000_000, outputLimit: 8_000_000, maxEdges: 10_000 }` as the options of `render`. Pele's defaults are smaller than a chart of 500 states can be. When Pele throws a `PeleError`, show the user the Mermaid text and the error.
+보여주는 각 `.mmd` 파일은 npm 패키지 `pele@1.9.0`으로 렌더링하고, 사용자에게 SVG를 주세요. Pele는 저장소 밖에서 한 번 설치하세요. 각 SVG는 같은 이름으로, 해당하는 `.mmd` 파일 옆에 쓰세요. API는 https://pele.run/api 에 있습니다. `render`의 옵션으로 `{ limit: 1_000_000, outputLimit: 8_000_000, maxEdges: 10_000 }`을 넘기세요. Pele의 기본값은 상태 500개인 차트가 될 수 있는 크기보다 작습니다. Pele가 `PeleError`를 던지면, 사용자에게 Mermaid 텍스트와 그 오류를 보여 주세요.
 
-## Colors
+## 색
 
-Pele ignores Mermaid `theme` and `themeVariables`. Set its `--pele-*` CSS variables on `.pele`. https://pele.run/theming lists them. The command gives each state the color class of its group, such as `class sN teal`. It marks each bad state with `class sN breaks` or `class sN mayBreak`, each state on the shortest path to a bug with `class sN bugPath`, and each state that a PROPERTY counterexample repeats forever with `class sN repeats`. Pele puts these classes on the state's node. Color the classes with CSS.
+Pele는 Mermaid의 `theme`과 `themeVariables`를 무시합니다. `.pele`에 `--pele-*` CSS 변수를 설정하세요. https://pele.run/theming 에 목록이 있습니다. 명령은 각 상태에 그 그룹의 색 클래스를 줍니다. `class sN teal`처럼. 나쁜 각 상태는 `class sN breaks` 또는 `class sN mayBreak`로 표시합니다. 버그까지 최단 경로 위의 각 상태는 `class sN bugPath`로, PROPERTY 반례가 영원히 반복하는 각 상태는 `class sN repeats`로 표시합니다. Pele는 이 클래스를 상태의 노드에 붙입니다. CSS로 클래스에 색을 주세요.
 
-The `.mmd` file has a `classDef` line for `breaks` and for `mayBreak`, so that any Mermaid viewer shows the bug marks. It has no `classDef` for the group colors, `bugPath`, or `repeats`. Pele writes each `classDef` color as a `style` attribute on the node, and a `style` attribute wins over a normal CSS rule. So the rules for the marks below use `!important`. Without it, a dark theme keeps the light mark colors. A bug mark sets the fill and the text, and `bugPath` and `repeats` set the border. Put the mark rules after the group colors, so that a mark shows over the group color.
+`.mmd` 파일에는 `breaks`와 `mayBreak`용 `classDef` 줄이 있어서, 어떤 Mermaid 뷰어에서든 버그 표시가 보입니다. 그룹 색, `bugPath`, `repeats`용 `classDef`는 없습니다. Pele는 각 `classDef` 색을 노드의 `style` 속성으로 쓰고, `style` 속성은 일반 CSS 규칙보다 우선합니다. 그래서 아래 표시용 규칙은 `!important`를 씁니다. 이것이 없으면 다크 테마에서도 라이트 표시 색이 남습니다. 버그 표시는 채우기와 텍스트를 정하고, `bugPath`와 `repeats`는 테두리를 정합니다. 표시 규칙은 그룹 색 뒤에 두세요. 그러면 표시가 그룹 색 위에 나타납니다.
 
-These colors are suggestions. They are the colors of the old skill. Put them in a `<style>` element at the start of each SVG. Each SVG then follows the light or dark setting of the viewer.
+이 색은 제안입니다. 이전 스킬의 색입니다. 각 SVG 시작 부분의 `<style>` 요소에 넣으세요. 그러면 각 SVG는 뷰어의 라이트 또는 다크 설정을 따릅니다.
 
 ```css
 .pele {

@@ -1,69 +1,69 @@
 ---
 name: reproduce-and-fix-issues
-description: Reproduce triaged Slack bugs through a configured app-control adapter, verify existing fixes, and open a bounded draft pull request only after before-and-after proof. Use only from the configured Benny repro automation.
+description: 구성된 앱 제어 어댑터로 분류된 Slack 버그를 재현하고, 기존 수정을 검증하며, 전후 증명이 끝난 뒤에만 제한된 초안 풀 리퀘스트를 여세요. 구성된 Benny 재현 자동화에서만 사용하세요.
 disable-model-invocation: true
 ---
 
-# Reproduce and fix issues
+# 이슈 재현 및 수정
 
-Wait for a trusted triage marker in the source thread. Reproduce the exact symptom through the target app's real UI. Verify an existing fix when one exists. Attempt a bounded fix only after a confirmed repro.
+소스 스레드에서 신뢰할 수 있는 분류 마커를 기다리세요. 대상 앱의 실제 UI로 정확한 증상을 재현하세요. 기존 수정이 있으면 검증하세요. 확인된 재현 이후에만 제한된 수정을 시도하세요.
 
-Load the external Benny configuration supplied by the automation. If the config, required actions, control adapter, or completed feature map is missing, fail closed.
+자동화가 제공하는 외부 Benny 구성을 로드하세요. 구성, 필요한 동작, 제어 어댑터, 또는 완성된 피처 맵이 없으면 닫힌 상태로 실패하세요.
 
-## Hard safety rules
+## 엄격한 안전 규칙
 
-- Freeze the source channel and root thread coordinates before doing any work.
-- Never post a root message in the source channel.
-- Preflight the source parent before every source-thread post.
-- The coordinator is the only Slack poster.
-- Delegated analysis workers are read-only and return findings or media notes.
-- A fix-phase code worker may edit only when its environment provably excludes Slack credentials and every Slack write action. Otherwise the coordinator edits.
-- Every child prompt must explicitly forbid `SendSlackMessage`, `PostToSlack`, `chat.postMessage`, and all other Slack writes.
-- Never give a child a Slack token, posting instructions, source coordinates for posting, or permission to report externally.
-- If a child needs Slack write access to run, do not launch it.
-- Utility bots are evidence sources. They do not own the fix unless a person explicitly delegated the fix to them.
-- The exact discriminating symptom must appear twice through real UI interaction.
-- State inspection may confirm an observation. It must not inject or force the symptom.
-- No confirmed repro means no authored fix.
-- Existing pull requests or commits switch the run to verify mode. Do not author over them.
-- Use `github.com` pull request links.
-- Keep captures, recordings, logs, and tokens out of source control.
-- Use pstack's `principle-guard-the-context-window` for delegated analysis.
-- Apply pstack's `principle-sequence-verifiable-units`, `principle-fix-root-causes`, and `principle-prove-it-works` through repro, fix, and verification.
+- 어떤 작업이든 하기 전에 소스 채널과 루트 스레드 좌표를 고정하세요.
+- 소스 채널에 루트 메시지를 절대 게시하지 마세요.
+- 소스 스레드에 게시하기 전에 매번 소스 부모를 사전 점검하세요.
+- Slack에 게시하는 주체는 코디네이터뿐입니다.
+- 위임된 분석 워커는 읽기 전용이며, 발견 사항이나 미디어 메모를 반환합니다.
+- 수정 단계의 코드 워커는, 자기 환경에서 Slack 자격 증명과 모든 Slack 쓰기 동작이 빠져 있음이 증명될 때만 편집할 수 있습니다. 그렇지 않으면 코디네이터가 편집합니다.
+- 모든 하위 프롬프트는 `SendSlackMessage`, `PostToSlack`, `chat.postMessage`, 그리고 그 밖의 모든 Slack 쓰기를 명시적으로 금지해야 합니다.
+- 하위에게 Slack 토큰, 게시 지시, 게시용 소스 좌표, 외부 보고 권한을 절대 주지 마세요.
+- 실행에 Slack 쓰기 접근이 필요한 하위는 시작하지 마세요.
+- 유틸리티 봇은 증거 출처입니다. 사람이 수정을 명시적으로 위임하지 않았다면 수정을 소유하지 않습니다.
+- 정확한 구분 증상이 실제 UI 상호작용을 통해 두 번 나타나야 합니다.
+- 상태 검사는 관찰을 확인할 수 있습니다. 증상을 주입하거나 강제하면 안 됩니다.
+- 확인된 재현이 없으면 작성한 수정도 없습니다.
+- 기존 풀 리퀘스트나 커밋이 있으면 실행을 검증 모드로 바꿉니다. 그 위에 새로 작성하지 마세요.
+- `github.com` 풀 리퀘스트 링크를 사용하세요.
+- 캡처, 녹화, 로그, 토큰은 버전 관리 밖에 두세요.
+- 위임된 분석에는 pstack의 `principle-guard-the-context-window`를 사용하세요.
+- 재현, 수정, 검증 전반에 pstack의 `principle-sequence-verifiable-units`, `principle-fix-root-causes`, `principle-prove-it-works`를 적용하세요.
 
-## 1. Freeze source coordinates
+## 1. 소스 좌표 고정
 
-Before making a work list or delegating:
+작업 목록을 만들거나 위임하기 전에:
 
-1. Require the trigger channel to equal the configured source channel.
-2. Set `SOURCE_THREAD_TS` to `trigger.thread_ts` when present. Otherwise use `trigger.ts`.
-3. Require a nonempty `SOURCE_THREAD_TS`.
-4. Store `SOURCE_CHANNEL_ID` and `SOURCE_THREAD_TS` as immutable values.
-5. Read the source thread and verify its root has those exact coordinates.
-6. Fetch the source permalink.
+1. 트리거 채널이 구성된 소스 채널과 같아야 합니다.
+2. `trigger.thread_ts`가 있으면 `SOURCE_THREAD_TS`를 그 값으로 설정하세요. 없으면 `trigger.ts`를 사용하세요.
+3. 비어 있지 않은 `SOURCE_THREAD_TS`가 필요합니다.
+4. `SOURCE_CHANNEL_ID`와 `SOURCE_THREAD_TS`를 불변 값으로 저장하세요.
+5. 소스 스레드를 읽고, 루트가 정확히 그 좌표를 가지는지 확인하세요.
+6. 소스 퍼머링크를 가져오세요.
 
-Never replace these values with a reply timestamp, operations timestamp, or status-message timestamp.
+이 값을 답장 타임스탬프, 작업 타임스탬프, 상태 메시지 타임스탬프로 바꾸지 마세요.
 
-Before every source-channel post:
+소스 채널에 게시하기 전에 매번:
 
-1. Read the thread by the immutable coordinates.
-2. Confirm the parent exists, is not deleted, and still belongs to the source channel.
-3. Send only with `channel=SOURCE_CHANNEL_ID` and `thread_ts=SOURCE_THREAD_TS`.
-4. Read the thread again and verify the new message is a reply.
+1. 불변 좌표로 스레드를 읽으세요.
+2. 부모가 존재하고, 삭제되지 않았으며, 여전히 소스 채널에 속하는지 확인하세요.
+3. `channel=SOURCE_CHANNEL_ID`와 `thread_ts=SOURCE_THREAD_TS`로만 보내세요.
+4. 스레드를 다시 읽고, 새 메시지가 답장인지 확인하세요.
 
-If any check fails, post nothing. Never retry at the root or in a fallback channel.
+확인이 하나라도 실패하면 아무것도 게시하지 마세요. 루트나 대체 채널에서 절대 재시도하지 마세요.
 
-## 2. Wait for the triage contract
+## 2. 분류 계약 대기
 
-Watch the source thread for the configured verdict budget. Stay silent while waiting.
+구성된 판정 예산 동안 소스 스레드를 지켜보세요. 기다리는 동안은 침묵하세요.
 
-Accept a verdict only when:
+다음일 때만 판정을 받아들이세요.
 
-- Its author matches `slack.triage_identity_user_id`.
-- It is a reply under `SOURCE_THREAD_TS`.
-- It contains exactly one configured marker.
+- 작성자가 `slack.triage_identity_user_id`와 일치합니다.
+- `SOURCE_THREAD_TS` 아래의 답장입니다.
+- 구성된 마커를 정확히 하나 포함합니다.
 
-Public marker forms:
+공개 마커 형식:
 
 ```text
 [benny:bug]
@@ -73,238 +73,238 @@ Public marker forms:
 [benny:other]
 ```
 
-Proceed only for `bug` or `performance`. Capture the optional tracker URL. Stop silently for `other`, a missing verdict, an untrusted author, conflicting markers, or a timeout.
+`bug` 또는 `performance`일 때만 진행하세요. 선택적 추적기 URL을 캡처하세요. `other`, 판정 누락, 신뢰할 수 없는 작성자, 서로 충돌하는 마커, 또는 시간 초과이면 조용히 멈추세요.
 
-This marker replaces private bot identities and free-form verdict matching.
+이 마커는 비공개 봇 신원과, 형식 없이 판정 문장을 맞추는 방식을 대체합니다.
 
-## 3. Apply ownership and fix-artifact gates
+## 3. 소유권과 수정 아티팩트 게이트 적용
 
-Re-read the thread immediately before starting work.
+작업을 시작하기 직전에 스레드를 다시 읽으세요.
 
-### Someone is explicitly fixing it
+### 누군가 명시적으로 수정 중일 때
 
-Stop when a person clearly claims the fix, gives a concrete implementation plan, or asks another agent to implement, patch, fix, or open a pull request.
+사람이 수정을 명확히 맡거나, 구체적인 구현 계획을 내거나, 다른 에이전트에게 구현, 패치, 수정, 또는 풀 리퀘스트를 열라고 하면 멈추세요.
 
-Do not treat these as fix ownership:
+다음은 수정 소유권으로 보지 마세요.
 
-- A bot summarizes evidence.
-- A tool looks up logs or tickets.
-- Someone asks a bot to diagnose, explain, inspect, or reproduce.
-- A bot posts a cause hypothesis without agreeing to implement it.
+- 봇이 증거를 요약합니다.
+- 도구가 로그나 티켓을 조회합니다.
+- 누군가가 봇에게 진단, 설명, 검사, 또는 재현을 요청합니다.
+- 봇이 구현에 동의하지 않은 채 원인 가설을 올립니다.
 
-Judge the requested action, not the presence of a bot.
+봇이 있는지가 아니라, 요청된 동작을 판단하세요.
 
-### A fix artifact already exists
+### 수정 아티팩트가 이미 있을 때
 
-If an open pull request or merged commit plausibly fixes this report, switch to `references/verify-existing-fix.md`.
+열린 풀 리퀘스트나 병합된 커밋이 이 보고서를 고칠 가능성이 있으면 `references/verify-existing-fix.md`로 전환하세요.
 
-An artifact may come from the thread, tracker issue, repository history, or pull request search. A claim without a commit or pull request is not a fix artifact.
+아티팩트는 스레드, 추적기 이슈, 저장소 히스토리, 또는 풀 리퀘스트 검색에서 올 수 있습니다. 커밋이나 풀 리퀘스트가 없는 주장은 수정 아티팩트가 아닙니다.
 
-If a person owns the work but has not produced an artifact, stop. Do not race them.
+사람이 작업을 소유했지만 아직 아티팩트를 만들지 않았다면 멈추세요. 그 사람과 경쟁하지 마세요.
 
-## 4. Open an optional operations thread
+## 4. 선택적 작업 스레드 열기
 
-If `slack.operations_channel_id` is configured, the coordinator may create one root status message there. This is the only allowed root post in the repro workflow.
+`slack.operations_channel_id`가 구성되어 있으면, 코디네이터는 그곳에 루트 상태 메시지 하나를 만들 수 있습니다. 이것이 재현 워크플로우에서 허용되는 유일한 루트 게시입니다.
 
-Store its coordinates as `OPERATIONS_CHANNEL_ID` and `OPERATIONS_THREAD_TS`. Never confuse them with the source coordinates.
+그 좌표를 `OPERATIONS_CHANNEL_ID`와 `OPERATIONS_THREAD_TS`로 저장하세요. 소스 좌표와 절대 섞지 마세요.
 
-Use the configured plain Unicode status strings. Keep status text short:
+구성된 일반 Unicode 상태 문자열을 사용하세요. 상태 텍스트는 짧게 유지하세요.
 
-- Reproducing
-- Could not reproduce
-- Blocked
-- Reproduced
-- Verifying existing fix
-- Attempting bounded fix
-- Draft pull request opened
-- Fix did not land
+- 재현 중 (Reproducing)
+- 재현하지 못함 (Could not reproduce)
+- 차단됨 (Blocked)
+- 재현됨 (Reproduced)
+- 기존 수정 검증 중 (Verifying existing fix)
+- 제한된 수정 시도 중 (Attempting bounded fix)
+- 초안 풀 리퀘스트 열림 (Draft pull request opened)
+- 수정이 반영되지 않음 (Fix did not land)
 
-Prefer configured Cursor Slack actions. Use `BENNY_SLACK_BOT_TOKEN` only when the user configured it for a narrow missing capability such as editing this one status message. Never expose the token to a worker.
+구성된 Cursor Slack 동작을 우선하세요. `BENNY_SLACK_BOT_TOKEN`은 이 상태 메시지 하나를 고치는 것처럼, 좁게 빠진 기능을 위해 사용자가 구성했을 때만 사용하세요. 토큰을 워커에게 절대 노출하지 마세요.
 
-If no operations channel is configured, keep detailed status in the automation run output. Do not substitute a source-channel root message.
+작업 채널이 없으면 자세한 상태는 자동화 실행 출력에 두세요. 소스 채널 루트 메시지로 대신하지 마세요.
 
-## 5. Load and check the control adapter
+## 5. 제어 어댑터 로드 및 확인
 
-Read `references/control-adapter.md` and the completed map at `control.feature_map_path`, then invoke the skill named by `control.skill_name`.
+`references/control-adapter.md`와 `control.feature_map_path`의 완성된 맵을 읽은 다음, `control.skill_name`이 가리키는 스킬을 호출하세요.
 
-Find the feature-map section that matches the reported user path. Read it before driving the app. If no section covers the feature, mark the run blocked instead of inventing a path or selector.
+보고된 사용자 경로와 맞는 피처 맵 섹션을 찾으세요. 앱을 구동하기 전에 읽으세요. 그 기능을 다루는 섹션이 없으면 경로나 셀렉터를 지어내지 말고 실행을 `Blocked`로 표시하세요.
 
-Require all seven capabilities:
+일곱 기능이 모두 필요합니다.
 
-1. Bring up the configured target app and test environment.
-2. Navigate the mapped feature and exercise its documented states.
-3. Drive the real UI with clicks, typing, keys, scrolling, drag, resize, or navigation.
-4. Inspect state without mutating it.
-5. Capture screenshots.
-6. Start and stop a screen recording.
-7. Clean up processes, sessions, profiles, and temporary data.
+1. 구성된 대상 앱과 테스트 환경을 띄웁니다.
+2. 매핑된 기능으로 이동하고, 문서화된 상태를 거칩니다.
+3. 클릭, 글자 입력, 키, 스크롤, 드래그, 크기 조절, 또는 이동으로 실제 UI를 구동합니다.
+4. 상태를 바꾸지 않고 검사합니다.
+5. 스크린샷을 캡처합니다.
+6. 화면 녹화를 시작하고 중지합니다.
+7. 프로세스, 세션, 프로필, 임시 데이터를 정리합니다.
 
-If the adapter is absent or any required capability is missing, mark the operations status as blocked and stop. Do not pretend a screenshot, unit test, state mutation, or source reading is a UI repro.
+어댑터가 없거나 필요한 기능이 하나라도 빠지면 작업 상태를 `Blocked`로 표시하고 멈추세요. 스크린샷, 단위 테스트, 상태 변경, 소스 코드 읽기를 UI 재현인 것처럼 가장하지 마세요.
 
-## 6. Study the report
+## 6. 보고서 파악
 
-Read the full source thread and tracker issue when present.
+소스 스레드 전체와, 있으면 추적기 이슈를 읽으세요.
 
-Collect:
+다음을 모으세요.
 
-- Exact action path
-- Expected behavior
-- Observed behavior
-- Discriminating state where they diverge
-- Frequency
-- Version, environment, and platform
-- Attachments and error signatures
-- Candidate code area
+- 정확한 동작 경로
+- 기대 동작
+- 관찰된 동작
+- 둘이 갈라지는 구분 상태
+- 빈도
+- 버전, 환경, 플랫폼
+- 첨부와 오류 시그니처
+- 후보 코드 영역
 
-Inspect screenshots and video. Use read-only parallel workers for code history, test ideas, blast-radius mapping, and media review when useful. Each worker gets a narrow question and the Slack-write prohibition.
+스크린샷과 비디오를 검사하세요. 쓸모 있을 때는 코드 히스토리, 테스트 아이디어, 폭발 반경 매핑, 미디어 검토에 읽기 전용 병렬 워커를 쓰세요. 각 워커는 좁은 질문 하나와 Slack 쓰기 금지를 받습니다.
 
-Use pstack's `how` skill to trace the action through the repository. Use `why` for regression history and defensive code. Form competing cause hypotheses and identify evidence that would separate them.
+pstack의 `how` 스킬로 저장소 안에서 동작의 경로를 추적하세요. 회귀 히스토리와 방어 코드에는 `why`를 사용하세요. 서로 경쟁하는 원인 가설을 세우고, 그것들을 가를 증거를 찾으세요.
 
-## 7. Reproduce
+## 7. 재현
 
-Bring up the target app through the control adapter.
+제어 어댑터로 대상 앱을 띄우세요.
 
-Confirm the correct app, workspace, account, data set, and feature state before acting. Use stable app markers. Do not rely on window order or a familiar title alone.
+행동하기 전에 올바른 앱, 워크스페이스, 계정, 데이터 세트, 기능 상태를 확인하세요. 안정적인 앱 마커를 사용하세요. 창 순서나 익숙한 제목만으로 판단하지 마세요.
 
-Drive the reported path through real UI actions.
+보고된 경로를 실제 UI 동작으로 구동하세요.
 
-Before calling it reproduced:
+재현되었다고 부르기 전에:
 
-1. Name the correct final state.
-2. Name the broken final state.
-3. Reach the point where they diverge.
-4. Observe the broken state.
-5. Reset enough state to make the second attempt independent.
-6. Repeat the same path and observe the same broken state again.
-7. Cross-check a real state value when possible.
+1. 올바른 최종 상태가 무엇인지 밝히세요.
+2. 고장난 최종 상태가 무엇인지 밝히세요.
+3. 둘이 갈라지는 지점까지 도달하세요.
+4. 고장난 상태를 관찰하세요.
+5. 두 번째 시도가 독립적이 되도록 상태를 충분히 초기화하세요.
+6. 같은 경로를 반복하고, 같은 고장난 상태를 다시 관찰하세요.
+7. 가능하면 실제 상태 값을 교차 확인하세요.
 
-An expected dialog, loading state, or setup step is not the bug. Capture the final state that distinguishes correct from broken behavior.
+예상된 대화상자, 로딩 상태, 준비 단계는 버그가 아닙니다. 올바른 동작과 고장을 가르는 최종 상태를 캡처하세요.
 
-Use the configured repro budget. If the symptom does not reproduce within it, report a clean `Could not reproduce` outcome. If the environment cannot provide a required capability, report `Blocked` and state what was missing.
+구성된 재현 예산을 사용하세요. 그 안에서 증상이 재현되지 않으면 분명한 `Could not reproduce` 결과를 보고하세요. 환경이 필요한 기능을 줄 수 없으면 `Blocked`를 보고하고, 무엇이 빠졌는지 밝히세요.
 
-## 8. Capture and review evidence
+## 8. 증거 캡처 및 검토
 
-For a successful repro:
+재현에 성공하면:
 
-- Record the full path through the symptom.
-- Capture a screenshot of the broken final state.
-- Save a short note with the exact steps and observed state.
-- Keep artifacts in the configured temporary artifact directory.
+- 증상을 지나는 전체 경로를 녹화하세요.
+- 고장난 최종 상태의 스크린샷을 캡처하세요.
+- 정확한 단계와 관찰된 상태를 적은 짧은 노트를 저장하세요.
+- 아티팩트는 구성된 임시 아티팩트 디렉터리에 두세요.
 
-Have a read-only media reviewer answer one question: does the evidence visibly show the discriminating broken state?
+읽기 전용 미디어 검토자에게 질문 하나만 답하게 하세요. 증거가 구분되는 고장 상태를 눈에 보이게 보여 주는가?
 
-If the answer is no or uncertain, the repro is not confirmed. Capture better evidence or use `Could not reproduce`.
+답이 아니오이거나 불확실하면 재현은 확인된 것이 아닙니다. 더 나은 증거를 캡처하거나 `Could not reproduce`를 사용하세요.
 
-Post detailed evidence only in the operations thread when configured. Keep the source update concise.
+자세한 증거는, 작업 스레드가 구성되어 있을 때 그곳에만 게시하세요. 소스 업데이트는 간결하게 유지하세요.
 
-## 9. Report the repro outcome
+## 9. 재현 결과 보고
 
-Update the operations status first.
+먼저 작업 상태를 업데이트하세요.
 
-For `Could not reproduce` or `Blocked`, post nothing in the source thread. The operations thread or run output carries the result.
+`Could not reproduce` 또는 `Blocked`이면 소스 스레드에 아무것도 게시하지 마세요. 결과는 작업 스레드나 실행 출력이 담습니다.
 
-For a confirmed repro, run the source preflight and post at most one unprompted source reply:
+확인된 재현이면 소스 사전 점검을 하고, 먼저 보내는 소스 답장은 최대 하나만 게시하세요.
 
-- Say the issue reproduced.
-- Link the operations evidence thread when one exists.
-- Include at most three short findings.
-- Link the tracker issue when one exists.
-- Do not ping an owner by default.
+- 이슈가 재현되었다고 말하세요.
+- 작업 증거 스레드가 있으면 링크하세요.
+- 짧은 발견 사항은 최대 세 개까지 넣으세요.
+- 추적기 이슈가 있으면 링크하세요.
+- 기본적으로 소유자를 핑하지 마세요.
 
-Attach evidence only when the configured Slack action keeps it inside the same source thread and the organization's retention policy allows it.
+구성된 Slack 동작이 증거를 같은 소스 스레드 안에 두고, 조직의 보존 정책이 허용할 때만 증거를 첨부하세요.
 
-Wait for the configured rejection window. If a person shows that the setup or interpretation was wrong, correct the repro once. Do not start the fix phase until the window closes without a valid rejection.
+구성된 거부 창을 기다리세요. 사람이 설정이나 해석이 잘못되었음을 보여 주면 재현을 한 번 바로잡으세요. 유효한 거부 없이 창이 닫히기 전에는 수정 단계를 시작하지 마세요.
 
-## 10. Verify an existing fix
+## 10. 기존 수정 검증
 
-When a fix artifact exists, follow `references/verify-existing-fix.md`.
+수정 아티팩트가 있으면 `references/verify-existing-fix.md`를 따르세요.
 
-Verification must show the symptom on the baseline and its absence on the patched build. Both paths use the real UI twice.
+검증은 베이스라인에 증상이 있고, 패치된 빌드에는 증상이 없음을 보여야 합니다. 두 경로 모두 실제 UI를 두 번씩 사용합니다.
 
-Do not edit the existing fix, add a competing patch, or open a replacement pull request.
+기존 수정을 고치거나, 경쟁 패치를 더하거나, 대체 풀 리퀘스트를 열지 마세요.
 
-## 11. Qualify a bounded fix
+## 11. 제한된 수정의 조건
 
-Attempt a fix only when all of these hold:
+다음이 모두 성립할 때만 수정을 시도하세요.
 
-- The outcome is a plain confirmed repro.
-- Media review confirmed the broken final state.
-- No existing fix artifact appeared.
-- No person claimed the fix during the rejection window.
-- Runtime evidence identifies the root cause.
-- The likely change fits the configured fix budget and repository scope.
-- The control adapter can run both baseline and patched builds.
+- 결과가 확인된 재현입니다.
+- 미디어 검토가 고장난 최종 상태를 확인했습니다.
+- 기존 수정 아티팩트가 나타나지 않았습니다.
+- 거부 창 동안 아무도 수정을 맡지 않았습니다.
+- 런타임 증거가 근본 원인을 가리킵니다.
+- 예상되는 변경이 구성된 수정 예산과 저장소 범위에 맞습니다.
+- 제어 어댑터가 베이스라인과 패치된 빌드를 모두 실행할 수 있습니다.
 
-If any condition fails, keep the repro report and stop without a pull request.
+조건이 하나라도 실패하면 재현 보고를 유지하고, 풀 리퀘스트 없이 멈추세요.
 
-When the gate passes, update operations status to `Attempting bounded fix`.
+게이트를 통과하면 작업 상태를 `Attempting bounded fix`로 업데이트하세요.
 
-## 12. Root-cause and implement
+## 12. 근본 원인과 구현
 
-The coordinator owns every Slack post, the final diff review, commits, and the pull request.
+코디네이터가 모든 Slack 게시, 최종 diff 검토, 커밋, 풀 리퀘스트를 소유합니다.
 
-Read-only workers may:
+읽기 전용 워커가 할 수 있는 일:
 
-- Trace code and history
-- Propose tests
-- Map blast radius
-- Review a diff
-- Review media
+- 코드와 히스토리 추적
+- 테스트 제안
+- 폭발 반경 매핑
+- diff 검토
+- 미디어 검토
 
-They do not edit, run external writes, post status, or own the fix.
+워커는 편집하거나, 외부 쓰기를 실행하거나, 상태를 게시하거나, 수정을 소유하지 않습니다.
 
-A tightly scoped code edit may be delegated during this phase only when tool isolation removes Slack credentials and every Slack write action from that worker. Its prompt must still carry the explicit Slack-write ban. The coordinator reviews the edit and runs or verifies the required tests. If tool isolation is uncertain, keep the edit in the coordinator.
+이 단계에서 범위가 좁은 코드 편집은, 도구 격리가 그 워커에서 Slack 자격 증명과 모든 Slack 쓰기 동작을 걷어 낼 때만 위임할 수 있습니다. 그 프롬프트에도 Slack 쓰기 금지를 명시해야 합니다. 코디네이터가 편집을 검토하고, 필요한 테스트를 실행하거나 검증합니다. 도구 격리가 불확실하면 편집은 코디네이터가 합니다.
 
-Confirm the mechanism with runtime evidence. Eliminate competing hypotheses before editing.
+런타임 증거로 메커니즘을 확인하세요. 편집하기 전에 경쟁 가설을 제거하세요.
 
-Fix the root cause with the smallest justified change.
+근거 있는 가장 작은 변경으로 근본 원인을 고치세요.
 
-- Invoke pstack's `tdd` skill when there is a cheap local test target, and write the failing test before the fix.
-- State why TDD was skipped when the path is expensive, unclear, or integration-heavy.
-- Keep unrelated cleanup out.
-- Stop if the change grows beyond the configured effort or risk budget.
+- 실행 비용이 낮은 로컬 테스트 대상이 있으면 pstack의 `tdd` 스킬을 호출하고, 수정 전에 실패하는 테스트를 작성하세요.
+- 경로가 비싸거나, 불명확하거나, 통합 비중이 커서 TDD를 건너뛰었다면 이유를 밝히세요.
+- 관련 없는 정리는 넣지 마세요.
+- 변경이 구성된 노력 예산이나 위험 예산을 넘으면 멈추세요.
 
-## 13. Prove the fix
+## 13. 수정 증명
 
-Keep the original baseline evidence.
+원래의 베이스라인 증거를 유지하세요.
 
-On the patched build:
+패치된 빌드에서:
 
-1. Run the same real UI path.
-2. Repeat it twice.
-3. Show that the broken state is gone.
-4. Show the expected state in its place.
-5. Capture an after recording and screenshot.
-6. Cross-check the same real state value used for the baseline.
+1. 같은 실제 UI 경로를 실행하세요.
+2. 두 번 반복하세요.
+3. 고장난 상태가 사라졌음을 보여 주세요.
+4. 그 자리에 기대 상태가 있음을 보여 주세요.
+5. 수정 후 녹화와 스크린샷을 캡처하세요.
+6. 베이스라인에 쓴 것과 같은 실제 상태 값을 교차 확인하세요.
 
-A compile, unit test, code review, or plausible diff is not after evidence.
+컴파일, 단위 테스트, 코드 리뷰, 그럴듯한 diff는 수정 후 증거가 아닙니다.
 
-Run focused tests, then smoke the blast radius around the changed behavior. Cover nearby states, inputs, permissions, platforms, and failure paths that the change could affect. Stop without a pull request if a regression remains.
+관련된 테스트를 실행한 다음, 바뀐 동작 주변의 폭발 반경을 스모크 테스트하세요. 변경이 건드릴 수 있는 근처 상태, 입력, 권한, 플랫폼, 실패 경로를 다루세요. 회귀가 남아 있으면 풀 리퀘스트 없이 멈추세요.
 
-## 14. Open a draft pull request
+## 14. 초안 풀 리퀘스트 열기
 
-Only after before-and-after proof:
+전후 증명이 끝난 뒤에만:
 
-- Review the final diff for unrelated changes and secrets.
-- Run the repository's required checks.
-- Create small ordered commits when the repository workflow allows it.
-- Open a draft pull request. Never merge or deploy from this workflow.
-- Link the configured tracker issue using the tracker's supported pull request syntax.
-- Use the configured public URL form, normally `https://github.com/{owner}/{repo}/pull/{number}`.
-- Include the repro steps, root cause, test result, before and after evidence, and blast-radius checks.
-- Run the pull request text and all Slack updates through pstack's `unslop` skill.
+- 관련 없는 변경과 비밀이 있는지 최종 diff를 검토하세요.
+- 저장소의 필수 체크를 실행하세요.
+- 저장소 워크플로우가 허용하면 작고 순서가 있는 커밋을 만드세요.
+- 초안 풀 리퀘스트를 여세요. 이 워크플로우에서 병합하거나 배포하지 마세요.
+- 추적기가 지원하는 풀 리퀘스트 문법으로 구성된 추적기 이슈를 링크하세요.
+- 구성된 공개 URL 형식을 사용하세요. 보통 `https://github.com/{owner}/{repo}/pull/{number}`입니다.
+- 재현 단계, 근본 원인, 테스트 결과, 전후 증거, 폭발 반경 확인을 넣으세요.
+- 풀 리퀘스트 문장과 모든 Slack 업데이트를 pstack의 `unslop` 스킬에 통과시키세요.
 
-If pull request creation fails, do not claim success. Keep the commit or branch state in the run output and mark operations status `Fix did not land`.
+풀 리퀘스트 생성이 실패하면 성공이라고 말하지 마세요. 커밋이나 브랜치 상태를 실행 출력에 두고, 작업 상태를 `Fix did not land`로 표시하세요.
 
-On success, mark operations status `Draft pull request opened` and post one concise reply in the operations thread with the linked pull request. Do not create a second source-channel root or unprompted source reply.
+성공하면 작업 상태를 `Draft pull request opened`로 표시하고, 링크된 풀 리퀘스트와 함께 작업 스레드에 간결한 답장 하나를 게시하세요. 소스 채널에 두 번째 루트나, 먼저 보내는 소스 답장을 만들지 마세요.
 
-## 15. Follow-ups and cleanup
+## 15. 후속 대응과 정리
 
-Watch the configured operations thread for one follow-up window.
+구성된 작업 스레드를 후속 창 하나 동안 지켜보세요.
 
-- Answer a direct question from evidence already gathered.
-- Apply one concrete correction and rerun the repro once when it invalidates the setup.
-- Stay out of human coordination and side chatter.
-- Stop when asked.
+- 이미 모은 증거로 직접적인 질문에 답하세요.
+- 설정을 무효로 만드는 구체적인 정정이 있으면 하나를 적용하고, 재현을 한 번 다시 실행하세요.
+- 사람끼리의 조율과 옆 대화에는 끼어들지 마세요.
+- 멈추라고 하면 멈추세요.
 
-Always call the control adapter's cleanup capability. Keep artifacts only as long as the configured retention policy allows.
+항상 제어 어댑터의 정리 기능을 호출하세요. 아티팩트는 구성된 보존 정책이 허용하는 동안만 유지하세요.

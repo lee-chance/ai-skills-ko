@@ -1,35 +1,35 @@
-# Rationale template
+# 근거 템플릿
 
-The prose that ships alongside the type sketch. One page. Sentence-case headings, no boilerplate. Replace the italic notes with actual content.
+타입 스케치와 함께 배송되는 산문입니다. 한 페이지입니다. 제목은 짧게 문장형으로 쓰고, 틀에 박힌 문구는 넣지 마세요. 이탤릭 노트를 실제 내용으로 바꾸세요.
 
-## Problem
+## 문제
 
-*One paragraph. What we're trying to do, and what about the existing system or constraints makes the shape non-obvious. If [Phase A](../SKILL.md#phase-a-ground-the-problem) surfaced constraints the design must honor (existing types to interop with, callers we can't break, invariants that crossed our boundary), name them here so the reader sees the same constraints you saw.*
+*한 문단입니다. 무엇을 하려는지, 그리고 기존 시스템이나 제약 조건의 무엇이 형태를 비자명하게 만드는지. [단계 A](../SKILL.md#단계-a-문제의-기반-다지기)가 설계가 지켜야 할 제약 조건을 드러냈다면 (상호 운용할 기존 타입, 깨뜨릴 수 없는 호출자, 우리 경계를 넘은 불변 조건), 독자가 당신이 본 것과 같은 제약 조건을 보도록 여기에 이름을 적으세요.*
 
-## Usage (caller's view)
+## 사용법 (호출자 관점)
 
-*Write this first, before the type sketch. Show the README or quickstart the consumer reads, plus two or three realistic call sites in their own code. What they import, what they call, what comes back. The type sketch in [Shape](#shape) is derived from this. The two must agree. When they diverge, reconcile the sketch to the usage, not the reverse. The caller's experience is the spec. The types serve it.*
+*타입 스케치보다 먼저 이것을 쓰세요. 소비자가 읽는 README나 퀵스타트와, 그들 코드 안의 현실적인 호출 지점 두세 곳을 보여 주세요. 무엇을 import하는지, 무엇을 호출하는지, 무엇이 돌아오는지. [형태](#형태)의 타입 스케치는 이것으로부터 나옵니다. 둘은 일치해야 합니다. 갈라지면 스케치를 사용법에 맞추세요. 사용법을 스케치에 맞추지 마세요. 호출자의 경험이 스펙입니다. 타입은 그 경험을 따릅니다.*
 
-## Shape
+## 형태
 
-*The recommended architecture. Data structures first. Then how data flows through the signatures. Name the load-bearing decisions. State which invariants are encoded in types, where validation lives, and what the system deliberately does not do. Judge interface depth explicitly. State what complexity the public surface hides, what remains exposed to callers, and why the interface is no larger than needed. Cite the principle behind each decision (e.g., `per boundary-discipline`). Don't restate it.*
+*권장 아키텍처입니다. 자료 구조가 먼저입니다. 그다음 데이터가 시그니처를 어떻게 지나는지입니다. 구조를 지탱하는 결정에 이름을 붙이세요. 어떤 불변 조건이 타입에 인코딩되는지, 검증이 어디에 있는지, 시스템이 의도적으로 하지 않는 것이 무엇인지를 밝히세요. 인터페이스 깊이를 명시적으로 판단하세요. 공개 표면이 어떤 복잡성을 숨기는지, 호출자에게 무엇이 그대로 드러나는지, 인터페이스가 필요한 것보다 크지 않은 이유를 밝히세요. 각 결정 뒤의 원칙을 인용하세요 (예: `per boundary-discipline`). 원칙 내용을 다시 풀어 쓰지 마세요.*
 
-## Synthesis decision
+## 합성 결정
 
-*Filled in by [arena](../../arena/SKILL.md). Records which candidate became the base and why, what was adapted from each of the others, and what was rejected and why.*
+*[arena](../../arena/SKILL.md)가 채웁니다. 어떤 후보가 기반이 되었는지와 그 이유, 다른 각 후보에서 무엇을 가져왔는지, 무엇을 왜 거부했는지를 기록합니다.*
 
-## Tradeoffs accepted
+## 수용한 트레이드오프
 
-*One bullet per tradeoff the chosen shape makes. Form: "we accept X in exchange for Y." Name anything a future reader might mistake for an oversight, including things that look like premature optimization or premature simplification.*
+*선택한 형태가 감수하는 트레이드오프마다 불릿 하나. 형식: "Y와 맞바꾸어 X를 수용합니다." 나중의 독자가 빠뜨린 것으로 오해할 수 있는 것을 이름 붙이세요. 시기상조의 최적화나 시기상조의 단순화처럼 보이는 것도 포함합니다.*
 
-## Alternatives considered
+## 고려한 대안
 
-*Required. Name at least one concrete alternative shape, with one line on why it lost. Judge each alternative on interface depth, not implementation simplicity alone. Name the complexity it exposes to callers and the complexity it hides. Two or three alternatives belong here when the design space had real contenders. One is fine when the constraints forced the answer, with the conclusion phrased as "this was the only viable shape because..." Avoid listing flavors of the same shape. This section covers design alternatives the chosen shape considered and rejected, not other runner candidates.*
+*필수입니다. 구체적인 대안 형태를 적어도 하나 이름 붙이고, 왜 졌는지 한 줄로 적으세요. 각 대안을 인터페이스 깊이로 판단하세요. 구현이 단순한지만으로 판단하지 마세요. 호출자에게 드러내는 복잡성과 숨기는 복잡성을 이름 붙이세요. 설계 공간에 진짜 경쟁자가 있었다면 대안 두세 개가 여기 옵니다. 제약 조건이 답을 강제했다면 하나로 충분하며, 결론은 "이것이 유일한 실현 가능한 형태였던 이유는..."으로 적으세요. 같은 형태의 변주를 나열하지 마세요. 이 섹션은 선택한 형태가 고려했다가 거부한 설계 대안을 다룹니다. 다른 러너 후보는 다루지 않습니다.*
 
-## Open questions and risks
+## 열린 질문과 위험
 
-*Things you noticed during the sketch that the human needs to weigh in on, and risks worth flagging before implementation starts. Phrase as questions, not assertions, so the human's answer is the resolution rather than a comment.*
+*스케치 중에 눈에 띄어 인간이 판단해야 하는 것, 그리고 구현을 시작하기 전에 밝혀 둘 위험. 단정이 아니라 질문으로 쓰세요. 그러면 인간의 답이 주석이 아니라 해결이 됩니다.*
 
-## Next implementation step
+## 다음 구현 단계
 
-*The first thing to build against the sketch. One sentence. What you'd start writing immediately after synthesis (or after Phase D sign-off, if a checkpoint was opted into).*
+*스케치에 기대어 처음 만들 것. 한 문장. 합성 직후 (체크포인트에 옵트인했다면 단계 D 승인 후) 바로 쓰기 시작할 것.*

@@ -1,102 +1,102 @@
 ---
 name: setup-ts-deep-modules
-description: Wire dependency-cruiser into a TypeScript repo so each package is a deep module, with implementation hidden in subfolders and reachable only through its entry-point files. User-invoked.
+description: "TypeScript 저장소에 dependency-cruiser를 연결하여 각 패키지가 깊은 모듈이 되도록 합니다. 구현은 하위 폴더에 숨기고, 엔트리 포인트 파일을 통해서만 도달할 수 있습니다. 사용자 호출."
 disable-model-invocation: true
 ---
 
 # Setup TS Deep Modules
 
-Make every package in this repo a **deep module**: a lot of behaviour behind a small interface. A package's public surface is its **entry points** (the files at the package root), and everything in its subfolders is hidden. This skill installs [dependency-cruiser](https://github.com/sverweij/dependency-cruiser) and the rules that make the entry points the only way in, then proves the rules bite.
+이 저장소의 모든 패키지를 **깊은 모듈**로 만드세요. 작은 인터페이스 뒤에 많은 동작이 있습니다. 패키지의 공개 표면은 **엔트리 포인트**(패키지 루트에 있는 파일)이고, 하위 폴더의 모든 것은 숨깁니다. 이 스킬은 [dependency-cruiser](https://github.com/sverweij/dependency-cruiser)와, 엔트리 포인트를 유일한 입구로 만드는 규칙을 설치한 다음, 규칙이 실제로 위반을 잡아내는지 증명합니다.
 
-For the vocabulary (deep module, interface, seam, depth), call the Skill tool with "codebase-design" and use its language throughout.
+어휘(깊은 모듈, 인터페이스, 심, 깊이)는 Skill 도구를 "codebase-design"으로 호출하고, 내내 그 언어를 사용하세요.
 
-## The shape this enforces
+## 이것이 강제하는 형태
 
 ```
 src/packages/
   <name>/
-    index.ts        ← an entry point (public). Import this from outside.
-    client.ts       ← another entry point. Packages may expose SEVERAL.
-    lib/            ← implementation: hidden from outside, free to import each other.
-    tests/          ← co-located tests + fixtures (a subfolder, so private).
+    index.ts        ← 엔트리 포인트 (공개). 바깥에서는 이것을 import 하세요.
+    client.ts       ← 또 다른 엔트리 포인트. 패키지는 여러 개를 노출할 수 있습니다.
+    lib/            ← 구현: 바깥에서는 숨기고, 서로 import는 자유입니다.
+    tests/          ← 함께 둔 테스트 + 픽스처 (하위 폴더라서 비공개).
 ```
 
-The public surface is the package's **root files**, not one designated `index.ts`. By convention implementation lives in `lib/` and tests in `tests/`, giving every package the same two-folder shape. The rule itself is general, though: *anything* in *any* subfolder is private, so you never extend the config to add a folder.
+공개 표면은 하나로 지정된 `index.ts`가 아니라 패키지의 **루트 파일**입니다. 관례상 구현은 `lib/`에, 테스트는 `tests/`에 두어 모든 패키지가 같은 두 폴더 형태를 갖습니다. 규칙 자체는 일반적입니다. *어떤* 하위 폴더의 *무엇이든* 비공개이므로, 폴더를 추가하려고 설정을 늘리지 않습니다.
 
-Four rules, all `error`:
+네 규칙 모두 `error`입니다.
 
-1. **Entry-point boundary**: code outside a package (app code or another package) may import only that package's entry points (its root files), never anything in its subfolders.
-2. **Intra-package freedom**: a package's own files import each other freely.
-3. **Tests through the entry points**: files under `<pkg>/tests/` may import any package's entry points and their own `tests/` fixtures, but never any package's subfolder internals (not even their own). Integration tests across packages are fine; deep imports are not.
-4. **No cycles**: no dependency cycles.
+1. **엔트리 포인트 경계**: 패키지 바깥의 코드(앱 코드 또는 다른 패키지)는 그 패키지의 엔트리 포인트(루트 파일)만 import할 수 있습니다. 하위 폴더의 것은 절대 안 됩니다.
+2. **패키지 내부의 자유**: 패키지 자신의 파일은 서로를 자유롭게 import합니다.
+3. **엔트리 포인트를 통과하는 테스트**: `<pkg>/tests/` 아래 파일은 어떤 패키지의 엔트리 포인트와 자신의 `tests/` 픽스처는 import할 수 있지만, 어떤 패키지의 하위 폴더 내부도 import할 수 없습니다. 자기 것도 안 됩니다. 패키지를 가로지르는 통합 테스트는 괜찮습니다. 깊은 import는 안 됩니다.
+4. **순환 없음**: 의존성 순환이 없습니다.
 
-**Entry points, not a barrel.** Because the public surface is *every* root file, a package can expose several small entry points (`index.ts`, `client.ts`, `server.ts`) instead of funnelling everything through one giant `index.ts`. Barrel files that re-export a whole subtree are discouraged; keep entry points small and hide implementation in subfolders.
+**배럴이 아니라 엔트리 포인트.** 공개 표면이 *모든* 루트 파일이므로, 패키지는 거대한 `index.ts` 하나로 모든 것을 몰아넣지 않고 여러 개의 작은 엔트리 포인트(`index.ts`, `client.ts`, `server.ts`)를 노출할 수 있습니다. 하위 트리 전체를 다시 export하는 배럴 파일은 권하지 않습니다. 엔트리 포인트는 작게 유지하고 구현은 하위 폴더에 숨기세요.
 
-Layering (which packages may depend on which) is a *different* concern and is left as a commented stub in the config for this repo to fill in.
+레이어링(어떤 패키지가 어떤 패키지에 의존해도 되는지)은 *다른* 관심사이며, 이 저장소가 채우도록 설정 안에 주석 처리된 스텁으로 남겨 둡니다.
 
-## Steps
+## 단계
 
-### 1. Detect the environment
+### 1. 환경 감지
 
-- **Package manager**: `pnpm-lock.yaml` → pnpm, `yarn.lock` → yarn, `bun.lockb` → bun, else npm. Use it for every command below (`pnpm`/`yarn`/`npm run`/`bunx`).
-- **Packages root**: if `src/` exists use `src/packages`, else `packages`. Confirm the choice with the user if the repo already has a different obvious convention.
-- **Existing config**: check for a `.dependency-cruiser.*` file. If one exists, do **not** overwrite it: merge the four rules and the options in, and tell the user what you added.
+- **패키지 매니저**: `pnpm-lock.yaml`이면 pnpm, `yarn.lock`이면 yarn, `bun.lockb`이면 bun, 그 외에는 npm. 아래의 모든 명령에 그것을 사용하세요 (`pnpm`/`yarn`/`npm run`/`bunx`).
+- **패키지 루트**: `src/`가 있으면 `src/packages`, 아니면 `packages`. 저장소에 이미 다른 분명한 관례가 있으면 선택을 사용자와 확인하세요.
+- **기존 설정**: `.dependency-cruiser.*` 파일이 있는지 확인하세요. 있으면 **덮어쓰지 마세요.** 네 규칙과 옵션을 병합하고, 무엇을 추가했는지 사용자에게 말하세요.
 
-**Done when:** package manager, packages root, and existing-config status are all known.
+**완료 조건:** 패키지 매니저, 패키지 루트, 기존 설정 여부를 모두 알고 있습니다.
 
-### 2. Install dependency-cruiser
+### 2. dependency-cruiser 설치
 
-Install `dependency-cruiser` as a devDependency with the detected package manager.
+감지한 패키지 매니저로 `dependency-cruiser`를 devDependency로 설치하세요.
 
-**Done when:** `dependency-cruiser` is in `devDependencies`.
+**완료 조건:** `dependency-cruiser`가 `devDependencies`에 있습니다.
 
-### 3. Write the config
+### 3. 설정 작성
 
-Copy [`dependency-cruiser.config.cjs`](./dependency-cruiser.config.cjs) to the repo root as `.dependency-cruiser.cjs`. Set `PACKAGES_ROOT` to the root detected in step 1. The rules are path-depth based and extension-agnostic, so nothing else needs adapting.
+[`dependency-cruiser.config.cjs`](./dependency-cruiser.config.cjs)를 저장소 루트에 `.dependency-cruiser.cjs`로 복사하세요. `PACKAGES_ROOT`를 1단계에서 감지한 루트로 설정하세요. 규칙은 경로 깊이 기반이고 확장자에 무관하므로, 그 외에는 맞출 것이 없습니다.
 
-**Done when:** `.dependency-cruiser.cjs` exists with the correct `PACKAGES_ROOT`, and the four forbidden rules are present.
+**완료 조건:** `.dependency-cruiser.cjs`가 올바른 `PACKAGES_ROOT`와 함께 존재하고, 금지 규칙 네 개가 있습니다.
 
-### 4. Wire it into the checks
+### 4. 검사에 연결
 
-- Add a `lint:boundaries` script: `depcruise <packages-root>` (or `depcruise src`).
-- Fold it into the repo's umbrella check command, the one that already runs typecheck (e.g. a `check` / `ci` / `validate` script). Do **not** touch `tsconfig` or add path aliases.
-- If there is no umbrella script, add `lint:boundaries` and tell the user to include it in CI.
+- `lint:boundaries` 스크립트를 추가하세요: `depcruise <packages-root>` (또는 `depcruise src`).
+- 저장소의 통합 검사 명령, 이미 typecheck를 실행하는 것(예: `check` / `ci` / `validate` 스크립트) 안에 접어 넣으세요. `tsconfig`는 건드리지 말고 경로 별칭도 추가하지 마세요.
+- 통합 스크립트가 없으면 `lint:boundaries`를 추가하고, CI에 포함하라고 사용자에게 말하세요.
 
-**Done when:** `lint:boundaries` exists and runs as part of the same command as typecheck.
+**완료 조건:** `lint:boundaries`가 존재하고 typecheck와 같은 명령의 일부로 실행됩니다.
 
-### 5. Scaffold the example package
+### 5. 예시 패키지 스캐폴드
 
-Create a committed `<packages-root>/example/` as a copy-me template:
+커밋되는 `<packages-root>/example/`을 복사해서 쓰는 템플릿으로 만드세요.
 
-- `index.ts` is an entry point. Export one function that delegates to an internal file (so the package is visibly *deep*, not a pass-through).
-- `lib/impl.ts`: an internal file in a **subfolder**, imported by `index.ts`, not reachable from outside.
-- `tests/example.test.ts` imports **only** `../index` (an entry point) and asserts against the public function.
+- `index.ts`는 엔트리 포인트입니다. 내부 파일에 위임하는 함수를 하나 export하세요. 그래야 패키지가 그냥 통과시키는 것이 아니라 *깊게* 보입니다.
+- `lib/impl.ts`: **하위 폴더**에 있는 내부 파일. `index.ts`가 import하며, 바깥에서는 도달할 수 없습니다.
+- `tests/example.test.ts`는 **오직** `../index`(엔트리 포인트)만 import하고 공개 함수에 대해 어서트합니다.
 
-Tell the user this is a starter template to copy or delete.
+이것이 복사하거나 삭제할 시작 템플릿이라고 사용자에게 말하세요.
 
-**Done when:** the example package exists, exposes its behaviour through a root entry point, and hides `impl` in a subfolder.
+**완료 조건:** 예시 패키지가 존재하고, 루트 엔트리 포인트를 통해 동작을 노출하며, `impl`을 하위 폴더에 숨깁니다.
 
-### 6. Prove the rules bite
+### 6. 규칙이 위반을 잡아내는지 증명
 
-This is the completion criterion for the whole skill: a config that doesn't fail on a violation is worthless.
+이것이 스킬 전체의 완료 기준입니다. 위반에서 실패하지 않는 설정은 가치가 없습니다.
 
-1. Run `lint:boundaries`. It must **pass** on the clean example.
-2. Temporarily add a deep import to `tests/example.test.ts` (e.g. `import { thing } from "../lib/impl"`). Run `lint:boundaries` again; it must **fail** with `tests-through-entrypoints`.
-3. Revert the deep import. Run once more, and it must **pass**.
+1. `lint:boundaries`를 실행하세요. 깨끗한 예시에서 **통과**해야 합니다.
+2. `tests/example.test.ts`에 깊은 import를 임시로 추가하세요 (예: `import { thing } from "../lib/impl"`). `lint:boundaries`를 다시 실행하세요. `tests-through-entrypoints`로 **실패**해야 합니다.
+3. 깊은 import를 되돌리세요. 한 번 더 실행하면 **통과**해야 합니다.
 
-**Done when:** you have observed a pass, then a fail on the deep import, then a pass again. If step 2 does not fail, the rules are not wired correctly, so fix before finishing.
+**완료 조건:** 통과, 그다음 깊은 import에서의 실패, 그다음 다시 통과를 관찰했습니다. 2단계가 실패하지 않으면 규칙이 올바르게 연결되지 않은 것이므로, 끝내기 전에 고치세요.
 
-### 7. Document the convention
+### 7. 관례 문서화
 
-Write a `README.md` **in the packages folder** (`<packages-root>/README.md`, next to the packages it governs) covering: the `src/packages/<name>/` layout (entry points at the root, `lib/` for implementation, `tests/` for tests), "import only through a package's entry points (its root files)", and how to run `lint:boundaries`. **Discourage barrel files** explicitly: expose several small entry points instead of re-exporting a whole subtree through one index. Keep it to the copy-me snippet plus the four rules in one paragraph each.
+**패키지 폴더 안에** `README.md`를 작성하세요 (`<packages-root>/README.md`, 그것이 관할하는 패키지 옆). 다음을 다루세요. `src/packages/<name>/` 레이아웃(루트의 엔트리 포인트, 구현용 `lib/`, 테스트용 `tests/`), "패키지의 엔트리 포인트(루트 파일)를 통해서만 import", `lint:boundaries`를 실행하는 방법. **배럴 파일을 명시적으로 말리세요.** 하위 트리 전체를 하나의 index로 다시 export하지 말고, 여러 개의 작은 엔트리 포인트를 노출하세요. 복사용 스니펫과 네 규칙을 각각 한 문단으로 유지하세요.
 
-Then add a **context pointer** to it from the repo's agent-instructions file (`CLAUDE.md` if present, else `AGENTS.md`, creating `AGENTS.md` if neither exists). One line is enough, e.g. `Packages are deep modules: see [src/packages/README.md](./src/packages/README.md) before adding or importing one.` This is what makes an agent discover the boundary rule instead of tripping over it.
+그런 다음 저장소의 에이전트 지침 파일(`CLAUDE.md`가 있으면 그것, 아니면 `AGENTS.md`, 둘 다 없으면 `AGENTS.md`를 만듦)에서 그곳으로 **컨텍스트 포인터**를 추가하세요. 한 줄이면 됩니다. 예: `패키지는 깊은 모듈입니다. 추가하거나 import하기 전에 [src/packages/README.md](./src/packages/README.md)를 보세요.` 이것이 에이전트가 경계 규칙에 걸려 넘어지기 전에 그 규칙을 발견하게 합니다.
 
-**Done when:** `<packages-root>/README.md` exists and discourages barrels, and the repo's `CLAUDE.md`/`AGENTS.md` links to it.
+**완료 조건:** `<packages-root>/README.md`가 존재하고 배럴을 말리며, 저장소의 `CLAUDE.md`/`AGENTS.md`가 그곳으로 링크합니다.
 
-## Notes
+## 노트
 
-- The config's `$1` back-references (dependency-cruiser's group matching) are what let a package reach its own internals while outsiders can't. Don't flatten them into separate per-package rules.
-- Public vs private is decided by **depth**: a package's root files are entry points; anything in a subfolder is private. The conventional subfolders are `lib/` (implementation) and `tests/`, but the rule doesn't hardcode them: any subfolder is private, so a new folder never needs a config change. Adding an entry point is just adding a root file (no barrel).
-- Packages are **flat**: one tier of immediate children under the root. A package's internals may nest as deep as you like; a package may not contain another package.
-- Use `.cjs` (not `.js`) so the config's `module.exports` works even in `"type": "module"` repos.
+- 설정의 `$1` 역참조(dependency-cruiser의 그룹 매칭)가, 바깥에서는 못 하는 자기 내부에 패키지가 도달하게 합니다. 패키지별 규칙으로 평탄화하지 마세요.
+- 공개 대 비공개는 **깊이**로 결정됩니다. 패키지의 루트 파일은 엔트리 포인트이고, 하위 폴더의 것은 비공개입니다. 관례적인 하위 폴더는 `lib/`(구현)와 `tests/`이지만, 규칙은 그것들을 하드코딩하지 않습니다. 어떤 하위 폴더든 비공개이므로, 새 폴더는 설정 변경이 필요 없습니다. 엔트리 포인트를 추가하는 것은 루트 파일을 추가하는 것뿐입니다 (배럴 없음).
+- 패키지는 **평평**합니다. 루트 아래 바로 한 계층의 자식입니다. 패키지 내부는 원하는 만큼 깊게 중첩할 수 있습니다. 패키지가 다른 패키지를 담으면 안 됩니다.
+- `"type": "module"` 저장소에서도 설정의 `module.exports`가 동작하도록 `.js`가 아니라 `.cjs`를 사용하세요.

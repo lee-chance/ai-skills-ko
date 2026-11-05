@@ -1,51 +1,51 @@
-# Prompts worth copying
+# 복사할 만한 프롬프트
 
-Swap in the real paths, skills, and done checks. Informal wording works.
+실제 경로, 스킬, 완료 검사로 갈아 끼우세요. 편한 말투도 됩니다.
 
-## Understand
+## 이해하기
 
-- `/poteto-mode read <thread>. restate the underlying issue in your own words, in plain english.`
-- `/in-your-own-words <long or messy ask>`
-- `/sharpen <the prompt you're about to send>`
-- `/poteto-mode investigate why <symptom>. give me what we know, what data you used, and your best hypotheses. don't change any code yet.`
-- `use /how to understand <subsystem>. then use /why to find out why it broke recently.`
-- `/recall my work on <topic> from last week, then read <issue>.`
-- `/teach me why you implemented it this way and not <other way>. what did you trade off?`
-- `/poteto-mode take over this branch. read the decision log, find what's done, and continue. don't redo finished work.`
+- `/poteto-mode <스레드>를 읽으세요. 기저의 이슈를 당신 자신의 말로, 평범한 말로 다시 말하세요.`
+- `/in-your-own-words <길거나 지저분한 요청>`
+- `/sharpen <보내려는 프롬프트>`
+- `/poteto-mode <증상>이 왜 그런지 조사하세요. 우리가 아는 것, 사용한 데이터, 최선의 가설을 주세요. 아직 코드는 바꾸지 마세요.`
+- `<하위 시스템>을 이해하려면 /how를 사용하세요. 그런 다음 최근에 왜 깨졌는지 /why로 찾으세요.`
+- `/recall 지난주 <주제>에 대한 내 작업을 떠올리고, <이슈>를 읽으세요.`
+- `/teach 왜 이렇게 구현했는지, <다른 방법>이 아닌 이유를 알려 주세요. 무엇을 트레이드오프했나요?`
+- `/poteto-mode take over this branch. 결정 로그를 읽고, 끝난 것을 찾고, 이어서 하세요. 끝난 작업은 다시 하지 마세요.`
 
-## Build
+## 만들기
 
-- Bug: `/poteto-mode <symptom>. repro first, then fix and verify.`
-- Bug in an app: `/poteto-mode repro this with /verify-<app>. if it repros on main, fix it and show me a video as proof.`
-- Bug with a cheap test: `/poteto-mode repro <bug> first. if there's a cheap test path, /tdd it. then fix and rerun.`
-- Feature: `/poteto-mode add <behavior>. <current output> stays byte-identical. verify both.`
-- Refactor: `/poteto-mode move <code> into one module, zero behavior change. record the current output first and prove it's unchanged after.`
-- Perf: `/poteto-mode <operation> takes <time> on <fixture>. trace it, fix the measured cause, show me before and after.`
+- 버그: `/poteto-mode <증상>. 먼저 재현하고, 고친 다음 검증하세요.`
+- 앱의 버그: `/poteto-mode /verify-<app>으로 이것을 재현하세요. main에서 재현되면 고치고, 증명으로 영상을 보여 주세요.`
+- 싼 테스트가 있는 버그: `/poteto-mode 먼저 <버그>를 재현하세요. 싼 테스트 경로가 있으면 /tdd로 하세요. 그런 다음 고치고 다시 실행하세요.`
+- 기능: `/poteto-mode <동작>을 추가하세요. <현재 출력>은 바이트 단위로 같아야 합니다. 둘 다 검증하세요.`
+- 리팩터: `/poteto-mode <코드>를 모듈 하나로 옮기세요. 동작 변경은 없습니다. 현재 출력을 먼저 기록하고, 이후에도 그대로임을 증명하세요.`
+- 성능: `/poteto-mode <연산>이 <픽스처>에서 <시간> 걸립니다. 추적하고, 측정된 원인을 고치고, 이전과 이후를 보여 주세요.`
 
-## Design and plan
+## 설계와 계획
 
-- `/poteto-mode prototype a few options for <feature>. take screenshots or videos for me to compare.`
-- `/poteto-mode we need <feature>. /architect it first, and answer open questions with prototypes. let me review before proceeding.`
-- `/poteto-mode write a tutorial for how i would use <new package> first. then /teach me why it beats the current one.`
-- `ask /arena for a second opinion on this thread and our approach.`
-- `/poteto-mode turn this design into a plan. small verifiable PRs, each with its own verification steps.`
-- `/poteto-mode plan the migration of <library> to <target>. small verifiable PRs. the result must match the original exactly, bugs included.`
+- `/poteto-mode <기능>에 대한 옵션 몇 개를 프로토타입하세요. 비교할 수 있게 스크린샷이나 영상을 찍어 주세요.`
+- `/poteto-mode <기능>이 필요합니다. 먼저 /architect로 하고, 열린 질문은 프로토타입으로 답하세요. 진행하기 전에 검토하게 해 주세요.`
+- `/poteto-mode 먼저 <새 패키지>를 어떻게 쓸지에 대한 튜토리얼을 쓰세요. 그런 다음 왜 지금 것보다 나은지 /teach로 알려 주세요.`
+- `이 스레드와 우리 접근에 대한 두 번째 의견을 /arena에 요청하세요.`
+- `/poteto-mode 이 설계를 계획으로 바꾸세요. 작고 검증 가능한 PR로, 각각 자체 검증 단계를 두세요.`
+- `/poteto-mode <라이브러리>를 <대상>으로 옮기는 마이그레이션을 계획하세요. 작고 검증 가능한 PR. 결과는 버그까지 포함해 원본과 정확히 같아야 합니다.`
 
-## Review and ship
+## 리뷰와 배송
 
-- `/interrogate the whole branch, but skeptically. don't change anything yet. no nitpicks unless it's a real bug or regression.` Read the Dropped list too.
-- `/create-formal-verification-skill prove <property> holds in <module>, even when <steps> interleave or retry.` After merges or refactors in that code: `/maintain-formal-verification-skill`.
-- `/swarm check every package under <dir> against its check script. one worker per package. one report.`
-- `/poteto-mode open the pr. small ordered commits, evidence in the description.`
-- `/poteto-mode babysit this pr. get it green.` For status only: `/poteto-mode check on pr <number>. anything outstanding?`
+- `/interrogate 브랜치 전체를, 다만 회의적으로. 아직 아무것도 바꾸지 마세요. 실제 버그나 회귀가 아니면 잔소리는 하지 마세요.` Dropped 목록도 읽으세요.
+- `/create-formal-verification-skill <단계>가 서로 끼어들거나 재시도해도 <모듈>에서 <속성>이 유지됨을 증명하세요.` 그 코드가 병합되거나 리팩터된 뒤: `/maintain-formal-verification-skill`.
+- `/swarm <디렉터리> 아래의 모든 패키지를 각자의 검사 스크립트와 대조하세요. 패키지당 워커 하나. 보고서 하나.`
+- `/poteto-mode PR을 여세요. 작고 순서가 있는 커밋, 설명에는 증거.`
+- `/poteto-mode babysit this pr. 녹색으로 만드세요.` 상태만 볼 때: `/poteto-mode check on pr <번호>. 남은 것이 있나요?`
 - `/poteto-mode land the stack.`
 
-## Away and back
+## 자리를 비웠다 돌아오기
 
-- `/poteto-mode im going to bed. <goal> in a fresh worktree off <base>. done means <checks>. keep a decision log. don't ask me before committing. /loop until done. if you're truly stuck after a few hours, stop and write up why.`
-- `/show-me-your-work catch me up on what you did last night.` Read its Attention section first.
-- `/ketchup` catches you up on this chat since your last message and lists every call that waits on you.
-- `/poteto-mode full autopilot on this queue. each item is independent.`
-- `/poteto-mode autopilot these changes, but don't merge. i'll land them.`
-- `/reflect capture what we learned so the next run doesn't repeat it.` Approve only edits that change a future decision.
-- `/bro` restates the last reply in plain words.
+- `/poteto-mode im going to bed. <베이스>에서 갈라진 새 worktree에서 <목표>. 완료는 <검사>를 의미합니다. 결정 로그를 유지하세요. 커밋하기 전에 묻지 마세요. 끝날 때까지 /loop. 몇 시간 뒤에도 정말 막히면, 멈추고 왜인지 적으세요.`
+- `/show-me-your-work 어젯밤 한 일을 따라잡게 해 주세요.` Attention 섹션을 먼저 읽으세요.
+- `/ketchup`은 당신의 마지막 메시지 이후 이 채팅을 따라잡게 하고, 당신을 기다리는 호출을 모두 나열합니다.
+- `/poteto-mode full autopilot on this queue. 각 항목은 독립적입니다.`
+- `/poteto-mode autopilot these changes, but don't merge. 착륙은 제가 하겠습니다.`
+- `/reflect 다음 실행이 같은 일을 반복하지 않도록, 우리가 배운 것을 캡처하세요.` 미래의 결정을 바꾸는 편집만 승인하세요.
+- `/bro`는 마지막 답장을 평범한 말로 다시 말합니다.

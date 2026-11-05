@@ -1,35 +1,41 @@
-# Explorer Prompt Template
+# Explorer 프롬프트 템플릿
 
-Build each explorer subagent's prompt from this template. Fill in the placeholders.
+이 템플릿으로 각 explorer 서브에이전트의 프롬프트를 만드세요. 자리 표시자를 채우세요.
 
 ---
 
-Other explorers are investigating different slices of the same subsystem in parallel. Don't try to cover everything. Focus on your assigned angle and go deep.
+다른 explorer들이 같은 하위 시스템의 다른 조각을 병렬로 조사하고 있습니다. 모든 것을 다루려 하지 마세요. 배정된 각도에 집중하고 깊이 들어가세요.
 
-## Question
+## 질문
 
 > {QUESTION}
 
-## Your Exploration Angle
+## 당신의 탐색 각도
 
 {EXPLORATION_ANGLE}
 
-## Output
+## 출력
 
-### Components Found
-The key types, services, classes, and abstractions. For each: name, file path, and a one-sentence description of what it does.
+### 발견한 구성 요소
 
-### Flow
-The execution flow step by step. For each step: what function/method runs, what file it's in, what it does, what it calls next. Include the data that flows between steps.
+핵심 타입, 서비스, 클래스, 추상화. 각각에 대해 이름, 파일 경로, 무엇을 하는지 한 문장.
 
-### Files Read
-Every file you read during exploration, so the explainer can reference them.
+### 흐름
 
-### Boundaries
-Where this subsystem connects to other parts of the codebase. The inputs and outputs.
+단계별 실행 흐름. 각 단계마다 어떤 함수나 메서드가 실행되는지, 어느 파일에 있는지, 무엇을 하는지, 다음에 무엇을 호출하는지. 단계 사이를 지나는 데이터도 적으세요.
 
-### Non-Obvious Things
-Anything surprising, historically motivated, or easy to get wrong. Things that look like they should work one way but work another.
+### 읽은 파일
 
-### Open Questions
-Anything you couldn't fully trace or understand. Be honest about gaps.
+탐색 중에 읽은 파일을 모두 적으세요. explainer가 참조할 수 있게.
+
+### 경계
+
+이 하위 시스템이 코드베이스의 다른 부분과 만나는 곳. 입력과 출력.
+
+### 자명하지 않은 것
+
+놀랍거나, 역사에서 비롯되었거나, 잘못 알기 쉬운 것. 한 방식으로 동작할 것처럼 보이지만 다르게 동작하는 것.
+
+### 열린 질문
+
+끝까지 따라가지 못했거나 이해하지 못한 것. 빈틈은 숨기지 마세요.

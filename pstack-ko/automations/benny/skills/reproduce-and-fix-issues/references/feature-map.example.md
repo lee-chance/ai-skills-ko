@@ -1,205 +1,205 @@
-# Feature-map example
+# 피처 맵 예시
 
-Map every user-facing feature Benny may reproduce. Read the relevant section before driving the app. Keep this map at the user point of view. Discover internals and current code paths at runtime instead of freezing them here.
+Benny가 재현할 수 있는 사용자 대면 기능을 모두 매핑하세요. 앱을 구동하기 전에 관련 섹션을 읽으세요. 이 맵은 사용자가 보는 시점으로 유지하세요. 내부 구조와 현재 코드 경로는 여기에 고정하지 말고, 런타임에 발견하세요.
 
-Copy this file outside `.cursor/automations/benny/`, for example to `.cursor/benny/feature-map.md`, and set `control.feature_map_path` to the copy. Pack refreshes must not overwrite it.
+이 파일을 `.cursor/automations/benny/` 밖으로 복사하세요. 예를 들어 `.cursor/benny/feature-map.md`로 복사하고, `control.feature_map_path`를 그 복사본으로 설정하세요. 팩 새로 고침이 그것을 덮어쓰면 안 됩니다.
 
-## Per-feature template
+## 기능별 템플릿
 
-### `<feature name>`
+### `<기능 이름>`
 
-`<one-line user-visible purpose>`
+`<사용자가 보는 한 줄 목적>`
 
-#### How a user gets there
+#### 사용자가 도달하는 방법
 
-- Click path: `<screen> -> <menu, tab, or panel> -> <control>`
-- Keyboard shortcut: `<shortcut or none>`
+- 클릭 경로: `<화면> -> <메뉴, 탭, 또는 패널> -> <컨트롤>`
+- 키보드 단축키: `<단축키 또는 없음>`
 
-#### How the control adapter drives it
+#### 제어 어댑터가 구동하는 방법
 
-- `<adapter action>` with `<inputs>` should `<visible result>`.
-- Reset: `<how the adapter returns to a fresh state>`.
+- `<어댑터 동작>`에 `<입력>`을 주면 `<보이는 결과>`가 나와야 합니다.
+- 초기화: `<어댑터가 새 상태로 되돌리는 방법>`.
 
-#### Stable selectors
+#### 안정적인 셀렉터
 
-- `<role and accessible name>`
-- `<ARIA relationship>`
-- `<data-component or purpose-named data attribute>`
+- `<역할과 접근 가능한 이름>`
+- `<ARIA 관계>`
+- `<data-component 또는 목적이 드러나는 data 속성>`
 
-Never use generated CSS or StyleX classes, dynamic hashes, child indexes, or brittle DOM position.
+생성된 CSS나 StyleX 클래스, 동적 해시, 자식 인덱스, 불안정한 DOM 위치는 사용하지 마세요.
 
-#### States to exercise
+#### 확인할 상태
 
 - Default, hover, focus-visible, active, disabled
 - Loading, empty, error
 - Selected, open, expanded
-- `<relevant feature-specific variants>`
+- `<해당 기능에만 있는 변형>`
 
-Mark states that do not apply.
+해당하지 않는 상태는 표시해 두세요.
 
-#### Preconditions and setup
+#### 전제 조건과 준비
 
-- Auth: `<account state>`
-- Data: `<fixture>`
-- Permissions: `<role>`
-- Flags: `<flag or none>`
-- Services: `<required availability>`
+- 인증: `<계정 상태>`
+- 데이터: `<픽스처>`
+- 권한: `<역할>`
+- 플래그: `<플래그 또는 없음>`
+- 서비스: `<필요한 가용성>`
 
-#### Evidence and cross-check
+#### 증거와 교차 확인
 
-- Screenshot: `<app identity, feature, and discriminating state>`
-- Video: `<entry path, interaction, and final state>`
-- Cross-check: `<read-only state or value that confirms the UI>`
+- 스크린샷: `<앱 신원, 기능, 구분되는 상태>`
+- 비디오: `<진입 경로, 상호작용, 최종 상태>`
+- 교차 확인: `<UI를 확인하는 읽기 전용 상태 또는 값>`
 
-#### Gotchas
+#### 주의점
 
-- `<known dead end or wrong surface>`
-- `<safe environment translation>`
+- `<알려진 막다른 경로 또는 엉뚱한 화면>`
+- `<안전한 환경 변환>`
 
-## Fictional example
+## 가상 예시
 
-These features belong to a fictional task app. They are examples, not required Benny features.
+이 기능은 가상의 작업 앱에 속합니다. 예시일 뿐이며, Benny에 필수인 기능은 아닙니다.
 
-### Sign in
+### 로그인
 
-Lets a user enter the task app.
+사용자가 작업 앱에 들어가도록 합니다.
 
-#### How a user gets there
+#### 사용자가 도달하는 방법
 
-- Open the app and choose `Sign in`. No shortcut.
+- 앱을 열고 `Sign in`을 선택합니다. 단축키는 없습니다.
 
-#### How the control adapter drives it
+#### 제어 어댑터가 구동하는 방법
 
-- `open_app`, `click Sign in`, `fill credentials`, and `click Continue` should open the item list.
-- Reset by signing out and clearing the disposable session.
+- `open_app`, `click Sign in`, `fill credentials`, `click Continue`는 항목 목록을 열어야 합니다.
+- 로그아웃하고 일회용 세션을 지워 초기화합니다.
 
-#### Stable selectors
+#### 안정적인 셀렉터
 
-- Button `Sign in`, textboxes `Email` and `Password`, `data-component="sign-in-form"`
+- 버튼 `Sign in`, 텍스트 상자 `Email`과 `Password`, `data-component="sign-in-form"`
 
-#### States to exercise
+#### 확인할 상태
 
 - Default, focus-visible, submitting, disabled, loading, error
 
-#### Preconditions and setup
+#### 전제 조건과 준비
 
-- Disposable account and available authentication service
+- 일회용 계정, 사용 가능한 인증 서비스
 
-#### Evidence and cross-check
+#### 증거와 교차 확인
 
-- Record landing page through item list. Check read-only session state.
+- 랜딩 페이지부터 항목 목록까지를 녹화합니다. 읽기 전용 세션 상태를 확인합니다.
 
-#### Gotchas
+#### 주의점
 
-- A marketing page is the wrong surface. A missing auth service is a block.
+- 마케팅 페이지는 엉뚱한 화면입니다. 인증 서비스가 없으면 차단입니다.
 
-### Item list and detail
+### 항목 목록과 상세
 
-Lets a user browse items and open one.
+사용자가 항목을 둘러보고 하나를 열도록 합니다.
 
-#### How a user gets there
+#### 사용자가 도달하는 방법
 
-- Open the `Items` tab, then choose a row.
+- `Items` 탭을 연 다음 행을 고릅니다.
 
-#### How the control adapter drives it
+#### 제어 어댑터가 구동하는 방법
 
-- `select_tab Items` and `click <fixture item>` should open its detail.
-- Reset by closing the detail and clearing selection.
+- `select_tab Items`와 `click <픽스처 항목>`은 그 상세를 열어야 합니다.
+- 상세를 닫고 선택을 해제해 초기화합니다.
 
-#### Stable selectors
+#### 안정적인 셀렉터
 
-- Tab and list named `Items`, fixture-named row, `data-component="item-detail"`
+- 이름이 `Items`인 탭과 목록, 픽스처 이름이 붙은 행, `data-component="item-detail"`
 
-#### States to exercise
+#### 확인할 상태
 
 - Loading, empty, error, selected, open, expanded
 
-#### Preconditions and setup
+#### 전제 조건과 준비
 
-- Named fixture items, read permission, available item service
+- 이름이 있는 픽스처 항목, 읽기 권한, 사용 가능한 항목 서비스
 
-#### Evidence and cross-check
+#### 증거와 교차 확인
 
-- Show selection and matching detail title. Check selected-item ID.
+- 선택 상태와 그에 맞는 상세 제목을 보여 줍니다. 선택된 항목 ID를 확인합니다.
 
-#### Gotchas
+#### 주의점
 
-- Search results may look similar but use a different path.
+- 검색 결과는 비슷해 보여도 경로가 다릅니다.
 
-### Item editor
+### 항목 편집기
 
-Lets a user create or edit an item.
+사용자가 항목을 만들거나 고치도록 합니다.
 
-#### How a user gets there
+#### 사용자가 도달하는 방법
 
-- Choose `Edit` from detail or `New item` from the list.
+- 상세에서 `Edit`을 고르거나, 목록에서 `New item`을 고릅니다.
 
-#### How the control adapter drives it
+#### 제어 어댑터가 구동하는 방법
 
-- `click Edit`, `fill <field>`, and `click Save` should update detail.
-- Reset by restoring the fixture.
+- `click Edit`, `fill <필드>`, `click Save`는 상세를 갱신해야 합니다.
+- 픽스처를 되돌려 초기화합니다.
 
-#### Stable selectors
+#### 안정적인 셀렉터
 
-- Buttons `Edit`, `New item`, `Save`, form `Item editor`, label-linked fields
+- 버튼 `Edit`, `New item`, `Save`, 폼 `Item editor`, 레이블과 연결된 필드
 
-#### States to exercise
+#### 확인할 상태
 
 - Default, focus-visible, dirty, validating, disabled, saving, error, success
 
-#### Preconditions and setup
+#### 전제 조건과 준비
 
-- Editable fixture, write permission, available save service
+- 편집 가능한 픽스처, 쓰기 권한, 사용 가능한 저장 서비스
 
-#### Evidence and cross-check
+#### 증거와 교차 확인
 
-- Show field change through updated detail. Check the stored item value read-only.
+- 필드 변경이 갱신된 상세까지 이어지는 것을 보여 줍니다. 저장된 항목 값은 읽기 전용으로 확인합니다.
 
-#### Gotchas
+#### 주의점
 
-- Do not inject form state. A read-only detail field is not the editor.
+- 폼 상태를 주입하지 마세요. 읽기 전용 상세 필드는 편집기가 아닙니다.
 
-### Settings
+### 설정
 
-Lets a user change personal preferences.
+사용자가 개인 환경설정을 바꾸도록 합니다.
 
-#### How a user gets there
+#### 사용자가 도달하는 방법
 
-- Open the profile menu, then choose `Settings`.
+- 프로필 메뉴를 연 다음 `Settings`를 고릅니다.
 
-#### How the control adapter drives it
+#### 제어 어댑터가 구동하는 방법
 
-- `open_menu Profile`, `click Settings`, and `toggle <preference>` should update the control.
-- Reset by restoring the starting preference.
+- `open_menu Profile`, `click Settings`, `toggle <환경설정>`은 컨트롤을 갱신해야 합니다.
+- 처음 환경설정으로 되돌려 초기화합니다.
 
-#### Stable selectors
+#### 안정적인 셀렉터
 
-- Button `Profile`, menu item `Settings`, region `Settings`, purpose-named preference attribute
+- 버튼 `Profile`, 메뉴 항목 `Settings`, 영역 `Settings`, 목적이 드러나는 환경설정 속성
 
-#### States to exercise
+#### 확인할 상태
 
 - Closed, open, selected, focus-visible, disabled, loading, error
 
-#### Preconditions and setup
+#### 전제 조건과 준비
 
-- Signed-in test account, known preferences, available preference service
+- 로그인한 테스트 계정, 알려진 환경설정, 사용 가능한 환경설정 서비스
 
-#### Evidence and cross-check
+#### 증거와 교차 확인
 
-- Show the menu path and final control state. Check the preference value read-only.
+- 메뉴 경로와 최종 컨트롤 상태를 보여 줍니다. 환경설정 값은 읽기 전용으로 확인합니다.
 
-#### Gotchas
+#### 주의점
 
-- Operating-system settings are a different surface.
+- 운영체제 설정은 다른 화면입니다.
 
-## Completeness checklist
+## 완전성 체크리스트
 
-- Every reproducible user-facing feature has a section.
-- Every section names a user path, adapter actions, and reset.
-- Selectors use roles, names, ARIA, stable component markers, or purpose-named attributes.
-- No selector uses generated classes or DOM position.
-- Relevant interaction, loading, empty, error, selected, and expanded states are covered.
-- Auth, fixtures, permissions, flags, and services are explicit.
-- Screenshot, video, and underlying cross-check requirements are explicit.
-- Wrong surfaces, dead ends, and safe environment translations are listed.
-- Implementation details remain runtime discoveries.
+- 재현할 수 있는 사용자 대면 기능마다 섹션이 있습니다.
+- 모든 섹션이 사용자 경로, 어댑터 동작, 초기화를 밝힙니다.
+- 셀렉터는 역할, 이름, ARIA, 안정적인 컴포넌트 마커, 목적이 드러나는 속성을 사용합니다.
+- 생성된 클래스나 DOM 위치를 쓰는 셀렉터는 없습니다.
+- 관련된 상호작용, loading, empty, error, selected, expanded 상태를 다룹니다.
+- 인증, 픽스처, 권한, 플래그, 서비스가 명시되어 있습니다.
+- 스크린샷, 비디오, 이면 교차 확인의 요구가 명시되어 있습니다.
+- 엉뚱한 화면, 막다른 경로, 안전한 환경 변환이 적혀 있습니다.
+- 구현 세부 사항은 런타임에 발견할 일로 남습니다.

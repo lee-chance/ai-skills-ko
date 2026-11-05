@@ -1,97 +1,97 @@
-# Datadog Telemetry
+# Datadog 텔레메트리
 
-## What this source contains
+## 이 소스에 있는 것
 
-Datadog holds the runtime record, what actually happened in production, as opposed to what was planned or discussed.
+Datadog에는 런타임 기록이 있습니다. 프로덕션에서 실제로 일어난 일입니다. 계획되거나 논의된 내용과는 다른 기록입니다.
 
-- **Metrics.** Counters, gauges, histograms instrumented by the team. A metric's *presence* is itself evidence that someone thought the number worth watching.
-- **Monitors & alerts.** Conditions the team decided warranted waking someone up. A monitor firing on `rate_limit_hit > 10/min` is direct evidence the team worried about that threshold.
-- **Dashboards.** Curated views of what the team considers important for a subsystem.
-- **APM traces & spans.** Request-level runtime data, for "why is this slow" / "why is there a timeout here" questions.
-- **Logs.** High-volume event records, often holding the error conditions that motivated defensive code.
-- **Incidents.** Formal incident records with timelines and linked postmortems.
-- **Notebooks.** The team's exploratory investigations, often with hypotheses and analyses.
+- **메트릭.** 팀이 계측한 카운터, 게이지, 히스토그램. 메트릭이 *존재한다*는 사실 자체가, 누군가 그 숫자를 지켜볼 가치가 있다고 봤다는 증거입니다.
+- **모니터와 알림.** 팀이 누군가를 깨워 대응할 만하다고 판단한 조건. `rate_limit_hit > 10/min`에서 발화하는 모니터는, 팀이 그 임계값을 걱정했다는 직접 증거입니다.
+- **대시보드.** 팀이 한 하위 시스템에서 중요하다고 보는 것의 큐레이션된 뷰.
+- **APM 트레이스와 스팬.** 요청 단위의 런타임 데이터. "왜 이것이 느린가" / "왜 여기에 타임아웃이 있는가" 질문에 씁니다.
+- **로그.** 대량의 이벤트 기록. 방어적 코드의 동기가 된 오류 조건을 담고 있는 경우가 많습니다.
+- **인시던트.** 타임라인과 연결된 사후 분석이 있는 공식 인시던트 기록.
+- **노트북.** 팀의 탐색적 조사. 가설과 분석이 함께 있는 경우가 많습니다.
 
-## How to search it
+## 검색 방법
 
-Use the Datadog MCP. Start broad, then narrow.
+Datadog MCP를 사용하세요. 넓게 시작한 다음 좁히세요.
 
-1. **Identify the owning service(s).**
-
-   ```
-   search_datadog_services (filter by name or team)
-   search_datadog_service_dependencies (see upstream/downstream)
-   ```
-
-2. **Dashboards and monitors first.**
+1. **소유 서비스를 식별하세요.**
 
    ```
-   search_datadog_dashboards (query: feature name, service name, symbol)
-   search_datadog_monitors   (same queries)
+   search_datadog_services (이름 또는 팀으로 필터)
+   search_datadog_service_dependencies (업스트림/다운스트림 확인)
    ```
 
-   When a dashboard or monitor covers the target, note its queries and watched thresholds. The threshold is frequently the answer to "why is this clamped at N?"
-
-3. **Metrics around the target.**
+2. **대시보드와 모니터를 먼저.**
 
    ```
-   search_datadog_metrics (by name pattern, e.g., the feature or symbol)
-   get_datadog_metric_context (metadata: description, units, tags)
-   get_datadog_metric (timeseries; "was there a spike around the PR date?")
+   search_datadog_dashboards (쿼리: 기능 이름, 서비스 이름, 심볼)
+   search_datadog_monitors   (같은 쿼리)
    ```
 
-   Correlating a metric's trajectory with the target's add/change date is strong supporting evidence: "the `payment_timeout` metric spiked 2023-11-03, and the retry logic merged 2023-11-06."
+   대시보드나 모니터가 대상을 다루면, 그 쿼리와 지켜보는 임계값을 적으세요. 임계값은 "왜 이것이 N으로 제한되어 있나?"의 답인 경우가 많습니다.
 
-4. **Logs. Narrow, don't dump.**
-
-   ```
-   search_datadog_logs (raw log patterns near the target, set use_log_patterns=true)
-   analyze_datadog_logs (SQL-style aggregations, only when you need counts)
-   ```
-
-   Search with symbols, error strings, or feature names. **Strongly prefer time-bounded queries** (e.g., 30 days before/after the change).
-
-5. **APM spans and traces.**
+3. **대상 주변의 메트릭.**
 
    ```
-   aggregate_spans    (stats: "how often does this endpoint fail?")
-   search_datadog_spans (inspect individual spans)
-   get_datadog_trace  (a specific trace ID)
+   search_datadog_metrics (이름 패턴으로, 예: 기능 또는 심볼)
+   get_datadog_metric_context (메타데이터: 설명, 단위, 태그)
+   get_datadog_metric (시계열. "풀 리퀘스트 날짜 무렵에 급증이 있었나?")
    ```
 
-   Useful for timeouts, retries, slow paths, and cross-service behavior.
+   메트릭의 궤적을 대상이 추가되거나 바뀐 날짜와 연관 짓는 것은 강한 뒷받침 증거입니다. "`payment_timeout` 메트릭이 2023-11-03에 급증했고, 재시도 로직은 2023-11-06에 머지되었습니다."
 
-6. **Incidents.**
+4. **로그. 좁히세요. 덤프하지 마세요.**
 
    ```
-   search_datadog_incidents (by title, team, date range)
-   get_datadog_incident     (full detail for a specific incident)
+   search_datadog_logs (대상 근처의 원시 로그 패턴, use_log_patterns=true로 설정)
+   analyze_datadog_logs (SQL 스타일 집계, 개수가 필요할 때만)
    ```
 
-   If the target looks defensive, search for incidents around the time it was added. An incident whose timeline includes "added defensive check for X" is near-direct evidence.
+   심볼, 오류 문자열, 또는 기능 이름으로 검색하세요. **시간 범위가 있는 쿼리를 강하게 우선하세요** (예: 변경 전후 30일).
 
-## What good evidence looks like here
+5. **APM 스팬과 트레이스.**
 
-- A monitor whose query and threshold match the constraint the code enforces (code clamps to 100, monitor alerts when requests exceed 100/min)
-- A dashboard created by the target's author, with widgets that correspond to what the code measures or guards against
-- A metric showing a production spike immediately before the code was merged, and stable values after
-- An incident record referencing the target code, the same symbols, or the same error strings
-- Logs showing a specific error pattern the defensive code would prevent, timestamped in the window before the change
+   ```
+   aggregate_spans    (통계: "이 엔드포인트는 얼마나 자주 실패하나?")
+   search_datadog_spans (개별 스팬 검사)
+   get_datadog_trace  (특정 트레이스 ID)
+   ```
 
-## Common pitfalls
+   타임아웃, 재시도, 느린 경로, 서비스 간 동작에 유용합니다.
 
-- **Correlation is not causation.** A spike before a PR and stabilization after is suggestive, not definitive, since other changes may have landed in the same window. Check neighboring PRs.
-- **Overfitting to the chart you found.** A chart reflects its maker's framing. A chart named "retry success rate" is evidence the team cared about retry success, not that it's why a specific line of code exists.
-- **Vanished telemetry.** Metrics can be renamed, deleted, or have short retention. If you can't find data from the relevant window, that's a gap, not a null result.
-- **Noise at scale.** Narrow log searches by service, tag, and time window aggressively. Use `analyze_datadog_logs` to aggregate rather than dumping raw logs.
-- **Instrumented != caused.** A metric shows someone cared enough to measure something, not that the code was added *because* of it. Cross-reference with commit/PR dates.
+6. **인시던트.**
 
-## What to return
+   ```
+   search_datadog_incidents (제목, 팀, 날짜 범위로)
+   get_datadog_incident     (특정 인시던트의 전체 세부 정보)
+   ```
 
-For each relevant item:
-- Type (dashboard / monitor / metric / log pattern / trace / incident / notebook)
-- Title or name
-- Link or identifier (dashboard ID, monitor ID, metric name, incident ID)
-- Owner/author and created/modified date
-- The specific condition, query, or quote that bears on the question (verbatim where possible)
-- Relevance: what this suggests about the target code, and how strong the connection is
+   대상이 방어적으로 보이면, 그것이 추가된 시점 부근의 인시던트를 검색하세요. 타임라인에 "X에 대한 방어적 검사를 추가함"이 포함된 인시던트는 거의 직접 증거입니다.
+
+## 여기서 좋은 증거는 어떤 모습인가
+
+- 쿼리와 임계값이 코드가 강제하는 제약 조건과 일치하는 모니터 (코드는 100으로 제한하고, 모니터는 요청이 100/분을 넘으면 알림)
+- 대상의 작성자가 만든 대시보드. 위젯이 코드가 측정하거나 막는 것에 대응합니다
+- 코드가 머지되기 직전에 프로덕션 급증을 보이고, 그 이후에는 안정된 값을 보이는 메트릭
+- 대상 코드, 같은 심볼, 또는 같은 오류 문자열을 참조하는 인시던트 기록
+- 방어적 코드가 막을 특정 오류 패턴을 보여 주는 로그. 변경 이전 창에 타임스탬프가 있습니다
+
+## 흔한 함정
+
+- **상관관계는 인과관계가 아닙니다.** 풀 리퀘스트 전의 급증과 그 후의 안정은 시사할 뿐 확정은 아닙니다. 같은 창에 다른 변경이 들어갔을 수 있습니다. 인접한 풀 리퀘스트를 확인하세요.
+- **찾은 차트에 과적합.** 차트는 만든 사람의 프레이밍을 반영합니다. "retry success rate"라는 차트는 팀이 재시도 성공을 신경 썼다는 증거이지, 특정 코드 줄이 존재하는 이유는 아닙니다.
+- **사라진 텔레메트리.** 메트릭은 이름이 바뀌거나, 삭제되거나, 보존 기간이 짧을 수 있습니다. 관련 창의 데이터를 찾을 수 없으면 그것은 공백입니다. null 결과가 아닙니다.
+- **규모에서 오는 잡음.** 로그 검색은 서비스, 태그, 시간 창으로 적극적으로 좁히세요. 원시 로그를 덤프하지 말고 `analyze_datadog_logs`로 집계하세요.
+- **계측되었다고 해서 원인이 되지는 않습니다.** 메트릭은 누군가 무언가를 측정할 만큼 신경 썼다는 것을 보여 줄 뿐, 코드가 그것 *때문에* 추가되었다는 것은 아닙니다. 커밋/풀 리퀘스트 날짜와 교차 확인하세요.
+
+## 반환할 내용
+
+관련된 각 항목에 대해:
+- 유형 (대시보드 / 모니터 / 메트릭 / 로그 패턴 / 트레이스 / 인시던트 / 노트북)
+- 제목 또는 이름
+- 링크 또는 식별자 (대시보드 ID, 모니터 ID, 메트릭 이름, 인시던트 ID)
+- 소유자/작성자와 생성/수정 날짜
+- 질문과 관련된 구체적인 조건, 쿼리, 또는 인용 (가능하면 원문)
+- 관련성: 이것이 대상 코드에 대해 무엇을 시사하는지, 그리고 연결이 얼마나 강한지

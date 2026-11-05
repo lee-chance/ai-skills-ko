@@ -1,93 +1,93 @@
-# Verify an existing fix
+# 기존 수정 검증
 
-Use this mode when an open pull request or merged commit plausibly fixes the report.
+열린 풀 리퀘스트나 병합된 커밋이 보고서를 고칠 가능성이 있을 때 이 모드를 사용하세요.
 
-The existing artifact owns the fix. Verify it. Do not edit it, author a competing patch, or open another pull request.
+기존 아티팩트가 수정을 소유합니다. 그것을 검증하세요. 고치거나, 경쟁 패치를 작성하거나, 다른 풀 리퀘스트를 열지 마세요.
 
-## Qualify the artifact
+## 아티팩트 조건
 
-Require one concrete artifact:
+구체적인 아티팩트 하나가 필요합니다.
 
-- An open pull request with code changes that address the symptom
-- A merged pull request
-- A merged commit with matching code and intent
+- 증상을 다루는 코드 변경이 있는 열린 풀 리퀘스트
+- 병합된 풀 리퀘스트
+- 코드와 의도가 맞는 병합된 커밋
 
-A thread claim, tracker status, branch name, or cause hypothesis without a pull request or commit is not enough.
+풀 리퀘스트나 커밋이 없는 스레드의 주장, 추적기 상태, 브랜치 이름, 원인 가설은 충분하지 않습니다.
 
-When several artifacts exist, choose the one linked from the source thread or tracker. Otherwise choose the closest match to the affected code and state why.
+아티팩트가 여러 개이면 소스 스레드나 추적기에서 링크된 것을 고르세요. 그렇지 않으면 영향받은 코드와 가장 가까운 것을 고르고, 이유를 밝히세요.
 
-## Protect the working tree
+## 작업 트리 보호
 
-Use an isolated worktree or another clean checkout when the repository supports it. Do not overwrite user changes.
+저장소가 지원하면 격리된 worktree나 다른 깨끗한 체크아웃을 사용하세요. 사용자 변경을 덮어쓰지 마세요.
 
-Record:
+다음을 기록하세요.
 
-- Baseline revision
-- Patched revision
-- Pull request or commit URL
-- Build and environment inputs shared by both runs
+- 베이스라인 리비전
+- 패치된 리비전
+- 풀 리퀘스트 또는 커밋 URL
+- 두 실행이 공유하는 빌드와 환경 입력
 
-Use regular `github.com` pull request links.
+일반적인 `github.com` 풀 리퀘스트 링크를 사용하세요.
 
-## Measure the baseline
+## 베이스라인 측정
 
-For an open pull request, use its base branch as the baseline.
+열린 풀 리퀘스트이면 그 base 브랜치를 베이스라인으로 사용하세요.
 
-For a merged fix, use the revision immediately before the fix when that revision builds and represents the old behavior.
+병합된 수정이면, 그 리비전이 빌드되고 이전 동작을 나타낼 때 수정 직전 리비전을 사용하세요.
 
-Through the configured control adapter:
+구성된 제어 어댑터로:
 
-1. Bring up the baseline app.
-2. Confirm the correct app and environment.
-3. Run the reported path through real UI actions.
-4. Observe the discriminating symptom.
-5. Reset and repeat it.
-6. Capture baseline recording, screenshot, and state check.
+1. 베이스라인 앱을 띄우세요.
+2. 올바른 앱과 환경을 확인하세요.
+3. 보고된 경로를 실제 UI 동작으로 실행하세요.
+4. 구분 증상을 관찰하세요.
+5. 초기화하고 한 번 더 반복하세요.
+6. 베이스라인 녹화, 스크린샷, 상태 확인을 캡처하세요.
 
-If the symptom does not appear twice on the baseline, there is no baseline. Do not claim that the fix works.
+베이스라인에서 증상이 두 번 나타나지 않으면 베이스라인이 성립하지 않습니다. 수정이 동작한다고 주장하지 마세요.
 
-## Measure the patched build
+## 패치된 빌드 측정
 
-Build and run the pull request or fix commit with the same environment and data.
+같은 환경과 데이터로 풀 리퀘스트나 수정 커밋을 빌드하고 실행하세요.
 
-1. Run the same UI path.
-2. Repeat it twice.
-3. Confirm that the broken state is gone.
-4. Confirm the expected state appears.
-5. Capture after recording, screenshot, and the same state check.
+1. 같은 UI 경로를 실행하세요.
+2. 두 번 반복하세요.
+3. 고장난 상태가 사라졌는지 확인하세요.
+4. 기대 상태가 나타나는지 확인하세요.
+5. 수정 후 녹화, 스크린샷, 같은 상태 확인을 캡처하세요.
 
-Do not stop at compilation or tests. The after result must come from a running patched app.
+컴파일이나 테스트에서 멈추지 마세요. 이후 결과는 실행 중인 패치된 앱에서 나와야 합니다.
 
-## Outcomes
+## 결과
 
-### Confirmed
+### 확인됨
 
-The baseline reproduces twice and the patched build resolves it twice.
+베이스라인이 두 번 재현되고, 패치된 빌드가 증상을 두 번 해소합니다.
 
-- Mark operations status as verified.
-- Link the artifact.
-- Post one concise source-thread reply after the source preflight.
-- Include the before and after result.
-- Open no pull request.
+- 작업 상태를 검증됨으로 표시하세요.
+- 아티팩트를 링크하세요.
+- 소스 사전 점검 뒤에 소스 스레드에 간결한 답장 하나를 게시하세요.
+- 전후 결과를 넣으세요.
+- 풀 리퀘스트를 열지 마세요.
 
-### Insufficient fix
+### 불충분한 수정
 
-The symptom appears on both baseline and patched builds.
+증상이 베이스라인과 패치된 빌드 모두에서 나타납니다.
 
-- Mark operations status as reproduced but not fixed.
-- Link the artifact and say it did not resolve the symptom.
-- Post the normal confirmed-repro source update if the run has not already used it.
-- Open no competing pull request.
+- 작업 상태를 재현되었으나 수정되지 않음으로 표시하세요.
+- 아티팩트를 링크하고, 증상을 해소하지 못했다고 말하세요.
+- 이번 실행이 아직 그 업데이트를 쓰지 않았다면, 확인된 재현에 쓰는 일반적인 소스 업데이트를 게시하세요.
+- 경쟁 풀 리퀘스트를 열지 마세요.
 
-### Inconclusive
+### 결론 없음
 
-The baseline does not reproduce, the patched app cannot run, or the evidence does not show the discriminating state.
+베이스라인이 재현되지 않거나, 패치된 앱을 실행할 수 없거나, 증거가 구분되는 상태를 보여 주지 않습니다.
 
-- Do not claim success.
-- State which half could not be measured.
-- Keep the result in the operations thread or run output.
-- Post nothing in the source thread unless a direct question requires an answer.
+- 성공이라고 말하지 마세요.
+- 어느 쪽을 측정하지 못했는지 밝히세요.
+- 결과는 작업 스레드나 실행 출력에 두세요.
+- 직접적인 질문에 답이 필요한 경우가 아니면 소스 스레드에 아무것도 게시하지 마세요.
 
-## Cleanup
+## 정리
 
-Stop both builds, remove temporary profiles and captures according to retention policy, and return the repository to its prior state without discarding user work.
+두 빌드를 중지하고, 보존 정책에 따라 임시 프로필과 캡처를 제거하며, 사용자 작업을 버리지 않은 채 저장소를 이전 상태로 되돌리세요.

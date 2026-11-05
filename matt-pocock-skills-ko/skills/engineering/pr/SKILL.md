@@ -12,31 +12,31 @@ metadata:
 PR 본문 작성을 위해 이 템플릿을 사용하세요:
 
 ```markdown
-## Summary
+## 요약
 
-<diagram, diff-sketch, or tree>
+<다이어그램, diff 스케치, 또는 트리>
 
-## Evidence
+## 증거
 
-- **Before:** <screenshot/output/failing test run>
-  **After:** <screenshot/output/passing test run>
+- **이전:** <스크린샷/출력/실패하는 테스트 실행>
+  **이후:** <스크린샷/출력/통과하는 테스트 실행>
 
-## Merge Danger
+## 병합 위험
 
-**Door:** <one-way or two-way>
+**도어:** <일방향 또는 양방향>
 
-<optional: description>
+<선택: 설명>
 
-**Blast Radius:** <one-word description>
+**폭발 반경:** <한 단어 설명>
 
-<optional: potential ramifications of merge>
+<선택: 병합이 미칠 수 있는 영향>
 ```
 
 ## 섹션
 
 모든 서문을 건너뛰고 산문을 간략하게 유지하세요. `GLOSSARY.md`에서 사용자의 도메인 언어를 사용하세요.
 
-### Summary
+### 요약
 
 핵심 포인트를 명확하게 만드는 가장 작은 뷰를 선택하세요.
 
@@ -155,7 +155,7 @@ function expandSkill(command: string): string {
 
 여러분은 이들 중 하나를 사용할 수 있고, 여러 개를 사용할 수 있으며, 모두 사용할 가능성은 낮습니다. 판단을 사용하고 사용자를 압도하지 마세요.
 
-### Evidence
+### 증거
 
 변경이 작동한다는 구체적인 증거. 전후를 보여주세요.
 
@@ -163,7 +163,7 @@ function expandSkill(command: string): string {
 
 실행 기반 증거는 A-tier입니다. 테스트 결과, 콘솔 출력. 이제 실패하고 통과하는 정확한 테스트를 보여주세요. 수도 코드 사용.
 
-### Merge Danger
+### 병합 위험
 
 일방향 또는 양방향 도어인지 설명하세요. 양방향 도어를 통해 되돌아갈 수 있지만, 일방향 도어는 그렇지 않습니다. 롤백하기 저렴한 PR은 더 낮은 위험입니다. 파괴적 행동이나 되돌리기 어려운 결정을 포함하는 변경은 일방향 도어입니다.
 

@@ -1,20 +1,20 @@
-# Architect runner prompt
+# Architect 러너 프롬프트
 
-The orchestrator passes this file through to every parallel candidate runner during Phase B and fills in the variable inputs around it: the task, the Phase A grounding artifacts, the isolated working directory, and the path to write outputs. The working directory is a git worktree when available, otherwise a per-runner subdirectory under the sketch dir. What matters is independence between candidates.
+오케스트레이터는 단계 B 동안 이 파일을 모든 병렬 후보 러너에게 그대로 전달하고, 그 주변에 가변 입력을 채웁니다. 작업, 단계 A 기반 아티팩트, 격리된 작업 디렉터리, 출력을 쓸 경로입니다. 작업 디렉터리는 사용 가능할 때 git worktree이고, 그렇지 않으면 스케치 디렉터리 아래의 러너별 하위 디렉터리입니다. 중요한 것은 후보끼리 독립되어 있다는 점입니다.
 
-You are producing one candidate design in architect's parallel exploration. Read the **architect** skill in full first. That's the workflow you're inside. Output a candidate design package: type sketch, function signatures, module map, and prose rationale shaped per [`rationale-template.md`](rationale-template.md).
+당신은 architect의 병렬 탐색에서 후보 설계를 하나 만듭니다. 먼저 **architect** 스킬 전체를 읽으세요. 그것이 지금 당신이 있는 워크플로우입니다. 후보 설계 패키지를 출력하세요. 타입 스케치, 함수 시그니처, 모듈 맵, 그리고 [`rationale-template.md`](rationale-template.md)에 맞춰 쓴 산문 근거입니다.
 
-Apply the following discipline. The orchestrator compares candidates on these axes to pick a base.
+다음 규율을 적용하세요. 오케스트레이터는 기반을 고르려고 이 축으로 후보를 비교합니다.
 
-- Caller's usage first. Write the README-style usage and two or three real call sites before the types, then derive the type sketch from them. The usage is the spec. The two must agree, so reconcile the sketch to the usage, not the reverse.
-- Data structures first. Get the core types right and the code becomes obvious. Trace each dominant access pattern through the proposed structure. If the answer is "we'll add a map / index / cache later," the structure is wrong.
-- Interface depth. Compare the capability hidden behind the public surface relative to the size of that surface. Prefer a simple interface that pulls complexity into the callee, even when the implementation becomes less simple. Do not put transport or wire types on the public API. Parse into domain types behind the interface.
-- Shared state: if two actors might both write, ask "what happens?" If the answer isn't "nothing," default to per-actor state with a merge at the read boundary, per the **separate-before-serializing-shared-state** principle skill.
-- Make boundaries visible. `not implemented` errors for bodies, `// TODO` pseudocode for tricky logic, doc comments stating intent and invariants. A reader should trace data from input to output by reading types and signatures alone.
-- Encode invariants in types: hard-to-misuse types > runtime checks > prose comments, per the **encode-lessons-in-structure** principle skill.
-- Validate at boundaries, trust types inside, per the **boundary-discipline** principle skill. Business logic as pure functions. The shell stays thin.
-- Single source of truth per invariant. Derive instead of sync.
-- Idempotent state transitions where applicable, per the **make-operations-idempotent** principle skill. Ask what happens if the operation runs twice or crashes halfway.
-- Short call chains. If tracing the flow needs more than three files, flatten the hierarchy, per the **laziness-protocol** and **minimize-reader-load** principle skills.
+- 호출자의 사용법이 먼저입니다. 타입보다 먼저 README 스타일의 사용법과 실제 호출 지점 두세 곳을 쓰고, 그로부터 타입 스케치를 도출하세요. 사용법이 스펙입니다. 둘은 일치해야 하므로, 스케치를 사용법에 맞추세요. 사용법을 스케치에 맞추지 마세요.
+- 자료 구조가 먼저입니다. 핵심 타입을 제대로 잡으면 코드는 자명해집니다. 제안한 구조에서 지배적인 접근 패턴을 각각 따라가 보세요. 답이 "나중에 map / index / cache를 추가하면 된다"이면 구조가 잘못된 것입니다.
+- 인터페이스 깊이. 공개 표면의 크기에 비해 그 뒤에 숨은 기능을 비교하세요. 구현이 덜 단순해지더라도, 복잡성을 피호출자 안으로 끌어들이는 단순한 인터페이스를 선호하세요. 공개 API에 전송 타입이나 와이어 타입을 두지 마세요. 인터페이스 뒤에서 도메인 타입으로 파싱하세요.
+- 공유 상태: 두 액터가 둘 다 쓸 수 있다면 "무슨 일이 일어나는가?"를 물으세요. 답이 "아무 일도 없다"가 아니면, **separate-before-serializing-shared-state** 원칙 스킬에 따라 읽기 경계에서 병합하는 액터별 상태를 기본으로 하세요.
+- 경계를 눈에 보이게 하세요. 본문은 `not implemented` 오류, 까다로운 로직은 `// TODO` 의사 코드, 의도와 불변 조건을 적는 문서 주석. 독자는 타입과 시그니처만 읽고 입력에서 출력까지 데이터를 따라갈 수 있어야 합니다.
+- 불변 조건은 타입에 인코딩하세요. 오용하기 어려운 타입 > 런타임 검사 > 산문 주석. **encode-lessons-in-structure** 원칙 스킬에 따릅니다.
+- 경계에서 검증하고 안에서는 타입을 신뢰하세요. **boundary-discipline** 원칙 스킬에 따릅니다. 비즈니스 로직은 순수 함수로 두세요. 셸은 얇게 유지하세요.
+- 불변 조건마다 진실 공급원은 하나여야 합니다. 맞추어 동기화하지 말고 도출하세요.
+- 해당하는 곳에서는 멱등한 상태 전이로 두세요. **make-operations-idempotent** 원칙 스킬에 따릅니다. 그 작업이 두 번 실행되거나 중간에 죽으면 무슨 일이 일어나는지 물으세요.
+- 호출 체인은 짧게. 흐름을 따라가는 데 파일이 세 개를 넘으면 계층을 평평하게 하세요. **laziness-protocol**과 **minimize-reader-load** 원칙 스킬에 따릅니다.
 
-You are one of the parallel runners, each on a different model. Produce the best design your model can make. Don't hedge against the others. Differences between candidates are the signal used to pick a base and graft. Converging on a safe-looking middle defeats the exploration.
+당신은 서로 다른 모델 위의 병렬 러너 중 하나입니다. 당신의 모델이 만들 수 있는 최선의 설계를 만드세요. 다른 러너에 맞춰 설계를 누그러뜨리지 마세요. 후보 사이의 차이가, 기반을 고르고 나머지를 접목하는 데 쓰이는 신호입니다. 안전해 보이는 중간으로 모이면 탐색이 실패합니다.

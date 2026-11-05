@@ -7,7 +7,7 @@
 
 {이 컨텍스트가 무엇이고 왜 존재하는지에 대한 한두 문장 설명.}
 
-## Language
+## 용어
 
 **Order**:
 {용어에 대한 한두 문장 설명}
@@ -36,15 +36,15 @@ _Avoid_: Client, buyer, account
 **다중 컨텍스트:** 저장소 루트의 `GLOSSARY-MAP.md`가 컨텍스트, 그것들이 있는 위치, 그리고 그것들이 서로 어떻게 관련되는지를 나열합니다:
 
 ```md
-# Glossary Map
+# 용어집 지도
 
-## Contexts
+## 컨텍스트
 
 - [Ordering](./src/ordering/GLOSSARY.md): 고객 주문을 받고 추적
 - [Billing](./src/billing/GLOSSARY.md): 인보이스를 생성하고 결제를 처리
 - [Fulfillment](./src/fulfillment/GLOSSARY.md): 창고 피킹과 배송을 관리
 
-## Relationships
+## 관계
 
 - **Ordering → Fulfillment**: Ordering이 `OrderPlaced` 이벤트를 발행; Fulfillment가 피킹을 시작하기 위해 소비
 - **Fulfillment → Billing**: Fulfillment가 `ShipmentDispatched` 이벤트를 발행; Billing이 인보이스를 생성하기 위해 소비

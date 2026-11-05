@@ -1,66 +1,66 @@
-# Sentry Error History
+# Sentry 오류 이력
 
-## How to search it
+## 검색 방법
 
-Use the Sentry MCP.
+Sentry MCP를 사용하세요.
 
-1. **Orient.** If you don't know the project slug and organization:
+1. **방향을 잡으세요.** 프로젝트 슬러그와 조직을 모르면:
 
    ```
    find_organizations
    find_projects
    ```
 
-2. **Search for issues related to the target.**
+2. **대상과 관련된 이슈를 검색하세요.**
 
    ```
-   search_issues (natural language, e.g., "errors in PaymentService timeout", "unhandled exceptions in uploadFile")
+   search_issues (자연어. 예: "errors in PaymentService timeout", "unhandled exceptions in uploadFile")
    ```
 
-   Build queries from the exception class names the target handles, its function or class name, the error message strings it checks for, and its file path.
+   대상이 처리하는 예외 클래스 이름, 함수 또는 클래스 이름, 대상이 확인하는 오류 메시지 문자열, 파일 경로로 쿼리를 만드세요.
 
-3. **Narrow by release and time window.**
-
-   ```
-   search_issue_events (filter by release, time, environment, trace ID, tags)
-   get_issue_tag_values (for an issue, see distribution across versions, users, environments)
-   ```
-
-   For a suspected issue, check **first seen** and **last seen** (does the stop line up with the target's ship date?), the **affected releases** (which saw it, and which was the fix?), and the **frequency trajectory** (did it spike, then get resolved?).
-
-4. **Pull the full event for context.**
+3. **릴리스와 시간 창으로 좁히세요.**
 
    ```
-   get_sentry_resource (pass a Sentry URL or type+ID)
+   search_issue_events (릴리스, 시간, 환경, 트레이스 ID, 태그로 필터)
+   get_issue_tag_values (이슈에 대해 버전, 사용자, 환경별 분포 확인)
    ```
 
-   Does the stack trace pass through the target code? Do the tags and breadcrumbs match the conditions the target defends against?
+   의심되는 이슈에 대해 **first seen**과 **last seen** (중단이 대상의 출시일과 맞나요?), **영향을 받은 릴리스** (어느 릴리스에서 보였고, 어느 것이 수정이었나요?), **빈도 궤적** (급증했다가 해결되었나요?)을 확인하세요.
 
-5. **Check releases that landed near the target.**
+4. **맥락을 위해 전체 이벤트를 가져오세요.**
 
    ```
-   find_releases (around the commit date of the target)
+   get_sentry_resource (Sentry URL 또는 type+ID를 전달)
    ```
 
-   Cross-reference release version with the PR's merge date.
+   스택 트레이스가 대상 코드를 지나가나요? 태그와 브레드크럼이 대상이 방어하는 조건과 맞나요?
 
-6. **Use Seer sparingly.**
+5. **대상 근처에 들어간 릴리스를 확인하세요.**
+
+   ```
+   find_releases (대상의 커밋 날짜 부근)
+   ```
+
+   릴리스 버전을 풀 리퀘스트의 머지 날짜와 교차 확인하세요.
+
+6. **Seer는 아껴 쓰세요.**
 
    ```
    analyze_issue_with_seer
    ```
 
-   Seer's AI root-cause analyses are a hypothesis generator. Treat them as inference, not authoritative. The actual events and stack traces are the primary evidence.
+   Seer의 AI 근본 원인 분석은 가설 생성기입니다. 추론으로 취급하세요. 권위 있는 결론으로 보지 마세요. 실제 이벤트와 스택 트레이스가 주된 증거입니다.
 
-## What to return
+## 반환할 내용
 
-For each relevant issue:
-- Issue ID and title
-- Project and organization
-- First seen / last seen timestamps
-- Event count (and sampling rate if known)
-- Affected releases
-- A representative stack trace snippet showing relevance to the target (verbatim excerpt, not summary)
-- First/last-seen correlation with the target's ship date
-- Link to the issue
-- Any author comments or resolution notes
+관련된 각 이슈에 대해:
+- 이슈 ID와 제목
+- 프로젝트와 조직
+- first seen / last seen 타임스탬프
+- 이벤트 수 (샘플링 비율을 알면 함께)
+- 영향을 받은 릴리스
+- 대상과의 관련을 보여 주는 대표적인 스택 트레이스 조각 (요약이 아닌 원문 발췌)
+- 대상의 출시일과 first/last-seen의 상관
+- 이슈 링크
+- 작성자 코멘트나 해결 메모가 있으면 포함

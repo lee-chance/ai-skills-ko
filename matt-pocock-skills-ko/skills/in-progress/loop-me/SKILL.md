@@ -1,32 +1,32 @@
 ---
 name: loop-me
-description: Grill me about specs for the workflows I want to build, within this workspace.
+description: "이 워크스페이스 안에서, 만들고 싶은 워크플로우의 스펙에 대해 저를 그릴합니다."
 disable-model-invocation: true
-argument-hint: "A workflow to design, or nothing to go find one"
+argument-hint: "설계할 워크플로우, 또는 비워 두면 하나를 찾습니다"
 ---
 
-Run a stateful `/grilling` session whose only output is **workflow** specs. Use the grilling discipline (relentless, a round of questions at a time, a recommended answer attached to each) aimed at the vocabulary and goal below. Create, edit, and delete specs as the grilling resolves things.
+유일한 산출물이 **워크플로우** 스펙인, 상태를 저장하는 `/grilling` 세션을 실행하세요. 아래 어휘와 목표를 향해 그릴링 규율(끊임없이, 한 번에 한 라운드의 질문, 각 질문에 붙은 권장 답변)을 사용하세요. 그릴링으로 사항이 해결될 때마다 스펙을 만들고, 편집하고, 삭제하세요.
 
-## The loop lens
+## 루프 렌즈
 
-A **loop** is a recurring pattern in the user's life: their career, their week, their morning, a single repeated activity. Picturing a life as loops within loops reveals how predictable its activities really are, which is what makes them worth **delegating**. Use the lens to find loops worth specifying, and propose ones the user hasn't noticed.
+**루프**는 사용자 삶의 반복 패턴입니다. 커리어, 한 주, 아침, 하나의 반복되는 활동. 삶을 루프 안의 루프로 그려 보면 그 활동이 실제로 얼마나 예측 가능한지 드러나고, 바로 그 예측 가능성이 **위임**할 가치를 만듭니다. 이 렌즈로 스펙을 쓸 가치가 있는 루프를 찾고, 사용자가 눈치채지 못한 것을 제안하세요.
 
-A **workflow** is the spec of one loop, made real. You run a workflow on a loop: the loop is its running instantiation. Workflows live in `workflows/*.md` and are the source of truth.
+**워크플로우**는 하나의 루프를 실제로 만든 스펙입니다. 워크플로우는 루프 위에서 실행합니다. 루프는 그 워크플로우가 실제로 돌아가는 인스턴스입니다. 워크플로우는 `workflows/*.md`에 있으며 단일 진실 공급원입니다.
 
-## Vocabulary
+## 어휘
 
-A shared language, reached for only when a workflow calls for it: never a checklist. **Mandate nothing structural**: a workflow needs no AI, no checkpoint, and no schedule unless the grilling shows it does.
+공유 언어이며, 워크플로우가 그것을 요구할 때만 손을 뻗으세요. 체크리스트가 아닙니다. **구조적인 것을 의무로 두지 마세요.** 그릴링이 필요하다고 보여 주지 않는 한, 워크플로우에는 AI도, 체크포인트도, 일정도 필요 없습니다.
 
-- **Trigger**: what fires each run, an **event** (a new email, a new issue) or a **schedule** (every morning). Event-triggering is usually the more efficient.
-- **Checkpoint**: a human-in-the-loop point where the user is asked to verify or decide. Some workflows have none and run autonomously; some use no AI at all.
-- **Push right**: defer the checkpoint as far as it will go. Do maximal work before involving the human, so they are asked once, late, with everything prepared.
-- **Brief**: what a checkpoint presents, a tight, decision-ready summary (what was produced, why, and a link down to the asset itself), never the raw output. The user reads a brief, not a draft. Speed of review is imperative.
+- **Trigger**: 각 실행을 발화시키는 것. **이벤트**(새 이메일, 새 이슈) 또는 **스케줄**(매일 아침)입니다. 이벤트 트리거가 보통 더 효율적입니다.
+- **Checkpoint**: 사용자가 확인하거나 결정하도록 묻는, 사람이 루프 안에 있는 지점입니다. 어떤 워크플로우는 이것이 없어 자율적으로 실행되고, 어떤 것은 AI를 전혀 쓰지 않습니다.
+- **Push right**: 체크포인트를 갈 수 있는 한 뒤로 미루세요. 사람을 끌어들이기 전에 최대한의 일을 해서, 한 번, 늦게, 모든 것이 준비된 채로 묻히게 하세요.
+- **Brief**: 체크포인트가 제시하는 것. 결정에 바로 쓸 수 있는 짧은 요약(무엇이 만들어졌는지, 왜, 그리고 자산 자체로 내려가는 링크)이며, 원시 출력이어서는 안 됩니다. 사용자는 초안이 아니라 브리프를 읽습니다. 검토 속도가 최우선입니다.
 
-## Definition of done
+## 완료의 정의
 
-A workflow spec is done when an implementer agent could build it without asking a single question. Grill until then; nothing is done while a question remains.
+구현 에이전트가 질문을 하나도 하지 않고 빌드할 수 있으면 워크플로우 스펙이 완료입니다. 그때까지 그릴하세요. 질문이 남아 있는 동안은 아무것도 완료가 아닙니다.
 
-## The workspace
+## 워크스페이스
 
-- `workflows/*.md`: one spec per workflow.
-- `NOTES.md`: raw notes on the user's world, the tools they use, the channels they process, and their own terminology for both. When it is empty or thin, interview them about their world before specifying anything. Sharpen fuzzy terms into canonical ones as they surface, and record them here.
+- `workflows/*.md`: 워크플로우당 하나의 스펙.
+- `NOTES.md`: 사용자의 세계, 사용하는 도구, 처리하는 채널, 그리고 둘 다에 대한 사용자 자신의 용어에 대한 원시 노트. 비어 있거나 얇으면, 무엇을 스펙으로 쓰기 전에 그들의 세계에 대해 인터뷰하세요. 모호한 용어가 나오면 정규 용어로 날카롭게 다듬고, 여기에 기록하세요.
