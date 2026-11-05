@@ -1,97 +1,99 @@
 ---
 name: ask-matt
-description: Ask which skill or flow fits your situation. A router over the skills in this repo.
+description: "상황에 맞는 스킬이나 플로우를 물어보세요. 이 저장소의 스킬에 대한 라우터입니다."
 disable-model-invocation: true
 ---
 
 # Ask Matt
 
-You don't remember every skill, so ask.
+모든 스킬을 기억하지 못하므로, 물어보세요.
 
-Before stating what a skill does or recommending a step be skipped, read that skill's SKILL.md: the summaries here are for orientation only.
+스킬이 무엇을 하는지 진술하거나 단계를 건너뛰도록 권장하기 전에, 해당 스킬의 SKILL.md를 읽으세요: 여기의 요약은 오리엔테이션용일 뿐입니다.
 
-A **flow** is a path through the skills. Most paths run along one **main flow**, and two **on-ramps** merge onto it. Everything else is standalone, or a vocabulary layer that runs underneath.
+**플로우**는 스킬을 통과하는 경로입니다. 대부분의 경로는 하나의 **메인 플로우**를 따라 실행되며, 두 개의 **진입로**가 그것에 합류합니다. 나머지는 모두 독립형이거나, 아래에서 실행되는 어휘 레이어입니다.
 
-## The main flow: idea → ship
+## 메인 플로우: 아이디어 → 출시
 
-The route most work travels. You have an idea and want it built.
+대부분의 작업이 이동하는 경로입니다. 아이디어가 있고 빌드되기를 원합니다.
 
-1. **`/grill-with-docs`** sharpens the idea by interview. Start here whenever you are **working in a working directory**: it's stateful, retaining what it learns in `GLOSSARY.md` and ADRs. (No working directory? Use `/grill-me` instead, covered under Standalone. Both run the same `/grilling` primitive; `grill-with-docs` is the one that leaves a paper trail, which makes it the better of the two whenever a repo is there to leave it in.)
-2. **Branch: can you settle every question in conversation?** If a question needs a runnable answer (state, business logic, a UI you have to see), detour through a prototype, bridged by **`/handoff`** in both directions (a prototype lives in its own directory, which is exactly what `/handoff` is for; see Phase boundaries):
-   - **`/handoff`** out, then open a fresh session against that file,
-   - **`/prototype`** to answer the question with throwaway code,
-   - **`/handoff`** back what you learned, and reference it from the original idea thread.
-3. **Branch: is this a multi-session build?**
-   - **Yes** → **`/to-spec`** (turn the thread into a spec), then **`/to-tickets`** to split it into tracer-bullet tickets, each declaring its **blocking edges**. Then work the tickets one of two ways:
-     - **`/implement`** per ticket, **`/clear`ing context between each one**. On a local tracker that's one file per ticket under `.scratch/<feature>/issues/`, worked blockers-first by hand; on a real tracker the edges become native blocking links, so any ticket whose blockers are done can be grabbed. Each ticket is self-contained, so the last one's context is disposable.
-     - **`/implement-spec`** for the whole spec in one run. It reads the tickets as a **task graph**, runs implementer subagents across the ready **frontier** in parallel, and lands everything on one **integration branch**. Reach for it when you'd rather orchestrate the build than drive each ticket yourself.
-   - **No** → **`/implement`** right here, in the same context window.
+1. **`/grill-with-docs`**는 인터뷰를 통해 아이디어를 다듬습니다. **작업 디렉토리에서 작업할 때마다** 여기서 시작하세요: 상태 저장이며, `GLOSSARY.md`와 ADR에서 배운 것을 유지합니다. (작업 디렉토리가 없나요? 대신 `/grill-me`를 사용하세요. 독립형에서 다룹니다. 둘 다 동일한 `/grilling` 프리미티브를 실행합니다. `grill-with-docs`는 종이 흔적을 남기는 것이며, 이것이 저장소가 있을 때마다 둘 중 더 나은 것입니다.)
 
-   Either way, the code gets built by driving **`/tdd`** (one red-green slice at a time) and closes out with **`/code-review`**, a two-axis review (Standards + Spec) of the diff. `/implement` runs both per ticket; `/implement-spec`'s implementers each drive `/tdd`, and it runs one `/code-review` over the integration branch. Reach for **`/tdd`** on its own when you just want to build a concrete behaviour test-first without a full spec, and **`/code-review`** on its own whenever you want to review a branch or PR against a fixed point.
+2. **분기: 대화에서 모든 질문을 해결할 수 있나요?** 질문이 실행 가능한 답변(상태, 비즈니스 로직, 봐야 하는 UI)을 필요로 하면, 프로토타입을 통해 우회하고, 양방향으로 **`/handoff`**로 연결합니다(프로토타입은 자체 디렉토리에 있으며, 이것이 정확히 `/handoff`가 위한 것입니다. 단계 경계 참조):
+   - **`/handoff`** 나가서, 해당 파일에 대해 새로운 세션을 엽니다,
+   - **`/prototype`**으로 일회용 코드로 질문에 답합니다,
+   - 배운 것을 **`/handoff`** 돌아가고, 원래 아이디어 스레드에서 참조합니다.
 
-   When the work goes up as a pull request, **`/pr`** shapes the body: the smallest visual that shows the change, before/after evidence that it works, and a one-way or two-way door call. It's model-invoked, so the agent reaches for it whenever it writes a PR.
+3. **분기: 다중 세션 빌드인가요?**
+   - **예** → **`/to-spec`**(스레드를 스펙으로 전환), 그런 다음 **`/to-tickets`**로 tracer-bullet 티켓으로 분할하며, 각각은 **차단 엣지**를 선언합니다. 그런 다음 두 가지 방법 중 하나로 티켓을 작업합니다:
+     - 티켓당 **`/implement`**, **각각 사이에 컨텍스트를 `/clear`합니다**. 로컬 트래커에서 이것은 `.scratch/<feature>/issues/` 아래의 티켓당 하나의 파일이며, 블로커가 먼저 수작업으로 작업됩니다. 실제 트래커에서 엣지는 네이티브 차단 링크가 되므로, 블로커가 완료된 티켓은 잡을 수 있습니다. 각 티켓은 자체 포함이므로, 마지막 것의 컨텍스트는 일회용입니다.
+     - 한 번의 실행에서 전체 스펙을 위해 **`/implement-spec`**. 티켓을 **작업 그래프**로 읽고, 준비된 **프론티어**를 가로질러 병렬로 구현자 서브에이전트를 실행하고, 하나의 **통합 브랜치**에 모든 것을 착륙시킵니다. 각 티켓을 직접 구동하는 대신 빌드를 오케스트레이션하고 싶을 때 도달하세요.
+   - **아니오** → 여기서 바로 **`/implement`**, 같은 컨텍스트 창에서.
 
-4. **`/retro`** closes the loop. After a build, and especially one that went sideways, it looks back over the session and suggests changes to the agent's **environment**, not the code: navigation pointers, automated checks, the coding standards `/code-review` enforces, steering files, tooling. Mechanical mistakes become deterministic checks; judgement calls become coding standards. The next build then starts from a better environment.
+   어느 쪽이든, 코드는 **`/tdd`**(한 번에 하나의 red-green 슬라이스)를 구동하여 빌드되고 **`/code-review`**, diff의 두 축 리뷰(표준 + 스펙)로 마무리합니다. `/implement`는 티켓당 둘 다 실행합니다. `/implement-spec`의 구현자는 각각 `/tdd`를 구동하고, 통합 브랜치에 대해 하나의 `/code-review`를 실행합니다. 전체 스펙 없이 구체적인 동작을 테스트 우선으로 빌드하고 싶을 때 **`/tdd`**를 단독으로 도달하고, 고정 지점에 대해 브랜치 또는 PR을 검토하고 싶을 때마다 **`/code-review`**를 단독으로 도달하세요.
 
-### Context hygiene
+   작업이 풀 리퀘스트로 올라가면, **`/pr`**이 본문을 형성합니다: 변경사항을 보여주는 가장 작은 시각, 작동한다는 전후 증거, 단방향 또는 양방향 도어 호출. 모델 호출이므로, 에이전트는 PR을 작성할 때마다 도달합니다.
 
-Keep steps 1–3 in **one unbroken context window** (don't compact or clear until after `/to-tickets`) so the grilling, spec, and tickets all build on the same thinking. Each `/implement` then starts fresh, working from the ticket. Run `/retro` in the session it's looking back on, before you clear; after clearing, point it at that session's log instead.
+4. **`/retro`**는 루프를 닫습니다. 빌드 후, 특히 비틀어진 것 후에, 세션을 되돌아보고 코드가 아니라 에이전트의 **환경**에 대한 변경을 제안합니다: 탐색 포인터, 자동 검사, `/code-review`가 강제하는 코딩 표준, 조향 파일, 도구. 기계적 실수는 결정론적 검사가 됩니다. 판단 호출은 코딩 표준이 됩니다. 다음 빌드는 더 나은 환경에서 시작합니다.
 
-The limit on this is the **[smart zone](https://www.aihero.dev/ai-coding-dictionary/smart-zone)**: the window (~150k tokens on state-of-the-art models) within which the model still reasons sharply. If a session approaches it before `/to-tickets`, don't push on degraded; `/compact` at the nearest phase boundary and carry on (see Phase boundaries).
+### 컨텍스트 위생
 
-## On-ramps
+1-3단계를 **하나의 끊어지지 않은 컨텍스트 창**에 유지하세요(`/to-tickets` 후까지 압축하거나 지우지 마세요) 그릴링, 스펙, 티켓이 모두 같은 생각을 기반으로 빌드되도록. 그런 다음 각 `/implement`는 티켓에서 작업하면서 새롭게 시작합니다. 지우기 전에 되돌아보는 세션에서 `/retro`를 실행하세요. 지운 후에는 대신 해당 세션의 로그를 가리키세요.
 
-A starting situation that generates work, then merges onto the main flow.
+이것의 제한은 **[smart zone](https://www.aihero.dev/ai-coding-dictionary/smart-zone)**입니다: 모델이 여전히 날카롭게 추론하는 창(최첨단 모델에서 ~150k 토큰). 세션이 `/to-tickets` 전에 접근하면, 저하된 상태로 밀어붙이지 마세요. 가장 가까운 단계 경계에서 `/compact`하고 계속하세요(단계 경계 참조).
 
-- **Bugs and requests piling up** → **`/triage`**. It moves issues through triage roles and produces agent-ready issues, which **`/implement`** later picks up.
+## 진입로
 
-  Triage is only for issues **you didn't create**: bug reports, incoming feature requests, anything that arrives raw. Tickets that `/to-tickets` produced are already agent-ready, so **don't triage them**.
+작업을 생성한 다음 메인 플로우에 합류하는 시작 상황.
 
-- **Something's broken** → **`/diagnosing-bugs`**. For the hard ones: the bug that resists a first glance, the intermittent flake, the regression that crept in between two known-good states. It refuses to theorise until it has a **tight feedback loop** (one command that already goes red on *this* bug), then fixes with a regression test. Once the fix is in, run **`/retro`** in the same session to ask what would have prevented the bug; where the real finding is that there's no good seam to lock it down, that's a job for **`/improve-codebase-architecture`**.
+- **버그와 요청이 쌓임** → **`/triage`**. 트리아지 역할을 통해 이슈를 이동하고 에이전트 준비 이슈를 생성하며, **`/implement`**가 나중에 픽업합니다.
 
-- **A huge, foggy effort: a greenfield project or a huge feature build, too big for one session** → **`/wayfinder`**, the most cognitively demanding flow here. When the way from here to the destination isn't visible yet, it charts a **shared map** of **decision tickets** on the issue tracker and resolves them one at a time, producing **decisions, not deliverables**, until the fog is pushed back and the way is clear. Where **`/grill-with-docs`** sharpens an idea you can hold in one session, wayfinder is for the idea you can't, and it's slower and denser, so save it for exactly that, never a well-scoped feature.
+  트리아지는 **여러분이 만들지 않은** 이슈만을 위한 것입니다: 버그 보고서, 들어오는 기능 요청, 원시로 도착하는 모든 것. `/to-tickets`가 생성한 티켓은 이미 에이전트 준비이므로, **트리아지하지 마세요**.
 
-  When the map clears, **it hands off, it doesn't build**: merge onto the main flow at **`/to-spec`**, which collapses the map's linked decisions into a buildable plan, then `/to-tickets` and `/implement` as usual. Looping the map straight into `/implement` skips that collapse and throws the linked detail away, so go straight to `/implement` only when the effort turned out genuinely small.
+- **무언가가 깨짐** → **`/diagnosing-bugs`**. 어려운 것들을 위해: 첫눈에 저항하는 버그, 간헐적 플레이크, 두 개의 알려진 좋은 상태 사이에 슬며시 들어온 회귀. *이* 버그에 이미 빨간색이 되는 하나의 명령인 **타이트 피드백 루프**를 가질 때까지 이론화를 거부한 다음, 회귀 테스트로 수정합니다. 수정이 들어가면, 버그를 방지했을 것을 물어보기 위해 같은 세션에서 **`/retro`**를 실행하세요. 실제 발견이 그것을 잠글 좋은 심이 없다는 것인 곳에서, 그것은 **`/improve-codebase-architecture`**를 위한 작업입니다.
 
-## Codebase health
+- **거대하고 안개 낀 노력: 그린필드 프로젝트 또는 거대한 기능 빌드, 한 세션에 너무 큼** → **`/wayfinder`**, 여기서 가장 인지적으로 요구하는 플로우. 여기서 목적지로 가는 길이 아직 보이지 않을 때, 이슈 트래커에 **의사 결정 티켓**의 **공유 맵**을 차트하고 한 번에 하나씩 해결하여, 안개가 밀려나고 길이 명확해질 때까지 **산출물이 아니라 결정**을 생성합니다. **`/grill-with-docs`**가 한 세션에 담을 수 있는 아이디어를 다듬는 곳에서, wayfinder는 담을 수 없는 아이디어를 위한 것이며, 더 느리고 밀도가 높으므로, 정확히 그것을 위해 저장하세요. 잘 범위가 지정된 기능은 절대 아닙니다.
 
-Not feature work, just upkeep.
+  맵이 명확해지면, **빌드하지 않고 넘깁니다**: 맵의 링크된 결정을 빌드 가능한 계획으로 축소하는 **`/to-spec`**에서 메인 플로우에 합류한 다음, 평소와 같이 `/to-tickets`와 `/implement`. 맵을 `/implement`로 바로 루핑하면 축소를 건너뛰고 링크된 세부 사항을 버리므로, 노력이 진정으로 작은 것으로 판명되었을 때만 `/implement`로 직접 가세요.
 
-- **`/improve-codebase-architecture`** runs whenever you have a spare moment to keep the codebase good for agents to operate in. It surfaces **deepening opportunities**; picking one _generates an idea_ you can take into the main flow at `/grill-with-docs`. It's the survey that finds the candidates; **`/codebase-design`** (below) is the bench you design the chosen one on.
+## 코드베이스 건강
 
-## Vocabulary underneath
+기능 작업이 아니라, 단지 유지보수.
 
-Two model-invoked references that run *beneath* the other skills, each the single source of truth for its vocabulary. Reach for them directly when the **words**, not the process, are the problem; or let the skills above pull them in.
+- **`/improve-codebase-architecture`**는 코드베이스를 에이전트가 작동하기에 좋게 유지하기 위해 여유 시간이 있을 때마다 실행합니다. **깊게 만들 기회**를 표면화합니다. 하나를 선택하면 메인 플로우의 `/grill-with-docs`에서 가져갈 수 있는 _아이디어를 생성_합니다. 후보를 찾는 조사입니다. **`/codebase-design`**(아래)은 선택한 것을 설계하는 벤치입니다.
 
-- **`/domain-modeling`**: sharpen the project's *domain* language: challenge a fuzzy term, resolve an overloaded word ("account" doing three jobs), record a hard-to-reverse decision as an ADR. It's the active discipline `/grill-with-docs` drives to keep `GLOSSARY.md` a clean glossary.
-- **`/codebase-design`** is the deep-module vocabulary (module, interface, depth, seam, adapter, leverage, locality) for designing a module's *shape*: a lot of behaviour behind a small interface at a clean seam. `/tdd` and `/improve-codebase-architecture` both speak it.
+## 아래의 어휘
 
-## Phase boundaries
+다른 스킬 *아래*에서 실행되는 두 개의 모델 호출 참조, 각각은 어휘의 단일 진실 소스입니다. 프로세스가 아니라 **단어**가 문제일 때 직접 도달하거나, 위의 스킬이 끌어들이도록 하세요.
 
-A **phase** is a chunk of work inside a session: the grilling, the implementation, the QA. At the **boundary** between two of them you have five options, and picking between them is the fuzziest decision in this whole map:
+- **`/domain-modeling`**: 프로젝트의 *도메인* 언어를 다듬습니다: 흐릿한 용어에 도전하고, 과부하된 단어를 해결하고("account"가 세 가지 작업을 수행), 역전하기 어려운 결정을 ADR로 기록합니다. `grill-with-docs`가 `GLOSSARY.md`를 깨끗한 용어집으로 유지하기 위해 구동하는 활성 규율입니다.
+- **`/codebase-design`**은 모듈의 *형태* 설계를 위한 깊은 모듈 어휘(모듈, 인터페이스, 깊이, 심, 어댑터, 레버리지, 지역성)입니다: 깨끗한 심의 작은 인터페이스 뒤에 많은 동작. `/tdd`와 `/improve-codebase-architecture` 둘 다 그것을 말합니다.
 
-- **Continue**: stay put. Costs nothing, loses nothing.
-- **`/clear`**: empty the window, when nothing here matters to what's next.
-- **`/handoff`** writes a portable markdown file. Narrow: only for a **new harness**, a **new directory**, a **colleague**, or forking a side task **mid-phase**. What it buys is portability.
-- **Subagent**: send a tightly-scoped task to its own window and get a report back.
-- **`/compact`** compresses this context and seeds a fresh session with it. The **default**, at the bottom of the tree rather than the first reach.
+## 단계 경계
 
-Read [PHASE-BOUNDARIES.md](PHASE-BOUNDARIES.md) for the ordered tree: the five questions, the reasoning behind each branch, and why the primary-source cost makes **Continue** the one to rule out first. Make the decision **at** a boundary; mid-phase, continue or split the rest into subagents.
+**단계**는 세션 내부의 작업 덩어리입니다: 그릴링, 구현, QA. 그것들 사이의 **경계**에서 다섯 가지 옵션이 있으며, 그것들 사이에서 선택하는 것은 이 전체 맵에서 가장 흐릿한 결정입니다:
 
-## Standalone
+- **계속**: 그대로 있습니다. 비용이 들지 않고, 잃지 않습니다.
+- **`/clear`**: 다음에 여기 아무것도 중요하지 않을 때 창을 비웁니다.
+- **`/handoff`**는 휴대용 마크다운 파일을 작성합니다. 좁음: **새 하네스**, **새 디렉토리**, **동료**, 또는 **단계 중간**에 사이드 작업 포크를 위해서만. 그것이 사는 것은 휴대성입니다.
+- **서브에이전트**: 자체 창에 타이트하게 범위가 지정된 작업을 보내고 보고서를 받습니다.
+- **`/compact`**는 이 컨텍스트를 압축하고 그것으로 새로운 세션을 시드합니다. **기본값**, 트리의 맨 아래가 아니라 첫 번째 도달.
 
-Off the main flow entirely.
+순서가 지정된 트리를 위해 [PHASE-BOUNDARIES.md](PHASE-BOUNDARIES.md)를 읽으세요: 다섯 가지 질문, 각 분기 뒤의 추론, 주요 소스 비용이 **계속**을 먼저 배제하는 이유. **경계에서** 결정하세요. 단계 중간에, 계속하거나 나머지를 서브에이전트로 분할하세요.
 
-- **`/grill-me`**: the same relentless interview as `/grill-with-docs`, but **stateless**: it saves nothing locally and builds no `GLOSSARY.md`. Reach for it when you are **not working in a working directory** (sharpening a plan, a design, a piece of writing, anything with no repo under it). If you are in a working directory, use `/grill-with-docs` instead: it runs the same interview and leaves a paper trail, so it is strictly the better one.
-- **`/grilling`** is the interview primitive itself: rounds, the frontier, facts are the agent's job and decisions are yours. `/grill-me` and `/grill-with-docs` are the two named ways in, and `/triage`, `/wayfinder` and `/improve-codebase-architecture` all run it internally. Reach for it directly only when you want the interview with no wrapper around it.
-- **`/prototype`** is a small, throwaway program that answers one design question: does this state model feel right, or what should this UI look like. Throwaway is a constraint on how the code is written, not a promise to destroy it: the answer folds into the real code, and the prototype itself is kept as a **primary source** on a `prototype/<name>` branch out of main, pointed at from the implementation issue. It's the detour in step 2 of the main flow, but reach for it any time a design question is hard to settle on paper.
-- **`/research`**: delegate reading legwork to a **background agent**: it investigates a question against **primary sources**, then leaves a cited Markdown file in the repo. Keep working while it reads. The file it produces is something to take *into* the main flow at `/grill-with-docs`, since research feeds the thinking rather than replacing it.
-- **`/to-questionnaire`** comes in when the thing blocking you isn't in your head or the codebase but in **someone else's**, and it writes them a questionnaire to fill in. It's the inverse of `/grill-me`: instead of interviewing you about the subject, it interviews you about the **send** (who it's going to, what you need back) and aims the questions at the gap. What comes back is material for `/grill-with-docs` or `/to-spec`.
-- **`/wizard`** is for the steps only a **human** can take: provisioning infrastructure, setting up credentials or CI secrets, clicking through an unfamiliar third-party dashboard, running a one-off migration or cutover. It generates an interactive bash script that opens each URL, captures each value, and writes it into `.env` and GitHub secrets, so the procedure stops being something you re-explain to an agent every time. Model-invoked, so the agent reaches for it the moment it hits a wall only you can pass. If the agent could just do it itself, it should; this is for where a human is genuinely in the loop.
-- **`/wait-what`** is the corrective for a message that didn't land. Use it mid-conversation, inside any other skill, and the agent re-pitches what it just said with the context you were missing, in plain English, using the `GLOSSARY.md` vocabulary. It works after the fact; `/grill-with-docs` is the upfront cure, because a shared language agreed early is what stops the jargon arriving at all.
-- **`/teach`**: learn a concept over multiple sessions, using the current directory as a stateful workspace.
-- **`/writing-for-agents`** is the reference for writing documents agents consume: skills, AGENTS.md, pointed-at docs.
+## 독립형
 
-## Precondition
+메인 플로우에서 완전히 벗어남.
 
-**`/setup-matt-pocock-skills`**: run before your first engineering flow to configure the issue tracker, triage labels, and doc layout the other skills assume. Custom issue trackers also work.
+- **`/grill-me`**: `/grill-with-docs`와 같은 끊임없는 인터뷰지만 **상태 비저장**: 로컬에 아무것도 저장하지 않고 `GLOSSARY.md`를 빌드하지 않습니다. **작업 디렉토리에서 작업하지 않을 때** 도달하세요(계획, 설계, 작문 조각 다듬기, 그 아래에 저장소가 없는 모든 것). 작업 디렉토리에 있다면, 대신 `/grill-with-docs`를 사용하세요: 같은 인터뷰를 실행하고 종이 흔적을 남기므로, 엄격히 더 나은 것입니다.
+- **`/grilling`**은 인터뷰 프리미티브 자체입니다: 라운드, 프론티어, 사실은 에이전트의 일이고 결정은 여러분의 것입니다. `/grill-me`와 `/grill-with-docs`는 두 가지 명명된 진입 방법이며, `/triage`, `/wayfinder`, `/improve-codebase-architecture`는 모두 내부적으로 실행합니다. 주변에 래퍼 없이 인터뷰를 원할 때만 직접 도달하세요.
+- **`/prototype`**는 하나의 설계 질문에 답하는 작고 일회용 프로그램입니다: 이 상태 모델이 올바른지, 또는 이 UI가 어떻게 보여야 하는지. 일회용은 코드가 작성되는 방법에 대한 제약이지, 파괴할 약속이 아닙니다: 답변은 실제 코드로 접히고, 프로토타입 자체는 구현 이슈에서 가리키는 main에서 벗어난 `prototype/<name>` 브랜치의 **주요 소스**로 유지됩니다. 메인 플로우의 2단계에서 우회이지만, 설계 질문이 종이에서 해결하기 어려울 때마다 도달하세요.
+- **`/research`**: **백그라운드 에이전트**에 읽기 작업을 위임합니다: **주요 소스**에 대해 질문을 조사한 다음, 저장소에 인용된 Markdown 파일을 남깁니다. 그것이 읽는 동안 계속 작업하세요. 그것이 생성하는 파일은 `/grill-with-docs`의 메인 플로우로 *가져갈* 것입니다. 조사는 생각을 대체하는 것이 아니라 먹이기 때문입니다.
+- **`/to-questionnaire`**는 여러분을 차단하는 것이 머리나 코드베이스가 아니라 **다른 사람의 것**에 있을 때 들어오며, 그들에게 채울 설문지를 작성합니다. `/grill-me`의 역: 주제에 대해 여러분을 인터뷰하는 대신, **전송**(누구에게 가는지, 무엇을 돌려받아야 하는지)에 대해 여러분을 인터뷰하고 간격에 질문을 겨냥합니다. 돌아오는 것은 `/grill-with-docs` 또는 `/to-spec`을 위한 자료입니다.
+- **`/wizard`**는 **인간**만 취할 수 있는 단계를 위한 것입니다: 인프라 프로비저닝, 자격 증명 또는 CI 시크릿 설정, 익숙하지 않은 타사 대시보드 클릭, 일회성 마이그레이션 또는 전환 실행. 각 URL을 열고, 각 값을 캡처하고, `.env`와 GitHub 시크릿에 작성하는 대화형 bash 스크립트를 생성하므로, 절차가 매번 에이전트에 다시 설명하는 것을 멈춥니다. 모델 호출이므로, 에이전트는 여러분만 통과할 수 있는 벽에 부딪히는 순간 도달합니다. 에이전트가 직접 할 수 있다면, 해야 합니다. 이것은 인간이 진정으로 루프에 있는 곳을 위한 것입니다.
+- **`/wait-what`**은 착륙하지 않은 메시지에 대한 교정입니다. 다른 스킬 내부, 대화 중간에 사용하면, 에이전트는 누락된 컨텍스트로, 평이한 영어로, `GLOSSARY.md` 어휘를 사용하여 방금 말한 것을 다시 피치합니다. 사후에 작동합니다. `/grill-with-docs`는 사전 치료입니다. 일찍 합의된 공유 언어가 전문 용어가 전혀 도착하는 것을 막기 때문입니다.
+- **`/teach`**: 현재 디렉토리를 상태 저장 워크스페이스로 사용하여 여러 세션에 걸쳐 개념을 배웁니다.
+- **`/writing-for-agents`**는 에이전트가 소비하는 문서 작성을 위한 참조입니다: 스킬, AGENTS.md, 가리킨 문서.
+
+## 전제 조건
+
+**`/setup-matt-pocock-skills`**: 다른 스킬이 가정하는 이슈 트래커, 트리아지 라벨, 문서 레이아웃을 구성하기 위해 첫 번째 엔지니어링 플로우 전에 실행하세요. 사용자 정의 이슈 트래커도 작동합니다.

@@ -1,30 +1,30 @@
 ---
 name: grilling
-description: Grill the user relentlessly about a plan, decision, or idea. Use when the user wants to stress-test their thinking, or uses any 'grill' trigger phrases.
+description: "계획, 결정 또는 아이디어에 대해 사용자를 끊임없이 그릴합니다. 사용자가 자신의 생각을 스트레스 테스트하고 싶어 하거나 'grill' 트리거 문구를 사용할 때 사용하세요."
 ---
 
-Interview the user relentlessly until you reach a shared understanding. Map this as a **design tree**: every decision branches into the decisions that hang off it.
+공유된 이해에 도달할 때까지 사용자를 끊임없이 인터뷰하세요. 이것을 **설계 트리**로 매핑하세요: 모든 결정은 그것에 매달린 결정으로 분기됩니다.
 
-Work the tree in **rounds**. The **frontier** is every decision whose prerequisites are already settled: the questions you can ask _now_ without guessing at answers you haven't heard yet. Ask the whole frontier in one round: number each question and give your recommended answer. Then wait for the user's answers before the next round.
+**라운드**로 트리를 작업하세요. **프론티어**는 전제 조건이 이미 해결된 모든 결정입니다: 아직 듣지 못한 답변을 추측하지 않고 _지금_ 물을 수 있는 질문들. 한 라운드에서 전체 프론티어를 물으세요: 각 질문에 번호를 매기고 권장 답변을 제공하세요. 그런 다음 다음 라운드 전에 사용자의 답변을 기다리세요.
 
-Format a round like so:
+라운드를 다음과 같이 포맷하세요:
 
 ```
-❓ **Q1** - **<question title>**: <question body, might be multiple paragraphs, including multiple choices>
+❓ **Q1** - **<질문 제목>**: <질문 본문, 여러 문단일 수 있으며 여러 선택지 포함>
 
-➡️ <your recommended answer>
+➡️ <여러분의 권장 답변>
 
 ---
 
-❓ **Q2** - **<question title>**: <question body, might be multiple paragraphs, including multiple choices>
+❓ **Q2** - **<질문 제목>**: <질문 본문, 여러 문단일 수 있으며 여러 선택지 포함>
 
-➡️ <your recommended answer>
+➡️ <여러분의 권장 답변>
 ```
 
-Word each question so "yes" accepts your recommended answer.
+각 질문을 "예"가 권장 답변을 수락하도록 단어를 선택하세요.
 
-Each round the user answers reshapes the tree: settled decisions push the frontier outward and unblock questions that depended on them. Recompute the frontier and ask the next round. A question whose answer depends on another question still open in this round belongs to a _later_ round, not this one.
+사용자가 답변하는 각 라운드는 트리를 재구성합니다: 해결된 결정은 프론티어를 바깥쪽으로 밀어내고 그것들에 의존했던 질문들을 차단 해제합니다. 프론티어를 재계산하고 다음 라운드를 물으세요. 이 라운드에서 여전히 열려 있는 다른 질문에 답변이 의존하는 질문은 이번 라운드가 아니라 _나중_ 라운드에 속합니다.
 
-Finding _facts_ is your job, never the user's. When a frontier question needs a fact from the environment (filesystem, tools, etc.), dispatch a sub-agent with a fresh context window to find it; don't ask the user for anything you could look up yourself. Don't block on it: a running exploration is an unsettled prerequisite, so only the questions downstream of it wait for the sub-agent to report; ask the rest of the frontier now. The _decisions_ are the user's: put each to them and wait.
+_사실_을 찾는 것은 여러분의 일이지, 절대 사용자의 일이 아닙니다. 프론티어 질문이 환경(파일 시스템, 도구 등)에서 사실을 필요로 할 때, 새로운 컨텍스트 창으로 서브에이전트를 디스패치하여 찾으세요. 사용자에게 여러분이 직접 조회할 수 있는 것을 물어보지 마세요. 그것에 차단되지 마세요: 실행 중인 탐색은 해결되지 않은 전제 조건이므로, 그것의 다운스트림 질문만 서브에이전트가 보고하기를 기다립니다. 프론티어의 나머지는 지금 물으세요. _결정_은 사용자의 것입니다: 각각을 그들에게 제시하고 기다리세요.
 
-The session is done when the frontier is empty: every branch of the design tree visited, nothing left silently assumed. Do not act on it until the user confirms you have reached a shared understanding.
+프론티어가 비어 있으면 세션이 완료됩니다: 설계 트리의 모든 분기가 방문되고, 조용히 가정된 것이 남아 있지 않습니다. 사용자가 공유된 이해에 도달했음을 확인할 때까지 그것에 행동하지 마세요.

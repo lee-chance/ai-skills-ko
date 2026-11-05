@@ -1,89 +1,89 @@
 ---
 name: code-review
-description: "Review the changes since a fixed point (commit, branch, tag, or merge-base) along two axes: Standards (does the code follow this repo's documented coding standards?) and Spec (does the code match what the originating issue/spec asked for?). Runs both reviews in parallel sub-agents and reports them side by side. Use when the user wants to review a branch, a PR, work-in-progress changes, or asks to \"review since X\"."
+description: "고정 지점(커밋, 브랜치, 태그 또는 merge-base) 이후의 변경사항을 두 축을 따라 검토합니다: 표준(코드가 이 저장소의 문서화된 코딩 표준을 따르나요?)과 스펙(코드가 원래 이슈/스펙이 요청한 것과 일치하나요?). 둘 다 병렬 서브에이전트로 실행하고 나란히 보고합니다. 사용자가 브랜치, PR, 진행 중 변경사항을 검토하거나 'X 이후 검토'를 요청할 때 사용하세요."
 ---
 
-Two-axis review of the diff between `HEAD` and a fixed point the user supplies:
+`HEAD`와 사용자가 제공하는 고정 지점 사이의 diff의 두 축 검토:
 
-- **Standards**: does the code conform to this repo's documented coding standards?
-- **Spec**: does the code faithfully implement the originating issue / spec?
+- **표준**: 코드가 이 저장소의 문서화된 코딩 표준을 준수하나요?
+- **스펙**: 코드가 원래 이슈 / 스펙을 충실히 구현하나요?
 
-Both axes run as **parallel sub-agents** so they don't pollute each other's context, then this skill aggregates their findings. Start every sub-agent with a fresh context window.
+두 축 모두 서로의 컨텍스트를 오염시키지 않도록 **병렬 서브에이전트**로 실행된 다음, 이 스킬이 발견 사항을 집계합니다. 모든 서브에이전트를 새 컨텍스트 창으로 시작하세요.
 
-The issue tracker should have been provided to you. If not, tell the user to run `/setup-matt-pocock-skills`.
+이슈 트래커가 여러분에게 제공되었어야 합니다. 그렇지 않으면, 사용자에게 `/setup-matt-pocock-skills`를 실행하라고 말하세요.
 
-## Process
+## 프로세스
 
-### 1. Pin the fixed point
+### 1. 고정 지점 고정
 
-Whatever the user said is the fixed point (a commit SHA, branch name, tag, `main`, `HEAD~5`, etc.). If they didn't specify one, ask for it.
+사용자가 말한 것이 고정 지점입니다(커밋 SHA, 브랜치 이름, 태그, `main`, `HEAD~5` 등). 지정하지 않았으면, 물어보세요.
 
-Capture the diff command once: `git diff <fixed-point>...HEAD` (three-dot, so the comparison is against the merge-base). Also note the list of commits via `git log <fixed-point>..HEAD --oneline`.
+diff 명령을 한 번 캡처하세요: `git diff <fixed-point>...HEAD` (세 점, 비교가 merge-base에 대한 것이도록). 또한 `git log <fixed-point>..HEAD --oneline`을 통해 커밋 목록을 기록하세요.
 
-Before going further, confirm the fixed point resolves (`git rev-parse <fixed-point>`) and the diff is non-empty. A bad ref or empty diff should fail here, not inside two parallel sub-agents.
+더 나아가기 전에, 고정 지점이 해결되는지(`git rev-parse <fixed-point>`) 그리고 diff가 비어 있지 않은지 확인하세요. 나쁜 ref 또는 빈 diff는 두 개의 병렬 서브에이전트 내부가 아니라 여기서 실패해야 합니다.
 
-### 2. Identify the spec source
+### 2. 스펙 소스 식별
 
-Look for the originating spec, in this order:
+이 순서로 원래 스펙을 찾으세요:
 
-1. Issue references in the commit messages (`#123`, `Closes #45`, GitLab `!67`, etc.), fetched via the workflow in the tracker doc.
-2. A path the user passed as an argument.
-3. A spec file under `docs/`, `specs/`, or `.scratch/` matching the branch name or feature.
-4. If nothing is found, ask the user where the spec is. If they say there isn't one, the **Spec** sub-agent will skip and report "no spec available".
+1. 커밋 메시지의 이슈 참조(`#123`, `Closes #45`, GitLab `!67` 등), 트래커 문서의 워크플로우를 통해 가져옴.
+2. 사용자가 인수로 전달한 경로.
+3. 브랜치 이름 또는 기능과 일치하는 `docs/`, `specs/`, 또는 `.scratch/` 아래의 스펙 파일.
+4. 아무것도 발견되지 않으면, 사용자에게 스펙이 어디에 있는지 물어보세요. 없다고 말하면, **스펙** 서브에이전트는 건너뛰고 "스펙 사용 불가"를 보고합니다.
 
-### 3. Identify the standards sources
+### 3. 표준 소스 식별
 
-Search the repo for every file that documents how code should be written. When `CODING_STANDARDS.md` or `CONTRIBUTING.md` exists, it must be on the list.
+코드를 작성하는 방법을 문서화하는 저장소의 모든 파일을 검색하세요. `CODING_STANDARDS.md` 또는 `CONTRIBUTING.md`가 존재하면, 목록에 있어야 합니다.
 
-On top of whatever the repo documents, the Standards axis always carries the **smell baseline** below: a fixed set of Fowler code smells (_Refactoring_, ch.3) that applies even when a repo documents nothing. Two rules bind it:
+저장소가 문서화하는 것 위에, 표준 축은 항상 아래의 **냄새 기준**을 담습니다: 저장소가 아무것도 문서화하지 않아도 적용되는 Fowler 코드 냄새(_Refactoring_, ch.3)의 고정 세트. 두 규칙이 그것을 구속합니다:
 
-- **The repo overrides.** A documented repo standard always wins; where it endorses something the baseline would flag, suppress the smell.
-- **Always a judgement call.** Each smell is a labelled heuristic ("possible Feature Envy"), never a hard violation. Like any standard here, skip anything tooling already enforces.
+- **저장소가 재정의합니다.** 문서화된 저장소 표준은 항상 승리합니다. 기준이 플래그할 것을 승인하는 곳에서, 냄새를 억제하세요.
+- **항상 판단 호출.** 각 냄새는 라벨이 붙은 휴리스틱("가능한 Feature Envy")이며, 절대 하드 위반이 아닙니다. 여기의 모든 표준처럼, 도구가 이미 강제하는 것은 건너뛰세요.
 
-Each smell reads *what it is* → *how to fix*; match it against the diff:
+각 냄새는 *무엇인지* → *어떻게 수정*을 읽습니다. diff에 대해 일치시키세요:
 
-- **Mysterious Name**: a function, variable, or type whose name doesn't reveal what it does or holds. → rename it; if no honest name comes, the design's murky.
-- **Duplicated Code**: the same logic shape appears in more than one hunk or file in the change. → extract the shared shape, call it from both.
-- **Feature Envy**: a method that reaches into another object's data more than its own. → move the method onto the data it envies.
-- **Data Clumps**: the same few fields or params keep travelling together (a type wanting to be born). → bundle them into one type, pass that.
-- **Primitive Obsession**: a primitive or string standing in for a domain concept that deserves its own type. → give the concept its own small type.
-- **Repeated Switches**: the same `switch`/`if`-cascade on the same type recurs across the change. → replace with polymorphism, or one map both sites share.
-- **Shotgun Surgery**: one logical change forces scattered edits across many files in the diff. → gather what changes together into one module.
-- **Divergent Change**: one file or module is edited for several unrelated reasons. → split so each module changes for one reason.
-- **Speculative Generality**: abstraction, parameters, or hooks added for needs the spec doesn't have. → delete it; inline back until a real need shows.
-- **Message Chains**: long `a.b().c().d()` navigation the caller shouldn't depend on. → hide the walk behind one method on the first object.
-- **Middle Man**: a class or function that mostly just delegates onward. → cut it, call the real target direct.
-- **Refused Bequest**: a subclass or implementer that ignores or overrides most of what it inherits. → drop the inheritance, use composition.
+- **Mysterious Name**: 무엇을 하는지 또는 담고 있는지 드러내지 않는 함수, 변수 또는 타입의 이름. → 이름을 변경하세요. 정직한 이름이 오지 않으면, 설계가 흐릿합니다.
+- **Duplicated Code**: 같은 로직 형태가 변경의 둘 이상의 hunk 또는 파일에 나타납니다. → 공유된 형태를 추출하고, 둘 다에서 호출하세요.
+- **Feature Envy**: 자신의 것보다 다른 객체의 데이터에 더 많이 도달하는 메서드. → 그것이 부러워하는 데이터로 메서드를 이동하세요.
+- **Data Clumps**: 같은 몇 개의 필드나 매개변수가 함께 계속 이동합니다(태어나고 싶어 하는 타입). → 그것들을 하나의 타입으로 묶고, 그것을 전달하세요.
+- **Primitive Obsession**: 자체 타입을 가질 자격이 있는 도메인 개념 대신 서 있는 프리미티브 또는 문자열. → 개념에 자체 작은 타입을 주세요.
+- **Repeated Switches**: 같은 타입에 대한 같은 `switch`/`if`-캐스케이드가 변경 전체에 재발합니다. → 다형성으로 교체하거나, 두 사이트가 공유하는 하나의 맵으로.
+- **Shotgun Surgery**: 하나의 논리적 변경이 diff의 많은 파일에 걸쳐 흩어진 편집을 강제합니다. → 함께 변경되는 것을 하나의 모듈로 모으세요.
+- **Divergent Change**: 하나의 파일 또는 모듈이 여러 무관한 이유로 편집됩니다. → 각 모듈이 하나의 이유로 변경되도록 분할하세요.
+- **Speculative Generality**: 스펙이 가지지 않은 요구를 위해 추가된 추상화, 매개변수 또는 훅. → 삭제하세요. 실제 요구가 나타날 때까지 인라인으로 되돌리세요.
+- **Message Chains**: 호출자가 의존해서는 안 되는 긴 `a.b().c().d()` 탐색. → 첫 번째 객체의 하나의 메서드 뒤에 걷기를 숨기세요.
+- **Middle Man**: 대부분 단지 앞으로 위임하는 클래스 또는 함수. → 그것을 자르고, 실제 대상을 직접 호출하세요.
+- **Refused Bequest**: 상속받은 것의 대부분을 무시하거나 재정의하는 서브클래스 또는 구현자. → 상속을 삭제하고, 컴포지션을 사용하세요.
 
-### 4. Spawn both sub-agents in parallel
+### 4. 병렬로 두 서브에이전트 스폰
 
-Issue both sub-agent calls together, in the foreground, and aggregate the reports they return.
+두 서브에이전트 호출을 함께, 포그라운드에서 발행하고, 그들이 반환하는 보고서를 집계하세요.
 
-**Standards sub-agent prompt** should include:
+**표준 서브에이전트 프롬프트**는 다음을 포함해야 합니다:
 
-- The full diff command and commit list.
-- The list of standards-source files you found in step 3, **plus the smell baseline from step 3** pasted in full (the sub-agent has no other access to it).
-- The brief: "Report, per file/hunk where relevant, (a) every place the diff violates a documented standard: cite the standard (file + the rule); and (b) any baseline smell you spot: name it and quote the hunk. Distinguish hard violations from judgement calls: documented-standard breaches can be hard, but baseline smells are always judgement calls, and a documented repo standard overrides the baseline. Skip anything tooling enforces. Under 400 words."
+- 전체 diff 명령과 커밋 목록.
+- 3단계에서 찾은 표준 소스 파일 목록, **3단계의 냄새 기준을 전체로 붙여넣음**(서브에이전트는 그것에 다른 액세스가 없습니다).
+- 브리프: "관련된 파일/hunk당 보고하세요, (a) diff가 문서화된 표준을 위반하는 모든 곳: 표준을 인용하세요(파일 + 규칙); 그리고 (b) 여러분이 발견한 모든 기준 냄새: 이름을 지정하고 hunk를 인용하세요. 하드 위반과 판단 호출을 구별하세요: 문서화된 표준 위반은 하드일 수 있지만, 기준 냄새는 항상 판단 호출이며, 문서화된 저장소 표준은 기준을 재정의합니다. 도구가 강제하는 것은 건너뛰세요. 400단어 미만."
 
-**Spec sub-agent prompt** should include:
+**스펙 서브에이전트 프롬프트**는 다음을 포함해야 합니다:
 
-- The diff command and commit list.
-- The path or fetched contents of the spec.
-- The brief: "Report: (a) requirements the spec asked for that are missing or partial; (b) behaviour in the diff that wasn't asked for (scope creep); (c) requirements that look implemented but where the implementation looks wrong. Quote the spec line for each finding. Under 400 words."
+- diff 명령과 커밋 목록.
+- 스펙의 경로 또는 가져온 콘텐츠.
+- 브리프: "보고하세요: (a) 스펙이 요청했지만 누락되거나 부분적인 요구 사항; (b) diff에 있지만 요청되지 않은 동작(범위 크립); (c) 구현된 것처럼 보이지만 구현이 잘못된 것처럼 보이는 요구 사항. 각 발견에 대해 스펙 라인을 인용하세요. 400단어 미만."
 
-If the spec is missing, skip the Spec sub-agent and note this in the final report.
+스펙이 누락된 경우, 스펙 서브에이전트를 건너뛰고 최종 보고서에 이를 기록하세요.
 
-### 5. Aggregate
+### 5. 집계
 
-Present the two reports under `## Standards` and `## Spec` headings, verbatim or lightly cleaned. Do **not** merge or rerank findings, because the two axes are deliberately separate (see _Why two axes_).
+`## 표준` 및 `## 스펙` 제목 아래에 두 보고서를 그대로 또는 가볍게 정리하여 제시하세요. 발견 사항을 병합하거나 재순위하지 **마세요**. 두 축이 의도적으로 분리되어 있기 때문입니다(_두 축인 이유_ 참조).
 
-End with a one-line summary: total findings per axis, and the worst issue _within each axis_ (if any). Don't pick a single winner across axes: that's the reranking the separation exists to prevent.
+한 줄 요약으로 끝내세요: 축당 총 발견 사항, 그리고 _각 축 내의_ 최악의 이슈(있는 경우). 축을 가로질러 단일 승자를 선택하지 마세요: 그것이 분리가 방지하기 위해 존재하는 재순위입니다.
 
-## Why two axes
+## 두 축인 이유
 
-A change can pass one axis and fail the other:
+변경은 한 축을 통과하고 다른 축을 실패할 수 있습니다:
 
-- Code that follows every standard but implements the wrong thing → **Standards pass, Spec fail.**
-- Code that does exactly what the issue asked but breaks the project's conventions → **Spec pass, Standards fail.**
+- 모든 표준을 따르지만 잘못된 것을 구현하는 코드 → **표준 통과, 스펙 실패.**
+- 이슈가 요청한 것을 정확히 하지만 프로젝트의 관례를 깨는 코드 → **스펙 통과, 표준 실패.**
 
-Reporting them separately stops one axis from masking the other.
+그것들을 분리하여 보고하면 한 축이 다른 축을 가리는 것을 막습니다.
