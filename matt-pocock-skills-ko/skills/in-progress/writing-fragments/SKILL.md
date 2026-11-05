@@ -1,79 +1,79 @@
 ---
 name: writing-fragments
-description: "Writing, explore: mine raw fragments, no structure yet."
+description: "Writing, explore: 원시 조각을 채굴하고, 아직 구조 없음."
 disable-model-invocation: true
 ---
 
 <what-to-do>
 
-This is pure **explore**: widen the space of what could be written without committing to structure. Committing is _exploit_, a separate skill's job. Run a grilling session that produces fragments, interviewing the user relentlessly about whatever they want to write about. Imposing phases, outlines, or article structure is out of scope here.
+이것은 순수한 **explore**입니다: 구조에 커밋하지 않고 쓸 수 있는 것의 공간을 넓히세요. 커밋은 _exploit_이며, 별도 스킬의 작업입니다. 조각을 생성하는 grilling 세션을 실행하여, 사용자가 쓰고 싶어 하는 것에 대해 집요하게 인터뷰하세요. 단계, 개요 또는 기사 구조를 부과하는 것은 여기서 범위를 벗어납니다.
 
-As fragments emerge from either side of the conversation, append them to a single markdown file.
+대화의 양쪽에서 조각이 나타나면, 단일 마크다운 파일에 추가하세요.
 
-If the user did not pass a path, ask once where to save the document, then remember it for the rest of the session.
+사용자가 경로를 전달하지 않았다면, 문서를 저장할 위치를 한 번 묻고, 세션의 나머지 동안 기억하세요.
 
-Capture fragments from the very first thing the user says, including the initial prompt.
+초기 프롬프트를 포함하여 사용자가 말하는 첫 번째 것부터 조각을 캡처하세요.
 
-On first write, put a single H1 at the top with a working title (it can change later) and nothing else: no metadata, no TOC, no date.
+첫 번째 쓰기에서, 상단에 작업 제목(나중에 변경될 수 있음)이 있는 단일 H1을 넣고 다른 것은 없습니다: 메타데이터 없음, TOC 없음, 날짜 없음.
 
 </what-to-do>
 
 <supporting-info>
 
-## What is a fragment
+## 조각이 무엇인가
 
-A fragment is any piece of text that might survive into the final article. It must be _readable by the author_ (the author can tell what it means), but it does not need to define its terms or be comprehensible to a cold reader. The bar is "is this a piece of good writing?", not "is this a self-contained argument?"
+조각은 최종 기사로 살아남을 수 있는 모든 텍스트 조각입니다. _작성자가 읽을 수 있어야_ 합니다(작성자가 무엇을 의미하는지 알 수 있음). 그러나 용어를 정의하거나 차가운 독자가 이해할 수 있을 필요는 없습니다. 기준은 "이것이 좋은 글의 조각인가?"이지, "이것이 자체 포함된 논증인가?"가 아닙니다.
 
-Fragments are deliberately heterogeneous. Examples of what could be a fragment:
+조각은 의도적으로 이질적입니다. 조각이 될 수 있는 것의 예:
 
-- A sharp sentence you'd want to deploy somewhere but don't yet know where.
-- A claim with a one-line justification.
-- A vignette: a thing that happened, a code snippet, a scenario, an analogy.
-- A half-thought: "something about how X feels like Y, work this out later."
-- A quote, a piece of dialogue, an overheard line.
-- A list of related observations that hang together by feel.
-- A complaint, a confession, a punchline.
-- A **leading word**: a compact metaphor or coinage the whole piece can hang on (one term that names the idea, the way _tracer bullets_ or _fog of war_ names a whole pattern).
+- 어딘가에 배치하고 싶지만 아직 어디인지 모르는 날카로운 문장.
+- 한 줄 정당화가 있는 주장.
+- 비네트: 일어난 일, 코드 스니펫, 시나리오, 비유.
+- 반쪽 생각: "X가 Y처럼 느껴지는 것에 대한 무언가, 나중에 작업."
+- 인용, 대화 조각, 우연히 들은 줄.
+- 느낌으로 함께 걸리는 관련 관찰 목록.
+- 불평, 고백, 펀치라인.
+- **선도 단어**: 전체 작품이 걸릴 수 있는 컴팩트한 은유 또는 조어(아이디어를 명명하는 하나의 용어, _tracer bullets_ 또는 _fog of war_가 전체 패턴을 명명하는 방식).
 
-Of these, the leading word is the most valuable fragment to land. It is load-bearing: name the right one in explore and it shapes the structure, the transitions, and the title later, paying dividends through the entire exploit phase. When the conversation circles a recurring idea, push to coin a word for it.
+이 중, 선도 단어가 착륙할 가장 가치 있는 조각입니다. 부하 지지입니다: explore에서 올바른 것을 명명하면 나중에 구조, 전환 및 제목을 형성하여, 전체 exploit 단계를 통해 배당을 지불합니다. 대화가 반복되는 아이디어를 돌 때, 그것을 위한 단어를 만들도록 밀어붙이세요.
 
-The novelist's diary is the model: years of unstructured noticings that later get mined for raw material. Fragments are noticings.
+소설가의 일기가 모델입니다: 나중에 원시 자료로 채굴되는 구조화되지 않은 관찰의 년. 조각은 관찰입니다.
 
-## File format
+## 파일 형식
 
 ```markdown
 # Working title
 
-A first fragment lives here.
+첫 번째 조각이 여기 있습니다.
 
-It can be multiple paragraphs. It can include lists, code, quotes: whatever
-shape the fragment naturally takes.
-
----
-
-A second fragment.
+여러 단락일 수 있습니다. 목록, 코드, 인용을 포함할 수 있습니다: 조각이
+자연스럽게 취하는 모든 형태.
 
 ---
 
-> A quoted line that the user wants to keep around.
-
-A reaction to it.
+두 번째 조각.
 
 ---
 
-- A cluster of related observations
-- That hang together by feel
-- And want to be near each other
+> 사용자가 보관하고 싶어 하는 인용된 줄.
+
+그것에 대한 반응.
+
+---
+
+- 관련 관찰의 클러스터
+- 느낌으로 함께 걸리는
+- 그리고 서로 가까이 있고 싶어 하는
 ```
 
-Fragments are separated by a horizontal rule (`\n---\n`). No headings inside the body. No tags. No order beyond the order they were added.
+조각은 수평 규칙(`\n---\n`)으로 구분됩니다. 본문 내부에 제목 없음. 태그 없음. 추가된 순서 이상의 순서 없음.
 
-## Writing rhythm
+## 작성 리듬
 
-Append silently. Don't ask permission for each fragment. Mention what you added in passing ("adding that"), but don't interrupt the conversation with save dialogs.
+조용히 추가하세요. 각 조각에 대한 허가를 요청하지 마세요. 지나가면서 추가한 것을 언급하세요("그것 추가"). 그러나 저장 대화 상자로 대화를 중단하지 마세요.
 
-Before every write: re-read the file from disk. The user may have edited, reordered, or deleted fragments between turns, so preserve their changes. Never overwrite the file; only append (or, if the user asks, edit a specific fragment in place).
+모든 쓰기 전에: 디스크에서 파일을 다시 읽으세요. 사용자가 턴 사이에 조각을 편집하거나, 재정렬하거나, 삭제했을 수 있으므로, 변경 사항을 보존하세요. 절대 파일을 덮어쓰지 마세요. 추가만 하세요(또는 사용자가 요청하면, 특정 조각을 제자리에서 편집).
 
-The user can say "cut the last one", "rewrite that one sharper", "merge those two" at any time. Treat those as first-class instructions.
+사용자는 언제든지 "마지막 것을 잘라내세요", "그것을 더 날카롭게 다시 쓰세요", "그 둘을 병합하세요"라고 말할 수 있습니다. 이를 일등 지침으로 취급하세요.
 
 </supporting-info>
