@@ -1,174 +1,174 @@
-# Motion
+# 모션
 
-The rules for everything that moves: the story, the loop, pace, text that changes, things that arrive and leave, the cursor, drags, scrolling and the camera. The still frame is in `craft.md`; each kit part's props are in `kit.md`.
+움직이는 모든 것의 규칙입니다. 스토리, 루프, 페이스, 바뀌는 텍스트, 도착하고 떠나는 것, 커서, 드래그, 스크롤, 카메라입니다. 스틸 프레임은 `craft.md`에, 각 키트 부분의 props는 `kit.md`에 있습니다.
 
-## Index
+## 목차
 
-1. [Story](#story): the shape, the beats, the payoff, satellites
-2. [Loops](#loops): caused resets, data never rewinds, the seam, exits, conveyors
-3. [Pace and easing](#pace-and-easing): two curves, fast feedback, overlap, stagger
-4. [Changing text and values](#changing-text-and-values): change only what changed, footprints, numbers, chips
-5. [Things that appear, travel and leave](#things-that-appear-travel-and-leave): nothing pops, whole arrivals, flights, handoffs, landings
-6. [The cursor](#the-cursor): its kind, never over the label, every move explained, keys
-7. [Drags and selection](#drags-and-selection): pickup, held cards, the grab offset, slots, I-beam selections
-8. [Scrolling and the camera](#scrolling-and-the-camera)
-9. [Phones in motion](#phones-in-motion): touch, swipes, the Dynamic Island, reactions
-10. [Recipes](#recipes): page swaps, stepped demos, replay, annotations, motion on a page
+1. [스토리](#스토리): 형태, 비트, 보상, 위성
+2. [루프](#루프): 원인이 있는 리셋, 되감지 않는 데이터, 이음새, 퇴장, 컨베이어
+3. [페이스와 이징](#페이스와-이징): 곡선 둘, 빠른 피드백, 겹침, 스태거
+4. [텍스트와 값 변경](#텍스트와-값-변경): 바뀐 것만 바꾸기, 풋프린트, 숫자, 칩
+5. [나타나고 이동하고 떠나는 것](#나타나고-이동하고-떠나는-것): 팝 없음, 온전한 도착, 비행, 핸드오프, 착지
+6. [커서](#커서): 종류, 레이블 위를 절대 가리지 않음, 설명되는 모든 이동, 키
+7. [드래그와 선택](#드래그와-선택): 집어 들기, 든 카드, 그랩 오프셋, 슬롯, I-beam 선택
+8. [스크롤과 카메라](#스크롤과-카메라)
+9. [모션 속의 휴대폰](#모션-속의-휴대폰): 터치, 스와이프, Dynamic Island, 반응
+10. [레시피](#레시피): 페이지 교체, 단계 데모, 다시 재생, 주석, 페이지의 모션
 
-## Story
+## 스토리
 
-Pick the shape from what the product is valued for; a demo forced into the wrong shape gets busier, not better.
+제품이 가치 있게 여겨지는 것에서 형태를 고르세요. 잘못된 형태에 억지로 넣은 데모는 더 나아지지 않고 더 바빠집니다.
 
-- **How it feels to use:** the gesture is the story; a cursor does one satisfying thing and the result appears under its hand (`examples/hero-demo`).
-- **A flow in an app:** a few screens told as one continuous object with the payoff on the last; no bolted-on second device (`examples/phone-touch`).
-- **What the system does:** the consequence lands somewhere else; make the link visible (a value on a connector, a card flying into a list); usually no cursor (`examples/subscriptions`).
-- **Beauty decides.** The calmer, fuller, better-framed version beats the one with more story (`examples/payout-flow`).
-- **A hero loop is 10 to 16 seconds;** a repeat is a short beat, never the whole flow twice (`examples/subscriptions`).
-- **Three to five beats building to a payoff;** one gesture and a response can be enough; add beats only when they clarify.
-- **Open on a finished screen that works as a still.** The first real content is on screen before the beat. A thread opens with a real message, not bars (`examples/messages`).
-- **A short history sits at the top of its pane** under the header, never pinned to the bottom with a void above; size the pane to what it holds.
-- **The cursor rests on empty surface between beats,** near its next move, never on an unused control, never an I-beam over a button.
-- **A satellite arrives at the beat it pays off,** carrying its payload, or is present from the first frame in a reserved column; never an empty parked object.
-- **The payoff is visible at the shown size:** a panel, a window coming forward, a clear state change. A 16px avatar at the edge is not a payoff (`examples/hero-demo`).
-- **A button whose label or icon changes changes on itself.** Put the new words in the same kit `Button` (`{done ? 'Resolved' : 'Resolve'}`, an `icon` that arrives) and it crossfades the label and eases its width so neighbors move with it. Never swap in a second button or a lookalike row for its new state.
-- **A draft becomes the posted comment in place.** Use the kit's `Draft` (`<Draft value={s.draft} full={COMMENT} editing={typing} />`) in the column the comment's words belong to: it puts the typing box's edges on that column, holds the finished comment's height from the first keystroke, takes its typing shape at once and eases only on post. Posting adds no line: a time or "Just now" goes on the name's line and fades in, since a new line under the name shifts the name and pushes the comment down while its box is closing. Don't move it while typing to line the typed words up with the name (a margin shift on the editing state): the box's edge is what lines up, and the words sit inset by its padding. Don't hand-build the box: drawn by hand, its ring hangs past the column, runs into the name above, or drops a line's height in one frame.
-- **The payoff arrives full.** A panel or card opens with its content; with `Collapse`, put the first lines in before `open`. Never a blank surface for a quarter second.
-- **Things connect.** A `Connector` draws on over about a second after both ends are placed, routes around cards, and ends on a dot (`examples/story`).
-- **A small label with a leader line can name what just happened** (`examples/hero-demo`); the full rules are in `annotations.md`.
-- **Motion without hierarchy:** cover each moving element in turn; if the story gets clearer without it, cut it.
-- **The poster is the frame most people see:** a thumbnail, reduced motion, a screenshot. Set `poster` to the beat that tells the story on its own (the row mid-swipe with Archive showing, the card over its new column), and let the result stay on screen after the action instead of tidying it away. Cover the motion and ask what happened; if the poster can't answer, choose another beat. A poster is never caught mid-change: a digit mid-roll, a label mid-morph or a surface mid-fade reads as a glitch when it holds still, so choose the frame after it lands.
+- **사용 느낌:** 제스처가 스토리입니다. 커서가 만족스러운 일 하나를 하고 결과가 손 아래에 나타납니다 (`examples/hero-demo`).
+- **앱 안의 흐름:** 몇 화면이 하나의 연속 객체로 말해지고 보상은 마지막에 있습니다. 덧붙인 두 번째 기기는 없습니다 (`examples/phone-touch`).
+- **시스템이 하는 일:** 결과가 다른 곳에 착지합니다. 연결을 보이게 하세요(커넥터 위의 값, 목록으로 날아가는 카드). 보통 커서는 없습니다 (`examples/subscriptions`).
+- **아름다움이 결정합니다.** 더 차분하고, 더 가득 차고, 더 잘 프레임된 버전이 스토리가 더 많은 쪽을 이깁니다 (`examples/payout-flow`).
+- **히어로 루프는 10~16초입니다.** 반복은 짧은 비트이지, 전체 흐름을 두 번 하는 것이 아닙니다 (`examples/subscriptions`).
+- **보상으로 쌓이는 비트 셋에서 다섯.** 제스처 하나와 응답으로 충분할 수 있습니다. 비트를 더하는 것은 분명하게 할 때뿐입니다.
+- **스틸로도 되는 완성된 화면으로 여세요.** 비트 전에 첫 실제 콘텐츠가 화면에 있습니다. 스레드는 바가 아니라 실제 메시지로 열립니다 (`examples/messages`).
+- **짧은 기록은 창의 맨 위,** 헤더 아래에 있습니다. 위가 빈 채 바닥에 고정되지 않습니다. 창은 담는 것에 맞게 크기를 정하세요.
+- **커서는 비트 사이에 빈 표면에서 쉽니다.** 다음 이동 근처이고, 쓰지 않는 컨트롤 위도, 버튼 위의 I-beam도 아닙니다.
+- **위성은 보상을 내는 비트에 도착하고** 페이로드를 실거나, 예약된 열에서 첫 프레임부터 있습니다. 비어 주차된 객체는 안 됩니다.
+- **보상은 보여 주는 크기에서 보입니다.** 패널, 앞으로 나오는 창, 분명한 상태 변화입니다. 가장자리의 16px 아바타는 보상이 아닙니다 (`examples/hero-demo`).
+- **레이블이나 아이콘이 바뀌는 버튼은 자기 자신에서 바뀝니다.** 새 단어를 같은 키트 `Button`에 넣으세요 (`{done ? 'Resolved' : 'Resolve'}`, 도착하는 `icon`). 레이블을 크로스페이드하고 너비를 이즈해서 이웃이 함께 움직입니다. 새 상태를 위해 두 번째 버튼이나 비슷해 보이는 행으로 바꾸지 마세요.
+- **초안은 제자리에서 게시된 댓글이 됩니다.** 댓글 단어가 속한 열에 키트의 `Draft`를 쓰세요 (`<Draft value={s.draft} full={COMMENT} editing={typing} />`). 타이핑 상자의 가장자리를 그 열에 두고, 첫 키 입력부터 완성된 댓글의 높이를 유지하며, 타이핑 형태는 즉시 취하고 게시에서만 이즈합니다. 게시는 줄을 더하지 않습니다. 시간이나 "Just now"는 이름 줄에 있고 페이드 인합니다. 이름 아래의 새 줄은 상자가 닫히는 동안 이름을 옮기고 댓글을 밀어 내립니다. 타이핑 중 이름과 맞추려고 옮기지 마세요(편집 상태의 마진 이동). 맞추는 것은 상자 가장자리이고, 단어는 패딩만큼 인셋됩니다. 상자를 손으로 만들지 마세요. 손으로 그리면 링이 열을 넘어가거나, 위의 이름에 닿거나, 한 프레임에 한 줄 높이를 떨어뜨립니다.
+- **보상은 가득 도착합니다.** 패널이나 카드는 콘텐츠와 함께 열립니다. `Collapse`에서는 `open` 전에 첫 줄을 넣으세요. 1/4초 동안의 빈 표면은 안 됩니다.
+- **것들이 연결됩니다.** `Connector`는 양쪽이 놓인 뒤 약 1초에 걸쳐 그려지고, 카드 주위로 경로를 잡으며, 점에서 끝납니다 (`examples/story`).
+- **리더 선이 있는 작은 레이블이 방금 일어난 일을 이름 지을 수 있습니다** (`examples/hero-demo`). 전체 규칙은 `annotations.md`에 있습니다.
+- **계층 없는 모션:** 움직이는 요소를 차례로 가려 보세요. 없어도 스토리가 더 분명하면 자르세요.
+- **포스터는 대부분의 사람이 보는 프레임입니다.** 썸네일, 모션 감소, 스크린샷입니다. `poster`를 스스로 스토리를 말하는 비트로 설정하세요(Archive가 보이는 스와이프 중의 행, 새 열 위의 카드). 액션 뒤에 결과를 정리하지 말고 화면에 남기세요. 모션을 가리고 무슨 일이 일어났는지 물으세요. 포스터가 답할 수 없으면 다른 비트를 고르세요. 포스터는 변화 중간에 잡히지 않습니다. 굴러가는 중의 숫자, 모프 중의 레이블, 페이드 중의 표면은 가만히 있으면 글리치로 읽히므로, 착지한 뒤의 프레임을 고르세요.
 
-## Loops
+## 루프
 
-- **A reset removes what the loop added as one thing.** A reply and its reaction leave together, never reaction then message; a list that grew loses its new rows in one motion. The fewest steps that return the frame, with a seen cause where one exists.
-- **A loop keeps a complete product picture:** open on context and return to it; a header over a blanked list is not an anchor. Film the seam at 60ms.
-- **Every reset has a cause or is invisible,** in order: a seen cause (undo with its keycaps, clear, close), an exit around an anchor, a snap while hidden (`act.snap`). See `examples/subscriptions` and `examples/story`.
-- **A loop never plays a navigation backwards.** An app opened from a notification doesn't shrink back into it, and a pushed screen doesn't slide back in reverse; no product does that. Undo the state in place, in a quick reverse stagger (the last change first, about 70ms apart), so the screen rewinds to its opening frame as one motion, or cut while something covers it. Don't lock the phone or go home to reset a story that happens inside one app: a black screen on a white page reads as the demo ending, not looping. A lock is the reset only for a lock-screen story.
-- **Data never rewinds in view.** Snap it back hidden (off camera, under a closed panel, behind the exit) or bring the next loop's data in as new.
-- **No dead air at the seam:** within about a second of the exit ending, the next action has begun.
-- **Exiting around an anchor:** what the story added leaves in one reverse stagger, everything moving within half a second, 40 to 80ms apart, while product content stays. Never everything at once.
-- **A story that accumulates runs as a conveyor:** exit the built batch, bring a fresh one in from the crop, reset unseen.
-- **The payoff holds for 2s** before the exit (`examples/payout-flow`); nothing on screen sits still for more than three seconds.
-- **A second scene earns its length** by adding something new (a different outcome, surface or side); repeating the beat doubles the loop for nothing (`examples/subscriptions`).
-- **A looping video starts on a calm frame,** never mid fast motion.
+- **리셋은 루프가 더한 것을 하나의 것으로 제거합니다.** 답장과 반응은 함께 떠나고, 반응 다음 메시지가 아닙니다. 자란 목록은 새 행을 하나의 모션으로 잃습니다. 프레임을 되돌리는 가장 적은 단계, 원인이 있으면 보이게.
+- **루프는 완전한 제품 그림을 유지합니다.** 맥락으로 열고 그곳으로 돌아갑니다. 비워진 목록 위의 헤더는 앵커가 아닙니다. 이음새를 60ms에 촬영하세요.
+- **모든 리셋에는 원인이 있거나 보이지 않습니다.** 순서대로: 보이는 원인(키캡과 함께하는 실행 취소, 지우기, 닫기), 앵커 주위의 퇴장, 숨겨진 동안의 스냅(`act.snap`). `examples/subscriptions`와 `examples/story`를 보세요.
+- **루프는 내비게이션을 거꾸로 재생하지 않습니다.** 알림에서 연 앱이 그 안으로 줄어들지 않고, 밀린 화면이 역방향으로 미끄러지지 않습니다. 어떤 제품도 그렇게 하지 않습니다. 상태를 제자리에서 되돌리세요. 빠른 역 스태거(마지막 변화가 먼저, 약 70ms 간격)로, 화면이 하나의 모션으로 열림 프레임까지 되감깁니다. 또는 무언가가 가리는 동안 자르세요. 한 앱 안에서 일어나는 스토리를 리셋하려고 휴대폰을 잠그거나 홈으로 가지 마세요. 흰 페이지의 검은 화면은 루프가 아니라 데모가 끝나는 것으로 읽힙니다. 잠금은 잠금 화면 스토리의 리셋일 때만입니다.
+- **데이터는 뷰에서 되감지 않습니다.** 숨긴 채 스냅하세요(카메라 밖, 닫힌 패널 아래, 퇴장 뒤). 또는 다음 루프의 데이터를 새것으로 가져오세요.
+- **이음새에 죽은 공기가 없습니다.** 퇴장이 끝난 약 1초 안에 다음 액션이 시작됩니다.
+- **앵커 주위의 퇴장:** 스토리가 더한 것이 하나의 역 스태거로 떠납니다. 모든 것이 0.5초 안에, 40~80ms 간격으로 움직이고, 제품 콘텐츠는 남습니다. 한 번에 전부는 안 됩니다.
+- **쌓이는 스토리는 컨베이어로 실행됩니다.** 만든 배치를 내보내고, 크롭에서 새것을 들이고, 보이지 않게 리셋합니다.
+- **보상은 퇴장 전에 2초 유지됩니다** (`examples/payout-flow`). 화면의 아무것도 3초보다 오래 가만히 있지 않습니다.
+- **두 번째 장면은 새로운 것을 더해 길이를 법니다**(다른 결과, 표면, 쪽). 비트를 반복하면 아무것도 없이 루프가 두 배가 됩니다 (`examples/subscriptions`).
+- **루프 영상은 차분한 프레임에서 시작합니다.** 빠른 모션 중간이 아닙니다.
 
-## Pace and easing
+## 페이스와 이징
 
-- **Unhurried, on two curves.** Travel: `cubic-bezier(0.45, 0, 0.1, 1)`. Arrival from nowhere: `cubic-bezier(0.25, 0.8, 0.25, 1)` over 0.8 to 1s. Judge distance and overlap, not duration (`examples/payout-flow`).
-- **Travel has a departure, clear travel and a soft arrival;** length alone does not make it fluid.
-- **Choose durations and easings together by job;** one easing everywhere flattens the hierarchy; an accumulating number may take longer than its transfer (`choreography.md`).
-- **UI feedback stays as quick as the real product;** only storytelling motion slows down. Feedback starts on the input; a presentation delay feels unresponsive.
-- **Related responses overlap.** A changed setting leads its label, then its dependents, while the frame holds; a confirmation still follows its cause (`examples/choreography`).
-- **Related updates can each take a different time;** the result still follows its cause.
-- **Stagger groups in reading order 40 to 80ms apart** within a scene (`act.stagger` default 60); 80 to 120ms between tiles of a grid. One object enters whole; holds are beats too (`examples/calendar`).
-- **Introducing a composition:** a small front-loaded movement can settle longer than its busy part; don't scale readable text much.
-- **A small expressive icon may overshoot** while its card and text settle without bounce; keep the accent local; give the final state time to read.
-- **Color changes between distant hues take about 200ms** (they pass through mud however done); let the label carry the slower motion.
-- **Holding a result means stop:** a useful still needs no new pulse or repeated count.
+- **서두르지 않고, 곡선 둘입니다.** 이동: `cubic-bezier(0.45, 0, 0.1, 1)`. 없는 곳에서의 도착: 0.8~1초의 `cubic-bezier(0.25, 0.8, 0.25, 1)`. 지속 시간이 아니라 거리와 겹침을 판단하세요 (`examples/payout-flow`).
+- **이동에는 출발, 분명한 이동, 부드러운 도착이 있습니다.** 길이만으로 유체가 되지는 않습니다.
+- **일과 함께 지속 시간과 이징을 고르세요.** 모든 곳의 이징 하나는 계층을 평평하게 합니다. 누적되는 숫자는 전달보다 오래 걸릴 수 있습니다 (`choreography.md`).
+- **UI 피드백은 실제 제품만큼 빠릅니다.** 느려지는 것은 스토리텔링 모션뿐입니다. 피드백은 입력과 함께 시작합니다. 연출 지연은 반응이 없는 것처럼 느껴집니다.
+- **관련 응답은 겹칩니다.** 바뀐 설정이 레이블을 이끌고, 그다음 의존물을 이끌며, 프레임은 유지됩니다. 확인은 여전히 원인을 따릅니다 (`examples/choreography`).
+- **관련 업데이트는 각각 다른 시간을 가질 수 있습니다.** 결과는 여전히 원인을 따릅니다.
+- **읽기 순서로 그룹을 40~80ms 간격으로 스태거하세요.** 장면 안입니다(`act.stagger` 기본 60). 그리드 타일 사이는 80~120ms입니다. 객체 하나는 온전히 들어옵니다. 홀드도 비트입니다 (`examples/calendar`).
+- **구성의 도입:** 작은 앞선 움직임이 바쁜 부분보다 오래 정착할 수 있습니다. 읽히는 텍스트를 많이 스케일하지 마세요.
+- **작은 표현적인 아이콘은 오버슈트할 수 있습니다.** 카드와 텍스트는 바운스 없이 정착합니다. 액센트는 로컬로 두고, 최종 상태에 읽을 시간을 주세요.
+- **먼 색조 사이의 색 변화는 약 200ms입니다**(어떻게 해도 진흙을 통과합니다). 더 느린 모션은 레이블이 실게 하세요.
+- **결과를 유지한다는 것은 멈춘다는 뜻입니다.** 쓸모 있는 스틸에 새 펄스나 반복 카운트는 필요 없습니다.
 
-## Changing text and values
+## 텍스트와 값 변경
 
-- **Inspect the glyphs, not only the box.** Text can shimmer as a layer finishes; keep its transform layer through cleanup, never `will-change` over the whole scene.
-- **Settle geometry before chasing a text shift.** Compare the last moving frame with the first settled one (`lands on a transform`, `steps in its box`).
-- **Other text shifts:** a released measured width, a transform losing its layer, a late-loading font; inspect at real size.
-- **A status word that changes (Queued, Running, Passed) rolls with `Roll`,** never two hand-built spans crossfading in place (they overlap mid-fade and read as a smudge). When several rows change at once, as a loop resets, cascade them about 60ms apart with `delay`: a column rolling in unison reads as flicker.
-- **Every change moves.** Text that turns into a pill, a menu replaced by another in one frame, a number that jumps: a submenu slides, text rolls, a surface morphs.
-- **Change only what changed.** `Roll` animates the changed span and moves what follows by its measured width; pick the anchor on purpose (`examples/story`).
-- **Decide a control's footprint before its label transition:** `States` holds the largest, `Roll variant="fade"` resizes; never roll unchanged words (`examples/parts`).
-- **Button states share one slot.** Keep the button mounted, variants in one grid cell, each icon-and-label variant default-centered; check shortest, longest and pending (`examples/hero-demo`).
-- **Added content opens its space with its neighbor:** the icon's width and gap open together while the label travels; both close on removal (`examples/annotations`).
-- **A right-pinned value changes against that edge** (`Roll align="end"`); a status icon beside it keeps a fixed slot (`examples/payout-flow`).
-- **Numbers roll with `Count`,** last digit first, unchanged digits still; no per-frame lerp blur; give it a slot; hold the completed value (`examples/subscriptions`).
-- **Typed text becomes a chip in place** (`Field chip`): the words stay, the surface grows around them, the x opens beside.
-- **Result follows press feedback:** a small press and surface response before the result; change state after `a.click` completes.
-- **An object keeps its identity when it changes** (a plus becoming a close): rotate the same strokes; replacing the icon skips the relationship.
-- **A spinner turns before it is visible** and keeps turning through its fade out.
+- **상자만이 아니라 글리프를 살펴보세요.** 레이어가 끝날 때 텍스트가 깜빡일 수 있습니다. 정리 동안 변환 레이어를 유지하고, 장면 전체에 `will-change`를 쓰지 마세요.
+- **텍스트 이동을 쫓기 전에 지오메트리를 정착시키세요.** 마지막 움직이는 프레임과 첫 정착 프레임을 비교하세요 (`lands on a transform`, `steps in its box`).
+- **다른 텍스트 이동:** 놓아준 측정 너비, 레이어를 잃는 변환, 늦게 로드되는 글꼴. 실제 크기에서 살펴보세요.
+- **바뀌는 상태 단어(Queued, Running, Passed)는 `Roll`로 굴립니다.** 제자리에서 크로스페이드하는 손으로 만든 span 둘은 안 됩니다(페이드 중간에 겹쳐 얼룩으로 읽힙니다). 여러 행이 한 번에 바뀌면, 루프가 리셋하듯, `delay`로 약 60ms 간격으로 계단식으로 하세요.  동시에 굴러가는 열은 깜빡임으로 읽힙니다.
+- **모든 변화는 움직입니다.** 알약이 되는 텍스트, 한 프레임에 다른 것으로 바뀐 메뉴, 점프하는 숫자: 하위 메뉴는 미끄러지고, 텍스트는 굴러가며, 표면은 모프됩니다.
+- **바뀐 것만 바꾸세요.** `Roll`은 바뀐 span을 애니메이션하고 측정된 너비만큼 뒤를 옮깁니다. 앵커를 의도적으로 고르세요 (`examples/story`).
+- **레이블 전환 전에 컨트롤의 풋프린트를 정하세요.** `States`는 가장 큰 것을 유지하고, `Roll variant="fade"`는 크기를 바꿉니다. 바뀌지 않은 단어를 굴리지 마세요 (`examples/parts`).
+- **버튼 상태는 슬롯 하나를 공유합니다.** 버튼을 마운트한 채 두고, 변형은 그리드 셀 하나에, 각 아이콘과 레이블 변형은 기본 중앙입니다. 가장 짧은 것, 가장 긴 것, 대기 중을 확인하세요 (`examples/hero-demo`).
+- **추가된 콘텐츠는 이웃과 함께 공간을 엽니다.** 레이블이 이동하는 동안 아이콘의 너비와 간격이 함께 열립니다. 제거하면 둘 다 닫힙니다 (`examples/annotations`).
+- **오른쪽에 고정된 값은 그 가장자리에 대해 바뀝니다** (`Roll align="end"`). 옆의 상태 아이콘은 고정 슬롯을 유지합니다 (`examples/payout-flow`).
+- **숫자는 `Count`로 굴립니다.** 마지막 자리가 먼저, 바뀌지 않은 자리는 가만히. 프레임별 러프 블러는 없습니다. 슬롯을 주고, 완료된 값을 유지하세요 (`examples/subscriptions`).
+- **타이핑된 텍스트는 제자리에서 칩이 됩니다** (`Field chip`). 단어는 남고, 표면이 그 주위로 자라며, x가 옆에 열립니다.
+- **결과는 누르기 피드백을 따릅니다.** 결과 전의 작은 누르기와 표면 반응. `a.click`이 끝난 뒤에 상태를 바꾸세요.
+- **객체는 바뀔 때 정체성을 유지합니다**(닫기가 되는 플러스). 같은 획을 회전하세요. 아이콘을 바꾸면 관계가 건너뛰어집니다.
+- **스피너는 보이기 전에 돌고** 페이드 아웃 동안에도 계속 돕니다.
 
-## Things that appear, travel and leave
+## 나타나고 이동하고 떠나는 것
 
-- **A thing that grows as it travels takes the long settle.** A thumbnail becoming a card swells on a soft start and a long deceleration (the kit's `Fly` curves, 600ms or more); a quick ease-in-out lurches.
-- **Nothing pops.** Everything has an entrance and stays mounted until its exit finishes; `Bubble` and `Fly` hand off at the same geometry.
-- **No holes or blank frames.** What replaces something arrives as it leaves; reopening rows fade content in as their height finishes (`Collapse`) (`examples/subscriptions`).
-- **Neighbors make room continuously** as the newcomer arrives; its fade rides with its travel, not before.
-- **A new row carries the rows below it:** animate the containing track so the line below moves with its height, or reserve the space.
-- **A resizing surface moves size, position and content as one transition,** never stretching its text, and retargets from its current geometry when interrupted (`examples/choreography`).
-- **Replacing content keeps the container, alignment and reading interval,** masking only the moving slot.
-- **Keep header, outer surface and action positions steady** while variable content changes inside; old and new content stay in tracks.
-- **Solid things do not fade through.** Windows, phones and cards arrive by moving, opaque or nearly; a half-transparent phone is a ghost.
-- **Cards, toasts, pills and reactions arrive whole from just above** (`Collapse reveal="drop"`), never uncovered by a hard edge; clip only rows of text.
-- **Content arrives after its container:** a pin's number appears once its circle is nearly full size.
-- **A popup fits before its first frame:** sized and scrolled before showing; it never corrects its size while opening (`examples/parts`).
-- **An open surface holds its anchor.** A popover, palette, menu or sheet is pinned by the edge it opened from. Reserve height for the longest list (`anchor drift`, `examples/linear`).
-- **Overlays close where they were:** keep `{ open, at }` apart, never a nullable `menu` point.
-- **A zone becoming something else takes its new size** (a drop zone into an upload card); the fixed-footprint rule is for optional content inside a surface.
-- **A value chip grows from the value's own words,** gains fill and lift as it departs, and wears one of its two looks, never a third color. The recipe is in `kit.md` (`examples/subscriptions`).
-- **A dashed edge never changes size:** draw it at final size on its own layer and only fade it (`dashed edge resizes`, `examples/controls`).
-- **Border style does not transition:** keep the solid hairline and fade a dashed `::before` layer out over it.
-- **Switching versions morphs in place** or crossfades with the plate's height eased; never a flash or hard swap.
-- **A released marquee fades;** it never sits still then vanishes.
-- **A moving edge never slices text.** `Collapse` fades before and after the height moves; otherwise sequence fade and movement, or mask locally without softening the whole interface (`hard edge`).
-- **One object, one trip, ending in its final place:** open the room (`Collapse`), measure the slot, then `Fly`; never land then re-lay out around it (`examples/subscriptions`).
-- **After motion nothing moves.** A handoff is the same size, place and look on the swap frame. Measure the landing element itself, never its padded wrapper (`handoff shift`, `settle snap`, `fly size`).
-- **A flight's ends are fixed at take-off** (`Fly` holds its rects when `go` turns true); a moving start retargets every frame and jumps.
-- **A flyer changes to its resting look during the last third** (`.ss-fly[data-go]` with a delayed transition); never swap looks on the landing frame.
-- **Landings are soft:** decelerate over the last third, back to size before arrival, no bounce, no ring pulse.
-- **A selection ring or highlight moving between items uses `Follow`,** so it keeps momentum when retargeted; re-keying its entrance restarts it (`examples/figma`).
-- **Look at every motion finding** (`appears, then moves`, `near-empty frames`, `lands on a transform`, `steps in its box`). Fix the real ones, name the intentional, never cut good motion to quiet a detector.
+- **이동하며 자라는 것은 긴 정착을 취합니다.** 카드가 되는 썸네일은 부드러운 시작과 긴 감속(키트의 `Fly` 곡선, 600ms 이상)으로 부풉니다. 빠른 ease-in-out은 덜컥입니다.
+- **아무것도 팝하지 않습니다.** 모든 것에 입장이 있고 퇴장이 끝날 때까지 마운트됩니다. `Bubble`과 `Fly`는 같은 지오메트리에서 핸드오프합니다.
+- **구멍이나 빈 프레임이 없습니다.** 무언가를 대체하는 것은 그것이 떠날 때 도착합니다. 다시 열리는 행은 높이가 끝날 때 콘텐츠가 페이드 인됩니다 (`Collapse`) (`examples/subscriptions`).
+- **이웃은 새로 온 것이 도착하는 동안 계속 공간을 만듭니다.** 페이드는 이동 전이 아니라 이동과 함께 탑니다.
+- **새 행은 아래 행을 운반합니다.** 아래 줄이 높이와 함께 움직이도록 컨테이너 트랙을 애니메이션하거나, 공간을 예약하세요.
+- **크기가 바뀌는 표면은 크기, 위치, 콘텐츠를 하나의 전환으로 움직입니다.** 텍스트를 늘리지 않고, 끊기면 현재 지오메트리에서 다시 겨냥합니다 (`examples/choreography`).
+- **콘텐츠를 바꿀 때는 컨테이너, 정렬, 읽는 간격을 유지하고,** 움직이는 슬롯만 마스크합니다.
+- **가변 콘텐츠가 안에서 바뀌는 동안 헤더, 바깥 표면, 액션 위치는 흔들리지 않게 둡니다.** 옛 콘텐츠와 새 콘텐츠는 트랙에 남습니다.
+- **단단한 것은 페이드로 통과하지 않습니다.** 창, 휴대폰, 카드는 불투명하거나 거의 불투명하게 움직여 도착합니다. 반투명 휴대폰은 유령입니다.
+- **카드, 토스트, 알약, 반응은 바로 위에서 온전히 도착합니다** (`Collapse reveal="drop"`). 단단한 가장자리가 드러내지 않습니다. 클립은 텍스트 행에만입니다.
+- **콘텐츠는 컨테이너 뒤에 도착합니다.** 핀의 숫자는 원이 거의 가득 찬 뒤에 나타납니다.
+- **팝업은 첫 프레임 전에 맞습니다.** 보여 주기 전에 크기와 스크롤이 정해집니다. 열리는 동안 크기를 고치지 않습니다 (`examples/parts`).
+- **열린 표면은 앵커를 유지합니다.** 팝오버, 팔레트, 메뉴, 시트는 열린 가장자리로 고정됩니다. 가장 긴 목록의 높이를 예약하세요 (`anchor drift`, `examples/linear`).
+- **오버레이는 있던 곳에서 닫힙니다.** `{ open, at }`을 분리하고, null이 될 수 있는 `menu` 점은 쓰지 마세요.
+- **다른 것이 되는 영역은 새 크기를 취합니다**(업로드 카드가 되는 드롭 영역). 고정 풋프린트 규칙은 표면 안의 선택 콘텐츠를 위한 것입니다.
+- **값 칩은 값 자신의 단어에서 자라고,** 떠날 때 채움과 들림을 얻으며, 두 룩 중 하나를 입고 세 번째 색은 입지 않습니다. 레시피는 `kit.md`에 있습니다 (`examples/subscriptions`).
+- **점선 가장자리는 크기가 바뀌지 않습니다.** 자체 레이어에 최종 크기로 그리고 페이드만 하세요 (`dashed edge resizes`, `examples/controls`).
+- **테두리 스타일은 전환되지 않습니다.** 실선 헤어라인을 유지하고 점선 `::before` 레이어를 그 위로 페이드 아웃하세요.
+- **버전 전환은 제자리에서 모프되거나** 플레이트 높이가 이즈되며 크로스페이드합니다. 플래시나 단단한 교체는 안 됩니다.
+- **놓아준 마키는 페이드합니다.** 가만히 있다 사라지지 않습니다.
+- **움직이는 가장자리는 텍스트를 자르지 않습니다.** `Collapse`는 높이가 움직이기 전과 후에 페이드합니다. 그렇지 않으면 페이드와 움직임을 순서대로 하거나, 인터페이스 전체를 부드럽게 하지 않고 로컬로 마스크하세요 (`hard edge`).
+- **객체 하나, 여행 하나, 최종 장소에서 끝:** 공간을 열고 (`Collapse`), 슬롯을 측정한 다음 `Fly`하세요. 착지한 뒤 그 주위를 다시 배치하지 마세요 (`examples/subscriptions`).
+- **모션 뒤에는 아무것도 움직이지 않습니다.** 핸드오프는 교체 프레임에서 같은 크기, 장소, 룩입니다. 패딩된 래퍼가 아니라 착지 요소 자체를 측정하세요 (`handoff shift`, `settle snap`, `fly size`).
+- **비행의 끝은 이륙 때 고정됩니다** (`go`가 true가 되면 `Fly`가 rect를 유지합니다). 움직이는 시작은 매 프레임 다시 겨냥하고 점프합니다.
+- **플라이어는 마지막 1/3 동안 쉬는 룩으로 바뀝니다**(지연된 전환이 있는 `.ss-fly[data-go]`). 착지 프레임에서 룩을 바꾸지 마세요.
+- **착지는 부드럽습니다.** 마지막 1/3에 걸쳐 감속하고, 도착 전에 크기로 돌아가며, 바운스도 링 펄스도 없습니다.
+- **항목 사이를 움직이는 선택 링이나 하이라이트는 `Follow`를 씁니다.** 다시 겨냥될 때 운동량을 유지합니다. 입장을 다시 키잉하면 다시 시작합니다 (`examples/figma`).
+- **모든 모션 발견을 보세요** (`appears, then moves`, `near-empty frames`, `lands on a transform`, `steps in its box`). 실제인 것을 고치고, 의도적인 것을 이름 짓고, 탐지기를 조용히 하려고 좋은 모션을 자르지 마세요.
 
-## The cursor
+## 커서
 
-- **No cursor means no stand-in.** Never walk a focus ring, halo or spotlight between controls; states and timing carry a system story (`examples/cursors`).
-- **The elements decide the cursor's kind** via `data-cursor` (`ibeam`, `hand`, `open`, `crosshair`, `resize-ns` or `resize-ew` on an edge that drags, `resize-nwse` or `resize-nesw` on a corner, with `drag(..., { cursor: 'preserve' })` so it doesn't close to a fist), switching mid-path as it crosses the edge, never after arriving (`examples/cursors`, `examples/cursor-resize`).
-- **`drag()` closes and reopens the hand itself;** a drag over text stays an I-beam; `{ cursor: 'preserve' }` keeps the arrow for arrow-based creation (`examples/google-calendar`).
-- **Native app buttons keep the arrow,** and a button inside a marked area is the arrow again unmarked; `cursor()` is only for kinds nothing implies (`wait`).
-- **The I-beam and crosshair turn white with a dark edge on a dark stage;** the glass circle narrows into a bar over text.
-- **The cursor never covers the words it clicks.** Aim inside the target but off its text (`x: 0.85, y: 0.6`). Rest off a changed label; park in a menu row's empty space (`covers`).
-- **A state the click sets fades in, quickly.** A tool picked in a toolbar, a selected row, an active filter: its fill and color ease in over about 150ms and back out the same, never switch on in one frame. A set of options where one is chosen and the choice moves is a `Segmented` or `Tabs`, whose highlight slides.
-- **The cursor stays where the press happened** while the result changes size; never pin it to a moving button edge.
-- **A cursor changes style by morphing,** never popping (`examples/cursor-morph`).
-- **Every move travels to the next action,** follows a held object or clears the way; the Stage fades a resting cursor after 4s.
-- **Keyboard stories show the keys** with `act.key('cmd+k')`; the cursor can rest or leave (`examples/raycast`).
+- **커서가 없다는 것은 대역이 없다는 뜻입니다.** 포커스 링, 헤일로, 스포트라이트를 컨트롤 사이로 걷게 하지 마세요. 상태와 타이밍이 시스템 스토리를 실습니다 (`examples/cursors`).
+- **요소가 `data-cursor`로 커서 종류를 결정합니다** (`ibeam`, `hand`, `open`, `crosshair`, 드래그하는 가장자리의 `resize-ns`나 `resize-ew`, 모서리의 `resize-nwse`나 `resize-nesw`, 주먹으로 닫히지 않게 `drag(..., { cursor: 'preserve' })`). 도착한 뒤가 아니라 가장자리를 가로지르는 경로 중간에 전환됩니다 (`examples/cursors`, `examples/cursor-resize`).
+- **`drag()`가 손 자체를 닫고 다시 엽니다.** 텍스트 위의 드래그는 I-beam으로 남습니다. `{ cursor: 'preserve' }`는 화살 기반 생성을 위해 화살을 유지합니다 (`examples/google-calendar`).
+- **네이티브 앱 버튼은 화살을 유지하고,** 표시된 영역 안의 버튼은 표시를 지우면 다시 화살입니다. `cursor()`는 아무것도 함축하지 않는 종류에만입니다 (`wait`).
+- **I-beam과 십자선은 다크 스테이지에서 어두운 가장자리의 흰색으로 바뀝니다.** 유리 원은 텍스트 위에서 막대로 좁아집니다.
+- **커서는 클릭하는 단어를 가리지 않습니다.** 타겟 안이되 텍스트에서 떨어지게 겨냥하세요 (`x: 0.85, y: 0.6`). 바뀐 레이블에서 떨어져 쉬고, 메뉴 행의 빈 공간에 주차하세요 (`covers`).
+- **클릭이 설정하는 상태는 빠르게 페이드 인합니다.** 툴바에서 고른 도구, 선택된 행, 활성 필터: 채움과 색이 약 150ms에 걸쳐 이즈 인하고 같은 방식으로 나갑니다. 한 프레임에 켜지지 않습니다. 하나가 선택되고 선택이 이동하는 옵션 세트는 `Segmented`나 `Tabs`이며, 하이라이트가 미끄러집니다.
+- **커서는 결과가 크기를 바꾸는 동안 누른 곳에 있습니다.** 움직이는 버튼 가장자리에 고정하지 마세요.
+- **커서는 모프로 스타일을 바꿉니다.** 팝하지 않습니다 (`examples/cursor-morph`).
+- **모든 이동은 다음 액션으로 가거나,** 든 객체를 따르거나, 길을 비웁니다. Stage는 쉬는 커서를 4초 뒤에 페이드합니다.
+- **키보드 스토리는 `act.key('cmd+k')`로 키를 보여 줍니다.** 커서는 쉬거나 떠날 수 있습니다 (`examples/raycast`).
 
-## Drags and selection
+## 드래그와 선택
 
-- **A pointer drag is one motion.** With a mouse the row follows the pointer the whole way and leaves on release; the short drag then throw is a finger's flick and reads as two motions under an arrow.
-- **A drag starts where the thing is.** A file from outside enters already held with a fixed grab offset. Never a pickup at an empty point or a changing grip (`examples/freeform-drag`).
-- **A text selection reads left to right** from a word boundary; dragging back from the end reads as a correction (`examples/google-docs`).
-- **A text selection stays under the I-beam every frame:** drive it from `a.drag` with `a.caret(name, at)` in the drag's `onMove` and render from the character count. A highlight grown by time or a word count runs ahead of the cursor on one line and behind it on the next; `--gate` fails on `selection drift`. Never clamp it or hit-test with `caretRangeFromPoint` (`examples/google-docs`).
-- **Pickup belongs to the press:** set `lifted` and the first carried position inside `onMove`, never before `drag()`; a long press shows press, hold, lift (`examples/calendar`).
-- **A carried card is held, not slid:** scale 1.03, deeper shadow, a degree or two of tilt, following the hand's arc. The whole card tilts, words and all: a surface tilting under level text reads as a bug. Keep its text from hopping as it lands with a layer it holds throughout (`will-change: transform`), not by leaving the text out of the tilt. It settles flat on drop, with no selection outline in the air (`examples/controls`).
-- **Constrained controls follow their mechanism:** give `drag` a `{ path }` so a knob turns on a circle; check the hand's radius all the way round (`examples/annotations`).
-- **The grab offset is where the hand took hold:** derive it from the pickup fractions, share the `transform-origin`, keep stage translation outside the lifted transform (`examples/freeform-drag`).
-- **A held item rides with the cursor exactly** from `onMove` on both axes with no transition; `Fly` is only for flights the cursor is not carrying.
-- **Drop targets never travel:** the slot appears in a cell and jumps to the next, hides over the card's own cell; `cellOf` for sticky borders (`examples/freeform-drag`).
-- **Moving a card between lists uses `Slot`:** source closes on lift, destination opens in flight, drop aims at the open slot, then the real card swaps in (`examples/controls`).
+- **포인터 드래그는 하나의 모션입니다.** 마우스로는 행이 내내 포인터를 따르고 놓을 때 떠납니다. 짧은 드래그 다음 던지기는 손가락의 튕김이며 화살 아래에서는 모션 둘로 읽힙니다.
+- **드래그는 사물이 있는 곳에서 시작합니다.** 밖에서 온 파일은 고정된 그랩 오프셋으로 이미 들린 채 들어옵니다. 빈 점에서의 집어 들기나 바뀌는 그립은 안 됩니다 (`examples/freeform-drag`).
+- **텍스트 선택은 단어 경계에서 왼쪽에서 오른쪽으로 읽힙니다.** 끝에서 뒤로 드래그하는 것은 교정으로 읽힙니다 (`examples/google-docs`).
+- **텍스트 선택은 매 프레임 I-beam 아래에 있습니다.** 드래그의 `onMove`에서 `a.caret(name, at)`과 함께 `a.drag`로 구동하고 문자 수에서 렌더하세요. 시간이나 단어 수로 자란 하이라이트는 한 줄에서는 커서보다 앞서고 다음 줄에서는 뒤에 있습니다. `--gate`는 `selection drift`에서 실패합니다. 클램프하거나 `caretRangeFromPoint`로 히트 테스트하지 마세요 (`examples/google-docs`).
+- **집어 들기는 누르기에 속합니다.** `drag()` 전이 아니라 `onMove` 안에 `lifted`와 첫 운반 위치를 설정하세요. 긴 누르기는 누르기, 유지, 들기를 보여 줍니다 (`examples/calendar`).
+- **운반되는 카드는 미끄러지지 않고 들립니다.** 스케일 1.03, 더 깊은 그림자, 1~2도의 기울기, 손의 호를 따릅니다. 카드 전체가, 단어까지 기울어집니다. 수평 텍스트 아래 기울어지는 표면은 버그로 읽힙니다. 텍스트를 기울기에서 빼서가 아니라, 내내 유지하는 레이어(`will-change: transform`)로 착지할 때 텍스트가 튀지 않게 하세요. 드롭에서 평평하게 정착하고, 공중의 선택 윤곽은 없습니다 (`examples/controls`).
+- **제약된 컨트롤은 메커니즘을 따릅니다.** 노브가 원 위에서 돌도록 `drag`에 `{ path }`를 주세요. 손의 반지름을 한 바퀴 확인하세요 (`examples/annotations`).
+- **그랩 오프셋은 손이 잡은 곳입니다.** 집어 들기 분수에서 유도하고, `transform-origin`을 공유하며, 스테이지 이동은 들린 변환 밖에 두세요 (`examples/freeform-drag`).
+- **든 항목은 커서와 정확히 함께 탑니다.** 두 축 모두 `onMove`에서, 전환 없이. `Fly`는 커서가 운반하지 않는 비행에만입니다.
+- **드롭 타겟은 이동하지 않습니다.** 슬롯은 셀에 나타나 다음으로 점프하고, 카드 자신의 셀 위에서는 숨습니다. 끈적한 테두리에는 `cellOf` (`examples/freeform-drag`).
+- **목록 사이로 카드를 옮길 때는 `Slot`을 씁니다.** 소스는 들 때 닫히고, 목적지는 비행 중 열리며, 드롭은 열린 슬롯을 겨냥한 다음 실제 카드가 교체됩니다 (`examples/controls`).
 
-## Scrolling and the camera
+## 스크롤과 카메라
 
-- **Nothing scrolls unless the pointer is on it:** `a.scroll` moves the cursor in and holds it; scroll back before the loop ends, never at the seam (`examples/controls`).
-- **Scrolling starts with whole rows;** fade only the edges hiding content once scrolled, and clear the fade at the end.
-- **The camera needs a reason.** Push in only when the payoff would be too small to read at the shown size; cut any zoom nobody would miss.
-- **Frame the wide shot as a good still before any push-in;** the zoom never rescues a weak frame.
-- **A push-in frames the stage's shape:** `Camera` fits the focus to the aspect, so widen the focus to the content column rather than accept leftovers (`examples/calendar`).
-- **One push-in per story,** in and back out; edges feather while zoomed; the cursor holds still while the view moves (`examples/controls`).
-- **Inside an overlay, wrap only the region that zooms** in `Camera`, with `pad={0}` when the region is already the frame.
+- **포인터가 위에 있지 않으면 아무것도 스크롤하지 않습니다.** `a.scroll`이 커서를 안으로 옮기고 유지합니다. 루프가 끝나기 전에 다시 스크롤하고, 이음새에서는 하지 마세요 (`examples/controls`).
+- **스크롤은 온전한 행으로 시작합니다.** 스크롤된 뒤에만 콘텐츠를 가리는 가장자리를 페이드하고, 끝에서 페이드를 지우세요.
+- **카메라에는 이유가 필요합니다.** 보상이 보여 주는 크기에서 읽기에는 너무 작을 때만 밀어 넣으세요. 없어도 될 줌은 자르세요.
+- **밀어 넣기 전에 와이드 샷을 좋은 스틸로 프레임하세요.** 줌은 약한 프레임을 구하지 않습니다.
+- **밀어 넣기는 스테이지의 형태를 프레임합니다.** `Camera`가 초점을 종횡비에 맞추므로, 나머지를 받아들이지 말고 초점을 콘텐츠 열로 넓히세요 (`examples/calendar`).
+- **스토리당 밀어 넣기 하나,** 들어갔다가 나옵니다. 줌된 동안 가장자리는 페더됩니다. 뷰가 움직이는 동안 커서는 가만히 있습니다 (`examples/controls`).
+- **오버레이 안에서는 줌하는 영역만 `Camera`로 감싸세요.** 영역이 이미 프레임이면 `pad={0}`입니다.
 
-## Phones in motion
+## 모션 속의 휴대폰
 
-- **Act where people do.** A notification is tapped to open its app, and the reply, the accept or the purchase happens in the app. Its long-press actions are a shortcut few people use, so a story told through them reads as invented.
-- **Touch on a phone uses `cursor={{ style: 'touch' }}`,** never the macOS arrow. In-app responses are UIKit-quick, `cubic-bezier(0.3, 0.75, 0.1, 1)` over 0.5s; `Expand` does card-to-screen (`examples/phone-touch`).
-- **A swiped row stays in its list:** the action is the row's own back, the same height and edge to edge, revealed as the row slides off it, not a separate rounded card beside it with a gap. The list clips both, so the row never paints over a neighboring pane, and its text is cut only by that edge. Check the frame at the furthest point of the swipe at full size: it is the one people screenshot (`examples/swipe`).
-- **A swipe is a flick:** a third of the screen in about a quarter second, lifting while moving. The page is thrown on over 0.5s with `cubic-bezier(0.25, 1, 0.5, 1)` (`examples/phone-touch`).
-- **A reaction is `Bubble tapback`:** a white circle on the bubble's bottom corner, growing from the edge as the room opens on the same clock. It fades before the room closes.
-- **Dynamic Island:** animate the black shape's box and radius together, never by stretching its contents; content lives on a separate unfiltered layer and fades into place (`examples/dynamic-island`).
-- **Island timing:** 500ms underdamped growth, 380ms shrink delayed 120ms for content to clear, a press squeeze to 0.965.
-- **Island filters** (blur 2.6, alpha matrix 9 -4) belong to that geometry; filter only the black shapes. Keep the dormant circle inside the pill and inspect the contour at contact, separation and rest.
+- **사람들이 하는 곳에서 행동하세요.** 알림을 탭해 앱을 열고, 답장, 수락, 구매는 앱 안에서 일어납니다. 길게 누르기 액션은 쓰는 사람이 적은 바로 가기이므로, 그것을 통한 스토리는 지어낸 것으로 읽힙니다.
+- **휴대폰의 터치는 `cursor={{ style: 'touch' }}`를 씁니다.** macOS 화살은 안 됩니다. 앱 안 응답은 UIKit만큼 빠릅니다. 0.5초의 `cubic-bezier(0.3, 0.75, 0.1, 1)`. `Expand`가 카드에서 화면으로 갑니다 (`examples/phone-touch`).
+- **스와이프된 행은 목록에 남습니다.** 액션은 행 자신의 뒤이고, 같은 높이로 가장자리까지이며, 옆에 간격이 있는 별도 둥근 카드가 아니라 행이 그 위로 미끄러지며 드러납니다. 목록이 둘 다 클립하므로 행이 이웃 창 위에 칠하지 않고, 텍스트는 그 가장자리에만 잘립니다. 전체 크기에서 스와이프의 가장 먼 지점 프레임을 확인하세요. 사람들이 스크린샷하는 것입니다 (`examples/swipe`).
+- **스와이프는 튕김입니다.** 약 1/4초에 화면의 1/3, 움직이는 동안 뗍니다. 페이지는 0.5초에 걸쳐 `cubic-bezier(0.25, 1, 0.5, 1)`로 던져집니다 (`examples/phone-touch`).
+- **반응은 `Bubble tapback`입니다.** 버블 아래 모서리의 흰 원, 같은 시계에 공간이 열리며 가장자리에서 자랍니다. 공간이 닫히기 전에 페이드합니다.
+- **Dynamic Island:** 검은 형태의 상자와 반지름을 함께 애니메이션하고, 콘텐츠를 늘려 하지 마세요. 콘텐츠는 필터되지 않은 별도 레이어에 있고 제자리로 페이드합니다 (`examples/dynamic-island`).
+- **아일랜드 타이밍:** 500ms의 부족 감쇠 성장, 콘텐츠가 비워지도록 120ms 지연된 380ms 축소, 0.965까지의 누르기 압축.
+- **아일랜드 필터**(블러 2.6, 알파 행렬 9 -4)는 그 지오메트리에 속합니다. 검은 형태만 필터하세요. 잠든 원을 알약 안에 두고 접촉, 분리, 휴식의 윤곽을 살펴보세요.
 
-## Recipes
+## 레시피
 
-- **A page swap inside one window** keeps the chrome and crossfades only the body (200ms, an 8px rise); tabs move with it; never slide whole pages sideways.
-- **A stepped demo keeps its object across steps;** swapping a Stage's script is a cut. An outside-switched variant gets one stable `play="once"` script; verify skip, reverse and mid-play change.
-- **Replay remounts at the story boundary** with a key; never changing keys for ordinary state, text or variant changes (`kit.md`, Explicit replay).
-- **A look sets tokens only;** the scene keeps the product's own motion habits and real timing (`looks.md`).
-- **Annotations** (leaders, connectors, flows, moving targets) have their own rules in `annotations.md`; `choreography.md` walks one content change end to end.
-- **Motion on a page of demos or in a grid has one place to lead** (`bento.md`, rule 11).
+- **한 창 안의 페이지 교체**는 크롬을 유지하고 본문만 크로스페이드합니다(200ms, 8px 상승). 탭은 함께 움직입니다. 전체 페이지를 옆으로 미끄러뜨리지 마세요.
+- **단계 데모는 단계에 걸쳐 객체를 유지합니다.** Stage의 스크립트를 바꾸는 것은 컷입니다. 밖에서 전환되는 변형은 안정된 `play="once"` 스크립트 하나를 얻습니다. 건너뛰기, 역방향, 재생 중 변경을 검증하세요.
+- **다시 재생은 스토리 경계에서 키로 다시 마운트합니다.** 보통 상태, 텍스트, 변형 변경을 위해 키를 바꾸지 마세요 (`kit.md`, 명시적 다시 재생).
+- **룩은 토큰만 설정합니다.** 장면은 제품 자신의 모션 습관과 실제 타이밍을 유지합니다 (`looks.md`).
+- **주석**(리더, 커넥터, 흐름, 움직이는 타겟)은 `annotations.md`에 자체 규칙이 있습니다. `choreography.md`는 콘텐츠 변화 하나를 끝까지 따라갑니다.
+- **데모 페이지나 그리드의 모션에는 이끄는 곳이 하나입니다** (`bento.md`, 규칙 11).
