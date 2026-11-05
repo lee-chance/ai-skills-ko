@@ -1,96 +1,96 @@
-# Writing docs pages
+# 문서 페이지 작성하기
 
-Every skill in `engineering/` and `productivity/` has a human-facing **docs page** at `docs/<bucket>/<skill-name>.md`. The docs tree mirrors those two bucket folders under `skills/`. It is published at `https://aihero.dev/skills-<skill-name>`; the URL is always `skills-<skill-name>` regardless of bucket, so the docs path is repo organisation only. The page is not the skill and not a copy of `SKILL.md`. Only these two buckets are promoted; the rest (`misc/`, `in-progress/`, `deprecated/`) ship no docs page.
+`engineering/`과 `productivity/`의 모든 스킬은 `docs/<bucket>/<skill-name>.md`에 사람 대면 **문서 페이지**가 있습니다. 문서 트리는 `skills/` 아래의 이 두 버킷 폴더를 미러링합니다. `https://aihero.dev/skills-<skill-name>`에 게시됩니다. URL은 버킷에 관계없이 항상 `skills-<skill-name>`이므로 문서 경로는 저장소 구성일 뿐입니다. 페이지는 스킬이 아니며 `SKILL.md`의 사본도 아닙니다. 이 두 버킷만 홍보됩니다. 나머지(`misc/`, `in-progress/`, `deprecated/`)는 문서 페이지를 제공하지 않습니다.
 
-Most of these skills are **user-invoked**: the agent will never fire them for you, so *you* are the index that has to remember they exist and when to reach for them. That memory is **cognitive load**. The job of a docs page is to relieve it: to orient one reader around one skill so they can hold it in their head, know when to reach for it, and see where it sits in the system. The pages are collectively a distributed router; each is a node.
+이러한 스킬의 대부분은 **사용자 호출**입니다: 에이전트가 여러분을 위해 절대 발동하지 않으므로, *여러분*이 그들이 존재한다는 것과 언제 도달해야 하는지 기억해야 하는 인덱스입니다. 그 기억은 **인지 부하**입니다. 문서 페이지의 역할은 그것을 완화하는 것입니다: 한 독자를 하나의 스킬 주위에서 오리엔테이션하여 그들이 머리에 담고, 언제 도달해야 하는지 알고, 시스템에서 어디에 있는지 볼 수 있도록 합니다. 페이지들은 집합적으로 분산 라우터입니다. 각각은 노드입니다.
 
-Act whenever a promoted skill is added, renamed, or has its behaviour changed: create or re-sync its docs page. A rename moves the file too (`docs/<bucket>/<old>.md` → `docs/<bucket>/<new>.md`), because the published URL tracks the name; a skill that moves between `engineering/` and `productivity/` moves its docs file to the matching folder. Skills in `misc/`, `in-progress/`, and `deprecated/` get no page, because none of those buckets is promoted. A skill moving *out* of one of them into `engineering/` or `productivity/` gains a page; one moving the other way loses it. A promoted skill that is removed outright keeps its page as an **archived** page: leave the body as it was and open it with a blockquote notice (`> **Archived.** ...`) naming the version it was removed in and any replacement, so the published URL keeps resolving.
+홍보된 스킬이 추가, 이름 변경 또는 동작이 변경될 때마다 행동하세요: 문서 페이지를 만들거나 재동기화하세요. 이름 변경은 파일도 이동합니다(`docs/<bucket>/<old>.md` → `docs/<bucket>/<new>.md`), 게시된 URL이 이름을 추적하기 때문입니다. `engineering/`과 `productivity/` 사이를 이동하는 스킬은 문서 파일을 일치하는 폴더로 이동합니다. `misc/`, `in-progress/`, `deprecated/`의 스킬은 페이지를 얻지 못합니다. 이 버킷들 중 어느 것도 홍보되지 않기 때문입니다. 그 중 하나에서 `engineering/` 또는 `productivity/`로 이동하는 스킬은 페이지를 얻습니다. 다른 방향으로 이동하는 스킬은 페이지를 잃습니다. 완전히 제거된 홍보 스킬은 **보관된** 페이지로 페이지를 유지합니다: 본문을 그대로 두고 블록 인용 공지(`> **Archived.** ...`)로 열어 제거된 버전과 대체품을 명명하여 게시된 URL이 계속 해결되도록 합니다.
 
-Because these pages are published on `aihero.dev`, **every link is absolute**: never a repo-relative path. A link to another skill points at `https://aihero.dev/skills-<name>`; a link into the repo points at its full `https://github.com/mattpocock/skills/...` URL. A relative link that works in the repo breaks once published.
+이 페이지들은 `aihero.dev`에 게시되므로, **모든 링크는 절대 링크**입니다: 저장소 상대 경로가 아닙니다. 다른 스킬에 대한 링크는 `https://aihero.dev/skills-<name>`을 가리킵니다. 저장소로의 링크는 전체 `https://github.com/mattpocock/skills/...` URL을 가리킵니다. 저장소에서 작동하는 상대 링크는 게시되면 깨집니다.
 
-There is no H1. The published page takes its title from the slug.
+H1이 없습니다. 게시된 페이지는 슬러그에서 제목을 가져옵니다.
 
-## Page structure
+## 페이지 구조
 
-Fill the template below, keeping its order. The **fixed frame** (`## What it does`, `## When to reach for it`, `## Where it fits`) appears on every page. `## Prerequisites` and the free-form substance sections carry only what this particular skill needs; delete the rest.
+아래 템플릿을 채우고 순서를 유지하세요. **고정 프레임**(`## What it does`, `## When to reach for it`, `## Where it fits`)은 모든 페이지에 나타납니다. `## Prerequisites`와 자유 형식 본문 섹션은 이 특정 스킬이 필요로 하는 것만 담습니다. 나머지는 삭제하세요.
 
-Four sections make a page worth reading: `What it does`, `When to reach for it`, `Common questions`, `It's working if`. The first two orient the reader; the last two are where the page stops summarising the skill and starts answering the reader's own situation. Each of the last two has a bar to clear, below, but treat a page that clears neither as unfinished, not as finished-and-short.
+네 개의 섹션이 페이지를 읽을 가치가 있게 만듭니다: `What it does`, `When to reach for it`, `Common questions`, `It's working if`. 처음 두 개는 독자를 오리엔테이션합니다. 마지막 두 개는 페이지가 스킬을 요약하는 것을 멈추고 독자 자신의 상황에 답하기 시작하는 곳입니다. 마지막 두 개 각각은 아래에서 통과해야 할 기준이 있지만, 둘 다 통과하지 못한 페이지를 완료되지 않은 것으로 취급하세요. 완료되고 짧은 것이 아니라.
 
-**A page carries no install commands.** The ai-hero page template renders the install widget itself (a copy button, the single-skill command, the whole-set command, and the update line) above the body. A page that also writes them out shows the reader the same command twice, and the two copies drift: the hand-written pair on every page went stale against the widget beside it. Install wording is a property of the site, not of the page. If it needs changing, change it in ai-hero; the canonical wording lives in [the install block](./install-block.md).
+**페이지에는 설치 명령이 없습니다.** ai-hero 페이지 템플릿은 본문 위에 설치 위젯 자체(복사 버튼, 단일 스킬 명령, 전체 세트 명령, 업데이트 라인)를 렌더링합니다. 페이지가 또한 그것들을 작성하면 독자에게 같은 명령을 두 번 보여주고, 두 사본이 표류합니다: 모든 페이지의 손으로 쓴 쌍은 옆의 위젯에 대해 오래되었습니다. 설치 문구는 페이지의 속성이 아니라 사이트의 속성입니다. 변경이 필요하면 ai-hero에서 변경하세요. 정규 문구는 [설치 블록](./install-block.md)에 있습니다.
 
 <page-template>
 
 ## What it does
 
-One or two plain-language paragraphs. Lead with the skill's one-sentence job, then state the **defining constraint**: the single fact that makes this skill behave differently from the obvious default (for `to-spec`: it does not interview the user again, it synthesises what is already known). Write it as a plain declarative sentence, never a labelled aside like "The defining constraint:" or "The key thing:"; the formula reads as filler. This line is the most valuable on the page; never omit it.
+하나 또는 두 개의 평이한 언어 문단. 스킬의 한 문장 작업으로 시작한 다음 **정의 제약**을 진술하세요: 이 스킬을 명백한 기본값과 다르게 동작하게 만드는 단일 사실(`to-spec`의 경우: 사용자를 다시 인터뷰하지 않고 이미 알려진 것을 종합합니다). 평이한 선언문으로 작성하세요. "정의 제약:" 또는 "핵심 사항:"과 같은 라벨이 붙은 옆에 두지 마세요. 공식은 채우기로 읽힙니다. 이 줄은 페이지에서 가장 가치 있습니다. 절대 생략하지 마세요.
 
 ## When to reach for it
 
-How and when you reach for the skill, in two beats that are both effectively always present:
+스킬에 도달하는 방법과 시기, 두 비트로, 둘 다 사실상 항상 존재합니다:
 
-- **Invocation mode.** State whether you type it or the agent fires it. A user-invoked skill: "You invoke this by typing `/<name>`, and the agent won't reach for it on its own." A model-invoked skill: "Type `/<name>`, or the agent reaches for it automatically when a task fits."
-- **Trigger boundary.** The index entry: "reach for this when …". Where the skill is confusable with a sibling, add the other half: "for <X> instead, use [<sibling>](https://aihero.dev/skills-<sibling>)."
+- **호출 모드.** 여러분이 입력하는지 에이전트가 발동하는지 명시하세요. 사용자 호출 스킬: "여러분이 `/<name>`을 입력하여 호출하며, 에이전트는 스스로 도달하지 않습니다." 모델 호출 스킬: "`/<name>`을 입력하거나, 작업에 맞을 때 에이전트가 자동으로 도달합니다."
+- **트리거 경계.** 인덱스 항목: "... 때 이것에 도달하세요". 스킬이 형제와 혼동될 수 있는 경우, 다른 절반을 추가하세요: "<X> 대신, [<sibling>](https://aihero.dev/skills-<sibling>)를 사용하세요."
 
 ## Prerequisites
 
-Optional: include only when the skill needs something in place to be functional; omit the heading entirely otherwise. Covers: a **workspace it writes into** (a stateful skill like `grill-with-docs` writes `GLOSSARY.md` and ADRs; `teach` builds a whole directory, so say what it writes and where), **prior setup** (`triage`/`to-spec`/`to-tickets` need `setup-matt-pocock-skills` to have configured an issue tracker), or **repo-specific tooling**. A stateless skill that runs anywhere has no prerequisites, so drop the section.
+선택 사항: 스킬이 기능적이기 위해 무언가가 제자리에 있어야 할 때만 포함하세요. 그렇지 않으면 제목을 완전히 생략하세요. 포함: **작성하는 워크스페이스** (상태 저장 스킬인 `grill-with-docs`는 `GLOSSARY.md`와 ADR을 작성합니다. `teach`는 전체 디렉토리를 빌드하므로 무엇을 작성하고 어디에 작성하는지 말하세요), **사전 설정** (`triage`/`to-spec`/`to-tickets`는 `setup-matt-pocock-skills`가 이슈 트래커를 구성해야 합니다), 또는 **저장소 전용 도구**. 어디서나 실행되는 상태 비저장 스킬은 전제 조건이 없으므로 섹션을 삭제하세요.
 
-## <free-form middle>
+## <자유 형식 중간>
 
-One to three short sections, in the skill's *own vocabulary*, that make it click. Choose whatever headings fit the skill: the loop it runs, the artifact it produces, the fork it makes, the one anti-pattern it kills. There is no prescribed heading; the skills are too heterogeneous for one.
+스킬의 *자체 어휘*로, 클릭하게 만드는 하나에서 세 개의 짧은 섹션. 스킬에 맞는 제목을 선택하세요: 실행하는 루프, 생성하는 아티팩트, 만드는 포크, 죽이는 하나의 안티 패턴. 규정된 제목은 없습니다. 스킬들이 너무 이질적입니다.
 
-The single non-negotiable: **surface the skill's leading word / defining idea** (`tight` feedback loop, `deep module`, throwaway-code-answers-a-question, red-green). It pays off twice: the reader learns what the skill *is*, and learns the word they'll later think with to *reach for* it.
+단 하나의 비협상: **스킬의 선도 단어 / 정의 아이디어를 표면화하세요** (`tight` 피드백 루프, `deep module`, 일회용 코드가 질문에 답함, red-green). 두 배로 보상받습니다: 독자는 스킬이 *무엇인지* 배우고, 나중에 *도달하기 위해* 생각할 단어를 배웁니다.
 
 ## Common questions
 
-The questions readers really ask about this skill, each in bold with the answer in the lines beneath it. No sub-headings.
+독자들이 이 스킬에 대해 실제로 묻는 질문들, 각각 굵게 표시하고 아래 줄에 답변. 하위 제목 없음.
 
-An observed question always beats an invented one, so go and find them before you write any:
+관찰된 질문은 항상 발명된 질문을 이깁니다. 그래서 여러분이 쓰기 전에 가서 찾으세요:
 
-- **The wiki.** If `~/repos/matt/personal-wiki` exists on this machine, it is the richest source there is. Its `wiki/audience/` area is organised around what the audience wants, discusses, and **is confused by**: read `wiki/index.md` first for the registry of pages, then the pages bearing on this skill. Every page carries `sources:` linkbacks to the original X, Discord, GitHub, and email threads; the wiki is a secondary source, so quote the asker's own question rather than the wiki's summary of it. Skip this bullet where the directory does not exist.
-- **This repo's issues.** `gh issue list --repo mattpocock/skills --search "<skill-name>" --state all`. A question filed twice is a question the page owes an answer to.
-- **`CHANGELOG.md`.** Anything renamed, moved, or behaviourally changed generates a "where did it go?" that the page has to answer.
+- **위키.** 이 머신에 `~/repos/matt/personal-wiki`가 존재하면, 가장 풍부한 소스입니다. `wiki/audience/` 영역은 청중이 원하는 것, 논의하는 것, **혼란스러워하는 것**을 중심으로 구성됩니다: 페이지 레지스트리를 위해 먼저 `wiki/index.md`를 읽은 다음 이 스킬과 관련된 페이지들을 읽으세요. 모든 페이지는 원래 X, Discord, GitHub, 이메일 스레드로의 `sources:` 링크백을 담고 있습니다. 위키는 2차 소스이므로 위키의 요약보다는 질문자 자신의 질문을 인용하세요. 디렉토리가 존재하지 않는 경우 이 항목을 건너뛰세요.
+- **이 저장소의 이슈.** `gh issue list --repo mattpocock/skills --search "<skill-name>" --state all`. 두 번 제출된 질문은 페이지가 답해야 하는 질문입니다.
+- **`CHANGELOG.md`.** 이름 변경, 이동 또는 동작 변경된 것은 페이지가 답해야 하는 "어디로 갔나요?"를 생성합니다.
 
-Where the hunt comes up thin, the section may also carry a question a reader would plainly ask, but **the count stays honest to the evidence**. A well-discussed skill earns six; an obscure one earns one or two, or none at all. Padding a thin skill out to match a rich one is how the section fills with questions nobody has, and an invented question teaches the reader nothing.
+사냥이 빈약하게 나오면, 섹션은 독자가 평범하게 물을 질문을 담을 수도 있지만, **카운트는 증거에 정직하게 유지됩니다**. 잘 논의된 스킬은 여섯 개를 얻습니다. 모호한 스킬은 하나 또는 두 개, 또는 전혀 없습니다. 얇은 스킬을 풍부한 스킬과 맞추기 위해 채우는 것은 섹션이 아무도 가지지 않은 질문들로 채워지는 방법이며, 발명된 질문은 독자에게 아무것도 가르치지 않습니다.
 
-Order them by how often each comes up, sharpest first, and say the unflattering thing where it is true: a very long grilling session usually means the scope was too big; a model asked to write its own skill produces something verbose. Omit the heading where there is nothing worth answering.
+각각이 얼마나 자주 나타나는지에 따라 순서를 정하고, 가장 날카로운 것을 먼저 두고, 사실인 곳에서 불쾌한 것을 말하세요: 매우 긴 그릴링 세션은 보통 범위가 너무 크다는 것을 의미합니다. 자신의 스킬을 작성하라고 요청받은 모델은 장황한 것을 생성합니다. 답할 가치가 없는 곳에서는 제목을 생략하세요.
 
 ## It's working if
 
-A few bullets naming what the reader sees when the skill is doing its job. The bar on each is that the reader can check it without opening `SKILL.md`: a signal in their own work, or in the trace in front of them. "The document gets shorter as it gets better" passes; "the library section is byte-identical to `template.sh`" is a compliance check on the skill's internals wearing this section's name. Include it wherever the tells are crisp; omit the heading where they stay vague.
+스킬이 작업을 수행할 때 독자가 보는 것을 명명하는 몇 가지 항목. 각각의 기준은 독자가 `SKILL.md`를 열지 않고 확인할 수 있다는 것입니다: 자신의 작업에서의 신호 또는 앞의 추적에서. "문서가 더 나아질수록 짧아집니다"는 통과합니다. "라이브러리 섹션은 `template.sh`와 바이트 동일합니다"는 이 섹션의 이름을 입고 있는 스킬의 내부에 대한 규정 준수 확인입니다. 신호가 선명한 곳에 포함하세요. 모호한 곳에서는 제목을 생략하세요.
 
 ## Where it fits
 
-Always present. Situate the skill in the system in a sentence or two:
+항상 존재합니다. 한 문장 또는 두 문장으로 시스템에서 스킬을 위치시키세요:
 
-- **Role.** Name it: a **chain step** (`grill-with-docs → to-spec → to-tickets → implement → code-review`), a **run-once setup** (`setup-matt-pocock-skills`), **periodic maintenance** (`improve-codebase-architecture`, "every few days"), or a **reach-for-it-anytime standalone** (`diagnosing-bugs`, `prototype`, `handoff`). A standalone's map is one honest sentence, which is far better than omitting the section.
-- **Neighbours.** The one or two siblings that matter, each with a because-clause, linked absolutely.
-- **The map.** Point to [ask-matt](https://aihero.dev/skills-ask-matt), the router over the whole set, so this page stays a node and never has to redraw the graph.
+- **역할.** 이름을 지으세요: **체인 단계** (`grill-with-docs → to-spec → to-tickets → implement → code-review`), **한 번 실행 설정** (`setup-matt-pocock-skills`), **정기 유지보수** (`improve-codebase-architecture`, "며칠마다"), 또는 **언제든지 도달 가능한 독립형** (`diagnosing-bugs`, `prototype`, `handoff`). 독립형의 맵은 하나의 정직한 문장이며, 이것은 섹션을 생략하는 것보다 훨씬 낫습니다.
+- **이웃.** 중요한 하나 또는 두 개의 형제, 각각 because-절과 함께, 절대 링크됨.
+- **맵.** 전체 세트에 대한 라우터인 [ask-matt](https://aihero.dev/skills-ask-matt)를 가리키므로 이 페이지는 노드로 유지되고 그래프를 다시 그릴 필요가 없습니다.
 
 </page-template>
 
-## Conventions
+## 규칙
 
-- Explain the **why**, not the process. The page orients and situates the skill; it never reproduces the `SKILL.md` steps or template dumps: a human choosing a tool does not need the runbook.
-- **Never name the author.** The page is a technical document, not a record of who said what. "Matt says", "Matt's own answer", "his position is", a quoted reply: all of it goes. A finding from the question hunt is worth keeping; its attribution is not. State the substance as a plain claim about the skill ("the fix is a direct instruction: …", "the split comes down to session count") and drop the frame. The reader is deciding whether to use a tool; an opinion carries the same weight either way, and an attributed one dates as soon as the position moves. Quoting a *user* stays fine: "one user reported …" is evidence about the skill in the wild, and stays anonymous.
-- Use the skill's **leading words** (_seam_, _deep module_, _tracer bullet_) so the page and the skill speak one language.
-- **Use the [AI Coding Dictionary](https://www.aihero.dev/ai-coding-dictionary)'s term where one exists, and link its first use on the page.** The dictionary is the house vocabulary for AI coding: _context window_, _subagent_, _harness_, _primary source_, _agent mode_. Prefer its word over a synonym you invent. Link the first occurrence of each term to `https://www.aihero.dev/ai-coding-dictionary/<slug>` (the slug is the term lowercased with non-alphanumerics as hyphens: _context window_ → `context-window`), and leave every later occurrence unlinked. Link only where the word carries the dictionary's sense: a domain *model*, background *context* or an auth *token* is a different word that happens to match. Never link inside a heading, a code span, or an existing link, and never link a word that names a skill in this repo rather than the concept. For the full term list, read `~/repos/ai/ai-coding-dictionary/dictionary/` if it exists on this machine (one file per term, the filename *is* the term), and otherwise [mattpocock/dictionary-of-ai-coding](https://github.com/mattpocock/dictionary-of-ai-coding), which is the source of truth either way.
-- **Branches go in a table or a list, never in a paragraph.** Where the page presents a choice (two artifacts the skill can produce, four situations that trigger it, five options at a boundary), the reader is scanning for the one row that matches their situation. A paragraph makes them read all of it to find out. A short markdown table (condition in the left column, what to do in the right) or a bulleted list gives it back in one glance. This applies wherever the branch appears, most often in `## When to reach for it` and the free-form middle.
-- Keep the page itself low-load. It is documentation *about* low-cognitive-load skills; furniture (spare headings, restated links) is the thing it is arguing against.
+- **왜**를 설명하세요, 프로세스가 아니라. 페이지는 스킬을 오리엔테이션하고 위치시킵니다. `SKILL.md` 단계나 템플릿 덤프를 재생산하지 않습니다: 도구를 선택하는 인간은 런북이 필요하지 않습니다.
+- **저자를 절대 명명하지 마세요.** 페이지는 기술 문서이지, 누가 무엇을 말했는지의 기록이 아닙니다. "Matt says", "Matt's own answer", "his position is", 인용된 답변: 모두 사라집니다. 질문 사냥의 발견은 유지할 가치가 있습니다. 그 귀속은 아닙니다. 스킬에 대한 평범한 주장으로 본문을 진술하세요("수정은 직접 지시입니다: …", "분할은 세션 수로 귀결됩니다") 그리고 프레임을 삭제하세요. 독자는 도구를 사용할지 결정합니다. 의견은 어느 쪽이든 같은 무게를 가지며, 귀속된 의견은 입장이 이동하자마자 날짜가 표시됩니다. *사용자*를 인용하는 것은 괜찮습니다: "한 사용자가 보고했습니다 …"는 야생에서 스킬에 대한 증거이며, 익명으로 유지됩니다.
+- 스킬의 **선도 단어**(_seam_, _deep module_, _tracer bullet_)를 사용하여 페이지와 스킬이 하나의 언어를 말하도록 하세요.
+- **[AI Coding Dictionary](https://www.aihero.dev/ai-coding-dictionary)의 용어가 존재하는 곳에서는 사용하고, 페이지의 첫 사용을 링크하세요.** 딕셔너리는 AI 코딩을 위한 하우스 어휘입니다: _context window_, _subagent_, _harness_, _primary source_, _agent mode_. 여러분이 발명한 동의어보다 그 단어를 선호하세요. 각 용어의 첫 번째 발생을 `https://www.aihero.dev/ai-coding-dictionary/<slug>`에 링크하세요(슬러그는 소문자 용어이며 비영숫자는 하이픈입니다: _context window_ → `context-window`), 그리고 이후의 모든 발생은 링크하지 마세요. 단어가 딕셔너리의 의미를 담을 때만 링크하세요: 도메인 *model*, 배경 *context* 또는 인증 *token*은 일치하는 다른 단어입니다. 제목, 코드 스팬 또는 기존 링크 내부에서 절대 링크하지 마세요. 그리고 개념보다는 이 저장소의 스킬을 명명하는 단어를 절대 링크하지 마세요. 전체 용어 목록은, 이 머신에 `~/repos/ai/ai-coding-dictionary/dictionary/`가 존재하면 읽으세요(용어당 하나의 파일, 파일 이름이 *용어*입니다), 그렇지 않으면 [mattpocock/dictionary-of-ai-coding](https://github.com/mattpocock/dictionary-of-ai-coding)를 읽으세요. 어느 쪽이든 진실의 원천입니다.
+- **분기는 테이블이나 리스트로, 절대 문단이 아닙니다.** 페이지가 선택을 제시하는 곳(스킬이 생성할 수 있는 두 아티팩트, 트리거하는 네 가지 상황, 경계에서의 다섯 가지 옵션), 독자는 자신의 상황과 일치하는 하나의 행을 스캔합니다. 문단은 그들이 찾기 위해 모두 읽게 만듭니다. 짧은 마크다운 테이블(왼쪽 열의 조건, 오른쪽에 할 일) 또는 글머리 기호 목록은 한 눈에 돌려줍니다. 이것은 분기가 나타나는 곳 어디서나 적용되며, 가장 자주 `## When to reach for it`과 자유 형식 중간에 있습니다.
+- 페이지 자체를 낮은 부하로 유지하세요. 낮은 인지 부하 스킬에 *대한* 문서입니다. 가구(여분의 제목, 다시 진술된 링크)는 반대하는 것입니다.
 
-## Done when
+## 완료 조건
 
-- The page exists at `docs/<bucket>/<name>.md`, and no stale page survives a rename or bucket move.
-- The page carries no source link and writes no install command of its own.
-- `## What it does` states the defining constraint, as plain prose rather than a labelled aside.
-- The page names no author and quotes no author: every claim stands on its own.
-- `## When to reach for it` states invocation mode and the trigger boundary.
-- `## Where it fits` names the role and links to `ask-matt`.
-- A prerequisite (workspace, prior setup, tooling) is stated where one exists, and the section is absent where none does.
-- The middle surfaces the leading word.
-- Every AI Coding Dictionary term the page uses is spelt the dictionary's way, and its first use (and only its first use) links to the dictionary entry.
-- Every multi-way branch is a table or a list, not a paragraph the reader has to read in full.
-- The hunt for real questions ran (the wiki, the issues, the changelog), and `## Common questions` is sized to what it found, not padded to match a richer skill's page.
-- Every `## It's working if` bullet is checkable without opening `SKILL.md`.
-- The sections appear in the template's order.
-- Every link is absolute, and every one resolves.
+- 페이지가 `docs/<bucket>/<name>.md`에 존재하며, 이름 변경 또는 버킷 이동에서 오래된 페이지가 살아남지 않습니다.
+- 페이지는 소스 링크를 담지 않으며 자체 설치 명령을 작성하지 않습니다.
+- `## What it does`는 라벨이 붙은 옆이 아니라 평범한 산문으로 정의 제약을 진술합니다.
+- 페이지는 저자를 명명하지 않으며 저자를 인용하지 않습니다: 모든 주장은 스스로 서 있습니다.
+- `## When to reach for it`은 호출 모드와 트리거 경계를 진술합니다.
+- `## Where it fits`는 역할을 명명하고 `ask-matt`에 링크합니다.
+- 전제 조건(워크스페이스, 사전 설정, 도구)이 존재하는 곳에서 진술되며, 없는 곳에서는 섹션이 없습니다.
+- 중간은 선도 단어를 표면화합니다.
+- 페이지가 사용하는 모든 AI Coding Dictionary 용어는 딕셔너리의 방식으로 철자되며, 첫 사용(그리고 첫 사용만)은 딕셔너리 항목에 링크됩니다.
+- 모든 다방향 분기는 테이블 또는 리스트이며, 독자가 전체를 읽어야 하는 문단이 아닙니다.
+- 실제 질문에 대한 사냥이 실행되었으며(위키, 이슈, 체인지로그), `## Common questions`는 찾은 것에 크기가 맞춰져 있으며, 더 풍부한 스킬의 페이지와 맞추기 위해 채워지지 않았습니다.
+- 모든 `## It's working if` 항목은 `SKILL.md`를 열지 않고 확인 가능합니다.
+- 섹션들은 템플릿의 순서로 나타납니다.
+- 모든 링크는 절대적이며, 모든 링크는 해결됩니다.

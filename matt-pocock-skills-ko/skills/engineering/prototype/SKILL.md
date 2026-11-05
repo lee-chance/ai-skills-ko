@@ -1,26 +1,26 @@
 ---
 name: prototype
-description: Build a throwaway prototype to answer a design question. Use when the user wants to sanity-check whether a state model or logic feels right, or explore what a UI should look like.
+description: "설계 질문에 답하기 위해 일회용 프로토타입을 빌드합니다. 사용자가 상태 모델이나 로직이 올바른지 확인하거나 UI가 어떻게 보여야 하는지 탐색하고 싶을 때 사용하세요."
 ---
 
 # Prototype
 
-A prototype is **throwaway code that answers a question**. The question decides the shape.
+프로토타입은 **질문에 답하는 일회용 코드**입니다. 질문이 형태를 결정합니다.
 
-## Pick a branch
+## 분기 선택
 
-Identify which question is being answered, using the user's prompt, the surrounding code, or by asking if the user is around:
+사용자의 프롬프트, 주변 코드를 사용하거나 사용자가 있으면 물어봄으로써 어떤 질문에 답하고 있는지 식별하세요:
 
-- **"Does this logic / state model feel right?"** → [LOGIC.md](LOGIC.md). Build a single shareable HTML file (free-play buttons plus tabbed guided walkthroughs) that pushes the state machine through cases that are hard to reason about on paper, and that a non-developer can drive.
-- **"What should this look like?"** → [UI.md](UI.md). Generate several radically different UI variations on a single route, switchable via a URL search param and a floating bottom bar.
+- **"이 로직 / 상태 모델이 올바른가요?"** → [LOGIC.md](LOGIC.md). 종이에서 추론하기 어려운 케이스를 통해 상태 머신을 밀어붙이고 비개발자도 구동할 수 있는 단일 공유 가능 HTML 파일(자유 플레이 버튼과 탭형 가이드 워크스루)을 빌드합니다.
+- **"이것이 어떻게 보여야 하나요?"** → [UI.md](UI.md). URL 검색 매개변수와 플로팅 하단 바를 통해 전환 가능한 여러 급진적으로 다른 UI 변형을 단일 경로에 생성합니다.
 
-The two branches produce very different artifacts, so getting this wrong wastes the whole prototype. If the question is genuinely ambiguous and the user isn't reachable, default to whichever branch better matches the surrounding code (a backend module → logic; a page or component → UI) and state the assumption at the top of the prototype.
+두 분기는 매우 다른 아티팩트를 생성하므로, 이것을 잘못 이해하면 전체 프로토타입을 낭비합니다. 질문이 진정으로 모호하고 사용자에게 도달할 수 없으면, 주변 코드와 더 잘 맞는 분기로 기본 설정하고(백엔드 모듈 → 로직; 페이지 또는 컴포넌트 → UI) 프로토타입 상단에 가정을 진술하세요.
 
-## Rules that apply to both
+## 둘 다 적용되는 규칙
 
-1. **Throwaway from day one, and clearly marked as such.** Locate the prototype code close to where it will actually be used (next to the module or page it's prototyping for) so context is obvious, but name it so a casual reader can see it's a prototype, not production. For throwaway UI routes, obey whatever routing convention the project already uses; don't invent a new top-level structure.
-2. **Trivial to run.** A UI prototype starts from one command in the project's task runner: `pnpm <name>`, `python <path>`, `bun <path>`, etc. A logic demo is a single HTML file the user double-clicks. Either way, no thinking required to start it.
-3. **No persistence by default.** State lives in memory. Persistence is the thing the prototype is _checking_, not something it should depend on. If the question explicitly involves a database, hit a scratch DB or a local file with a clear "PROTOTYPE, wipe me" name.
-4. **Skip the polish.** No tests, no error handling beyond what makes the prototype _runnable_, no abstractions. The point is to learn something fast.
-5. **Surface the state.** After every action (logic) or on every variant switch (UI), print or render the full relevant state so the user can see what changed.
-6. **Capture it when done.** Fold any validated decision into the real code, then capture the prototype itself as a **primary source**: commit it to a throwaway branch, out of main, and leave a context pointer to that branch on the implementation issue. Capture the answer too (the verdict and the question it settled) in the issue or a commit. The main branch keeps only the validated decision.
+1. **첫날부터 일회용이며 명확히 표시됨.** 프로토타입 코드를 실제로 사용될 곳 가까이(프로토타이핑하는 모듈이나 페이지 옆)에 배치하여 컨텍스트가 명확하도록 하되, 캐주얼 독자가 프로토타입임을 볼 수 있도록 이름을 지으세요. 프로덕션이 아닙니다. 일회용 UI 경로의 경우, 프로젝트가 이미 사용하는 라우팅 관례를 따르세요. 새로운 최상위 구조를 발명하지 마세요.
+2. **실행이 사소함.** UI 프로토타입은 프로젝트의 작업 러너에서 하나의 명령으로 시작됩니다: `pnpm <name>`, `python <path>`, `bun <path>` 등. 로직 데모는 사용자가 더블 클릭하는 단일 HTML 파일입니다. 어느 쪽이든, 시작하는 데 생각이 필요하지 않습니다.
+3. **기본적으로 지속성 없음.** 상태는 메모리에 있습니다. 지속성은 프로토타입이 _확인하는_ 것이지, 의존해야 하는 것이 아닙니다. 질문이 명시적으로 데이터베이스를 포함하는 경우, 명확한 "PROTOTYPE, wipe me" 이름으로 스크래치 DB 또는 로컬 파일을 치세요.
+4. **광택 건너뛰기.** 테스트 없음, 프로토타입을 _실행 가능_하게 만드는 것 이상의 오류 처리 없음, 추상화 없음. 요점은 빠르게 무언가를 배우는 것입니다.
+5. **상태 표면화.** 모든 액션(로직) 후 또는 모든 변형 전환(UI)에서, 전체 관련 상태를 출력하거나 렌더링하여 사용자가 무엇이 변경되었는지 볼 수 있도록 합니다.
+6. **완료되면 캡처.** 검증된 결정을 실제 코드로 접고, 프로토타입 자체를 **주요 소스**로 캡처하세요: main에서 벗어나 일회용 브랜치에 커밋하고, 구현 이슈에 해당 브랜치로의 컨텍스트 포인터를 남기세요. 답변도 캡처하세요(평결과 그것이 해결한 질문)를 이슈나 커밋에. main 브랜치는 검증된 결정만 유지합니다.

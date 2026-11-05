@@ -1,37 +1,37 @@
 # Deepening
 
-How to deepen a cluster of shallow modules safely, given its dependencies. Assumes the vocabulary in [SKILL.md](SKILL.md): **module**, **interface**, **seam**, **adapter**.
+의존성을 고려하여 얕은 모듈 클러스터를 안전하게 깊게 만드는 방법. [SKILL.md](SKILL.md)의 어휘를 가정합니다: **모듈**, **인터페이스**, **심**, **어댑터**.
 
-## Dependency categories
+## 의존성 카테고리
 
-When assessing a candidate for deepening, classify its dependencies. The category determines how the deepened module is tested across its seam.
+deepening 후보를 평가할 때, 의존성을 분류하세요. 카테고리는 깊어진 모듈이 심을 가로질러 어떻게 테스트되는지를 결정합니다.
 
 ### 1. In-process
 
-Pure computation, in-memory state, no I/O. Always deepenable: merge the modules and test through the new interface directly. No adapter needed.
+순수 계산, 메모리 내 상태, I/O 없음. 항상 deepenable: 모듈을 병합하고 새 인터페이스를 통해 직접 테스트하세요. 어댑터가 필요하지 않습니다.
 
 ### 2. Local-substitutable
 
-Dependencies that have local test stand-ins (PGLite for Postgres, in-memory filesystem). Deepenable if the stand-in exists. The deepened module is tested with the stand-in running in the test suite. The seam is internal; no port at the module's external interface.
+로컬 테스트 대역이 있는 의존성(Postgres용 PGLite, 메모리 내 파일시스템). 대역이 존재하면 deepenable. 깊어진 모듈은 테스트 스위트에서 실행되는 대역으로 테스트됩니다. 심은 내부적입니다; 모듈의 외부 인터페이스에 포트가 없습니다.
 
 ### 3. Remote but owned (Ports & Adapters)
 
-Your own services across a network boundary (microservices, internal APIs). Define a **port** (interface) at the seam. The deep module owns the logic; the transport is injected as an **adapter**. Tests use an in-memory adapter. Production uses an HTTP/gRPC/queue adapter.
+네트워크 경계를 넘는 자체 서비스(마이크로서비스, 내부 API). 심에 **포트**(인터페이스)를 정의하세요. 깊은 모듈이 로직을 소유합니다; 전송은 **어댑터**로 주입됩니다. 테스트는 메모리 내 어댑터를 사용합니다. 프로덕션은 HTTP/gRPC/큐 어댑터를 사용합니다.
 
-Recommendation shape: *"Define a port at the seam, implement an HTTP adapter for production and an in-memory adapter for testing, so the logic sits in one deep module even though it's deployed across a network."*
+권장사항 형태: *"심에 포트를 정의하고, 프로덕션을 위한 HTTP 어댑터와 테스트를 위한 메모리 내 어댑터를 구현하여, 네트워크를 통해 배포되더라도 로직이 하나의 깊은 모듈에 있도록 하세요."*
 
 ### 4. True external (Mock)
 
-Third-party services (Stripe, Twilio, etc.) you don't control. The deepened module takes the external dependency as an injected port; tests provide a mock adapter.
+제어할 수 없는 서드파티 서비스(Stripe, Twilio 등). 깊어진 모듈은 외부 의존성을 주입된 포트로 받습니다; 테스트는 모의 어댑터를 제공합니다.
 
-## Seam discipline
+## 심 규율
 
-- **One adapter means a hypothetical seam. Two adapters means a real one.** Don't introduce a port unless at least two adapters are justified (typically production + test). A single-adapter seam is just indirection.
-- **Internal seams vs external seams.** A deep module can have internal seams (private to its implementation, used by its own tests) as well as the external seam at its interface. Don't expose internal seams through the interface just because tests use them.
+- **어댑터 하나는 가상의 심을 의미합니다. 어댑터 둘은 진짜를 의미합니다.** 최소한 두 개의 어댑터가 정당화되지 않는 한(일반적으로 프로덕션 + 테스트) 포트를 도입하지 마세요. 단일 어댑터 심은 그냥 간접 참조입니다.
+- **내부 심 대 외부 심.** 깊은 모듈은 인터페이스의 외부 심뿐만 아니라 내부 심(구현에 비공개, 자체 테스트에서 사용)을 가질 수 있습니다. 테스트가 사용한다고 해서 인터페이스를 통해 내부 심을 노출하지 마세요.
 
-## Testing strategy: replace, don't layer
+## 테스팅 전략: 레이어가 아니라 교체
 
-- Old unit tests on shallow modules become waste once tests at the deepened module's interface exist; delete them.
-- Write new tests at the deepened module's interface. The **interface is the test surface**.
-- Tests assert on observable outcomes through the interface, not internal state.
-- Tests should survive internal refactors, since they describe behaviour, not implementation. If a test has to change when the implementation changes, it's testing past the interface.
+- 얕은 모듈의 이전 단위 테스트는 깊어진 모듈의 인터페이스에 테스트가 존재하면 낭비가 됩니다; 삭제하세요.
+- 깊어진 모듈의 인터페이스에 새 테스트를 작성하세요. **인터페이스가 테스트 표면입니다**.
+- 테스트는 내부 상태가 아니라 인터페이스를 통한 관찰 가능한 결과를 어서트합니다.
+- 테스트는 동작을 설명하지 구현을 설명하지 않으므로, 내부 리팩토링에서 살아남아야 합니다. 구현이 변경될 때 테스트가 변경되어야 한다면, 인터페이스를 넘어서 테스트하고 있는 것입니다.

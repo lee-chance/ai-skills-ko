@@ -1,16 +1,16 @@
 ---
 name: handoff
-description: Compact the current conversation into a handoff document for another agent to pick up.
-argument-hint: "What will the next session be used for?"
+description: "다른 에이전트가 받아들일 수 있도록 현재 대화를 핸드오프 문서로 압축합니다."
+argument-hint: "다음 세션은 무엇을 위해 사용될 것인가요?"
 disable-model-invocation: true
 ---
 
-Write a handoff document summarising the current conversation so a fresh agent can continue the work. Save to the temporary directory of the user's OS (`$TMPDIR`, else `/tmp`; `%TEMP%` on Windows) - not the current workspace.
+현재 대화를 요약하는 핸드오프 문서를 작성하여 새로운 에이전트가 작업을 계속할 수 있도록 합니다. 사용자 OS의 임시 디렉토리(`$TMPDIR`, 없으면 `/tmp`; Windows에서는 `%TEMP%`)에 저장하세요 - 현재 워크스페이스가 아닙니다.
 
-Include a "suggested skills" section in the document, naming which skills the next agent should call the Skill tool for.
+문서에 "suggested skills" 섹션을 포함하여, 다음 에이전트가 Skill 도구를 호출해야 하는 스킬을 명명하세요.
 
-Do not duplicate content already captured in other artifacts (specs, plans, ADRs, issues, commits, diffs). Reference them by path or URL instead.
+다른 아티팩트(스펙, 계획, ADR, 이슈, 커밋, diff)에 이미 캡처된 콘텐츠를 복제하지 마세요. 대신 경로나 URL로 참조하세요.
 
-Redact any sensitive information, such as API keys, passwords, or personally identifiable information.
+API 키, 암호 또는 개인 식별 정보와 같은 민감한 정보를 모두 삭제하세요.
 
-If the user passed arguments, treat them as a description of what the next session will focus on and tailor the doc accordingly.
+사용자가 인수를 전달한 경우, 다음 세션이 집중할 것에 대한 설명으로 취급하고 그에 맞게 문서를 조정하세요.

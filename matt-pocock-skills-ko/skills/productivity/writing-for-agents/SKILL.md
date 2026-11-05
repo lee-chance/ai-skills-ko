@@ -1,81 +1,81 @@
 ---
 name: writing-for-agents
-description: Writing documents for agents. Use when creating or editing skills, or modifying AGENTS.md or CLAUDE.md.
+description: "에이전트를 위한 문서 작성. 스킬을 생성 또는 편집하거나, AGENTS.md 또는 CLAUDE.md를 수정할 때 사용하세요."
 ---
 
-Reference for writing any document an agent consumes: a skill, an `AGENTS.md` / `CLAUDE.md`, a doc reached by a pointer. The packaging differs; the writing does not: the same levers make each one predictable, since the agent takes the same _process_ every run rather than producing the same output.
+에이전트가 소비하는 모든 문서를 작성하기 위한 참조: 스킬, `AGENTS.md` / `CLAUDE.md`, 포인터가 도달하는 문서. 패키징은 다릅니다. 작성은 그렇지 않습니다: 에이전트가 같은 출력을 생성하는 대신 매 실행마다 같은 _프로세스_를 취하므로, 같은 레버가 각각을 예측 가능하게 만듭니다.
 
-When the document you're writing is a skill, read [`SKILL-MECHANICS.md`](SKILL-MECHANICS.md) for frontmatter, invocation choice, and router skills.
+작성하는 문서가 스킬이면, frontmatter, 호출 선택, 라우터 스킬을 위해 [`SKILL-MECHANICS.md`](SKILL-MECHANICS.md)를 읽으세요.
 
-## Context pointers
+## 컨텍스트 포인터
 
-A **context pointer** is a reference held in the agent's context that names some out-of-context material and encodes the condition for reaching it. A skill's description is one; a line in `AGENTS.md` naming a doc is the same object. The pointer's _wording_, not its target, decides when the agent reaches the material, and how reliably. A must-have target behind a weakly worded pointer is a variance bug: sharpen the wording first, and inline the material only if sharpening fails.
+**컨텍스트 포인터**는 일부 컨텍스트 외부 자료를 명명하고 그것에 도달하기 위한 조건을 인코딩하는 에이전트 컨텍스트에 보유된 참조입니다. 스킬의 description이 하나입니다. `AGENTS.md`에서 문서를 명명하는 줄은 같은 객체입니다. 대상이 아니라 포인터의 _표현_이 에이전트가 자료에 도달하는 시기와 얼마나 신뢰할 수 있는지를 결정합니다. 약하게 표현된 포인터 뒤의 필수 대상은 분산 버그입니다: 먼저 표현을 다듬고, 다듬기가 실패할 때만 자료를 인라인하세요.
 
-A pointer does two jobs: state what the material is, and list the **branches** that should trigger reaching it (a branch is a distinct case the document handles, so different runs take different paths through it). Every word of an always-loaded pointer costs on every turn, so it earns even harder pruning than the body:
+포인터는 두 가지 일을 합니다: 자료가 무엇인지 진술하고, 도달을 트리거해야 하는 **분기**를 나열합니다(분기는 문서가 처리하는 고유한 케이스이므로, 다른 실행은 그것을 통해 다른 경로를 취합니다). 항상 로드되는 포인터의 모든 단어는 매 턴마다 비용이 들므로, 본문보다 훨씬 더 엄격한 가지치기를 얻습니다:
 
-- **Front-load the leading word**: the pointer is where it does its triggering work.
-- **One trigger per branch.** Synonyms that rename a single branch are one branch written twice; collapse them and keep only genuinely distinct branches.
-- **Cut identity the body already carries.**
+- **선행 단어를 앞에 두세요**: 포인터는 트리거 작업을 수행하는 곳입니다.
+- **분기당 하나의 트리거.** 단일 분기를 이름 변경하는 동의어는 두 번 작성된 하나의 분기입니다. 그것들을 축소하고 진정으로 고유한 분기만 유지하세요.
+- **본문이 이미 담고 있는 신원을 자르세요.**
 
-## The two loads
+## 두 로드
 
-Every document and pointer you add spends one of two budgets:
+추가하는 모든 문서와 포인터는 두 예산 중 하나를 지출합니다:
 
-- **Context load** is the cost of always-loaded material on the agent's window: an `AGENTS.md` line, a skill description, anything sitting in context every turn, spending tokens and attention whether or not it fires.
-- **Cognitive load** is the cost on the human: which documents exist and when to reach for each. The human is the index. Not a cost to minimise: it is the price of human agency; spend it where human judgement matters, remove it where it does not.
+- **컨텍스트 로드**는 에이전트 창의 항상 로드되는 자료 비용입니다: `AGENTS.md` 줄, 스킬 description, 매 턴마다 컨텍스트에 앉아 있는 모든 것, 발화하든 안 하든 토큰과 주의를 지출합니다.
+- **인지 로드**는 인간에 대한 비용입니다: 어떤 문서가 존재하고 언제 각각에 도달하는지. 인간이 인덱스입니다. 최소화할 비용이 아닙니다: 그것은 인간 에이전시의 가격입니다. 인간 판단이 중요한 곳에 지출하고, 그렇지 않은 곳에서 제거하세요.
 
-Material reached only through a pointer escapes context load at the price of the pointer's own line; material with no pointer at all rides entirely on cognitive load.
+포인터를 통해서만 도달하는 자료는 포인터 자체 줄의 가격으로 컨텍스트 로드를 벗어납니다. 포인터가 전혀 없는 자료는 전적으로 인지 로드에 타고 있습니다.
 
-## Information hierarchy
+## 정보 계층
 
-A document is built from two content types: **steps** (the ordered actions the agent performs) and **reference** (definitions, rules, facts consulted on demand). The two mix freely: all steps (a recipe), all reference (a review's rules, this skill), or both. The core decision is where each piece sits on the **information hierarchy**, a ladder ranked by how immediately the agent needs the material:
+문서는 두 콘텐츠 유형에서 빌드됩니다: **단계**(에이전트가 수행하는 순서가 지정된 행동)와 **참조**(정의, 규칙, 온디맨드로 참조되는 사실). 두 개는 자유롭게 혼합됩니다: 모든 단계(레시피), 모든 참조(검토 규칙, 이 스킬), 또는 둘 다. 핵심 결정은 각 조각이 **정보 계층**의 어디에 앉는지입니다. 에이전트가 자료를 얼마나 즉시 필요로 하는지에 따라 순위가 매겨진 사다리:
 
-1. **In-file step** is the primary tier: what the agent does, in order.
-2. **In-file reference** is consulted on demand. Often a legitimately flat peer-set (every rule of a review on one rung), which is a fine arrangement, not a smell.
-3. **Disclosed reference** is pushed out into a separate file, reached by a context pointer, loaded only when the pointer fires. Spans a sibling file in the same folder through fully external reference that lives anywhere and any document can point at.
+1. **파일 내 단계**는 주요 계층입니다: 에이전트가 순서대로 하는 것.
+2. **파일 내 참조**는 온디맨드로 참조됩니다. 종종 정당하게 평평한 피어 세트(한 단계의 검토의 모든 규칙)이며, 좋은 배열이고, 냄새가 아닙니다.
+3. **공개된 참조**는 별도의 파일로 밀어내지고, 컨텍스트 포인터가 도달하며, 포인터가 발화할 때만 로드됩니다. 같은 폴더의 형제 파일을 통해 모든 곳에 살고 모든 문서가 가리킬 수 있는 완전히 외부 참조에 걸쳐 있습니다.
 
-Push too little down and the top bloats; push too much and you hide material the agent actually needs. That tension is the whole decision.
+너무 적게 밀어내면 상단이 부풀어 오릅니다. 너무 많이 밀어내면 에이전트가 실제로 필요한 자료를 숨깁니다. 그 긴장이 전체 결정입니다.
 
-**Progressive disclosure** is the move down the ladder (out of the main file and behind a pointer) so the top stays legible. Not primarily a token optimisation: it is how the hierarchy is protected. Branching is the cleanest disclosure test: inline what every branch needs, and push behind a pointer what only some branches reach. When a document has steps, in-file reference that should be disclosed buries them and turns attending to them into a coin-flip: a variance lever, not just a legibility one.
+**점진적 공개**는 사다리를 내려가는 이동입니다(메인 파일 밖으로 포인터 뒤로) 그래서 상단이 읽기 쉽게 남아 있습니다. 주로 토큰 최적화가 아닙니다: 그것은 계층이 보호되는 방법입니다. 분기는 가장 깨끗한 공개 테스트입니다: 모든 분기가 필요로 하는 것을 인라인하고, 일부 분기만 도달하는 것을 포인터 뒤로 밀어냅니다. 문서가 단계를 가질 때, 공개되어야 하는 파일 내 참조가 그것들을 묻고 그것들에 참석하는 것을 동전 던지기로 전환합니다: 분산 레버이며, 단지 읽기 쉬움 레버가 아닙니다.
 
-**Co-location** is the within-file companion: where the ladder decides _how far down_ a piece sits, co-location decides _what sits beside it_ once there. Keep a concept's definition, rules, and caveats under one heading rather than scattered, so reading one part brings its neighbours with it. The test: the document should read like documentation written for the agent. Grouped material reads that way; scattered material does not. (Distinct from duplication: that repeats one meaning in two places; scattering fragments one meaning across many.)
+**공동 위치**는 파일 내 동반자입니다: 사다리가 조각이 _얼마나 내려가는지_ 결정하는 곳에서, 공동 위치는 일단 거기에 _무엇이 그것 옆에 앉는지_ 결정합니다. 개념의 정의, 규칙, 주의사항을 흩어지는 대신 하나의 제목 아래에 유지하여, 한 부분을 읽으면 그것의 이웃을 가져옵니다. 테스트: 문서는 에이전트를 위해 작성된 문서처럼 읽혀야 합니다. 그룹화된 자료는 그렇게 읽힙니다. 흩어진 자료는 그렇지 않습니다. (중복과 구별됨: 그것은 두 곳에서 하나의 의미를 반복합니다. 흩어짐은 하나의 의미를 많은 곳에 걸쳐 조각냅니다.)
 
-**Sprawl** is the failure mode here: a document simply too long, even when every line is live and unique. Attention thins across the excess, and every extra line is one more to keep relevant. The cure is the ladder: disclose reference behind pointers, and split by branch or sequence so each path carries only what it needs.
+**확산**은 여기서 실패 모드입니다: 모든 줄이 라이브이고 고유해도, 문서가 단순히 너무 깁니다. 주의가 과잉을 가로질러 얇아지고, 모든 추가 줄은 관련성을 유지할 하나 더입니다. 치료는 사다리입니다: 참조를 포인터 뒤로 공개하고, 분기 또는 시퀀스로 분할하여 각 경로가 필요한 것만 담도록 합니다.
 
-## Steps and completion criteria
+## 단계와 완료 기준
 
-Every step ends on a **completion criterion**, the condition that tells the agent the work is done. Two properties make it a lever:
+모든 단계는 **완료 기준**으로 끝납니다. 에이전트에게 작업이 완료되었음을 알려주는 조건. 두 속성이 그것을 레버로 만듭니다:
 
-- **Clarity**: can the agent tell done from not-done? A vague bound ("understanding reached") invites **premature completion**: ending the step before it is genuinely done, attention slipping to _being done_. The visible steps still ahead (the **post-completion steps**) supply the pull; the criterion's clarity is the resistance. Defend in order: **sharpen the bound first** (local and cheap); only if it is irreducibly fuzzy _and_ you observe the rush, hide the later steps by splitting the sequence. Hiding only works across a real context boundary (a hand-off or a subagent dispatch; an inline call leaves the later steps in context and clears nothing).
-- **Demand**: how much it requires. "Every modified model accounted for" forces thorough work where "produce a change list" does not. Demand drives **legwork** (the digging the agent does within the work, latent in the wording rather than written as its own step), and it is not step-bound: "every rule applied" binds a body of flat reference just as "every step done" binds a sequence, which is how an all-reference document still carries an exhaustiveness bar.
+- **명확성**: 에이전트가 완료를 완료 안 함과 구별할 수 있나요? 모호한 경계("이해 도달")는 **조기 완료**를 초대합니다: 진정으로 완료되기 전에 단계를 끝내고, 주의가 _완료되기_로 미끄러집니다. 앞에 보이는 단계(**완료 후 단계**)가 당김을 공급합니다. 기준의 명확성이 저항입니다. 순서대로 방어하세요: **먼저 경계를 다듬으세요**(로컬이고 저렴합니다). 그것이 돌이킬 수 없이 흐릿하고 _그리고_ 여러분이 서두름을 관찰할 때만, 시퀀스를 분할하여 나중 단계를 숨기세요. 숨기기는 실제 컨텍스트 경계(넘김 또는 서브에이전트 디스패치)를 가로질러서만 작동합니다. 인라인 호출은 나중 단계를 컨텍스트에 남기고 아무것도 지우지 않습니다.
+- **수요**: 얼마나 요구하는지. "수정된 모든 모델 설명됨"은 "변경 목록 생성"이 하지 않는 곳에서 철저한 작업을 강제합니다. 수요는 **조사**를 구동합니다(에이전트가 작업 내에서 하는 파기, 작성된 자체 단계가 아니라 표현에 잠재적), 그것은 단계 바운드가 아닙니다: "모든 규칙 적용됨"은 "모든 단계 완료"가 시퀀스를 바인딩하는 것처럼 평평한 참조 본문을 바인딩하며, 이것이 모든 참조 문서가 여전히 철저함 바를 담는 방법입니다.
 
-The strongest criteria are both checkable and exhaustive.
+가장 강력한 기준은 체크 가능하고 철저합니다.
 
-## When to split
+## 분할 시기
 
-Splitting one document into two spends one of the two loads, so split only when the cut earns it:
+하나의 문서를 둘로 분할하는 것은 두 로드 중 하나를 지출하므로, 자르기가 그것을 얻을 때만 분할하세요:
 
-- **By sequence**: split a run of steps where the post-completion steps tempt the agent to rush the one in front of it. Keeping them out of view drives more legwork on the current task. Beware the reverse: merging sequences exposes each step's later steps to what follows, inviting premature completion.
-- **By invocation**, skill-specific: see [`SKILL-MECHANICS.md`](SKILL-MECHANICS.md).
+- **시퀀스별**: 완료 후 단계가 앞의 것을 서두르도록 유혹하는 단계 실행을 분할합니다. 그것들을 보지 않게 유지하는 것이 현재 작업에 더 많은 조사를 구동합니다. 역을 조심하세요: 시퀀스를 병합하면 각 단계의 나중 단계가 따르는 것에 노출되어, 조기 완료를 초대합니다.
+- **호출별**, 스킬별: [`SKILL-MECHANICS.md`](SKILL-MECHANICS.md) 참조.
 
-## Leading words
+## 선행 단어
 
-A **leading word** is a compact concept already living in the model's pretraining that the agent thinks with while running the document (_lesson_, _fog of war_, _tracer bullets_). Repeated as a token, never as a sentence, it accumulates a distributed definition and anchors a whole region of behaviour in the fewest tokens, by recruiting priors the model already holds. Coining your own works if you define it clearly, but a made-up word recruits no priors: you pay in definition tokens what a pretrained word gives free; reach for an existing word first.
+**선행 단어**는 에이전트가 문서를 실행하는 동안 생각하는 모델의 사전 훈련에 이미 살고 있는 컴팩트한 개념입니다(_lesson_, _fog of war_, _tracer bullets_). 토큰으로 반복되고, 문장이 아니며, 분산된 정의를 축적하고 가장 적은 토큰으로 동작의 전체 영역을 고정시키며, 모델이 이미 보유한 사전을 모집합니다. 여러분 자신의 것을 만드는 것은 명확하게 정의하면 작동하지만, 만들어진 단어는 사전을 모집하지 않습니다: 사전 훈련된 단어가 무료로 주는 것을 정의 토큰으로 지불합니다. 먼저 기존 단어에 도달하세요.
 
-It anchors twice. In the body, _execution_: the agent reaches for the same behaviour every time the word appears, and inside flat reference it focuses attention on a class of thing to look for. In a pointer, _invocation_: when the same word lives in your prompts, your docs, and your codebase, the agent links that shared language to the material and reaches it more reliably.
+두 번 고정됩니다. 본문에서, _실행_: 에이전트는 단어가 나타날 때마다 같은 동작에 도달하고, 평평한 참조 내부에서 찾을 것의 클래스에 주의를 집중시킵니다. 포인터에서, _호출_: 같은 단어가 여러분의 프롬프트, 문서, 코드베이스에 살 때, 에이전트는 그 공유 언어를 자료에 링크하고 더 신뢰할 수 있게 도달합니다.
 
-Hunt for opportunities to refactor with leading words. A triad spelled out at three sites, a pointer spending a sentence to gesture at one idea. Each is a passage begging to collapse into a single token:
+선행 단어로 리팩토링할 기회를 사냥하세요. 세 사이트에서 철자된 삼위일체, 하나의 아이디어를 제스처하기 위해 문장을 지출하는 포인터. 각각은 단일 토큰으로 축소하도록 간청하는 구절입니다:
 
-- "fast, deterministic, low-overhead" → _tight_ (a _tight_ loop).
-- "a loop you believe in" → _red_, turning a fuzzy gate into a binary observable state (the loop goes _red_ on the bug, or it doesn't).
+- "fast, deterministic, low-overhead" → _tight_ (_tight_ 루프).
+- "a loop you believe in" → _red_, 흐릿한 게이트를 이진 관찰 가능 상태로 전환(루프가 버그에 _red_가 되거나, 그렇지 않습니다).
 
-You win twice: fewer tokens, and a sharper hook for the agent to hang its thinking on. Assume every document is carrying restatements that leading words retire. Go find them.
+두 번 승리합니다: 더 적은 토큰, 에이전트가 생각을 걸기 위한 더 날카로운 훅. 모든 문서가 선행 단어가 은퇴시키는 재진술을 담고 있다고 가정하세요. 가서 찾으세요.
 
-**Negation** is the failure mode beside this lever: steering by prohibition drags the forbidden behaviour into context and makes it _more_ available, not less. _Don't think of an elephant_, and the elephant is all there is; the negation is a weak modifier the strongly-activated concept overruns, so the ban half-reads as an instruction to do the thing. Prompt the **positive**: state the target behaviour ("write one-line comments") so the banned one is never spoken. A prohibition earns its place only as a hard guardrail you cannot phrase positively; even then, pair it with the positive target so attention lands on what to do.
+**부정**은 이 레버 옆의 실패 모드입니다: 금지로 조종하는 것은 금지된 동작을 컨텍스트로 끌어들이고 덜이 아니라 _더_ 사용 가능하게 만듭니다. _코끼리를 생각하지 마세요_, 코끼리가 전부입니다. 부정은 강하게 활성화된 개념이 압도하는 약한 수식어이므로, 금지는 그것을 할 지시로 반읽힙니다. **긍정**을 프롬프트하세요: 대상 동작("한 줄 댓글 작성")을 진술하여 금지된 것이 절대 말하지 않도록 합니다. 금지는 긍정적으로 표현할 수 없는 하드 가드레일로만 자리를 얻습니다. 그렇다 해도, 주의가 무엇을 할지에 착륙하도록 긍정 대상과 쌍을 이루세요.
 
-## Pruning
+## 가지치기
 
-- Keep each meaning in a **single source of truth**: one authoritative place, so changing the behaviour is a one-place edit. **Duplication** (the same meaning in more than one place) costs maintenance and tokens, and inflates a meaning's prominence on the ladder past its real rank. (The accidental inverse of a leading word, which repeats a token on purpose, never the meaning.)
-- The **environment** is a source of truth too (`package.json` scripts, config files, the directory layout, `--help` output), and a document that restates it is a **cache**: a copy of a lookup, earning its load only when the lookup is expensive. Cache what the agent cannot find by looking: the unwritten convention, the reason behind a choice, the gotcha no config confesses. Leave the one-file, one-command lookups to the environment, where they cannot go stale.
-- Check every line for **relevance**: does it still bear on what the document does? A line loses relevance by never bearing on the task (mere exposition, or a branch that should be disclosed) or by going stale as the behaviour or world it describes changes. Shorter documents are easier to keep relevant. Without a pruning discipline the default fate is **sediment**: stale layers that settle because adding feels safe and removing feels risky, until you must core down through them to find what is still live.
-- Hunt **no-ops** sentence by sentence: an instruction the model already obeys by default pays load to say nothing. The test (does it change behaviour versus the default?) is model-relative, not reader-relative: two people disagreeing about a no-op disagree about the default, and settle it by running the document, not by debate. When a sentence fails, delete the whole sentence rather than trim words from it. The test also grades leading words: a word too weak to beat the default (_be thorough_ when the agent is already thorough-ish) is a no-op, and the fix is a stronger word (_relentless_), not a different technique.
+- 각 의미를 **단일 진실 소스**에 유지하세요: 하나의 권위 있는 장소, 동작을 변경하는 것이 한 곳 편집이도록. **중복**(하나 이상의 장소에서 같은 의미)은 유지보수와 토큰 비용이 들고, 계층에서 의미의 두드러짐을 실제 순위를 넘어 팽창시킵니다. (선행 단어의 우연한 역, 의도적으로 토큰을 반복하며, 절대 의미가 아닙니다.)
+- **환경**도 진실 소스입니다(`package.json` 스크립트, 구성 파일, 디렉토리 레이아웃, `--help` 출력), 그것을 재진술하는 문서는 **캐시**입니다: 조회의 복사본, 조회가 비쌀 때만 로드를 얻습니다. 에이전트가 보고 찾을 수 없는 것을 캐시하세요: 작성되지 않은 관례, 선택 뒤의 이유, 구성이 고백하지 않는 잡기. 한 파일, 한 명령 조회를 환경에 남기세요. 거기서 그것들은 구식이 될 수 없습니다.
+- 모든 줄에 **관련성**을 확인하세요: 문서가 하는 것에 여전히 영향을 미치나요? 줄은 작업에 절대 영향을 미치지 않거나(단순 박람회, 또는 공개되어야 하는 분기) 그것이 설명하는 동작이나 세계가 변경됨에 따라 구식이 됨으로써 관련성을 잃습니다. 더 짧은 문서는 관련성을 유지하기 더 쉽습니다. 가지치기 규율 없이 기본 운명은 **침전물**입니다: 추가하는 것이 안전하고 제거하는 것이 위험하게 느껴지기 때문에 정착하는 구식 레이어, 여전히 라이브인 것을 찾기 위해 그것들을 통해 코어를 뚫어야 할 때까지.
+- 문장별로 **무작동**을 사냥하세요: 모델이 기본적으로 이미 따르는 지시는 아무것도 말하지 않기 위해 로드를 지불합니다. 테스트(기본값과 동작을 변경하는가?)는 모델 상대적이며, 독자 상대적이 아닙니다: 무작동에 대해 동의하지 않는 두 사람은 기본값에 대해 동의하지 않으며, 문서를 실행하여 정착하고, 논쟁으로 하지 않습니다. 문장이 실패하면, 단어를 트림하는 대신 전체 문장을 삭제하세요. 테스트는 선행 단어도 등급을 매깁니다: 기본값을 이기기에 너무 약한 단어(_be thorough_ 에이전트가 이미 철저할 때)는 무작동이며, 수정은 다른 기술이 아니라 더 강한 단어(_relentless_)입니다.

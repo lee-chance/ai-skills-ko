@@ -13,12 +13,12 @@ AI 에이전트를 위한 스킬 모음의 원본과 한국어 번역을 제공�
 
 pstack-ko의 번역은 [lee-chance/plugins](https://github.com/lee-chance/plugins)의 PR #1에서 완성된 번역을 가져왔습니다.
 
-### 2. matt-pocock-skills
+### 2. matt-pocock-skills (번역 완료 100%)
 - **원본**: `matt-pocock-skills/`
-- **한국어**: `matt-pocock-skills-ko/` (부분 번역)
+- **한국어**: `matt-pocock-skills-ko/`
 - **출처**: [mattpocock/skills](https://github.com/mattpocock/skills)
 - **커밋**: `4ae2317ddb22b046e26455e4f9c9b3aaaf62212d`
-- **설명**: Matt Pocock의 TypeScript와 React 관련 AI 스킬 모음
+- **설명**: Matt Pocock의 AI 코딩 스킬 모음. 모든 SKILL.md 파일과 문서 번역 완료.
 
 ## 🚀 사용 방법
 

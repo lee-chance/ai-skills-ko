@@ -1,26 +1,35 @@
-# Model-invoked vs user-invoked
+# 호출
 
-Every `SKILL.md` in this repo is a skill. The one axis that splits them is **invocation**, who can reach it:
+모든 `SKILL.md`는 **사용자 호출** 또는 **모델 호출**입니다.
 
-- **User-invoked**: reachable **only by the human typing its name**. Set `disable-model-invocation: true` in the frontmatter (Claude Code) and `policy.allow_implicit_invocation: false` in `agents/openai.yaml` (Codex). The `description` is **human-facing**: a one-line summary read by a person browsing slash-commands. Strip trigger lists ("Use when the user says…").
-- **Model-invoked**: reachable by **model or user**. The default: omit `disable-model-invocation` and the `policy` block from `agents/openai.yaml`. The `description` is **model-facing** and keeps rich trigger phrasing ("Use when the user wants…, mentions…, asks for…") so auto-invocation fires. The test for whether a skill should stay model-invoked: _could the model usefully reach for this autonomously?_ (Reuse is the reason to extract a skill, not the test.)
+## 사용자 호출
 
-Each harness excludes a user-invoked skill from the model's reach in its own way, so nothing but the human can fire it: no other skill can. A user-invoked skill may invoke model-invoked skills, but it can never reach another user-invoked skill.
+슬래시 커맨드를 입력할 때만 도달 가능합니다. 에이전트는 절대 스스로 도달하지 않습니다.
 
-Every skill also carries an `agents/openai.yaml` beside its `SKILL.md`. It holds Codex UI metadata: `interface.display_name` and `interface.short_description` for the skill picker, and, for user-invoked skills, the `policy.allow_implicit_invocation: false` that pairs with `disable-model-invocation`. Keep the two in sync: a skill is user-invoked in both harnesses or neither.
+**표지자**:
+- YAML frontmatter에 `disable-model-invocation: true`
+- `agents/openai.yaml`에 `policy.allow_implicit_invocation: false`
 
-Bucket `README.md`s and the top-level `README.md` group entries into **User-invoked** and **Model-invoked**.
+**예시**: `/grill-me`, `/setup-matt-pocock-skills`, `/to-spec`
 
-## Dependencies between them
+## 모델 호출
 
-Dependencies are expressed as an explicit instruction to **call the Skill tool** with the named skill (`Call the Skill tool with "grilling"`), not deep `../other-skill/FILE.md` cross-references, and not a bare `/skill`-style mention left for the model to interpret. Naming the tool is what gets it fired: most harnesses expose skill invocation as a tool the model calls, and spelling that out gets a higher hit rate than dropping a `/name` into prose and hoping it's read as a command. Dropping the leading `/` also keeps this harness-neutral rather than less: a skill name on its own carries no assumption about which harness's trigger syntax it belongs to. Shared reference docs live inside the skill that owns them; other skills reach that material by calling the Skill tool with it, not by linking across folders.
+여러분이 입력하거나 에이전트가 작업에 맞을 때 자동으로 도달할 수 있습니다.
 
-This is about **operative** instructions: a skill's own steps telling the agent to go run another skill right now. Router prose that just names skills for a human to pick from (`ask-matt`, bucket `README.md`s) isn't invoking anything, so it keeps `/skill`-style names as plain labels.
+**표지자**:
+- `disable-model-invocation: true`가 없거나 `false`
+- `agents/openai.yaml`에 `policy.allow_implicit_invocation: true` 또는 생략됨
 
-The Skill tool takes one skill per call. A step that needs two skills is two calls, not one call with two names: say so (`Call the Skill tool twice, for "grilling" and "domain-modeling"`), not "call it with X and Y," which reads as a single call taking both.
+**예시**: `/tdd`, `/prototype`, `/diagnosing-bugs`
 
-This whole convention only holds when the named skill is **model-invoked**. A user-invoked skill can never be reached this way, full stop: per the invariant above, no other skill can call it, including by naming it to the Skill tool. When a step's precondition is a user-invoked skill (e.g. `setup-matt-pocock-skills`), phrase it as an instruction for the human to act on: "tell the user to run `/setup-matt-pocock-skills`", never as a Skill tool call.
+## 사용자 호출 vs 모델 호출 선택
 
-## Passive vs active domain work
+**사용자 호출로 만드세요** 만약:
+- 오케스트레이션 스킬 (다른 스킬 호출)
+- 설정 또는 구성 스킬
+- 명시적 의도 필요 (예: 핸드오프, 전체 spec 생성)
 
-Merely _reading_ `GLOSSARY.md` for vocabulary is a one-line prose pointer, not the `domain-modeling` skill. Only the active build/sharpen discipline (challenge terms, edge-case scenarios, write ADRs, update `GLOSSARY.md` inline) is `domain-modeling`.
+**모델 호출로 만드세요** 만약:
+- 재사용 가능한 규율 (테스팅, 디버깅, 설계)
+- 특정 작업 패턴에 의해 트리거됨
+- 큰 플로우의 일부로 호출됨

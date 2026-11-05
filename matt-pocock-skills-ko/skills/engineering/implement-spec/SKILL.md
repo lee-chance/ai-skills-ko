@@ -1,42 +1,42 @@
 ---
 name: implement-spec
-description: "Implement the result of /to-spec and /to-tickets in code."
+description: "/to-spec과 /to-tickets의 결과를 코드로 구현합니다."
 disable-model-invocation: true
 ---
 
-You have been provided a spec. This spec should have tickets associated with it, describing how to implement the spec.
+스펙이 제공되었습니다. 이 스펙에는 스펙을 구현하는 방법을 설명하는 관련 티켓이 있어야 합니다.
 
-The issue tracker should have been provided to you. If not, tell the user to run `/setup-matt-pocock-skills`.
+이슈 트래커가 여러분에게 제공되었어야 합니다. 그렇지 않으면, 사용자에게 `/setup-matt-pocock-skills`를 실행하라고 말하세요.
 
-The goal is the entire spec implemented on a single **integration branch**, with every ticket resolved the way the issue tracker closes work.
+목표는 단일 **통합 브랜치**에 구현된 전체 스펙이며, 이슈 트래커가 작업을 닫는 방식으로 모든 티켓이 해결됩니다.
 
-The tickets are not a list of steps. They are a **task graph** with blocking relationships between them. This means there is always a **frontier** of tickets which are ready to be grabbed.
+티켓은 단계 목록이 아닙니다. 그것들은 그것들 사이에 차단 관계가 있는 **작업 그래프**입니다. 이것은 항상 잡을 준비가 된 티켓의 **프론티어**가 있음을 의미합니다.
 
-Start every subagent with a fresh context window.
+모든 서브에이전트를 새 컨텍스트 창으로 시작하세요.
 
-Communication to and from subagents should be sparse. Communicate primarily through **context pointers**: to the spec, tickets, research notes, and previous commits. Don't duplicate information already available via pointers.
+서브에이전트와의 통신은 희소해야 합니다. 주로 **컨텍스트 포인터**를 통해 통신하세요: 스펙, 티켓, 리서치 노트, 이전 커밋. 포인터를 통해 이미 사용 가능한 정보를 복제하지 마세요.
 
-**Implementer subagents** should be run in the background where possible for maximum concurrency.
+**구현자 서브에이전트**는 최대 동시성을 위해 가능한 곳에서 백그라운드에서 실행되어야 합니다.
 
-## Steps
+## 단계
 
-1. Read the spec and tickets to understand the task graph.
+1. 작업 그래프를 이해하기 위해 스펙과 티켓을 읽으세요.
 
-2. (optional) Use an **exploration subagent** to conduct any exploration required by the tickets - relevant codebase files or external documentation. Ensure the exploration subagent can save files - it should save its markdown notes in a directory outside the repo, accessible by all future subagents. This lets **implementer subagents** focus on implementation rather than exploration.
+2. (선택 사항) 티켓이 요구하는 모든 탐색을 수행하기 위해 **탐색 서브에이전트**를 사용하세요 - 관련 코드베이스 파일 또는 외부 문서. 탐색 서브에이전트가 파일을 저장할 수 있도록 하세요 - 저장소 외부 디렉토리에 마크다운 노트를 저장해야 하며, 모든 미래 서브에이전트가 액세스할 수 있어야 합니다. 이것은 **구현자 서브에이전트**가 탐색보다는 구현에 집중하도록 합니다.
 
-3. Create the integration branch. If the issue tracker closes work through PRs, or the user asks for one, open a draft PR after the first merge in step 5 (a branch with no commits ahead of main can't open one), marked as closing the spec and tickets.
+3. 통합 브랜치를 생성하세요. 이슈 트래커가 PR을 통해 작업을 닫거나, 사용자가 하나를 요청하면, 5단계의 첫 번째 병합 후 초안 PR을 여세요(main보다 앞에 커밋이 없는 브랜치는 하나를 열 수 없습니다), 스펙과 티켓을 닫는 것으로 표시하세요.
 
-4. Use a fresh **implementer subagent** for each ticket, each in its own worktree on its own branch. Each implementer subagent:
-   - confirms its worktree is based on the integration branch before starting, and resets onto it if not;
-   - calls the Skill tool with `tdd` to build the ticket;
-   - merges the integration branch tip into its own branch before reporting done
+4. 각 티켓에 대해 새 **구현자 서브에이전트**를 사용하세요. 각각은 자체 브랜치의 자체 워크트리에 있습니다. 각 구현자 서브에이전트는:
+   - 시작하기 전에 워크트리가 통합 브랜치를 기반으로 하는지 확인하고, 그렇지 않으면 그것으로 리셋합니다;
+   - Skill 도구를 `tdd`로 호출하여 티켓을 빌드합니다;
+   - 완료를 보고하기 전에 통합 브랜치 팁을 자체 브랜치에 병합합니다
 
-5. Once an **implementer subagent** completes, merge its work to the integration branch with a **merger subagent**.
+5. **구현자 서브에이전트**가 완료되면, **병합자 서브에이전트**로 작업을 통합 브랜치에 병합하세요.
 
-6. If this changes the **frontier** of available tickets, kick off more **implementer subagents** to work on the new tickets. This allows for maximum concurrency.
+6. 이것이 사용 가능한 티켓의 **프론티어**를 변경하면, 더 많은 **구현자 서브에이전트**를 시작하여 새 티켓을 작업하세요. 이것은 최대 동시성을 허용합니다.
 
-7. Once all tickets are complete, call the Skill tool with `code-review` on the integration branch. Fix all issues raised by the code review in a single fresh **implementer subagent**.
+7. 모든 티켓이 완료되면, 통합 브랜치에 대해 Skill 도구를 `code-review`로 호출하세요. 코드 리뷰가 제기한 모든 이슈를 단일 새 **구현자 서브에이전트**에서 수정하세요.
 
-8. If a draft PR exists, mark it ready for review. Otherwise, resolve each ticket the way the issue tracker closes work, and report the integration branch.
+8. 초안 PR이 존재하면, 검토 준비로 표시하세요. 그렇지 않으면, 이슈 트래커가 작업을 닫는 방식으로 각 티켓을 해결하고, 통합 브랜치를 보고하세요.
 
-9. Clean up all **implementer subagent** worktrees.
+9. 모든 **구현자 서브에이전트** 워크트리를 정리하세요.

@@ -1,207 +1,201 @@
-# Writing Agent Briefs
+# 에이전트 브리프 작성
 
-An agent brief is a structured comment posted on a GitHub issue or PR when it moves to `ready-for-agent`. It is the authoritative specification that an AFK agent will work from. The original body and discussion are context: the agent brief is the contract.
+에이전트 브리프는 `ready-for-agent`로 이동할 때 GitHub 이슈나 PR에 게시되는 구조화된 댓글입니다. AFK 에이전트가 작업할 권위 있는 사양입니다. 원래 본문과 토론은 컨텍스트입니다: 에이전트 브리프가 계약입니다.
 
-The brief states **what the agent should do**, which stretches to both surfaces: for an issue, that's building the change from nothing; for a PR, it's what's left to do *to the existing diff*: finish it, close gaps, address review points. Same principles either way; the PR example below shows the difference.
+브리프는 **에이전트가 무엇을 해야 하는지**를 진술하며, 이는 두 표면으로 확장됩니다: 이슈의 경우, 무에서 변경 사항을 빌드하는 것; PR의 경우, *기존 diff에* 남은 할 일: 완료, 간격 닫기, 검토 포인트 해결. 어느 쪽이든 동일한 원칙; 아래 PR 예제가 차이를 보여줍니다.
 
-## Principles
+## 원칙
 
-### Durability over precision
+### 정밀도보다 내구성
 
-The issue may sit in `ready-for-agent` for days or weeks. The codebase will change in the meantime. Write the brief so it stays useful even as files are renamed, moved, or refactored.
+이슈는 `ready-for-agent`에 며칠 또는 몇 주 동안 있을 수 있습니다. 그 동안 코드베이스가 변경될 것입니다. 파일이 이름이 변경되거나 이동되거나 리팩토링되더라도 유용하게 유지되도록 브리프를 작성하세요.
 
-- **Do** describe interfaces, types, and behavioral contracts
-- **Do** name specific types, function signatures, or config shapes that the agent should look for or modify
-- **Don't** reference file paths: they go stale
-- **Don't** reference line numbers
-- **Don't** assume the current implementation structure will remain the same
+- **할 것** 인터페이스, 타입, 동작 계약을 설명
+- **할 것** 에이전트가 찾거나 수정해야 하는 특정 타입, 함수 시그니처, 또는 구성 형태를 명명
+- **하지 마세요** 파일 경로 참조: 낡아집니다
+- **하지 마세요** 줄 번호 참조
+- **하지 마세요** 현재 구현 구조가 동일하게 유지될 것이라고 가정
 
-### Behavioral, not procedural
+### 절차적이 아니라 행동적
 
-Describe **what** the system should do, not **how** to implement it. The agent will explore the codebase fresh and make its own implementation decisions.
+시스템이 **무엇을** 해야 하는지 설명하세요. **어떻게** 구현할지가 아닙니다. 에이전트는 코드베이스를 새로 탐색하고 자체 구현 결정을 내릴 것입니다.
 
-- **Good:** "The `SkillConfig` type should accept an optional `schedule` field of type `CronExpression`"
-- **Bad:** "Open src/types/skill.ts and add a schedule field on line 42"
-- **Good:** "When a user runs `/triage` with no arguments, they should see a summary of issues needing attention"
-- **Bad:** "Add a switch statement in the main handler function"
+- **좋음:** "`SkillConfig` 타입은 `CronExpression` 타입의 선택적 `schedule` 필드를 허용해야 합니다"
+- **나쁨:** "src/types/skill.ts를 열고 42번 줄에 schedule 필드를 추가하세요"
+- **좋음:** "사용자가 인수 없이 `/triage`를 실행하면, 주의가 필요한 이슈의 요약을 볼 수 있어야 합니다"
+- **나쁨:** "메인 핸들러 함수에 switch 문을 추가하세요"
 
-### Complete acceptance criteria
+### 완전한 수락 기준
 
-The agent needs to know when it's done. Every agent brief must have concrete, testable acceptance criteria. Each criterion should be independently verifiable.
+에이전트는 언제 완료되었는지 알아야 합니다. 모든 에이전트 브리프는 구체적이고 테스트 가능한 수락 기준을 가져야 합니다. 각 기준은 독립적으로 검증 가능해야 합니다.
 
-- **Good:** "Running `gh issue list --label needs-triage` returns issues that have been through initial classification"
-- **Bad:** "Triage should work correctly"
+- **좋음:** "`gh issue list --label needs-triage` 실행이 초기 분류를 거친 이슈를 반환합니다"
+- **나쁨:** "트리아지가 올바르게 작동해야 합니다"
 
-### Explicit scope boundaries
+### 명시적 범위 경계
 
-State what is out of scope. This prevents the agent from gold-plating or making assumptions about adjacent features.
+범위를 벗어난 것이 무엇인지 명시하세요. 이것은 에이전트가 금도금하거나 인접 기능에 대해 가정하는 것을 방지합니다.
 
-## Template
+## 템플릿
 
 ```markdown
 ## Agent Brief
 
 **Category:** bug / enhancement
-**Summary:** one-line description of what needs to happen
+**Summary:** 무엇이 일어나야 하는지에 대한 한 줄 설명
 
 **Current behavior:**
-Describe what happens now. For bugs, this is the broken behavior.
-For enhancements, this is the status quo the feature builds on.
+지금 무슨 일이 일어나는지 설명하세요. 버그의 경우, 이것은 깨진 동작입니다.
+개선의 경우, 이것은 기능이 구축되는 현상 유지입니다.
 
 **Desired behavior:**
-Describe what should happen after the agent's work is complete.
-Be specific about edge cases and error conditions.
+에이전트의 작업이 완료된 후 무슨 일이 일어나야 하는지 설명하세요.
+엣지 케이스와 오류 조건에 대해 구체적으로 설명하세요.
 
 **Key interfaces:**
-- `TypeName`: what needs to change and why
-- `functionName()` return type: what it currently returns vs what it should return
-- Config shape: any new configuration options needed
+- `TypeName`: 무엇을 변경해야 하고 왜
+- `functionName()` 반환 타입: 현재 반환하는 것 대 반환해야 하는 것
+- 구성 형태: 필요한 새 구성 옵션
 
 **Acceptance criteria:**
-- [ ] Specific, testable criterion 1
-- [ ] Specific, testable criterion 2
-- [ ] Specific, testable criterion 3
+- [ ] 구체적이고 테스트 가능한 기준 1
+- [ ] 구체적이고 테스트 가능한 기준 2
+- [ ] 구체적이고 테스트 가능한 기준 3
 
 **Out of scope:**
-- Thing that should NOT be changed or addressed in this issue
-- Adjacent feature that might seem related but is separate
+- 이 이슈에서 변경되거나 해결되어서는 안 되는 것
+- 관련되어 보이지만 별개인 인접 기능
 ```
 
-## Examples
+## 예제
 
-### Good agent brief (bug)
+### 좋은 에이전트 브리프 (버그)
 
 ```markdown
 ## Agent Brief
 
 **Category:** bug
-**Summary:** Skill description truncation drops mid-word, producing broken output
+**Summary:** 스킬 설명 잘라내기가 단어 중간에 끊어져서 깨진 출력 생성
 
 **Current behavior:**
-When a skill description exceeds 1024 characters, it is truncated at exactly
-1024 characters regardless of word boundaries. This produces descriptions
-that end mid-word (e.g. "Use when the user wants to confi").
+스킬 설명이 1024자를 초과하면, 단어 경계와 관계없이 정확히
+1024자에서 잘립니다. 이것은 단어 중간에 끝나는 설명을 생성합니다
+(예: "Use when the user wants to confi").
 
 **Desired behavior:**
-Truncation should break at the last word boundary before 1024 characters
-and append "..." to indicate truncation.
+잘라내기는 1024자 이전의 마지막 단어 경계에서 끊어지고
+잘림을 나타내기 위해 "..."를 추가해야 합니다.
 
 **Key interfaces:**
-- The `SkillMetadata` type's `description` field: no type change needed,
-  but the validation/processing logic that populates it needs to respect
-  word boundaries
-- Any function that reads SKILL.md frontmatter and extracts the description
+- `SkillMetadata` 타입의 `description` 필드: 타입 변경 필요 없음,
+  하지만 이것을 채우는 검증/처리 로직이 단어 경계를 존중해야 합니다
+- SKILL.md frontmatter를 읽고 설명을 추출하는 모든 함수
 
 **Acceptance criteria:**
-- [ ] Descriptions under 1024 chars are unchanged
-- [ ] Descriptions over 1024 chars are truncated at the last word boundary
-      before 1024 chars
-- [ ] Truncated descriptions end with "..."
-- [ ] The total length including "..." does not exceed 1024 chars
+- [ ] 1024자 미만의 설명은 변경되지 않습니다
+- [ ] 1024자 이상의 설명은 1024자 이전의 마지막 단어 경계에서 잘립니다
+- [ ] 잘린 설명은 "..."로 끝납니다
+- [ ] "..."를 포함한 총 길이가 1024자를 초과하지 않습니다
 
 **Out of scope:**
-- Changing the 1024 char limit itself
-- Multi-line description support
+- 1024자 제한 자체 변경
+- 다중 줄 설명 지원
 ```
 
-### Good agent brief (enhancement)
+### 좋은 에이전트 브리프 (개선)
 
 ```markdown
 ## Agent Brief
 
 **Category:** enhancement
-**Summary:** Add `.out-of-scope/` directory support for tracking rejected feature requests
+**Summary:** 거부된 기능 요청 추적을 위한 `.out-of-scope/` 디렉터리 지원 추가
 
 **Current behavior:**
-When a feature request is rejected, the issue is closed with a `wontfix` label
-and a comment. There is no persistent record of the decision or reasoning.
-Future similar requests require the maintainer to recall or search for the
-prior discussion.
+기능 요청이 거부되면, 이슈는 `wontfix` 레이블과 댓글로 닫힙니다.
+결정이나 이유에 대한 지속적인 기록이 없습니다.
+미래의 유사한 요청은 유지 관리자가 이전 토론을 회상하거나 검색해야 합니다.
 
 **Desired behavior:**
-Rejected feature requests should be documented in `.out-of-scope/<concept>.md`
-files that capture the decision, reasoning, and links to all issues that
-requested the feature. When triaging new issues, these files should be
-checked for matches.
+거부된 기능 요청은 결정, 이유, 기능을 요청한 모든 이슈에 대한 링크를 포착하는
+`.out-of-scope/<concept>.md` 파일에 문서화되어야 합니다.
+새 이슈를 트리아지할 때, 이러한 파일을 일치 항목에 대해 확인해야 합니다.
 
 **Key interfaces:**
-- Markdown file format in `.out-of-scope/`: each file should have a
-  `# Concept Name` heading, a `**Decision:**` line, a `**Reason:**` line,
-  and a `**Prior requests:**` list with issue links
-- The triage workflow should read all `.out-of-scope/*.md` files early
-  and match incoming issues against them by concept similarity
+- `.out-of-scope/`의 마크다운 파일 형식: 각 파일은
+  `# Concept Name` 제목, `**Decision:**` 줄, `**Reason:**` 줄,
+  그리고 이슈 링크가 있는 `**Prior requests:**` 목록을 가져야 합니다
+- 트리아지 워크플로우는 모든 `.out-of-scope/*.md` 파일을 일찍 읽고
+  개념 유사성으로 들어오는 이슈를 이들과 매치해야 합니다
 
 **Acceptance criteria:**
-- [ ] Closing a feature as wontfix creates/updates a file in `.out-of-scope/`
-- [ ] The file includes the decision, reasoning, and link to the closed issue
-- [ ] If a matching `.out-of-scope/` file already exists, the new issue is
-      appended to its "Prior requests" list rather than creating a duplicate
-- [ ] During triage, existing `.out-of-scope/` files are checked and surfaced
-      when a new issue matches a prior rejection
+- [ ] 기능을 wontfix로 닫으면 `.out-of-scope/`에 파일을 생성/업데이트합니다
+- [ ] 파일은 결정, 이유, 닫힌 이슈에 대한 링크를 포함합니다
+- [ ] 일치하는 `.out-of-scope/` 파일이 이미 존재하면, 새 이슈는
+      중복을 생성하지 않고 "Prior requests" 목록에 추가됩니다
+- [ ] 트리아지 중에, 기존 `.out-of-scope/` 파일을 확인하고
+      새 이슈가 이전 거부와 일치할 때 표시합니다
 
 **Out of scope:**
-- Automated matching (human confirms the match)
-- Reopening previously rejected features
-- Bug reports (only enhancement rejections go to `.out-of-scope/`)
+- 자동 매칭 (인간이 일치를 확인)
+- 이전에 거부된 기능 재개
+- 버그 보고서 (개선 거부만 `.out-of-scope/`로 감)
 ```
 
-### Good agent brief (PR)
+### 좋은 에이전트 브리프 (PR)
 
-For a PR, "Current behavior" describes the state of the diff, and the brief asks the agent to finish or fix it rather than build from scratch.
+PR의 경우, "Current behavior"는 diff의 상태를 설명하고, 브리프는 에이전트에게 처음부터 빌드하지 말고 완료하거나 수정하도록 요청합니다.
 
 ```markdown
 ## Agent Brief
 
 **Category:** enhancement
-**Summary:** Finish the contributor's `--json` output flag for `triage list`
+**Summary:** 기여자의 `triage list`에 대한 `--json` 출력 플래그 완료
 
 **Current behavior:**
-The PR adds a `--json` flag that serializes the issue list to JSON. The happy
-path works and the diff matches the project's command structure. Two gaps
-remain: errors are still printed as human text (not JSON), and the new flag has
-no test coverage.
+PR은 이슈 목록을 JSON으로 직렬화하는 `--json` 플래그를 추가합니다. 행복한
+경로가 작동하고 diff가 프로젝트의 명령 구조와 일치합니다. 두 간격이 남아 있습니다:
+오류가 여전히 사람 텍스트로 출력되고 (JSON이 아님), 새 플래그에 테스트 커버리지가 없습니다.
 
 **Desired behavior:**
-With `--json`, all output (including errors) is well-formed JSON on stdout,
-and the command's exit codes are unchanged. The existing human-readable output
-is untouched when the flag is absent.
+`--json`으로, 모든 출력 (오류 포함)이 stdout에 잘 형성된 JSON이고,
+명령의 종료 코드는 변경되지 않습니다. 플래그가 없을 때 기존의 사람이 읽을 수 있는 출력은
+그대로입니다.
 
 **Key interfaces:**
-- The command's error path should emit `{ "error": string }` under `--json`
-  instead of the plain-text error
-- Reuse the existing serializer the PR already added; don't introduce a second
+- 명령의 오류 경로는 평문 오류 대신 `--json` 아래에서 `{ "error": string }`을 발행해야 합니다
+- PR이 이미 추가한 기존 직렬화기를 재사용하세요; 두 번째를 도입하지 마세요
 
 **Acceptance criteria:**
-- [ ] `triage list --json` emits valid JSON for both success and error cases
-- [ ] Exit codes match the non-JSON command
-- [ ] A test covers the `--json` success output and one error case
-- [ ] Default (non-JSON) output is byte-for-byte unchanged
+- [ ] `triage list --json`은 성공과 오류 사례 모두에 대해 유효한 JSON을 발행합니다
+- [ ] 종료 코드가 비-JSON 명령과 일치합니다
+- [ ] 테스트가 `--json` 성공 출력과 한 오류 사례를 커버합니다
+- [ ] 기본 (비-JSON) 출력은 바이트 단위로 변경되지 않습니다
 
 **Out of scope:**
-- Adding `--json` to any other command
-- Changing the JSON shape of the success payload the PR already defined
+- 다른 명령에 `--json` 추가
+- PR이 이미 정의한 성공 페이로드의 JSON 형태 변경
 ```
 
-### Bad agent brief
+### 나쁜 에이전트 브리프
 
 ```markdown
 ## Agent Brief
 
-**Summary:** Fix the triage bug
+**Summary:** 트리아지 버그 수정
 
 **What to do:**
-The triage thing is broken. Look at the main file and fix it.
-The function around line 150 has the issue.
+트리아지 것이 깨졌습니다. 메인 파일을 보고 수정하세요.
+150번 줄 주변의 함수에 문제가 있습니다.
 
 **Files to change:**
-- src/triage/handler.ts (line 150)
-- src/types.ts (line 42)
+- src/triage/handler.ts (150번 줄)
+- src/types.ts (42번 줄)
 ```
 
-This is bad because:
-- No category
-- Vague description ("the triage thing is broken")
-- References file paths and line numbers that will go stale
-- No acceptance criteria
-- No scope boundaries
-- No description of current vs desired behavior
+이것이 나쁜 이유:
+- 카테고리 없음
+- 모호한 설명 ("트리아지 것이 깨졌습니다")
+- 낡아질 파일 경로와 줄 번호 참조
+- 수락 기준 없음
+- 범위 경계 없음
+- 현재 대 원하는 동작에 대한 설명 없음
