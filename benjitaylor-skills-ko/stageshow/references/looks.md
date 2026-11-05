@@ -1,31 +1,31 @@
-# Looks
+# 룩
 
-A look is a set of design tokens: color, type, shape and density. The kit's parts read them, so one look restyles every window, field, menu and badge at once while the motion, framing and craft rules stay the same. Use the product's own look whenever there is one: a demo in the product's real colors, radii and type reads as the product, not as a generic mock.
+룩은 디자인 토큰의 집합입니다. 색, 타입, 형태, 밀도입니다. 키트의 부분이 그것들을 읽으므로, 룩 하나가 모든 창, 필드, 메뉴, 배지를 한 번에 다시 스타일링하고 모션, 프레이밍, 크래프트 규칙은 그대로입니다. 제품 자신의 룩이 있으면 그것을 쓰세요. 제품의 실제 색, 반지름, 타입의 데모는 일반적인 목업이 아니라 제품으로 읽힙니다.
 
-## The built-in looks
+## 내장 룩
 
-`Stage` takes `theme` (`light`, `dark`, `blueprint`, `glass`), `palette` (`accent`, `mono`) and `fidelity`. They are the starting point. A custom look sits on top of one of them, usually `light` or `dark`.
+`Stage`는 `theme`(`light`, `dark`, `blueprint`, `glass`), `palette`(`accent`, `mono`), `fidelity`를 받습니다. 시작점입니다. 커스텀 룩은 그중 하나, 보통 `light`나 `dark` 위에 앉습니다.
 
-## The tokens
+## 토큰
 
-| Group | Tokens | Default |
+| 그룹 | 토큰 | 기본값 |
 |---|---|---|
-| Surfaces | `--ss-canvas`, `--ss-surface`, `--ss-chrome`, `--ss-well`, `--ss-raised` | warm grays, white |
-| Lines | `--ss-line`, `--ss-line-faint` | translucent black |
-| Text | `--ss-text-strong`, `--ss-text`, `--ss-text-faint` | three grays |
-| Icons | `--ss-icon`, `--ss-icon-faint` | opaque grays |
-| Accent | `--ss-accent`, `--ss-accent-2`, `--ss-accent-soft`, `--ss-accent-text` | blue |
-| Status | `--ss-success`, `--ss-danger`, `--ss-warning`, each with `-soft` and `-text` | green, red, amber |
-| Type | `--ss-font`, `--ss-mono` | the system stacks |
-| Shape | `--ss-radius-sm` (6), `--ss-radius-md` (8), `--ss-radius-lg` (10), `--ss-radius-window` (12), `--ss-radius-pill` (999) | px |
-| Density | `--ss-control` (34, a text field), `--ss-row` (26, a menu row or segment) | px |
-| Shadows | `--ss-shadow-hero`, `-satellite`, `-ground`, `-window`, `-float`, `-lift`, `-card` | see `framing.md` |
+| 표면 | `--ss-canvas`, `--ss-surface`, `--ss-chrome`, `--ss-well`, `--ss-raised` | 따뜻한 회색, 흰색 |
+| 선 | `--ss-line`, `--ss-line-faint` | 반투명 검정 |
+| 텍스트 | `--ss-text-strong`, `--ss-text`, `--ss-text-faint` | 회색 세 단계 |
+| 아이콘 | `--ss-icon`, `--ss-icon-faint` | 불투명 회색 |
+| 액센트 | `--ss-accent`, `--ss-accent-2`, `--ss-accent-soft`, `--ss-accent-text` | 파랑 |
+| 상태 | `--ss-success`, `--ss-danger`, `--ss-warning`, 각각 `-soft`와 `-text` | 초록, 빨강, 호박색 |
+| 타입 | `--ss-font`, `--ss-mono` | 시스템 스택 |
+| 형태 | `--ss-radius-sm` (6), `--ss-radius-md` (8), `--ss-radius-lg` (10), `--ss-radius-window` (12), `--ss-radius-pill` (999) | px |
+| 밀도 | `--ss-control` (34, 텍스트 필드), `--ss-row` (26, 메뉴 행이나 세그먼트) | px |
+| 그림자 | `--ss-shadow-hero`, `-satellite`, `-ground`, `-window`, `-float`, `-lift`, `-card` | `framing.md` 참조 |
 
-The placeholder inks (`--ss-ink-1` to `-5`) are the kit's, not the product's. Leave them unless the product's grays are a different temperature; then pick `Stage greys="cool"` or set the inks from the same gray family.
+자리 표시자 잉크(`--ss-ink-1`에서 `-5`)는 키트의 것이지 제품의 것이 아닙니다. 제품의 회색이 다른 온도가 아니면 그대로 두세요. 그러면 `Stage greys="cool"`을 고르거나 같은 회색 가족에서 잉크를 설정하세요.
 
-## Defining a look
+## 룩 정의
 
-As a stylesheet, which can also carry a dark variant:
+다크 변형도 실을 수 있는 스타일시트:
 
 ```css
 .look-acme .ss-stage {
@@ -41,26 +41,26 @@ As a stylesheet, which can also carry a dark variant:
 <Stage className="look-acme" theme="light" ...>
 ```
 
-Or as values, for one stage: `<Stage tokens={{ '--ss-accent': '#5b5bd6', '--ss-radius-md': '6px' }}>`. Keep a product's look in one file next to its demos and use it on every stage of that product. `examples/looks/` has nine studies. Three invitation variants isolate token choices, including Radix Themes' public tokens (`radix.css`). `studies.tsx` adds a dark console, a financial overview, a creative canvas, a conversation and a research notebook, which change product anatomy, density and hierarchy as well as color. `skeuomorphic.tsx` adds a dimensional transfer receipt: layered paper, a translucent raised frame, coherent lighting and precise edge shadows. Skeuomorphic can mean restrained material depth in software UI, not an imitation appliance; keep the information clear and the physical cues behind it. These are examples, not a closed set: the brief may call for a language none of them use. Borrow the decisions, not an unrelated product's layout. For backgrounds and whole-grid relationships, read `backgrounds.md` and `bento.md`.
+또는 스테이지 하나를 위한 값: `<Stage tokens={{ '--ss-accent': '#5b5bd6', '--ss-radius-md': '6px' }}>`. 제품의 룩을 데모 옆 파일 하나에 두고 그 제품의 모든 스테이지에 쓰세요. `examples/looks/`에 연구 아홉 개가 있습니다. 초대장 변형 셋은 Radix Themes의 공개 토큰(`radix.css`)을 포함해 토큰 선택을 분리합니다. `studies.tsx`는 다크 콘솔, 금융 개요, 크리에이티브 캔버스, 대화, 연구 노트를 더합니다. 색뿐 아니라 제품 구조, 밀도, 계층도 바꿉니다. `skeuomorphic.tsx`는 입체적인 이체 영수증을 더합니다. 겹친 종이, 반투명하게 올라온 프레임, 일관된 조명, 정밀한 가장자리 그림자입니다. 스큐어모픽은 소프트웨어 UI의 절제된 재질 깊이일 수 있고, 가전을 흉내 내는 것이 아닙니다. 정보는 분명하게, 물리적 단서는 그 뒤에 두세요. 이것은 예시이지 닫힌 세트가 아닙니다. 브리프는 그중 어느 것도 쓰지 않는 언어를 요청할 수 있습니다. 관련 없는 제품의 레이아웃이 아니라 결정을 빌리세요. 배경과 그리드 전체의 관계는 `backgrounds.md`와 `bento.md`를 읽으세요.
 
-## From a codebase
+## 코드베이스에서
 
-When the product's code is at hand, its look is already written down. Read it before building anything:
+제품의 코드가 있으면, 룩은 이미 적혀 있습니다. 무엇이든 만들기 전에 읽으세요.
 
-1. **Find the tokens.** CSS custom properties (`:root { --color-primary ... }`), a Tailwind config (`theme.extend.colors`, `borderRadius`, `fontFamily`), theme files (`theme.ts`, a tokens JSON), or a component library's provider. Failing that, read the computed styles of the real components: a button, an input, a menu, a card.
-2. **Map them.** The primary color to `--ss-accent`; the page and card backgrounds to `--ss-canvas` and `--ss-surface`; the text scale to the three text tokens; borders to `--ss-line`; the font stack to `--ss-font`; the radius scale to the shape tokens (the product's button or input radius to `-md`, its menu item to `-sm`, its popover or card to `-lg`); its input height to `--ss-control`, its menu row to `--ss-row`.
-3. **Write the look file** and use it by default for every stage of that product.
+1. **토큰을 찾으세요.** CSS 커스텀 속성(`:root { --color-primary ... }`), Tailwind 설정(`theme.extend.colors`, `borderRadius`, `fontFamily`), 테마 파일(`theme.ts`, 토큰 JSON), 또는 컴포넌트 라이브러리의 프로바이더입니다. 그것도 없으면 실제 컴포넌트의 계산된 스타일을 읽으세요. 버튼, 입력, 메뉴, 카드입니다.
+2. **매핑하세요.** 기본 색은 `--ss-accent`로, 페이지와 카드 배경은 `--ss-canvas`와 `--ss-surface`로, 텍스트 스케일은 세 텍스트 토큰으로, 테두리는 `--ss-line`으로, 글꼴 스택은 `--ss-font`로, 반지름 스케일은 형태 토큰으로(제품의 버튼이나 입력 반지름은 `-md`, 메뉴 항목은 `-sm`, 팝오버나 카드는 `-lg`), 입력 높이는 `--ss-control`로, 메뉴 행은 `--ss-row`로입니다.
+3. **룩 파일을 작성하고** 그 제품의 모든 스테이지에 기본으로 쓰세요.
 
-Follow what the developer asks for. By default the demo is its own code, styled to match: the kit's small parts restyled with the product's tokens. When they ask for the demo to use their own components (their buttons, rows, avatars, design system), import those inside the stage instead of the kit's small parts. The stage, frames, cursor and motion parts still do their jobs around them: mark what the cursor touches with `data-target` and measure it with `rect()` as usual. Real components bring real density, so the restraint rules still apply: words where they carry meaning, quiet filler elsewhere. If a component fetches data or needs app context, give it fixed props or a small wrapper; a demo never calls a live service.
+개발자가 요청하는 것을 따르세요. 기본으로 데모는 맞춰 스타일링된 자체 코드입니다. 제품 토큰으로 다시 스타일링된 키트의 작은 부분입니다. 데모가 자기 컴포넌트(버튼, 행, 아바타, 디자인 시스템)를 쓰라고 하면, 키트의 작은 부분 대신 스테이지 안에서 그것들을 임포트하세요. 스테이지, 프레임, 커서, 모션 부분은 여전히 그 주위에서 일을 합니다. 커서가 닿는 것을 `data-target`으로 표시하고 평소처럼 `rect()`로 측정하세요. 실제 컴포넌트는 실제 밀도를 가져오므로 절제 규칙은 여전히 적용됩니다. 의미를 실는 곳의 단어, 다른 곳의 조용한 필러입니다. 컴포넌트가 데이터를 가져오거나 앱 컨텍스트가 필요하면 고정 props나 작은 래퍼를 주세요. 데모는 라이브 서비스를 호출하지 않습니다.
 
-## From a public site
+## 공개 사이트에서
 
-When the product is someone else's, approximate it from its public site: open it, read the computed styles of a button, an input, a menu and a card, and map them the same way. Take the values, not the assets: no unlicensed fonts or images. Use the kit's local brand marks where they fit (`brands.md`), or the project's own artwork under its terms.
+제품이 다른 사람의 것이면 공개 사이트에서 근사하세요. 열고, 버튼, 입력, 메뉴, 카드의 계산된 스타일을 읽고, 같은 방식으로 매핑하세요. 에셋이 아니라 값을 가져가세요. 라이선스 없는 글꼴이나 이미지는 안 됩니다. 맞는 곳에는 키트의 로컬 브랜드 마크를 쓰거나 (`brands.md`), 조건에 맞는 프로젝트 자신의 아트워크를 쓰세요.
 
-## What a look doesn't change
+## 룩이 바꾸지 않는 것
 
-A look sets visual tokens. The scene still takes on the product's own motion and interaction habits: the kit's timing and framing are defaults. Keep real interaction timing where it helps recognition, then give the audience reading time. Causality, continuous identity, legibility and reduced motion hold whatever the style. A small illustration may need more air than the app itself.
+룩은 시각 토큰을 설정합니다. 장면은 여전히 제품 자신의 모션과 상호작용 습관을 띱니다. 키트의 타이밍과 프레이밍은 기본값입니다. 인식에 도움이 되는 실제 상호작용 타이밍을 유지한 다음, 관객에게 읽는 시간을 주세요. 인과, 연속된 정체성, 가독성, 모션 감소는 스타일이 무엇이든 유지됩니다. 작은 일러스트는 앱 자체보다 더 많은 공기가 필요할 수 있습니다.
 
-## Check it
+## 확인
 
-Put a still of the demo next to a screenshot of the real product at the same scale. The accent, the grays' temperature, the radii and the type should match at a glance; if a control looks foreign, read its real computed styles again rather than nudging by eye.
+같은 스케일로 데모 스틸을 실제 제품 스크린샷 옆에 두세요. 액센트, 회색의 온도, 반지름, 타입이 한눈에 맞아야 합니다. 컨트롤이 낯설어 보이면 눈으로 조금씩 밀지 말고 실제 계산된 스타일을 다시 읽으세요.

@@ -1,57 +1,57 @@
-# Framing
+# 프레이밍
 
-How the screen sits in its space decides whether it reads as a product shot or a screenshot in a box. Decide the framing before building the screen: a crop needs nothing past the crop, and it sets how big the type must be. SKILL.md has the summary; the numbers are here.
+화면이 공간에 어떻게 앉는지가 제품 샷으로 읽히는지, 상자 안의 스크린샷으로 읽히는지 결정합니다. 화면을 만들기 전에 프레이밍을 정하세요. 크롭은 크롭 너머에 아무것도 필요 없고, 타입이 얼마나 커야 하는지를 정합니다. SKILL.md에 요약이 있고, 숫자는 여기 있습니다.
 
-## The rules
+## 규칙
 
-1. **One hero object, at most one or two satellites** (a receipt, a phone, a detail card) that carry the point (`examples/static-card`).
-2. **Keep what identifies the product:** a title, the real chrome, the rows that give the action a reason. Logo and nav are not required; crop around the story.
-3. **The medium picks the first layout:** corner bleed for a hero beside copy, pinned bottom bleed for a card or tile, a phone pinned from the top. If it doesn't hold, try a second from the table below.
-4. **Crop only filler.** The payoff, the action, what the cursor touches and every real word stay whole; a list, diff or terminal may run one line off a bled bottom edge. A placeholder action the crop would slice is removed, not sliced; if the story does not fit, change the stage size or the layout. A button, chip or shadow sliced by the stage edge is the usual fault.
-5. **Crop 10 to 40% of the hero off stage.** The window or phone fills at least two thirds of the stage's width and runs off an edge. Labeled controls stay whole. Shapes that read when cut (a card, a slider track, a row of avatars) run off by a third or more.
-6. **The stage masks everything** (`overflow: hidden`); one rounded corner per edge. Fades are for sliding tracks, stacks and charts, and for one crop: a window fading out at its foot.
-7. **Satellites straddle the hero's edge, about half outside,** never fully inside or floating apart; fully outside, tie it back with a 1px leader ending in a dot.
-8. **Distinct depth:** `--ss-shadow-satellite` on a satellite sitting on the hero, `--ss-shadow-ground` for a lone surface; a hairline on light edges; the shadow on the outlined shape, never a wrapper (`examples/story`).
-9. **Start flat and frontal; earn a tilt** by comparing with the straight version at final size. Depth from shadow, z-order, scale and opacity; perspective only when asked.
-10. **One gutter, measured in the final crop after any wrapper.** The gutter is the hero's inset from the stage edge (the layout table gives it per layout); every other edge distance in the frame matches it. The exception is a satellite straddling in the wider column; a phone counts as a satellite.
-11. **A full gutter or well past, on every edge.** Crossing by under 24px or stopping a few pixels short is a mistake. Content near a container's bottom follows the same rule.
-12. **A window keeps its device's shape:** whole, 1.25:1 or wider; bled, what shows is at least square. Fix by crop or layout, never by squashing.
-13. **What the story opens stays in frame,** a gutter from every edge on every frame; place the trigger so the overlay has room.
-14. **On a colored stage the hero is inset 8 to 20% from the sides** and runs off the bottom, so the ground frames it on three sides.
-15. **No dead corners at rest or anywhere in the loop.** Fix crop or layout first; a satellite only with a role; a reserved column is filled from frame one.
-16. **Anchored UI (popover, menu, toast) is not a satellite;** it sits where the product would put it.
-17. **Two satellites are two kinds, not a stack.** A second satellite differs from the first in size and kind: a card and a small system object (a notification at its true size, a chip, a receipt), never two cards of one width on one edge, which read as a pile. A system banner sits where the system puts it, small, with the system's shadow, not a card's. Where the second object only points at something, use an annotation with a connector instead (`references/annotations.md`), as Stripe does; film flags `framing: twin satellites`.
-18. **A satellite covers chrome, not content:** straddle where the window has a sidebar, header or margin (`examples/static-card`).
-19. **Related surfaces get different jobs and weights;** the result sits in the hero's quiet margin, never hiding settings, trigger or payoff.
-20. **A small illustration may need more air than the app itself.**
+1. **히어로 객체 하나, 위성은 최대 한두 개** (영수증, 휴대폰, 상세 카드)가 요점을 실습니다 (`examples/static-card`).
+2. **제품을 식별하는 것을 유지하세요.** 제목, 실제 크롬, 액션에 이유를 주는 행입니다. 로고와 내비게이션은 필수가 아닙니다. 스토리 주위를 크롭하세요.
+3. **매체가 첫 레이아웃을 고릅니다.** 복사 옆 히어로는 모서리 블리드, 카드나 타일은 아래 고정 블리드, 휴대폰은 위에서 고정. 버티지 못하면 아래 표에서 두 번째를 시도하세요.
+4. **필러만 크롭하세요.** 보상, 액션, 커서가 닿는 것, 모든 실제 단어는 온전히 남습니다. 목록, diff, 터미널은 블리드된 아래 가장자리에서 한 줄이 벗어날 수 있습니다. 크롭이 자를 자리 표시자 액션은 잘리지 않고 제거됩니다. 스토리가 맞지 않으면 스테이지 크기나 레이아웃을 바꾸세요. 스테이지 가장자리에 잘린 버튼, 칩, 그림자가 흔한 결함입니다.
+5. **히어로의 10~40%를 스테이지 밖으로 크롭하세요.** 창이나 휴대폰은 스테이지 너비의 최소 2/3를 채우고 가장자리를 벗어납니다. 레이블이 있는 컨트롤은 온전히 남습니다. 잘려도 읽히는 형태(카드, 슬라이더 트랙, 아바타 행)는 1/3 이상 벗어납니다.
+6. **스테이지가 모든 것을 마스크합니다** (`overflow: hidden`). 가장자리당 둥근 모서리 하나. 페이드는 미끄러지는 트랙, 스택, 차트, 그리고 크롭 하나, 발에서 페이드 아웃되는 창을 위한 것입니다.
+7. **위성은 히어로 가장자리에 걸쳐, 약 절반은 밖에 있습니다.** 완전히 안이나 따로 떠 있지 않습니다. 완전히 밖이면 점으로 끝나는 1px 리더로 다시 묶으세요.
+8. **뚜렷한 깊이:** 히어로 위에 앉은 위성의 `--ss-shadow-satellite`, 단독 표면의 `--ss-shadow-ground`. 밝은 가장자리의 헤어라인. 그림자는 윤곽이 있는 형태 위에 있고, 래퍼 위가 아닙니다 (`examples/story`).
+9. **평평하고 정면으로 시작하세요. 기울기는 벌어 쓰세요.** 최종 크기에서 곧은 버전과 비교하세요. 깊이는 그림자, z 순서, 스케일, 불투명도에서 옵니다. 원근은 요청받았을 때만입니다.
+10. **거터 하나, 래퍼가 있다면 그 뒤의 최종 크롭에서 측정합니다.** 거터는 스테이지 가장자리에서 히어로의 인셋입니다(레이아웃 표가 레이아웃별로 줍니다). 프레임의 다른 모든 가장자리 거리가 그것과 맞습니다. 예외는 더 넓은 열에서 걸치는 위성이며, 휴대폰은 위성으로 칩니다.
+11. **모든 가장자리에서 완전한 거터이거나 훨씬 넘습니다.** 24px 미만으로 가로지르거나 몇 픽셀 모자라는 것은 실수입니다. 컨테이너 바닥 근처의 콘텐츠도 같은 규칙을 따릅니다.
+12. **창은 기기의 형태를 유지합니다.** 온전하면 1.25:1 이상이거나 더 넓고, 블리드되면 보이는 것은 적어도 정사각형입니다. 크롭이나 레이아웃으로 고치고, 찌그러뜨려 고치지 마세요.
+13. **스토리가 여는 것은 프레임 안에 남습니다.** 모든 프레임에서 모든 가장자리로부터 거터입니다. 오버레이에 공간이 있도록 트리거를 두세요.
+14. **색이 있는 스테이지에서 히어로는 측면에서 8~20% 인셋**되고 아래로 벗어나, 그라운드가 세 면에서 프레임합니다.
+15. **정지 시나 루프의 어디에도 죽은 모서리가 없습니다.** 먼저 크롭이나 레이아웃을 고치세요. 위성은 역할이 있을 때만입니다. 예약된 열은 첫 프레임부터 채워집니다.
+16. **고정된 UI(팝오버, 메뉴, 토스트)는 위성이 아닙니다.** 제품이 둘 곳에 있습니다.
+17. **위성 둘은 스택이 아니라 종류 둘입니다.** 두 번째 위성은 크기와 종류가 첫 번째와 다릅니다. 실제 크기의 알림, 칩, 영수증 같은 카드와 작은 시스템 객체이지, 한 가장자리의 같은 너비 카드 둘이 아닙니다. 그것은 더미로 읽힙니다. 시스템 배너는 시스템이 두는 곳에, 작게, 카드의 그림자가 아니라 시스템의 그림자로 있습니다. 두 번째 객체가 무언가를 가리킬 뿐이면 커넥터가 있는 주석을 쓰세요 (`references/annotations.md`). Stripe가 하듯입니다. 필름은 `framing: twin satellites`로 표시합니다.
+18. **위성은 콘텐츠가 아니라 크롬을 가립니다.** 창에 사이드바, 헤더, 여백이 있는 곳에서 걸치세요 (`examples/static-card`).
+19. **관련 표면은 다른 일과 무게를 갖습니다.** 결과는 히어로의 조용한 여백에 있고, 설정, 트리거, 보상을 가리지 않습니다.
+20. **작은 일러스트는 앱 자체보다 더 많은 공기가 필요할 수 있습니다.**
 
-The layouts are recipes, not a requirement to crop every product; a whole window with even gutters is valid when its contents read and the brief asks.
+레이아웃은 레시피입니다. 모든 제품을 크롭하라는 요구가 아닙니다. 콘텐츠가 읽히고 브리프가 요청하면 균일한 거터의 온전한 창도 유효합니다.
 
-## The layouts
+## 레이아웃
 
-| Layout | Hero | Satellite | Use for |
+| 레이아웃 | 히어로 | 위성 | 용도 |
 |---|---|---|---|
-| **Pinned, bottom bleed** | Inset 8 to 12% left, right and top; 15 to 35% past the bottom; centered | Optional, straddling a side | Feature cards and bento tiles, their first composition (`examples/static-card`) |
-| **Corner bleed** | Inset 10% top and left; 15 to 35% past right and bottom | Straddling the left or bottom edge | Heroes beside copy, their first composition (`examples/hero-demo`) |
-| **Stage with gutters** | Inset 8 to 20% each side on a colored stage; off the bottom | Straddling one side, hero stays centered | Brand moments (`examples/raycast`) |
-| **Satellite focus** | Cropped hard, mostly context | Large, 30 to 40% of hero width, straddling, carries the story | One small thing: a notification, a receipt, a diff (`examples/share`) |
-| **Wide hero** | A 900 to 1100px window at 1:1, inset top, off the bottom and often both sides; realistic fidelity | A card or thread on its lower edge | Homepage heroes at full width (`examples/linear`) |
-| **Row of windows** | Three or four at the same height, the outer ones off both sides | None | Agents, tabs or sessions side by side (`examples/window-row`) |
-| **Device pair** | Desktop inset top and left, about 75 to 80% wide, off the bottom | Phone straddling the right edge, about a third outside, top in the upper half, present from frame one; `LockScreen stack="top"` if its bottom is cropped (`examples/device-pair`) | Cross-device stories |
-| **Many of one** | A grid of one small thing at one size, off every edge | None; one tile in focus by depth (hero shadow, accent ring), the only one with words | Previews, deploys, templates, sessions: scale shown as repetition (`examples/many-of-one`) |
-| **Fade crop** | A window inset top and sides, fading out over its last third | Optional | When a stage edge would cut the window at an arbitrary line (`examples/fade-crop`) |
-| **Close-up** | The whole window scaled 1.3 to 1.6x, chrome and all, inset top and sides, off the bottom; the subject row whole across | None | A feature card about one control: a setting, a field, a button (`examples/close-up`) |
-| **Panel over product** | The product inset top and left, off the bottom; its focal control whole | A settings panel straddling the product's right edge over its margin, never over the form; one leader, in neutral ink, from the panel's edge to the thing it changed, through empty ground | A setting and its effect: branding, theme, a toggle that changes the page (`examples/panel-annotation`) |
-| **Overlapping windows** | A window inset top, off the bottom, its words clear of the stage edges | A smaller chromeless card in front whose edge lands on a structural line of the window (its sidebar edge), covering only filler | Two views of one event: the buyer's card over the merchant's dashboard (`examples/overlap`) |
-| **Stacked cards** | Two components at one width and left edge, 12px apart, centered; the lower one off the bottom | None | A setting over the detail it drives: a plan over its usage (`examples/stacked-cards`) |
-| **Opposite corners** | Copy bottom-left at the tile's inset; the product in a panel hung off the top-right corner, its words clear of the cut | None | Bento tiles with a line of copy (`examples/opposite-corners`) |
-| **Tilted stack** | Three same-size cards in one cell, -6, 4 and -2 degrees, offset 12 to 20px; the straightest on top, the only one with words | None | Paper: receipts, tickets, cards gathered. The one place tilt earns its keep (`examples/tilted-stack`) |
-| **Corner chip** | A window inset top-left, off the bottom | A small pill centered on the window's corner, half outside, over chrome only | One live fact about the whole product: people online, a status (`examples/corner-chip`) |
-| **Monochrome row** | Three windows at one height, whole across, grayscale, faded at the foot by a mask | None | Customers or integrations, where their brand colors would fight (`examples/monochrome`) |
+| **고정, 아래 블리드** | 왼쪽, 오른쪽, 위 8~12% 인셋. 아래로 15~35% 넘김. 중앙 | 선택, 한쪽에 걸침 | 기능 카드와 벤토 타일의 첫 구성 (`examples/static-card`) |
+| **모서리 블리드** | 위와 왼쪽 10% 인셋. 오른쪽과 아래로 15~35% 넘김 | 왼쪽 또는 아래 가장자리에 걸침 | 복사 옆 히어로의 첫 구성 (`examples/hero-demo`) |
+| **거터가 있는 스테이지** | 색이 있는 스테이지에서 각 측면 8~20% 인셋. 아래로 벗어남 | 한쪽에 걸치고, 히어로는 중앙 유지 | 브랜드 순간 (`examples/raycast`) |
+| **위성 초점** | 세게 크롭됨, 대부분 맥락 | 큼, 히어로 너비의 30~40%, 걸치며 스토리를 실음 | 작은 것 하나: 알림, 영수증, diff (`examples/share`) |
+| **와이드 히어로** | 1:1의 900~1100px 창, 위 인셋, 아래와 종종 양쪽을 벗어남. 사실적 충실도 | 아래 가장자리의 카드나 스레드 | 전체 너비의 홈페이지 히어로 (`examples/linear`) |
+| **창 행** | 같은 높이의 셋 또는 넷, 바깥쪽은 양쪽을 벗어남 | 없음 | 나란한 에이전트, 탭, 세션 (`examples/window-row`) |
+| **기기 쌍** | 위와 왼쪽 인셋의 데스크톱, 너비 약 75~80%, 아래로 벗어남 | 오른쪽 가장자리에 걸친 휴대폰, 약 1/3은 밖, 위쪽은 상반부, 첫 프레임부터 존재. 아래가 크롭되면 `LockScreen stack="top"` (`examples/device-pair`) | 기기 간 스토리 |
+| **하나의 많은 것** | 한 크기의 작은 것 하나의 그리드, 모든 가장자리를 벗어남 | 없음. 깊이로 초점을 맞춘 타일 하나(히어로 그림자, 액센트 링), 단어가 있는 유일한 것 | 미리보기, 배포, 템플릿, 세션: 반복으로 보여 주는 스케일 (`examples/many-of-one`) |
+| **페이드 크롭** | 위와 측면 인셋, 마지막 1/3에서 페이드 아웃되는 창 | 선택 | 스테이지 가장자리가 임의의 선에서 창을 자를 때 (`examples/fade-crop`) |
+| **클로즈업** | 크롬을 포함해 1.3~1.6배로 스케일된 전체 창, 위와 측면 인셋, 아래로 벗어남. 주제 행은 가로로 온전함 | 없음 | 컨트롤 하나에 대한 기능 카드: 설정, 필드, 버튼 (`examples/close-up`) |
+| **제품 위의 패널** | 위와 왼쪽 인셋, 아래로 벗어난 제품. 초점 컨트롤은 온전함 | 제품 오른쪽 가장자리에 걸친 설정 패널, 여백 위, 양식 위는 절대 아님. 패널 가장자리에서 바꾼 것으로, 빈 그라운드를 통과하는 중립 잉크의 리더 하나 | 설정과 그 효과: 브랜딩, 테마, 페이지를 바꾸는 토글 (`examples/panel-annotation`) |
+| **겹치는 창** | 위 인셋, 아래로 벗어남, 단어는 스테이지 가장자리에서 떨어짐 | 앞의 더 작은 크롬 없는 카드, 가장자리가 창의 구조선(사이드바 가장자리)에 착지, 필러만 가림 | 한 이벤트의 두 뷰: 판매자 대시보드 위의 구매자 카드 (`examples/overlap`) |
+| **스택된 카드** | 같은 너비와 왼쪽 가장자리의 컴포넌트 둘, 12px 간격, 중앙. 아래쪽은 바닥을 벗어남 | 없음 | 이끄는 상세 위의 설정: 사용량 위의 플랜 (`examples/stacked-cards`) |
+| **반대 모서리** | 타일 인셋의 왼쪽 아래 카피. 오른쪽 위 모서리에서 걸린 패널 안의 제품, 단어는 잘림에서 떨어짐 | 없음 | 한 줄 카피가 있는 벤토 타일 (`examples/opposite-corners`) |
+| **기울어진 스택** | 한 셀의 같은 크기 카드 셋, -6, 4, -2도, 12~20px 오프셋. 가장 곧은 것이 위, 단어가 있는 유일한 것 | 없음 | 종이: 영수증, 티켓, 모인 카드. 기울기가 제값을 하는 한 곳 (`examples/tilted-stack`) |
+| **코너 칩** | 왼쪽 위 인셋, 아래로 벗어나는 창 | 창 모서리에 중앙인 작은 알약, 절반은 밖, 크롬 위만 | 제품 전체에 대한 라이브 사실 하나: 온라인 인원, 상태 (`examples/corner-chip`) |
+| **모노크롬 행** | 한 높이의 창 셋, 가로로 온전함, 그레이스케일, 발에서 마스크로 페이드 | 없음 | 브랜드 색이 싸울 고객이나 연동 (`examples/monochrome`) |
 
-## Recipes
+## 레시피
 
-Position the hero with plain CSS inside the `Stage` render. Reserve a wider column so the satellite straddles the hero edge evenly: gutter plus half its width (`examples/static-card`).
+`Stage` 렌더 안에서 평범한 CSS로 히어로를 배치하세요. 위성이 히어로 가장자리에 고르게 걸치도록 더 넓은 열을 예약하세요. 거터에 너비의 절반을 더한 값입니다 (`examples/static-card`).
 
 ```tsx
 <Stage width={656} height={340} initial={{}} className="my-well">
@@ -68,39 +68,39 @@ Position the hero with plain CSS inside the `Stage` render. Reserve a wider colu
 .my-well .satellite { box-shadow: var(--ss-shadow-satellite); border-radius: 10px; background: var(--ss-surface); }
 ```
 
-The shadow tokens in `kit/stage.css` (loaded by `kit/stageshow.css`), set by every theme:
+모든 테마가 설정하는 `kit/stage.css`(`kit/stageshow.css`가 로드)의 그림자 토큰:
 
-- `--ss-shadow-hero`: the one shadow for a page's hero windows (`examples/gmail`).
-- `--ss-shadow-window`: what `Window` draws by default; quieter, for a window that is not the hero.
-- `--ss-shadow-satellite`: tighter on purpose, because it falls on a white window where a wide blur smears (`examples/payout-flow`).
-- `--ss-shadow-ground`: a hairline and a long faint fall, for a small window or card on the ground (`examples/looks`).
-- `--ss-shadow-float` for popovers, `-card` for small raised cards, `-lift` for a carried thing.
+- `--ss-shadow-hero`: 페이지의 히어로 창을 위한 그림자 하나 (`examples/gmail`).
+- `--ss-shadow-window`: `Window`가 기본으로 그리는 것. 히어로가 아닌 창을 위해 더 조용합니다.
+- `--ss-shadow-satellite`: 일부러 더 촘촘합니다. 넓은 블러가 번지는 흰 창 위에 떨어지기 때문입니다 (`examples/payout-flow`).
+- `--ss-shadow-ground`: 헤어라인과 길고 흐린 감쇠. 그라운드 위의 작은 창이나 카드용 (`examples/looks`).
+- 팝오버의 `--ss-shadow-float`, 작은 올라온 카드의 `-card`, 운반되는 것의 `-lift`.
 
-Fades are for moving or stacked content: a 32px edge mask on a track, or the last 25 to 30% of a stack or chart. Use `.ss-fade-b` and `.ss-fade-r`; their length is `--ss-fade` (64px by default, so set `--ss-fade: 32px` for a track).
+페이드는 움직이거나 쌓인 콘텐츠를 위한 것입니다. 트랙의 32px 가장자리 마스크, 또는 스택이나 차트의 마지막 25~30%입니다. `.ss-fade-b`와 `.ss-fade-r`을 쓰세요. 길이는 `--ss-fade`입니다(기본 64px이므로 트랙에는 `--ss-fade: 32px`).
 
-A window can fade out instead of running off, at its foot only: the top and sides stay whole and hard-edged, the fade covers the last third and only filler is under it. Fade with a mask, never a color overlay, so the window dissolves into whatever it sits on. Never fade a side, never fade the focal content, never fade more than one window in a scene (`examples/fade-crop`).
+창은 벗어나는 대신 페이드 아웃할 수 있습니다. 발에서만입니다. 위와 측면은 온전하고 단단한 가장자리로 남고, 페이드는 마지막 1/3을 덮으며 그 아래는 필러뿐입니다. 색 오버레이가 아니라 마스크로 페이드해서, 창이 앉은 곳 무엇이든 그 안으로 녹게 하세요. 측면을 페이드하지 말고, 초점 콘텐츠를 페이드하지 말며, 장면에서 창을 하나보다 많이 페이드하지 마세요 (`examples/fade-crop`).
 
-## Small formats and the page
+## 작은 형식과 페이지
 
-- **The page is the ground.** "White page" means a transparent stage: no plate (a backdrop or tinted field the window floats on) and no panel behind the device on a white or dark page. A hero's window bleeds or fills; whole and centered with air on four sides, it floats.
-- **Unframed is the developer's call.** Asked for no framing, set `unframed` on the Stage and drop the ground: the window, card or phone sits whole, centered, with an even margin at least as deep as its shadow, so the shadow is never cut. Nothing bleeds, so nothing needs a crop rule; everything else in this file still holds, and so do restraint, story and motion. Never choose it on your own: a floating window is the fault this file exists to fix.
-- **`compact` is a second design, not a squeeze.** Every demo that can sit in a phone column ships one at the column's width: 358 in a 390 viewport, switched on below the host width where the wide design stops fitting (`compact={{ below: 560, width: 358, height: 320 }}` for a wide scene; the height follows the design). Switch composition on `layout`: crop closer, drop or stack a satellite, keep action and payoff whole. A card that already fits at 358 needs none.
-- **Small formats crop harder:** a 400px card holds a third of a dashboard at full size, not all of it at a third.
-- **The stage is the shot.** The tile is cut to the stage's shape and the stage fills it edge to edge; never a stage boxed in another ground.
-- **Size the design for the slot.** A lone card in a 680px column wants 500 to 560 wide, so its text reads at 15 to 20px.
-- **A lone phone in a column of figures keeps the column's width,** centered at design size on the stage's own ground.
-- **Moving a window keeps the bleed.** After any move or resize, recheck what the crop cuts and what overlaps, remove sliced placeholder actions, re-shoot the whole loop.
+- **페이지가 그라운드입니다.** "흰 페이지"는 투명 스테이지를 뜻합니다. 플레이트(창이 떠 있는 배경이나 틴트 필드)도, 흰 페이지나 어두운 페이지에서 기기 뒤의 패널도 없습니다. 히어로의 창은 블리드하거나 채웁니다. 온전하고 중앙에 네 면의 공기가 있으면 떠 있습니다.
+- **프레임 없음은 개발자의 결정입니다.** 프레이밍 없음을 요청받으면 Stage에 `unframed`를 설정하고 그라운드를 빼세요. 창, 카드, 휴대폰이 온전히, 중앙에, 그림자만큼 깊은 균일한 여백으로 앉아 그림자가 잘리지 않습니다. 아무것도 블리드하지 않으므로 크롭 규칙이 필요 없습니다. 이 파일의 나머지와 절제, 스토리, 모션은 여전히 유지됩니다. 스스로 고르지 마세요. 떠 있는 창은 이 파일이 고치려고 있는 결함입니다.
+- **`compact`는 압축이 아니라 두 번째 디자인입니다.** 휴대폰 열에 들어갈 수 있는 모든 데모는 열 너비로 하나를 제공합니다. 390 뷰포트의 358, 와이드 디자인이 맞지 않게 되는 호스트 너비 아래에서 켜집니다(와이드 장면은 `compact={{ below: 560, width: 358, height: 320 }}`. 높이는 디자인을 따릅니다). `layout`에서 구성을 바꾸세요. 더 가깝게 크롭하고, 위성을 빼거나 쌓고, 액션과 보상은 온전히 유지하세요. 358에 이미 맞는 카드는 필요 없습니다.
+- **작은 형식은 더 세게 크롭합니다.** 400px 카드는 대시보드 전체를 1/3로 담지 않고, 전체 크기의 1/3을 담습니다.
+- **스테이지가 샷입니다.** 타일은 스테이지 형태로 잘리고 스테이지가 가장자리까지 채웁니다. 다른 그라운드 안에 박스된 스테이지는 안 됩니다.
+- **슬롯에 맞게 디자인의 크기를 정하세요.** 680px 열의 단독 카드는 너비 500~560을 원하므로, 텍스트가 15~20px로 읽힙니다.
+- **수치 열의 단독 휴대폰은 열 너비를 유지합니다.** 스테이지 자신의 그라운드에서 디자인 크기로 중앙입니다.
+- **창을 옮겨도 블리드는 유지됩니다.** 이동이나 크기 조정 뒤에 크롭이 자르는 것과 겹치는 것을 다시 확인하고, 잘린 자리 표시자 액션을 제거하고, 루프 전체를 다시 촬영하세요.
 
-## Phones
+## 휴대폰
 
-- **A satellite phone starts at 40% of the window's visible width** and at least 220px wide; let it run off the bottom rather than shrink.
-- **Notifications stay at true iOS proportion** (Live Activities excepted); a phone so small its notification needs enlarging is too small (`examples/phones`).
-- **A phone cropped at the top loses its status bar and nav bar together.** The crop falls inside the content below the nav, never between the island and the nav.
-- **In a 400px host a phone is cropped:** pinned a gutter from one edge, off the other, screen 1:1, stage a little taller than wide; never whole (`examples/phone-touch`).
-- **A banner is native width and never cut.** A notification spans the screen minus 18pt each side, at the phone's own scale; nothing narrows it. A phone cropped at a side is composed so the banner shows whole (crop where no banner sits, or show the phone's full width) and film flags a cut banner as `cut by the crop`.
+- **위성 휴대폰은 창의 보이는 너비의 40%에서 시작하고** 너비는 최소 220px입니다. 줄이는 대신 아래로 벗어나게 하세요.
+- **알림은 실제 iOS 비율을 유지합니다** (Live Activities 제외). 알림을 키워야 할 만큼 작은 휴대폰은 너무 작습니다 (`examples/phones`).
+- **위에서 크롭된 휴대폰은 상태 표시줄과 내비게이션 바를 함께 잃습니다.** 크롭은 내비게이션 아래 콘텐츠 안에 떨어지고, 아일랜드와 내비게이션 사이에는 절대 떨어지지 않습니다.
+- **400px 호스트에서 휴대폰은 크롭됩니다.** 한 가장자리에서 거터로 고정되고 다른 쪽으로 벗어나며, 화면은 1:1, 스테이지는 너비보다 조금 깁니다. 온전하면 안 됩니다 (`examples/phone-touch`).
+- **배너는 네이티브 너비이며 잘리지 않습니다.** 알림은 휴대폰 자체 스케일에서 양쪽 18pt를 뺀 화면에 걸칩니다. 아무것도 그것을 좁히지 않습니다. 측면에서 크롭된 휴대폰은 배너가 온전히 보이게 구성됩니다(배너가 없는 곳을 크롭하거나, 휴대폰의 전체 너비를 보여 주세요). 필름은 잘린 배너를 `cut by the crop`으로 표시합니다.
 
-## Checks
+## 확인
 
-`film.mjs` prints `framing:` and `cut by the crop:` on every shot; clear them on the still before motion work (`rehearse.md`, What to watch), or say why a line is deliberate. Boxes in flight are judged where they settle. Under a `Camera` the wide shot is judged as usual, moving frames skipped, and a settled zoom judged against the camera's own crop with its focus clear of the feather.
+`film.mjs`는 모든 샷에 `framing:`과 `cut by the crop:`을 인쇄합니다. 모션 작업 전에 스틸에서 지우거나 (`rehearse.md`, 볼 것), 줄이 의도적인 이유를 말하세요. 비행 중인 상자는 정착하는 곳에서 판단됩니다. `Camera` 아래에서는 와이드 샷을 평소처럼 판단하고, 움직이는 프레임은 건너뛰며, 정착한 줌은 초점이 페더에서 떨어진 카메라 자신의 크롭에 대해 판단됩니다.
 
-Is the hero's top-left visible? Is a bleed a deliberate crop, not a sliver? Does each satellite connect to its hero with clear depth? Is a faded window faded only at its foot, over filler, with a mask? Is the phone readable at the host's real width, and does a wide scene have its `compact` design (Small formats and the page, above)?
+히어로의 왼쪽 위가 보입니까? 블리드가 얇은 조각이 아니라 의도된 크롭입니까? 각 위성이 분명한 깊이로 히어로에 연결됩니까? 페이드된 창이 필러 위, 발에서만, 마스크로 페이드됩니까? 휴대폰이 호스트의 실제 너비에서 읽히고, 와이드 장면에 `compact` 디자인이 있습니까(위의 작은 형식과 페이지)?
