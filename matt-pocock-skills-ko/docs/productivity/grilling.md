@@ -1,87 +1,87 @@
-## What it does
+## 무엇을 하는가
 
-`grilling` is the interview loop that stress-tests a plan, a decision, or an idea before anyone acts on it. It maps the subject as a **design tree**: every decision branches into the decisions that hang off it, and interviews you branch by branch until no assumption stays unstated.
+`grilling`은 누구든 그것을 실행하기 전에 계획, 결정, 아이디어를 스트레스 테스트하는 인터뷰 루프입니다. 주제를 **설계 트리**로 매핑합니다: 모든 결정이 그것에 매달린 결정들로 분기하고, 어떤 가정도 명시되지 않은 채로 남지 않을 때까지 분기별로 인터뷰합니다.
 
-It does not ask one question at a time, and it does not ask everything at once. Each **round** asks the whole **frontier**: every decision whose prerequisites are already settled, and nothing else. Two questions never share a round if one depends on the other; a question that hinges on an answer still open belongs to a later round. Your answers settle decisions, the frontier moves outward, and the next round asks what that unblocked. Thirteen questions typically land in about three rounds rather than thirteen.
+한 번에 하나의 질문을 하지도 않고, 모든 것을 한 번에 하지도 않습니다. 각 **라운드**는 전체 **프론티어**를 묻습니다: 전제 조건이 이미 해결된 모든 결정이며, 그 외는 아무것도 없습니다. 하나가 다른 것에 의존한다면 두 질문은 절대 한 라운드를 공유하지 않습니다. 아직 열려 있는 답변에 달려 있는 질문은 이후 라운드에 속합니다. 여러분의 답변이 결정을 해결하고, 프론티어가 바깥쪽으로 이동하며, 다음 라운드는 그것이 차단을 해제한 것을 묻습니다. 13개 질문은 일반적으로 13개가 아닌 약 3개 라운드에 도착합니다.
 
-## When to reach for it
+## 언제 사용하는가
 
-Type `/grilling`, or the [agent](https://www.aihero.dev/ai-coding-dictionary/agent) reaches for it on its own when a task fits. It is the only [skill](https://www.aihero.dev/ai-coding-dictionary/skill) in the grilling family that is model-invoked, so you rarely type it. Usually a skill you *did* type runs it for you.
+`/grilling`을 입력하거나, 작업이 맞을 때 [에이전트](https://www.aihero.dev/ai-coding-dictionary/agent)가 스스로 사용합니다. grilling 계열에서 모델이 호출하는 유일한 [스킬](https://www.aihero.dev/ai-coding-dictionary/skill)이므로, 직접 입력하는 경우는 드뭅니다. 보통 여러분이 *입력한* 스킬이 대신 실행해줍니다.
 
-Typing `/grilling` directly gets you the plain interview and nothing else. Where you want something more than that:
+`/grilling`을 직접 입력하면 순수 인터뷰만 받고 다른 것은 없습니다. 그 이상을 원하는 경우:
 
-| What you have | Reach for |
+| 가진 것 | 사용할 도구 |
 | --- | --- |
-| You aren't working in a working directory | [grill-me](https://aihero.dev/skills-grill-me): the same [session](https://www.aihero.dev/ai-coding-dictionary/session), under a name the agent will never fire by itself |
-| You are in a working directory | [grill-with-docs](https://aihero.dev/skills-grill-with-docs): the same session, and it writes `GLOSSARY.md` and ADRs as it goes |
-| An effort too big to hold in one session | [wayfinder](https://aihero.dev/skills-wayfinder): it charts a map and runs grilling inside the decision tickets |
-| A question that talking cannot settle: how something should look or feel | [prototype](https://aihero.dev/skills-prototype): build the throwaway version, then come back |
-| A skill of your own that needs an interview | Invoke `/grilling` from it, rather than writing another interview |
+| 작업 디렉터리에서 작업하지 않음 | [grill-me](https://aihero.dev/skills-grill-me): 같은 [세션](https://www.aihero.dev/ai-coding-dictionary/session), 에이전트가 스스로 실행하지 않을 이름 아래 |
+| 작업 디렉터리에 있음 | [grill-with-docs](https://aihero.dev/skills-grill-with-docs): 같은 세션, 진행하면서 `GLOSSARY.md`와 ADR 작성 |
+| 한 세션에 담기에 너무 큰 작업 | [wayfinder](https://aihero.dev/skills-wayfinder): 맵을 작성하고 결정 티켓 내에서 grilling 실행 |
+| 대화로 해결할 수 없는 질문: 무언가가 어떻게 보이거나 느껴져야 하는지 | [prototype](https://aihero.dev/skills-prototype): 버릴 버전을 빌드하고 돌아오기 |
+| 인터뷰가 필요한 여러분 자신의 스킬 | 다른 인터뷰를 작성하지 말고 거기서 `/grilling` 호출 |
 
-## The round, the frontier, and who decides
+## 라운드, 프론티어, 누가 결정하는가
 
-The skill rests on three ideas.
+스킬은 세 가지 아이디어에 기반합니다.
 
-The **design tree** is the model of the subject: decisions with decisions hanging off them. The **frontier** is the set of decisions whose prerequisites are all settled: the only questions the agent can ask yet. A **round** is one frontier, asked in full and answered in full.
+**설계 트리**는 주제의 모델입니다: 결정들과 그것들에 매달린 결정들. **프론티어**는 전제 조건이 모두 해결된 결정들의 집합입니다: 에이전트가 아직 물을 수 있는 유일한 질문들. **라운드**는 하나의 프론티어로, 완전히 묻고 완전히 답합니다.
 
-Inside a round, every question has a fixed format: numbered and titled behind a `❓`, then the body, then the agent's recommended answer alone on a `➡️` line. This format lets you answer a round by number ("1 yes, 2 the second option, 3 no, here's why") instead of by quoting questions back. The format has one known problem. The recommendation sometimes argues *against* the question as it was worded, so agreeing with the recommendation means answering "no" to the question. When that happens, answer the recommendation and say so.
+라운드 내부에서 모든 질문은 고정된 형식을 가집니다: `❓` 뒤에 번호와 제목, 그 다음 본문, 그 다음 `➡️` 라인에만 에이전트의 권장 답변. 이 형식은 질문을 인용하는 대신 번호로 라운드에 답할 수 있게 해줍니다 ("1 예, 2 두 번째 옵션, 3 아니요, 이유는"). 형식에는 알려진 문제가 하나 있습니다. 권장 사항이 때때로 질문이 표현된 대로 *반대*로 주장하므로, 권장 사항에 동의하는 것이 질문에 "아니요"라고 답하는 것을 의미합니다. 그런 일이 생기면 권장 사항에 답하고 그렇게 말하세요.
 
-The other half of the design is the split between facts and decisions. Facts are the skill's own job. When a frontier question needs something the [environment](https://www.aihero.dev/ai-coding-dictionary/environment) can settle, the agent dispatches a [sub-agent](https://www.aihero.dev/ai-coding-dictionary/subagent) to find out rather than asking you. The round does not wait for that research; only the questions that depend on it wait. Decisions are yours, and the agent must wait for them. An agent running `grilling` that answers its own decisions has broken the skill. The session ends when the frontier is empty. The agent then waits for you to confirm a shared understanding before it acts on what you agreed.
+설계의 다른 절반은 사실과 결정 사이의 분리입니다. 사실은 스킬 자체의 일입니다. 프론티어 질문이 [환경](https://www.aihero.dev/ai-coding-dictionary/environment)이 해결할 수 있는 것을 필요로 할 때, 에이전트는 여러분에게 묻는 대신 [서브에이전트](https://www.aihero.dev/ai-coding-dictionary/subagent)를 보내 알아냅니다. 라운드는 그 연구를 기다리지 않습니다. 그것에 의존하는 질문만 기다립니다. 결정은 여러분 것이며, 에이전트는 그것을 기다려야 합니다. `grilling`을 실행하면서 자체 결정에 답하는 에이전트는 스킬을 깨뜨린 것입니다. 세션은 프론티어가 비었을 때 끝납니다. 그런 다음 에이전트는 합의한 것에 대해 행동하기 전에 공유된 이해를 확인하기를 기다립니다.
 
-The frontier has one limit. The agent chooses it by judgement; it does not compute it from a graph. So it can put two questions in one round and only later find that one answer should have changed the other. The only guard is to tell it. That reopens the affected branch in the next round.
+프론티어에는 한 가지 한계가 있습니다. 에이전트는 판단으로 선택합니다. 그래프에서 계산하지 않습니다. 따라서 한 라운드에 두 질문을 넣고 나중에야 한 답변이 다른 것을 바꿔야 했다는 것을 발견할 수 있습니다. 유일한 보호 장치는 그것을 말하는 것입니다. 그것이 다음 라운드에서 영향받은 분기를 다시 엽니다.
 
-## What lives here and what lives in the wrappers
+## 무엇이 여기 있고 무엇이 래퍼에 있는가
 
-This page covers the mechanism. The wrapper skills' pages answer the questions people ask most often.
+이 페이지는 메커니즘을 다룹니다. 래퍼 스킬의 페이지는 사람들이 가장 자주 묻는 질문에 답합니다.
 
-| Question | Where it is answered |
+| 질문 | 어디서 답하는가 |
 | --- | --- |
-| The tree, the frontier, rounds, the question format, facts vs decisions | Here |
-| How long a session should run, what to do with a question you can't answer by talking, how to avoid nodding along | [grill-me](https://aihero.dev/skills-grill-me) |
-| What gets written to `GLOSSARY.md`, what becomes an ADR | [grill-with-docs](https://aihero.dev/skills-grill-with-docs) |
+| 트리, 프론티어, 라운드, 질문 형식, 사실 대 결정 | 여기 |
+| 세션이 얼마나 실행되어야 하는지, 대화로 답할 수 없는 질문을 어떻게 해야 하는지, 고개만 끄덕이는 것을 피하는 방법 | [grill-me](https://aihero.dev/skills-grill-me) |
+| `GLOSSARY.md`에 무엇이 작성되는지, 무엇이 ADR이 되는지 | [grill-with-docs](https://aihero.dev/skills-grill-with-docs) |
 
-## Common questions
+## 자주 묻는 질문
 
-**Can I go back to one question at a time?**
-Yes, and a large part of the audience does. Add this to your global `CLAUDE.md`:
+**한 번에 하나의 질문으로 돌아갈 수 있나요?**
+네, 많은 사용자가 그렇게 합니다. 전역 `CLAUDE.md`에 이것을 추가하세요:
 
 ```
 When grilling, ask one question at a time.
 ```
 
-Not everyone prefers the round-based default. Users who read slowly, who work in a second language, or who use the sequential format to help them focus report that one question at a time works better for them. The opt-out is a supported setting, not a workaround.
+모두가 라운드 기반 기본값을 선호하는 것은 아닙니다. 천천히 읽는 사용자, 제2언어로 작업하는 사용자, 또는 집중을 돕기 위해 순차 형식을 사용하는 사용자들은 한 번에 하나의 질문이 더 잘 작동한다고 보고합니다. 옵트아웃은 지원되는 설정이며, 우회책이 아닙니다.
 
-**Where did `/batch-grill-me` go?**
-Into this skill. Round-based questioning shipped briefly as a separate skill, then moved into `grilling` itself, so everything built on the primitive (`grill-me`, `grill-with-docs`, `triage`, `wayfinder`) got it at once. There is no `batch-grill-me` to install, and no separate sequential skill either; the `CLAUDE.md` line above is the way back to one-at-a-time.
+**`/batch-grill-me`는 어디로 갔나요?**
+이 스킬로 들어갔습니다. 라운드 기반 질문은 잠깐 별도 스킬로 배포되었다가 `grilling` 자체로 이동했으므로, 원시 기능 위에 구축된 모든 것(`grill-me`, `grill-with-docs`, `triage`, `wayfinder`)이 한 번에 그것을 얻었습니다. 설치할 `batch-grill-me`도 없고 별도의 순차 스킬도 없습니다. 위의 `CLAUDE.md` 라인이 한 번에 하나씩으로 돌아가는 방법입니다.
 
-**Asking a whole round at once must lose the questions my earlier answers would have raised. Doesn't it?**
-This is the most common objection to rounds, and the frontier answers it. A round only contains questions that do not depend on each other, so no answer in a round can invalidate another question in that round. Your answers still change what comes after them, because the agent works out each next round from scratch. You do lose something, but less than "all questions at once" implies. See the frontier's limit above.
+**전체 라운드를 한 번에 물으면 이전 답변이 제기했을 질문을 잃어버리는 거 아닌가요?**
+이것이 라운드에 대한 가장 흔한 반대이며, 프론티어가 그것에 답합니다. 라운드는 서로 의존하지 않는 질문만 포함하므로, 라운드의 어떤 답변도 그 라운드의 다른 질문을 무효화할 수 없습니다. 에이전트가 각 다음 라운드를 처음부터 작업하기 때문에 여러분의 답변은 여전히 그 이후에 오는 것을 변경합니다. 무언가를 잃기는 하지만, "모든 질문을 한 번에"가 암시하는 것보다는 적습니다. 위의 프론티어의 한계를 참조하세요.
 
-**It ran out of questions and started building.**
-The confirmation gate exists for this. The skill is finished when you say the understanding is shared, not when the frontier empties. Weaker and faster [models](https://www.aihero.dev/ai-coding-dictionary/model) still skip the gate. Users report this most often on lower-effort or non-frontier models, which collapse "interview until shared understanding" into a couple of questions and an outline. If yours does it, the reliable fix is a line in your own `AGENTS.md` or `CLAUDE.md` telling the agent not to implement without permission.
+**질문이 바닥나서 빌드를 시작했어요.**
+확인 게이트가 이를 위해 존재합니다. 스킬은 프론티어가 비었을 때가 아니라 여러분이 이해가 공유됐다고 말할 때 끝납니다. 더 약하고 빠른 [모델](https://www.aihero.dev/ai-coding-dictionary/model)은 여전히 게이트를 건너뜁니다. 사용자들은 "공유된 이해까지 인터뷰"를 몇 가지 질문과 개요로 축소하는 낮은 노력 또는 비프론티어 모델에서 이것을 가장 자주 보고합니다. 여러분 것이 그렇다면, 신뢰할 수 있는 수정은 여러분 자신의 `AGENTS.md`나 `CLAUDE.md`에 에이전트에게 허가 없이 구현하지 말라고 말하는 라인입니다.
 
-**It answered its own questions instead of asking me.**
-That is a bug in the run, and it is the reason the skill's text separates facts from decisions. It happens most when another skill runs `grilling` to resolve a ticket, and the agent takes that task as permission to keep moving. The same constraint is why there is no async mode. People have asked for a variant that reads a GitHub issue and posts one consolidated decision memo, and that is a different skill, because a grilling session that nobody answers has produced the agent's opinion rather than yours.
+**저에게 묻는 대신 자체 질문에 답했어요.**
+그것은 실행의 버그이며, 스킬의 텍스트가 사실과 결정을 분리하는 이유입니다. 다른 스킬이 티켓을 해결하기 위해 `grilling`을 실행하고 에이전트가 그 작업을 계속 진행할 허가로 받아들일 때 가장 자주 발생합니다. 같은 제약이 비동기 모드가 없는 이유입니다. 사람들은 GitHub 이슈를 읽고 통합 결정 메모를 하나 게시하는 변형을 요청했지만, 그것은 다른 스킬입니다. 아무도 답하지 않는 grilling 세션은 여러분의 의견이 아니라 에이전트의 의견을 생성했기 때문입니다.
 
-**Can I cap the number of questions?**
-No, and a cap is out of scope on purpose. Some plans need three questions and some need fifty; a fixed ceiling either truncates the hard case or feels arbitrary on the easy one. The intended control is plain language. Tell it to wrap up, or stop and accept the plan where it stands. If a session is running very long, the cause is usually that the scope was too big; break the work up and grill the pieces.
+**질문 수를 제한할 수 있나요?**
+아니요, 상한선은 의도적으로 범위 밖입니다. 어떤 계획은 3개의 질문이 필요하고 어떤 것은 50개가 필요합니다. 고정된 상한선은 어려운 경우를 잘라내거나 쉬운 경우에 임의적으로 느껴집니다. 의도된 제어는 평범한 언어입니다. 마무리하라고 말하거나, 멈추고 현재 상태의 계획을 받아들이세요. 세션이 매우 길게 실행된다면, 원인은 보통 범위가 너무 컸기 때문입니다. 작업을 나누고 조각들을 grilling 하세요.
 
-**I installed `grill-me` on its own and nothing happens.**
-`grill-me` is a one-line skill whose whole body is "run a `/grilling` session", so it needs this skill installed too. The same is true of `grill-with-docs`, which additionally needs [domain-modeling](https://aihero.dev/skills-domain-modeling). Installing the whole set avoids the problem; installing selectively means installing the primitives as well.
+**`grill-me`를 단독으로 설치했는데 아무 일도 일어나지 않아요.**
+`grill-me`는 전체 본문이 "`/grilling` 세션 실행"인 한 줄짜리 스킬이므로, 이 스킬도 설치되어 있어야 합니다. `grill-with-docs`도 마찬가지이며, 추가로 [domain-modeling](https://aihero.dev/skills-domain-modeling)이 필요합니다. 전체 세트를 설치하면 문제를 피할 수 있습니다. 선택적으로 설치한다는 것은 원시 기능도 설치한다는 것을 의미합니다.
 
-**`grill-with-docs` ran, but it never loaded `grilling`.**
-This is a real bug, still unfixed, and users report it across [harnesses](https://www.aihero.dev/ai-coding-dictionary/harness) and models. A skill that names another skill does not reliably cause that skill to load, and `grill-with-docs` names two. The sign is a session that asks everything at once with no recommendations. That means the model is improvising an interview rather than running this one. Asking the agent directly whether it loaded `grilling` and `domain-modeling` usually recovers it.
+**`grill-with-docs`를 실행했는데 `grilling`을 로드하지 않았어요.**
+이것은 실제 버그이며 아직 수정되지 않았고, 사용자들은 [하네스](https://www.aihero.dev/ai-coding-dictionary/harness)와 모델 전반에 걸쳐 이것을 보고합니다. 다른 스킬을 명시하는 스킬이 그 스킬을 로드하게 만드는 것은 신뢰할 수 없으며, `grill-with-docs`는 두 개를 명시합니다. 징후는 권장 사항 없이 모든 것을 한 번에 묻는 세션입니다. 그것은 모델이 이것을 실행하는 대신 인터뷰를 즉흥적으로 만들고 있다는 것을 의미합니다. 에이전트에게 `grilling`과 `domain-modeling`을 로드했는지 직접 묻는 것이 보통 복구합니다.
 
-## It's working if
+## 제대로 작동한다는 신호
 
-- A round arrives as a numbered list, each question with its recommendation on a separate `➡️` line, and you can answer the whole round by number.
-- Nothing in a round needs another question in the same round answered first.
-- Later rounds ask things the first round could not have asked.
-- It goes and looks facts up (reading files, dispatching a sub-agent) rather than asking you something it could have found out.
-- Research running in the background does not stall the round; only the questions that depend on it wait.
-- It stops at the end and asks you to confirm the understanding is shared, instead of starting work.
-- Question count stays high while round count stays low.
+- 라운드가 번호 매긴 목록으로 도착하고, 각 질문은 별도의 `➡️` 라인에 권장 사항이 있으며, 전체 라운드에 번호로 답할 수 있습니다.
+- 라운드의 어떤 것도 같은 라운드의 다른 질문이 먼저 답해지는 것을 필요로 하지 않습니다.
+- 나중 라운드는 첫 라운드가 물을 수 없었던 것을 묻습니다.
+- 알아낼 수 있었던 것을 여러분에게 묻는 대신 가서 사실을 찾아봅니다 (파일 읽기, 서브에이전트 보내기).
+- 백그라운드에서 실행되는 연구가 라운드를 멈추지 않습니다. 그것에 의존하는 질문만 기다립니다.
+- 끝에서 멈추고 작업을 시작하는 대신 이해가 공유됐는지 확인을 요청합니다.
+- 질문 수는 높게 유지되면서 라운드 수는 낮게 유지됩니다.
 
-## Where it fits
+## 어디에 적용되는지
 
-`grilling` is a **primitive**, not a step you schedule: the single source of truth for the interview technique, kept in one place so every skill that needs an interview reaches for it instead of inventing one. [grill-me](https://aihero.dev/skills-grill-me) and [grill-with-docs](https://aihero.dev/skills-grill-with-docs) are its two user-invoked front doors, and `grill-with-docs` is where the main build chain begins, ahead of [to-spec](https://aihero.dev/skills-to-spec). [wayfinder](https://aihero.dev/skills-wayfinder) runs it to resolve decision tickets, [triage](https://aihero.dev/skills-triage) to grill a vague report into a workable one, and [improve-codebase-architecture](https://aihero.dev/skills-improve-codebase-architecture) to walk the tree once you have picked a candidate to deepen. When you are unsure which entry point fits, [ask-matt](https://aihero.dev/skills-ask-matt) routes you.
+`grilling`은 예약하는 단계가 아니라 **원시 기능**입니다: 인터뷰 기술의 단일 진실 공급원으로, 인터뷰가 필요한 모든 스킬이 하나를 발명하는 대신 이것을 사용하도록 한 곳에 보관됩니다. [grill-me](https://aihero.dev/skills-grill-me)와 [grill-with-docs](https://aihero.dev/skills-grill-with-docs)는 사용자가 호출하는 두 개의 정문이며, `grill-with-docs`는 [to-spec](https://aihero.dev/skills-to-spec)에 앞서 주 빌드 체인이 시작되는 곳입니다. [wayfinder](https://aihero.dev/skills-wayfinder)는 결정 티켓을 해결하기 위해 실행하고, [triage](https://aihero.dev/skills-triage)는 모호한 보고서를 작업 가능한 것으로 grilling 하기 위해, [improve-codebase-architecture](https://aihero.dev/skills-improve-codebase-architecture)는 심화할 후보를 선택한 후 트리를 걷기 위해 실행합니다. 어떤 진입점이 맞는지 확실하지 않을 때, [ask-matt](https://aihero.dev/skills-ask-matt)가 안내합니다.
