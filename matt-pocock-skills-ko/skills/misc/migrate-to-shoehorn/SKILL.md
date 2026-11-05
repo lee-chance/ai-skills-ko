@@ -1,33 +1,33 @@
 ---
 name: migrate-to-shoehorn
-description: Migrate test files from `as` type assertions to @total-typescript/shoehorn. Use when user mentions shoehorn, wants to replace `as` in tests, or needs partial test data.
+description: "`as` 타입 어서션에서 @total-typescript/shoehorn으로 테스트 파일을 마이그레이션합니다. 사용자가 shoehorn을 언급하거나, 테스트에서 `as`를 교체하고 싶거나, 부분 테스트 데이터가 필요할 때 사용하세요."
 ---
 
 # Migrate to Shoehorn
 
-## Why shoehorn?
+## 왜 shoehorn인가?
 
-`shoehorn` lets you pass partial data in tests while keeping TypeScript happy. It replaces `as` assertions with type-safe alternatives.
+`shoehorn`은 TypeScript를 행복하게 유지하면서 테스트에서 부분 데이터를 전달할 수 있게 합니다. `as` 어서션을 타입 안전 대안으로 교체합니다.
 
-**Test code only.** Never use shoehorn in production code.
+**테스트 코드 전용.** 프로덕션 코드에서는 shoehorn을 절대 사용하지 마세요.
 
-Problems with `as` in tests:
+테스트에서 `as`의 문제:
 
-- Trained not to use it
-- Must manually specify target type
-- Double-as (`as unknown as Type`) for intentionally wrong data
+- 사용하지 않도록 훈련됨
+- 대상 타입을 수동으로 지정해야 함
+- 의도적으로 잘못된 데이터를 위한 이중-as (`as unknown as Type`)
 
-## Install
+## 설치
 
 ```bash
 npm i @total-typescript/shoehorn
 ```
 
-## Migration patterns
+## 마이그레이션 패턴
 
-### Large objects with few needed properties
+### 필요한 속성이 적은 큰 객체
 
-Before:
+이전:
 
 ```ts
 type Request = {
@@ -38,17 +38,17 @@ type Request = {
 };
 
 it("gets user by id", () => {
-  // Only care about body.id but must fake entire Request
+  // body.id만 관심 있지만 전체 Request를 가짜로 만들어야 함
   getUser({
     body: { id: "123" },
     headers: {},
     cookies: {},
-    // ...fake all 20 properties
+    // ...20개 속성 모두 가짜로
   });
 });
 ```
 
-After:
+이후:
 
 ```ts
 import { fromPartial } from "@total-typescript/shoehorn";
@@ -64,13 +64,13 @@ it("gets user by id", () => {
 
 ### `as Type` → `fromPartial()`
 
-Before:
+이전:
 
 ```ts
 getUser({ body: { id: "123" } } as Request);
 ```
 
-After:
+이후:
 
 ```ts
 import { fromPartial } from "@total-typescript/shoehorn";
@@ -80,13 +80,13 @@ getUser(fromPartial({ body: { id: "123" } }));
 
 ### `as unknown as Type` → `fromAny()`
 
-Before:
+이전:
 
 ```ts
-getUser({ body: { id: 123 } } as unknown as Request); // wrong type on purpose
+getUser({ body: { id: 123 } } as unknown as Request); // 의도적으로 잘못된 타입
 ```
 
-After:
+이후:
 
 ```ts
 import { fromAny } from "@total-typescript/shoehorn";
@@ -94,25 +94,25 @@ import { fromAny } from "@total-typescript/shoehorn";
 getUser(fromAny({ body: { id: 123 } }));
 ```
 
-## When to use each
+## 각각을 언제 사용하는지
 
 | Function        | Use case                                           |
 | --------------- | -------------------------------------------------- |
-| `fromPartial()` | Pass partial data that still type-checks           |
-| `fromAny()`     | Pass intentionally wrong data (keeps autocomplete) |
-| `fromExact()`   | Force full object (swap with fromPartial later)    |
+| `fromPartial()` | 여전히 타입 체크되는 부분 데이터 전달           |
+| `fromAny()`     | 의도적으로 잘못된 데이터 전달 (자동 완성 유지) |
+| `fromExact()`   | 전체 객체 강제 (나중에 fromPartial로 교체)    |
 
-## Workflow
+## 워크플로우
 
-1. **Gather requirements** - ask user:
-   - What test files have `as` assertions causing problems?
-   - Are they dealing with large objects where only some properties matter?
-   - Do they need to pass intentionally wrong data for error testing?
+1. **요구 사항 수집** - 사용자에게 묻기:
+   - 어떤 테스트 파일이 문제를 일으키는 `as` 어서션을 가지고 있나요?
+   - 일부 속성만 중요한 큰 객체를 다루고 있나요?
+   - 에러 테스팅을 위해 의도적으로 잘못된 데이터를 전달해야 하나요?
 
-2. **Install and migrate**:
-   - [ ] Install: `npm i @total-typescript/shoehorn`
-   - [ ] Find test files with `as` assertions: `grep -r " as [A-Z]" --include="*.test.ts" --include="*.spec.ts"`
-   - [ ] Replace `as Type` with `fromPartial()`
-   - [ ] Replace `as unknown as Type` with `fromAny()`
-   - [ ] Add imports from `@total-typescript/shoehorn`
-   - [ ] Run type check to verify
+2. **설치 및 마이그레이션**:
+   - [ ] 설치: `npm i @total-typescript/shoehorn`
+   - [ ] `as` 어서션이 있는 테스트 파일 찾기: `grep -r " as [A-Z]" --include="*.test.ts" --include="*.spec.ts"`
+   - [ ] `as Type`을 `fromPartial()`로 교체
+   - [ ] `as unknown as Type`을 `fromAny()`로 교체
+   - [ ] `@total-typescript/shoehorn`에서 import 추가
+   - [ ] 타입 체크를 실행하여 검증
