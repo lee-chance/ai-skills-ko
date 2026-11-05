@@ -1,172 +1,172 @@
-# The kit, piece by piece
+# 키트, 조각별로
 
-The reference for every part in `kit/`. SKILL.md has the map; read the entries for the parts a demo uses.
+`kit/`의 모든 부분에 대한 참조입니다. SKILL.md에 지도가 있습니다. 데모가 쓰는 부분의 항목을 읽으세요.
 
-The kit is four tiers, and they are not equal:
+키트는 네 층이며, 같지 않습니다.
 
-- **The stage** (`stage.tsx`, `cursors.tsx`): the canvas, the script, the cursor, measuring and playback. Every demo is built on it.
-- **Frames** (`window.tsx`, `phone.tsx`, `ios.tsx`, `messages.tsx`): windows, devices and system surfaces drawn from real geometry. Never draw these by hand: no hand-built window, phone, bubble, notification, status bar or home indicator.
-- **Motion** (`motion/`): behaviors that have to hold up frame by frame. They bring motion, not a look; style what's inside them as the product does.
-- **Small parts** (`parts/`, `controls/`, `code.tsx`, `chart.tsx`): quiet starting points. Restyle them to the product, or build the product's own when they don't match it.
+- **스테이지** (`stage.tsx`, `cursors.tsx`): 캔버스, 스크립트, 커서, 측정, 재생. 모든 데모가 그 위에 만들어집니다.
+- **프레임** (`window.tsx`, `phone.tsx`, `ios.tsx`, `messages.tsx`): 실제 지오메트리로 그린 창, 기기, 시스템 표면. 이것을 손으로 그리지 마세요. 손으로 만든 창, 휴대폰, 버블, 알림, 상태 표시줄, 홈 인디케이터는 없습니다.
+- **모션** (`motion/`): 프레임마다 버텨야 하는 동작입니다. 룩이 아니라 모션을 가져옵니다. 안을 제품이 하듯 스타일링하세요.
+- **작은 부분** (`parts/`, `controls/`, `code.tsx`, `chart.tsx`): 조용한 시작점입니다. 제품에 맞게 다시 스타일링하거나, 맞지 않으면 제품 자신을 만드세요.
 
-## Specimen sheets
+## 표본 시트
 
-Catalogs of how each part behaves, one per tile, not compositions to copy. Use the scenes in SKILL.md for composition ideas, and look at any reference at the intended width before borrowing from it.
+각 부분이 어떻게 행동하는지의 카탈로그입니다. 타일당 하나이며, 복사할 구성이 아닙니다. 구성 아이디어는 SKILL.md의 장면을 쓰고, 빌리기 전에 의도한 너비에서 참조를 보세요.
 
-- `examples/controls/`: Field, Segmented, Toggle, Tabs, Code, Chart, a card dragged between columns with `Slot`, `Scroll`, a `Camera` push-in, and the `arrow` cursor with ripple clicks.
-- `examples/glass/`: the glass theme on a window, a chip and a popover.
-- `examples/brand-marks/`: the bundled payment and app artwork on light and dark surfaces; sources and licenses are in `kit/brands/SOURCES.md`.
-- `examples/buttons/`: every Button variant and size, label and icon changes beside neighbors, a button in a narrow row.
-- `examples/cards/`: Card padding and nested radius, a flush sectioned card, a sunken group, Divider in a card and a toolbar, Kbd in a field and a menu.
-- `examples/kit-extras/`: Chip, Swap, Avatar rings, Meter tones, Menu hover, Expand, solid glyphs, BrandMark.
-- `examples/parts/`: the newer parts (States, Check pending, Meter, Stream, Connector arrows, Popover and Menu, the satellite lock screen).
-- `examples/looks/`: nine style studies: three invitation identities, then console, finance, canvas, conversation, research and a dimensional transfer receipt.
-- `examples/chrome/` and `examples/phones/`: every window chrome and phone frame in the kit.
+- `examples/controls/`: Field, Segmented, Toggle, Tabs, Code, Chart, `Slot`으로 열 사이를 드래그하는 카드, `Scroll`, `Camera` 밀어 넣기, 잔물결 클릭이 있는 `arrow` 커서.
+- `examples/glass/`: 창, 칩, 팝오버 위의 유리 테마.
+- `examples/brand-marks/`: 라이트와 다크 표면의 포함된 결제 및 앱 아트워크. 출처와 라이선스는 `kit/brands/SOURCES.md`에 있습니다.
+- `examples/buttons/`: 모든 Button 변형과 크기, 이웃 옆의 레이블과 아이콘 변화, 좁은 행의 버튼.
+- `examples/cards/`: Card 패딩과 중첩 반지름, 맞닿은 섹션 카드, 가라앉은 그룹, 카드와 툴바의 Divider, 필드와 메뉴의 Kbd.
+- `examples/kit-extras/`: Chip, Swap, Avatar 링, Meter 톤, Menu 호버, Expand, 단색 글리프, BrandMark.
+- `examples/parts/`: 더 새로운 부분(States, Check pending, Meter, Stream, Connector 화살, Popover와 Menu, 위성 잠금 화면).
+- `examples/looks/`: 스타일 연구 아홉 개. 초대장 정체성 셋, 그다음 콘솔, 금융, 캔버스, 대화, 연구, 입체 이체 영수증.
+- `examples/chrome/`와 `examples/phones/`: 키트의 모든 창 크롬과 휴대폰 프레임.
 
-## The stage
+## 스테이지
 
 ### `Stage`
 
-The canvas.
+캔버스입니다.
 
-- **Size.** Design size and scale-to-fit. `compact`: a second design for narrow containers (the composition rule is in `framing.md`, Small formats and the page). A host wrapper marked `data-ss-wide` scales the wide design only for a slot sized by height, never for an ordinary tile, which draws 1:1.
-- **Scene state** (`initial`), changed by the script's `Act` (below).
-- **Children** are `(state, rect, layout) => JSX`. `rect(name)` measures any `data-target`, re-measured after transitions settle. `layout` is `'wide'` or `'compact'`: read it here, not with `useLook()`.
-- **Playback.** `play`: `loop`, `once`, `hover`. Hover settles back with a glide when the pointer leaves. The stage stops and resets unfinished playback offscreen, restarts it on reentry, and preserves a completed once scene. Under reduced motion it shows `poster`.
-- **The look.** `theme`, `palette`, `fidelity`; `tokens={{ ... }}` for one stage (see Look tokens); `accent`; `greys="cool"` swaps the warm canvas and well for cool ones, for macOS or a blue ground (light theme only).
-- **`ground`**: what the scene sits on. `orbs` is a pale tile lit by a few soft color orbs, so glass has color to take; pass two or three colors to choose them. Leave it out for the plain ground.
-- **`fill`**: grows past the design size to fill the container, up to 2×, for a hero or a docs plate; a host wrapper marked `data-ss-fill` does the same. `speed` plays the script faster (above 1) or slower.
-- **`keys`**: where keycaps show: `bottom` (the default), `top`, `bottom-left` or `bottom-right`. Keep them clear of anything open, a menu reaching the bottom of a short stage included; film flags an overlap. Takes `{ wide, compact }` too.
-- **`hover`**: targets for stills.
-- **`specimen`** marks a sheet of parts (the kit's chrome, controls, phones sheets): film's composition checks (framing, voids, ladders, insets) stand down.
-- **`unframed`**: for a developer who asks for no framing (`framing.md`, Small formats and the page). Leave out `ground` and keep the product whole with room for its shadow; film's bleed and floating checks stand down.
-- **The cursor**: see below.
+- **크기.** 디자인 크기와 맞춤 확대. `compact`: 좁은 컨테이너를 위한 두 번째 디자인(구성 규칙은 `framing.md`, 작은 형식과 페이지). `data-ss-wide`로 표시된 호스트 래퍼는 높이로 크기가 정해진 슬롯에서만 와이드 디자인을 스케일합니다. 1:1로 그리는 보통 타일에는 절대 아닙니다.
+- **장면 상태** (`initial`), 스크립트의 `Act`가 바꿉니다(아래).
+- **자식**은 `(state, rect, layout) => JSX`입니다. `rect(name)`은 `data-target`을 측정하고, 전환이 정착한 뒤 다시 측정합니다. `layout`은 `'wide'` 또는 `'compact'`입니다. `useLook()`이 아니라 여기서 읽으세요.
+- **재생.** `play`: `loop`, `once`, `hover`. 호버는 포인터가 떠나면 미끄러져 돌아갑니다. 스테이지는 화면 밖에서 끝나지 않은 재생을 멈추고 리셋하며, 다시 들어오면 재시작하고, 완료된 once 장면은 보존합니다. 모션 감소에서는 `poster`를 보여 줍니다.
+- **룩.** `theme`, `palette`, `fidelity`. 스테이지 하나에는 `tokens={{ ... }}`(룩 토큰 참조). `accent`. `greys="cool"`은 따뜻한 캔버스와 well을 차가운 것으로 바꿉니다. macOS나 파란 그라운드용이며, 라이트 테마에만입니다.
+- **`ground`**: 장면이 앉는 것. `orbs`는 부드러운 색 오브 몇 개로 비춘 옅은 타일이므로 유리가 가져갈 색이 있습니다. 고르려면 색 둘이나 셋을 넘기세요. 평범한 그라운드에는 빼세요.
+- **`fill`**: 컨테이너를 채우도록 디자인 크기를 넘어 최대 2배까지 자랍니다. 히어로나 문서 플레이트용입니다. `data-ss-fill`로 표시된 호스트 래퍼도 같습니다. `speed`는 스크립트를 더 빠르게(1 초과) 또는 더 느리게 재생합니다.
+- **`keys`**: 키캡이 보이는 곳. `bottom`(기본), `top`, `bottom-left`, `bottom-right`. 열린 것에서 떨어뜨리세요. 짧은 스테이지 바닥에 닿는 메뉴도 포함합니다. 필름은 겹침을 표시합니다. `{ wide, compact }`도 받습니다.
+- **`hover`**: 스틸용 타겟.
+- **`specimen`**은 부분의 시트를 표시합니다(키트의 크롬, 컨트롤, 휴대폰 시트). 필름의 구성 검사(프레이밍, 공백, 사다리, 인셋)가 물러섭니다.
+- **`unframed`**: 프레이밍 없음을 요청하는 개발자용 (`framing.md`, 작은 형식과 페이지). `ground`를 빼고 그림자를 위한 공간과 함께 제품을 온전히 두세요. 필름의 블리드와 떠 있음 검사가 물러섭니다.
+- **커서**: 아래를 보세요.
 
 ### `Act`
 
-What a script gets.
+스크립트가 받는 것입니다.
 
-- **Scene:** `set`, `put`, `snap(patch, scope?)` (no transitions, stage-wide or in one target), `wait`.
-- **Pointer:** `move(to, { duration, path, onMove })` (`path` as drag's; `onMove(at, from, t)` gets each point, for a scrubbed readout), `click` (`{ double: true }`; `{ right: true }` for a context menu), `cursor`, `center`, `place` (at once, with no travel: only behind a cut), `enter(to)` (arrives from past the nearest frame edge, already moving).
-- **`drag`**: dips, closes the open hand into `grab` at the bottom of the press and opens on release; over text or a canvas it selects and keeps its kind. `duration` sets its length. `{ cursor: 'preserve' }` retains the current kind through a product-specific drag such as arrow-based event creation or a resize edge. `{ path: (progress, from, to) => point }` supplies a constrained path in stage coordinates, with eased 0 to 1 progress and endpoints matching the current cursor and target.
-- **Keys and text:** `type` (35ms per character by default); `key` (shows keycaps, resolves as the key comes up so the app can react).
-- **Timing:** `stagger(items, fn, gap = 60)`; `mark(name)` for filming a beat. Start a move without awaiting it to run it alongside other beats.
-- **Measuring:** `rect(name, { layout })`; `caret(name, at)` (the character a text selection reaches with the pointer at `at`; call it in a drag's `onMove` so the highlight tracks the I-beam).
-- **Moves** travel in a shallow arc, timed by distance. Hovered targets and every target around them get `data-hover`; pressed get `data-pressed`. Targets can aim inside an element: `{ at: 'apply', x: 0.8, y: 0.6 }`.
+- **장면:** `set`, `put`, `snap(patch, scope?)`(전환 없음, 스테이지 전체 또는 타겟 하나), `wait`.
+- **포인터:** `move(to, { duration, path, onMove })`(드래그의 `path`와 같음. `onMove(at, from, t)`가 각 점을 받음, 스크럽된 읽기용), `click`(`{ double: true }`. 컨텍스트 메뉴는 `{ right: true }`), `cursor`, `center`, `place`(즉시, 이동 없이: 컷 뒤에만), `enter(to)`(가장 가까운 프레임 가장자리 너머에서 이미 움직이며 도착).
+- **`drag`**: 내려가고, 누르기 바닥에서 열린 손을 `grab`으로 닫으며 놓을 때 엽니다. 텍스트나 캔버스 위에서는 선택하고 종류를 유지합니다. `duration`이 길이를 정합니다. `{ cursor: 'preserve' }`는 화살 기반 이벤트 생성이나 크기 조정 가장자리 같은 제품 특화 드래그 동안 현재 종류를 유지합니다. `{ path: (progress, from, to) => point }`는 스테이지 좌표의 제약 경로를 제공합니다. 이즈된 0에서 1 진행과, 현재 커서와 타겟에 맞는 끝점입니다.
+- **키와 텍스트:** `type`(기본 문자당 35ms). `key`(키캡을 보여 주고, 키가 올라올 때 해결되어 앱이 반응할 수 있음).
+- **타이밍:** `stagger(items, fn, gap = 60)`. 비트 촬영용 `mark(name)`. 다른 비트와 나란히 실행하려면 await 없이 이동을 시작하세요.
+- **측정:** `rect(name, { layout })`. `caret(name, at)`(포인터가 `at`에 있을 때 텍스트 선택이 도달하는 문자. 하이라이트가 I-beam을 따르도록 드래그의 `onMove`에서 호출).
+- **이동**은 얕은 호로 가고, 거리로 시간이 정해집니다. 호버된 타겟과 주위의 모든 타겟은 `data-hover`를, 눌린 것은 `data-pressed`를 얻습니다. 타겟은 요소 안을 겨냥할 수 있습니다. `{ at: 'apply', x: 0.8, y: 0.6 }`.
 
-### The cursor
+### 커서
 
-`cursor={{ at, kind, style }}`; `at` can be `{ wide, compact }` when the compact design needs a different rest point.
+`cursor={{ at, kind, style }}`. 컴팩트 디자인에 다른 휴식점이 필요하면 `at`은 `{ wide, compact }`일 수 있습니다.
 
-- **Styles:** `real` (macOS cursors), `large` (1.5×), `circle` (the iPad's glass pointer), `touch` (a finger on a phone: a dot only where it taps or drags, nothing between), `arrow` (a solid rounded arrowhead, as illustrated demos draw it; an I-beam only over text). Never the macOS arrow on a phone.
-- **Kinds** come from `data-cursor` on elements (`pointer`, `ibeam`, `crosshair`, `hand`, `open`, `grab`, `wait`, `resize-ns`, `resize-ew`, `resize-nwse`, `resize-nesw`), switching as the cursor crosses their edge.
-- **`ripple: true`** sends a soft ring out from each click, for small stages or when clicks must read at a glance.
-- **`idle`** (ms, 4000 by default, `false` to keep it on) fades a cursor that has rested that long after acting; `still: true` keeps it in the reduced-motion poster.
-- Leave it out of stills unless pointing is the story.
+- **스타일:** `real`(macOS 커서), `large`(1.5배), `circle`(iPad의 유리 포인터), `touch`(휴대폰의 손가락: 탭하거나 드래그하는 곳의 점만, 사이에는 없음), `arrow`(일러스트 데모가 그리듯 단색 둥근 화살촉. 텍스트 위에만 I-beam). 휴대폰에 macOS 화살은 절대 안 됩니다.
+- **종류**는 요소의 `data-cursor`에서 옵니다(`pointer`, `ibeam`, `crosshair`, `hand`, `open`, `grab`, `wait`, `resize-ns`, `resize-ew`, `resize-nwse`, `resize-nesw`). 커서가 가장자리를 가로지르며 전환됩니다.
+- **`ripple: true`**는 각 클릭에서 부드러운 링을 보냅니다. 작은 스테이지나 클릭이 한눈에 읽혀야 할 때입니다.
+- **`idle`**(ms, 기본 4000, 켜 두려면 `false`)은 행동한 뒤 그만큼 쉰 커서를 페이드합니다. `still: true`는 모션 감소 포스터에 유지합니다.
+- 가리키는 것이 스토리가 아니면 스틸에서 빼세요.
 
-### Timing
+### 타이밍
 
-- **`EASE`** holds the kit's named curves as bezier arrays: `house` (moves inside a shot), `through` (into a cut), `settle` (out of a cut), `enter` (a cursor arriving already moving), `trip` (one long cursor trip), `camera` (the push-in). `easeCss('settle')` writes one as a CSS `cubic-bezier()`; `bezier('house')` turns one into a function of time 0 to 1, for motion you drive by hand.
-- **`clock.now()`** is the stage's time. It is `performance.now()` in a live page and the stepped time when the playground pauses, steps or records, so time anything a script measures with it, never `Date.now()`.
+- **`EASE`**는 키트의 이름 있는 곡선을 베지어 배열로 담습니다. `house`(샷 안의 이동), `through`(컷으로), `settle`(컷에서), `enter`(이미 움직이며 도착하는 커서), `trip`(긴 커서 여행 하나), `camera`(밀어 넣기). `easeCss('settle')`은 하나를 CSS `cubic-bezier()`로 씁니다. `bezier('house')`는 하나를 시간 0에서 1의 함수로 바꿉니다. 손으로 구동하는 모션용입니다.
+- **`clock.now()`**는 스테이지의 시간입니다. 라이브 페이지에서는 `performance.now()`이고, 플레이그라운드가 일시정지, 스텝, 녹화할 때는 단계 시간입니다. 스크립트가 측정하는 시간은 이것으로 하고, `Date.now()`는 쓰지 마세요.
 
-## Frames
+## 프레임
 
 ### `Window`
 
-Chrome, chosen by props. See `examples/chrome/`.
+props가 고르는 크롬입니다. `examples/chrome/`를 보세요.
 
-- **Browser:** `url`, plus `nav` (back and forward), `tabs` and `urlShape="pill"`.
-- **App:** `title`, centered in a plain bar. With a `toolbar` it moves left, 14px after the lights, as a unified toolbar; `lead` (the left toolbar slot) follows it and the toolbar sits on the right. `body` takes props for the content column.
-- **Sidebar app:** `sidebar` runs full height and holds the traffic lights, the way Mail, Notes, Linear and Slack look. `sidebarWidth` sets its width (180 by default). Beside a `sidebar`, the title is the content column's heading at the column's 16px inset: pad the content 16px too, so the heading and the first row line up.
-- **Grounds:** a plain or browser window's body is the canvas (a quiet gray); a sidebar window's content column is the surface (white, the sidebar on canvas). For a white page in a plain window, give its content `background: var(--ss-surface)`; keep one window's content one color.
-- **The lights** sit in the same spot in every kind, as far from the left edge as their center is from the top, in every combination. `lights`: `color`, `grey` (glass's default) or `white` (glass, card or hairline over a strong color).
-- **`chrome="glass"`**: a frosted browser for a colorful ground.
-- **`chrome="terminal"`**: a dark terminal, one surface, `title` dim and centered (`northwind — zsh`). Fill it with `<Prompt path="~/app">command</Prompt>` lines, plain divs for output (classes `ok`, `err`, `dim` for status color, sparingly) and a `<Caret />` on the last prompt. Never hand-style a light window as a terminal. Its colors are tokens: `--ss-term-path`, `--ss-term-sigil`, `--ss-term-ok`, `--ss-term-err`, `--ss-term-dim` (and `--ss-term-bg`); set them on the window or the stage to match an accent.
-- **`chrome="card"`**: one white card, pale dots, a wide pale address bar and a long soft shadow (a payments site's checkout browser).
-- **`chrome="hairline"`**: a small quiet frame over a 1px rule with the address as bare text, for a window that is a detail, not the subject.
-- **`receded`** fades it to 40% when something comes forward.
-- **macOS 26 (Tahoe), each opt-in:** `sidebarStyle="floating"` (the sidebar as a rounded panel inset 8px, on a 24-radius window), `lightsSize="large"` (12px lights, 8px apart), `barSize="tall"` (a 64px icon-and-label toolbar: no fill or rule, 32px controls at the top with labels under them, lights and title level with them).
-- **Several kinds passed:** a `chrome` other than the native one wins over everything (terminal, glass, card and hairline ignore `sidebar`, `tabs`, `nav` and `lead`); otherwise `sidebar` wins, then `tabs`; a `url` beside a `sidebar` puts the address in the content column's bar.
+- **브라우저:** `url`, 그리고 `nav`(뒤로와 앞으로), `tabs`, `urlShape="pill"`.
+- **앱:** 평범한 바의 중앙 `title`. `toolbar`가 있으면 통합 툴바로서 신호등 뒤 14px, 왼쪽으로 이동합니다. `lead`(왼쪽 툴바 슬롯)가 그것을 따르고 툴바는 오른쪽에 있습니다. `body`는 콘텐츠 열의 props를 받습니다.
+- **사이드바 앱:** `sidebar`가 전체 높이로 이어지고 신호등을 담습니다. Mail, Notes, Linear, Slack이 보이는 방식입니다. `sidebarWidth`가 너비를 정합니다(기본 180). `sidebar` 옆에서 제목은 열의 16px 인셋에 있는 콘텐츠 열의 제목입니다. 콘텐츠도 16px 패딩해서 제목과 첫 행이 맞습니다.
+- **그라운드:** 평범한 창이나 브라우저 창의 본문은 캔버스(조용한 회색)입니다. 사이드바 창의 콘텐츠 열은 표면(흰색, 사이드바는 캔버스)입니다. 평범한 창의 흰 페이지에는 콘텐츠에 `background: var(--ss-surface)`를 주세요. 한 창의 콘텐츠는 색 하나입니다.
+- **신호등**은 모든 종류에서 같은 자리에 있습니다. 왼쪽 가장자리에서 중심이 위에서 떨어진 만큼, 모든 조합에서입니다. `lights`: `color`, `grey`(유리의 기본), `white`(강한 색 위의 유리, 카드, 헤어라인).
+- **`chrome="glass"`**: 다채로운 그라운드를 위한 프로스트 브라우저.
+- **`chrome="terminal"`**: 다크 터미널, 표면 하나, 어둡고 중앙인 `title`(`northwind — zsh`). `<Prompt path="~/app">command</Prompt>` 줄로 채우고, 출력은 평범한 div(상태 색은 클래스 `ok`, `err`, `dim`, 아껴서), 마지막 프롬프트의 `<Caret />`입니다. 밝은 창을 터미널로 손 스타일링하지 마세요. 색은 토큰입니다. `--ss-term-path`, `--ss-term-sigil`, `--ss-term-ok`, `--ss-term-err`, `--ss-term-dim`(그리고 `--ss-term-bg`). 액센트에 맞추려면 창이나 스테이지에 설정하세요.
+- **`chrome="card"`**: 흰 카드 하나, 옅은 점, 넓은 옅은 주소 표시줄, 길고 부드러운 그림자(결제 사이트의 체크아웃 브라우저).
+- **`chrome="hairline"`**: 주소가 맨 텍스트인 1px 규칙 위의 작고 조용한 프레임. 주제가 아니라 상세인 창용입니다.
+- **`receded`**는 무언가가 앞으로 올 때 40%로 페이드합니다.
+- **macOS 26 (Tahoe), 각각 옵트인:** `sidebarStyle="floating"`(24 반지름 창에서 8px 인셋된 둥근 패널로서의 사이드바), `lightsSize="large"`(12px 신호등, 8px 간격), `barSize="tall"`(64px 아이콘과 레이블 툴바: 채움이나 규칙 없음, 위에 레이블이 있는 32px 컨트롤, 신호등과 제목이 그것과 수평).
+- **여러 종류가 넘어오면:** 네이티브가 아닌 `chrome`이 모든 것을 이깁니다(terminal, glass, card, hairline은 `sidebar`, `tabs`, `nav`, `lead`를 무시). 아니면 `sidebar`가 이기고, 그다음 `tabs`입니다. `sidebar` 옆의 `url`은 콘텐츠 열의 바에 주소를 둡니다.
 
 ### `Phone`, `LockScreen`, `Notification`
 
-A phone from real geometry at any `width`, its screen laid out in true points. The framing and sizing rules are in `framing.md`, Phones.
+어떤 `width`에서도 실제 지오메트리의 휴대폰이며, 화면은 실제 포인트로 배치됩니다. 프레이밍과 크기 규칙은 `framing.md`, 휴대폰에 있습니다.
 
-- **`frame`:** `photo` (optional caller-owned bezel through `--ss-phone-photo-light` / `--ss-phone-photo-dark`; no photograph ships; falls back to `pro` without one), `pro`, `silver`, `bezel`, `android`, `soft` (the pale, even-banded marketing-page phone, no island), `clay`, `outline`, `bare`.
-- **Screen:** `wallpaper` (the screen is white by default, black with `dark`), `island`, `status`. `WALLPAPER` is the default lock screen ground, a soft blue to lilac gradient after the iPhone's own; pass it as the Phone's `wallpaper` with `dark`.
-- **Size it for its text:** draw a phone that shows app text at 340 wide or more (about 0.85 of true size), and let it run off the stage rather than shrink it to fit. A bar on the screen sizes to its content with real padding under its last line, never a fixed height its text can overrun.
-- **`LockScreen`** stacks notifications at the bottom as iOS does (iOS 16 and later). `size="satellite"` for a phone beside a window (no controls, notifications under the clock); `clock={false}` drops the date and clock. `stack="top"` puts notifications under the clock, for a phone the stage's bottom edge crops.
-- **`Notification`:** always true iOS size (only Live Activities differ) and, as a banner, native width (the screen minus 18pt each side); the phone is sized and cropped around it, never the other way (`framing.md`, Phones). Bodies wrap to three lines. On an unlocked phone (in an app, on the home screen) pass `banner` and it drops in at the top under the island, over the app.
+- **`frame`:** `photo`(호출자가 `--ss-phone-photo-light` / `--ss-phone-photo-dark`로 소유하는 선택 베젤. 사진은 포함되지 않음. 없으면 `pro`로 폴백), `pro`, `silver`, `bezel`, `android`, `soft`(아일랜드 없는, 옅고 고른 띠의 마케팅 페이지 휴대폰), `clay`, `outline`, `bare`.
+- **화면:** `wallpaper`(화면은 기본 흰색, `dark`면 검정), `island`, `status`. `WALLPAPER`는 기본 잠금 화면 그라운드이며, iPhone 자신의 것을 따른 부드러운 파랑에서 라일락 그라데이션입니다. `dark`와 함께 Phone의 `wallpaper`로 넘기세요.
+- **텍스트에 맞게 크기를 정하세요.** 앱 텍스트를 너비 340 이상(실제 크기의 약 0.85)으로 보여 주는 휴대폰을 그리고, 맞추려고 줄이는 대신 스테이지를 벗어나게 하세요. 화면의 바는 실제 패딩과 함께 콘텐츠에 맞게 크기가 정해지고, 텍스트가 넘칠 수 있는 고정 높이는 안 됩니다. 마지막 줄 아래에 실제 패딩입니다.
+- **`LockScreen`**은 iOS가 하듯 알림을 바닥에 쌓습니다(iOS 16 이후). `size="satellite"`는 창 옆 휴대폰용입니다(컨트롤 없음, 시계 아래 알림). `clock={false}`는 날짜와 시계를 뺍니다. `stack="top"`은 스테이지 아래 가장자리가 크롭하는 휴대폰을 위해 시계 아래 알림을 둡니다.
+- **`Notification`:** 항상 실제 iOS 크기(Live Activities만 다름)이며, 배너로서는 네이티브 너비(양쪽 18pt를 뺀 화면)입니다. 휴대폰이 그 주위로 크기와 크롭이 정해지고, 반대는 아닙니다 (`framing.md`, 휴대폰). 본문은 세 줄까지 줄바꿈됩니다. 잠금 해제된 휴대폰(앱 안, 홈 화면)에서는 `banner`를 넘기면 아일랜드 아래 맨 위에, 앱 위로 떨어집니다.
 
 ### `Thread`, `Bubble`, `Stamp`, `Receipt`, `Keyboard`
 
-Messages, from the kit only.
+메시지는 키트에서만입니다.
 
-- **`Thread`** pins a conversation to its bottom, glides older messages up when one arrives and puts tails on the last bubble of each run. `app` is `imessage` (true iOS bubbles), `sms` or `chat` (AI apps: a quiet bubble for the person, plain text for the reply, pair it with `Stream`).
-- **`Bubble from="me" | "them"`** rises in from its tail corner. `avatar` puts a small `Avatar` beside a received bubble for a group chat. With `source` (the composer text's selector or target) it forms out of the input as iMessage sends: clear the field in the same update. With `typing` it holds the dots and grows into the message when typing ends, one object, never a swap. `tapback={{ emoji, show }}` adds a reaction (its motion is in `motion.md`, Phones in motion).
-- **`Receipt`** rolls Delivered to Read and folds away with `show={false}`; keep it mounted.
-- **`Keyboard`**: the iOS 27 keyboard at true points, full width under the composer. Pass `typed` and it pops each key and follows auto-capitals; `shift` forces shift on or off, `pressed` holds one key down (a letter, or `shift`, `delete`, `return`, `space`, `123`); `suggestions`, `dark`. Leave it out by default: most message demos read better without it. Show it only when typing is the story.
+- **`Thread`**는 대화를 바닥에 고정하고, 하나가 도착하면 이전 메시지를 위로 미끄러뜨리며, 각 연속의 마지막 버블에 꼬리를 둡니다. `app`은 `imessage`(실제 iOS 버블), `sms`, `chat`(AI 앱: 사람을 위한 조용한 버블, 답장을 위한 평범한 텍스트, `Stream`과 짝)입니다.
+- **`Bubble from="me" | "them"`**은 꼬리 모서리에서 올라옵니다. `avatar`는 그룹 채팅의 받은 버블 옆에 작은 `Avatar`를 둡니다. `source`(작성기 텍스트의 선택자나 타겟)가 있으면 iMessage가 보내듯 입력에서 형성됩니다. 같은 업데이트에서 필드를 지우세요. `typing`이면 점을 유지하다 타이핑이 끝나면 메시지로 자랍니다. 객체 하나이며 교체가 아닙니다. `tapback={{ emoji, show }}`는 반응을 더합니다(모션은 `motion.md`, 모션 속의 휴대폰).
+- **`Receipt`**는 Delivered에서 Read로 굴러가고 `show={false}`와 함께 접힙니다. 마운트한 채 두세요.
+- **`Keyboard`**: 실제 포인트의 iOS 27 키보드, 작성기 아래 전체 너비. `typed`를 넘기면 각 키를 튀기고 자동 대문자를 따릅니다. `shift`는 시프트를 켜거나 끄고, `pressed`는 키 하나를 누른 채 둡니다(글자, 또는 `shift`, `delete`, `return`, `space`, `123`). `suggestions`, `dark`. 기본으로 빼세요. 대부분의 메시지 데모는 그것 없이 더 잘 읽힙니다. 타이핑이 스토리일 때만 보여 주세요.
 
-## Motion parts
+## 모션 부분
 
 ### `Collapse`, `Fly`, `Toast`, `Spinner`
 
-- **`Collapse`**: a height that opens and closes so what follows moves with it. `reveal="drop"` for a card or message, which arrives whole instead of being uncovered by the edge; `from="below"` for a chat message landing at the foot of a feed; `solid` for a surface unlike the ground (a dark log panel on a light window), which would otherwise fade through gray. On close the content dims then dissolves across the whole of the height's travel, never an empty box.
-- **`Fly`**: an element carried along a soft arc from the source element's own `rect()` to the landing element's own `rect()`, never a slot or wrapper around it (a slot's rect makes it snap size on landing). `.ss-fly[data-go]` styles it in flight, to settle into its resting look before it lands. It is hidden until `go`, so it never doubles what it leaves, unless `held` shows it waiting at `from` (the thing being carried, or a chip budding off a value).
-- **The handoff:** hide the source in the set that turns `go` on; when it lands, show the real element and hide the flyer in one set (unmount it), then `snap({ go: false })` while it is hidden, ready for the next loop.
-- **The value-chip recipe:** `from` is the value's own text rect; the chip's child is drawn transparent, its words exactly over the value's (same size and weight, green, with the + in the padding to its left), and the value fades under it. With `held` it buds in where it sits, then on `go` its surface fades in during the flight (a keyframe on `.ss-fly[data-go]`), and the check or the rolling total comes only after it leaves.
-- **`Toast`**: a confirmation that rises in (`--ss-toast-rise` sets how far).
-- **`Spinner`**: a pending arc.
+- **`Collapse`**: 따라오는 것이 함께 움직이도록 열리고 닫히는 높이입니다. `reveal="drop"`은 카드나 메시지용이며, 가장자리가 드러내는 대신 온전히 도착합니다. `from="below"`는 피드 발에 착지하는 채팅 메시지용입니다. `solid`는 그라운드와 다른 표면(밝은 창의 어두운 로그 패널)용이며, 그렇지 않으면 회색을 통해 페이드합니다. 닫힐 때 콘텐츠는 어두워진 다음 높이 이동 전체에 걸쳐 녹고, 빈 상자는 없습니다.
+- **`Fly`**: 소스 요소 자신의 `rect()`에서 착지 요소 자신의 `rect()`까지 부드러운 호를 따라 운반되는 요소입니다. 주위의 슬롯이나 래퍼가 아닙니다(슬롯의 rect는 착지 때 크기를 스냅하게 합니다). `.ss-fly[data-go]`가 비행 중 스타일을 주어 착지 전에 쉬는 룩으로 정착합니다. `go`까지 숨으므로, 떠나는 것을 두 배로 하지 않습니다. `held`가 `from`에서 기다리는 것을 보여 줄 때는 예외입니다(운반되는 것, 또는 값에서 싹트는 칩).
+- **핸드오프:** `go`를 켜는 set에서 소스를 숨기세요. 착지하면 실제 요소를 보여 주고 플라이어를 한 set에서 숨긴 다음(언마운트), 숨겨진 동안 `snap({ go: false })`해서 다음 루프를 준비하세요.
+- **값 칩 레시피:** `from`은 값 자신의 텍스트 rect입니다. 칩의 자식은 투명하게 그려지고, 단어는 값 위에 정확히 있습니다(같은 크기와 무게, 초록, 왼쪽 패딩의 +). 값은 그 아래에서 페이드합니다. `held`로 앉은 곳에서 싹튼 다음, `go`에서 비행 동안 표면이 페이드 인됩니다(`.ss-fly[data-go]`의 키프레임). 체크나 굴러가는 총계는 떠난 뒤에만 옵니다.
+- **`Toast`**: 올라오며 들어오는 확인(`--ss-toast-rise`가 거리를 정함).
+- **`Spinner`**: 대기 호.
 
-## Parts
+## 부분
 
-| Piece | Use it for |
+| 조각 | 용도 |
 |---|---|
-| `Row` | One row of a list: `lead` (an `Avatar`, a tile), `title`, `subtitle`, `meta` (a time, a count), `preview` (placeholder lines under the subtitle, as bar widths), `unread` (a dot hanging in the margin left of the lead, so the row never moves; give the list a few px of padding for it. A product that reserves a dot column on every row, as Mail and Messages do, pads the whole list instead, and Gmail puts the dot by the time; follow the product, never pad only the unread rows), `selected`, `pad`. The anatomy is fixed: lead and dot centered on the title and subtitle, title 4 to 6px above its subtitle; children (a `Toggle`, a chevron, a badge) trail at the end of the title line, and extra preview lines go inside `subtitle`. A title with no subtitle is a one-line row: the title plus the row's padding, no second line reserved. A `Bar` in any slot keeps the line's pitch. Inside a `Phone` it takes iOS sizes (17pt name, 15pt lines, 10pt dot) on its own; never restyle its `.ss-row__*` parts. |
-| `Pin` | A comment pin: one rounded square with a single square corner (`corner`: `bl`, `br`, `tl`, `tr`), face and rim the same shape, an initial or `src`, `tone` accent or ink, `selected` for the open one. Place its square corner on the thing the comment is about. Never a disc with a corner stuck on. |
-| `Avatar`, `Check`, `Icon` | Initials avatars (`Facepile` overlaps several, each cut out of the next: `names`, `size`, `overlap`; `plain`, or no `name`, for a plain disc in any fidelity: filler assignees and faces behind the one that matters; a named avatar takes a muted opaque color of its own by default (`tone="person"`), as Mail and Messages draw monograms; `tone="ink"` for a gray disc, `accent` for the person the story is about, `success` for a green disc, `ios` for the gray-blue gradient monogram with two initials that Contacts, Mail and Messages draw for a contact with no photo); a status check (`pending` turns an arc in the ring, `on` grows a solid disc and draws the tick: one mark from pending to done, never a spinner stacked over a check); a few line icons (including a card's `chip` and `contactless` arcs) and `Icon filled` system glyphs. Beyond these, the product's real icon pack or a set chosen on purpose, in one opaque color (`craft.md`, Icons and logos). Avatar `ring` marks a person's status, eased between states: `pending` (a quiet ring), `waiting` (the quiet ring with an accent arc going round: asked, not yet answered), `confirmed`, `declined`. |
-| `Connector`, `Count`, `Roll`, `Meter` | Story pieces: a line that draws between two points and ends on a dot; a number whose changed digits roll from the old figure to the new one, last digit first (`duration`, `stagger`; it jumps inside a snap or offscreen); text that animates only the changed part; a usage bar that fills (`Meter tone` for its color). `Count` uses tabular digits but reserves no width for extra digits or punctuation: give it a stable slot when its neighbors must stay still. A unit the format writes after the figure (21°, 240ms, 12 min) sits in its own box, `.ss-count__unit`, a hair from the digits or a word space when the format has one; `--ss-count-unit-gap` widens the hair, and the class is where a smaller degree sign is styled. `Roll` measures and eases the changed span's width and moves what follows with it; `variant="fade"` for control labels. `delay` holds the old text before it rolls, so a total can change a beat after the edit that feeds it. When the whole control should keep its largest footprint, use `States` instead. |
-| `Connector` extras | Endpoint dots default to a 3px radius, an accent fill (the line and dot both use `--ss-accent`), a 2px white rim and a subtle shadow: a starting treatment, so restyle them, or drop them with `dots="none"` (`both` puts one at each end), when something else explains the relationship better. `arrow` for direction (a request out, a response back), `label` for a word on the line ("POST", "200 OK") or a number for a step marker, `labelAt` (0 to 1 from `from`). Labels arrive after the line draws. `route="step"` (across, then down or up halfway, then across again) for several lines into one target: they merge into one level run before it. With `h` they would arrive from above and below and knot at its edge. Leave room between the columns, about 80px, so the bends and the merge don't crowd the target. `route="curve"` is the same level-out, level-in path as one soft S, for a looser diagram; labels and arrows follow the curve. |
-| `States`, `Stream`, `Popover`, `Menu` | `States`: a control's states (label, spinner, done) stacked in one place and crossfaded, the box holding the largest (for an icon and label in a full-width button, stack each state's whole group in one cell and crossfade, so nothing slides sideways (`examples/form-error`); `Swap` is for a label whose box must resize in a line of text); `align` sets the alignment; each state keeps the line box a plain label would have, so a `Roll` or `Count` inside one shows whole, and a small line under a name sets its own line-height. `Stream`: text written word by word with every word already in its final place (no reflow), `mark` for changed words that join into runs. `Popover`: a floating surface that scales a touch from `origin` (a `PopoverOrigin`: `'top left'` by default, or a side such as `'bottom'` or `'right center'`), the side nearest its trigger, while its contents fade, never resizing as it opens; restyle it with `--ss-popover-bg` and `--ss-popover-shadow`, not `background` and `box-shadow`. It has 4px of padding by default (set your own on its class). Closing, it freezes its children and position as they were open until it has faded, so a reset never shows; the flip side is that a change made in the same set as `show: false` won't show either. To change what is inside before it closes (a row ticked, then the menu goes), make the change in one set, then close it in the next. `Menu`: its rows with a `value` highlight (the row's index), fixed `--ss-row` height; `targets` makes items highlight under the cursor. A filtering palette (rows that leave as you type) is not a Menu: build the list as rows in a `Collapse` each (`open` while it matches), so the rows below close up, and keep the highlight on the first match. |
-| `Field`, `Segmented`, `Toggle`, `Tabs`, `Badge` | Form controls with their motion done: a text field (label, focus ring that never moves the text, placeholder that leaves on the first character, a caret solid while typing and blinking at rest, `password`, `status` valid or error, `chip` to commit the typed text as a filter chip where it was typed, with `remove` for its ×; put `data-target` on `box`), a segmented control and tabs whose highlight slides (`items`, `value` as the selected index, `targets` to name each item for the cursor), a switch, a status pill (`tone` neutral, accent, success, danger or warning; `dot`, or `icon` for a glyph beside the label, like a tick on Matched). Use these rather than building inputs by hand. |
-| `Button` | A push button: `variant` primary, secondary (default), tertiary, ghost or danger; `size` small 24px, medium 28px (default) or large 32px; `icon` before the label, `trailingIcon` after it. Its padding never squeezes in a row (`flex: none`), the side with a glyph pads a little tighter, and the label centers on its letters. A text label that changes (Resolve to Resolved) crossfades and eases the width, so neighbors move with it; an `icon` added later grows its slot open. The cursor's click presses it. Put `data-target` on it. Never hand-build a button. |
-| `Draft` | A comment being written that becomes the posted comment in place: `value` (the typed words, from `act.type`), `full` (the finished text, whose height it holds so the card never grows a line mid-typing), `editing`, `placeholder`. Put it in the comment's column (under the name); while editing, the box's edges sit on that column and the words are padded inside; on post the ring fades and the padding eases away. Restyle with `--ss-draft-ring`, `--ss-draft-radius`, `--ss-draft-pad-y`, `--ss-draft-pad-x`. Never hand-build a comment box. |
-| `Card`, `Divider`, `Kbd` | `Card`: a surface whose padding is one value on every side (`pad` small 12, medium 16, large 20), children spaced by `gap` rather than margins, `tone` surface or sunken (a gray group inside a surface), `lift` for a soft shadow over the ground, `flush` for a sectioned card (each direct child padded by `pad`, a full-width hairline between them: a thread with its header and footer, a list of files, a settings group); a rounded box inside takes `border-radius: var(--ss-card-inner)` so the curves stay parallel. Build comment, receipt and settings cards from it. `Divider`: a hairline, `vertical` between toolbar buttons, `inset` in px. `Kbd`: a shortcut, `keys={['⌘', 'K']}` as keycaps, `plain` for flat gray text beside a menu item. |
-| `Code`, `Chart` | `Code`: real code lines with numbers, quiet syntax color and diff lines (`{ text, kind: 'add' \| 'del' }`); `count` streams lines in without reflow; long lines fade at the edge. `Chart`: a smooth line with a soft area and an end dot, or `kind="bars"`; it draws in on `show` and eases between datasets when `data` changes. `chartPoints(props)` gives where it draws each point (a bar's top center) from the same props, for a tooltip, marker or hairline on a point: never repeat the chart's maths. |
-| `Slot` | A gap in a list that opens and closes (`open`, `height`, `gap`), for moving a card between lists or columns (the dashed mark is drawn at the slot's full height and only fades; never animate a dashed border's size): the source's slot closes as the card lifts, the destination's opens (`dashed`) as it travels, and the card lands in it. Aim the drop at where the card will sit once the slot is open (measure the column, not the opening slot). Columns must be fixed widths (`minmax(0, 1fr)`) or they shift as the card changes column. |
-| `Scroll` | A scrolling area: `<Scroll name="list">` and `a.scroll('list', 'row-5')` (or a px offset). The cursor moves over the area first and holds still while the content moves; macOS's overlay scrollbar shows while it scrolls and fades after (`bar="always"` keeps it, `bar="none"` hides it); edges soften only once scrolled. Scrolling craft is in `motion.md`. |
-| `Camera` | Pushes in on part of the scene and back out: wrap the scene, set `focus` to `a.rect(name, { layout: true })` or null. The view feathers its edges while zoomed. When and how to push in is in `motion.md`, Scrolling and the camera. |
-| `Follow`, `cellOf` | `Follow` springs an overlay onto a rect and keeps momentum when retargeted (selection rings, highlights). `cellOf` gives sticky cell borders for drags (`motion.md`, Drags and selection). |
-| `Tooltip` | A small dark label centered under (or over, `side="above"`) a target rect, `gap` from it, fading in with `show`. Pass `at={rect('archive')}`; restyle its corner and color to the product's. |
-| `Chip`, `Swap`, `Expand` | `Chip`: a filter chip with a remove x (`remove` names it for the cursor) that opens and closes its own width, `gap` the row's gap. `Swap id={step}`: replaced text, keyed on what changed, that crossfades while its box eases to the new size, so lines around it move instead of snapping. `Expand`: the iOS card-to-screen open as one element, clipped from `from` (a measured rect); with `face` (what the tapped thing looked like, a notification or an icon) it's an app launch: the window takes the app's surface (`--ss-expand-bg`) as it grows, the face fades early and the app's content fades in with the growth. Works inside a Phone: closed, it still draws its face at `from`, so keep it in a layer hidden until the launch. Put that layer at z-index 1, under the status bar and island, and set the Phone's `dark` to false as the app covers the top, so the status bar reads over it. |
-| `BrandMark` | A real product mark from the local registry via `brand` (Visa, Mastercard, PayPal, Notion, Gmail and other common integrations), or a custom `name` and `src`. `size` sets the height, wide payment marks keep a wider footprint, `tile={false}` removes the tile, and `surface` overrides the automatic light or dark artwork. See `brands.md` and `examples/brand-marks/`. |
-| `Bar`, `Text` | A placeholder line (`tone` 1 to 5). A line (numeric `w` over three times `h`) gives way in a row too narrow for it and never runs past its container; where it fits it is exactly `w`. An icon slot or dot keeps its size; `shrink` overrides either way. `Text` is real text, one line unless you pass `wrap`, that becomes a placeholder line in minimal fidelity (its width estimated from the text and a numeric `style.fontSize`; set `w` to be exact). `Text filler` is the other way round: words that show only at realistic fidelity and are a bar at standard and minimal, so filler rows are written once and the stage's fidelity decides. |
-| `inset`, `box`, `between`, `contains` | Rect helpers for placing overlays from measured targets. A `Rect` is `{ x, y, width, height }`, including values from `rect()`; use `width` and `height`, not `w` and `h`. |
-| Look tokens | Shape (`--ss-radius-sm`, `-md`, `-lg`, `-window`, `-pill`) and density (`--ss-control`, `--ss-row`) beside the color and type tokens; every rounded part reads them. Set a look with a class over `.ss-stage` or `Stage tokens={{ ... }}`. See `references/looks.md`. |
-| `stageshow.css` | Every style at once (each component also imports its own). All kit CSS is in `@layer stageshow`, so a demo's own unlayered CSS always wins: restyle a part with a plain class, never `!important`. A few unlayered guards keep host CSS out of a stage: host element rules roll back to browser defaults, and a universal reset (Tailwind preflight) is handed back to the kit. A host rule with a class (`.article p`) still reaches in; exclude stages with `:not(:where(.ss-stage *))`. Tokens (five inks, surfaces, lines, text, one accent plus `--ss-accent-2` for gradients, status colors with `-soft` fills and `-text` shades, the well, `--ss-raised`, window, hero, satellite, ground and lift shadows; `Stage greys="cool"` swaps the warm canvas and well for cool ones), the looks, edge fades (`.ss-fade-b`, `-r`, `-br` with `--ss-fade`), the cursor, chrome, phones and keycaps. |
+| `Row` | 목록의 행 하나: `lead`(`Avatar`, 타일), `title`, `subtitle`, `meta`(시간, 개수), `preview`(부제 아래 자리 표시자 줄, 바 너비로), `unread`(리드 왼쪽 여백에 걸린 점, 그래서 행이 움직이지 않음. 목록에 몇 px 패딩을 주세요. Mail과 Messages처럼 모든 행에 점 열을 예약하는 제품은 대신 목록 전체를 패딩하고, Gmail은 시간 옆에 점을 둡니다. 제품을 따르고, 읽지 않은 행만 패딩하지 마세요), `selected`, `pad`. 구조는 고정입니다. 리드와 점은 제목과 부제에 중앙이고, 제목은 부제 위 4~6px입니다. 자식(`Toggle`, 셰브론, 배지)은 제목 줄 끝을 따르고, 추가 미리보기 줄은 `subtitle` 안에 갑니다. 부제 없는 제목은 한 줄 행입니다. 제목에 행 패딩, 예약된 둘째 줄은 없습니다. 어떤 슬롯의 `Bar`든 줄의 피치를 유지합니다. `Phone` 안에서는 스스로 iOS 크기를 취합니다(17pt 이름, 15pt 줄, 10pt 점). `.ss-row__*` 부분을 다시 스타일링하지 마세요. |
+| `Pin` | 댓글 핀: 사각 모서리 하나가 있는 둥근 사각형(`corner`: `bl`, `br`, `tl`, `tr`), 면과 테두리가 같은 형태, 이니셜이나 `src`, `tone`은 accent 또는 ink, 열린 것은 `selected`. 사각 모서리를 댓글이 다루는 것 위에 두세요. 모서리가 붙은 원반은 안 됩니다. |
+| `Avatar`, `Check`, `Icon` | 이니셜 아바타(`Facepile`이 여러 개를 겹치고, 각각 다음에서 잘림: `names`, `size`, `overlap`. `plain`, 또는 `name` 없음은 어떤 충실도에서든 평범한 원반: 필러 담당자와 중요한 것 뒤의 얼굴. 이름 있는 아바타는 기본으로 자기 뮤트 불투명 색을 취함(`tone="person"`), Mail과 Messages가 모노그램을 그리듯. 회색 원반은 `tone="ink"`, 스토리가 다루는 사람은 `accent`, 초록 원반은 `success`, 사진 없는 연락처에 Contacts, Mail, Messages가 그리는 이니셜 둘의 회색-파랑 그라데이션 모노그램은 `ios`). 상태 체크(`pending`은 링의 호를 돌리고, `on`은 단색 원반을 키우고 틱을 그림: 대기에서 완료까지의 마크 하나, 체크 위에 쌓인 스피너는 안 됨). 몇 개의 선 아이콘(카드의 `chip`과 `contactless` 호 포함)과 `Icon filled` 시스템 글리프. 그 너머는 제품의 실제 아이콘 팩이나 의도적으로 고른 세트, 불투명 색 하나(`craft.md`, 아이콘과 로고). Avatar `ring`은 사람 상태를 표시하고 상태 사이에 이즈됩니다. `pending`(조용한 링), `waiting`(돌아가는 액센트 호가 있는 조용한 링: 물었으나 아직 답하지 않음), `confirmed`, `declined`. |
+| `Connector`, `Count`, `Roll`, `Meter` | 스토리 조각: 두 점 사이에 그려지고 점에서 끝나는 선. 바뀐 숫자가 옛 숫자에서 새 숫자로 굴러가는 수, 마지막 자리가 먼저(`duration`, `stagger`. 스냅 안이나 화면 밖에서는 점프). 바뀐 부분만 애니메이션하는 텍스트. 채워지는 사용량 바(색은 `Meter tone`). `Count`는 표 숫자를 쓰지만 추가 숫자나 문장 부호의 너비는 예약하지 않습니다. 이웃이 가만히 있어야 하면 안정된 슬롯을 주세요. 숫자 뒤에 형식이 쓰는 단위(21°, 240ms, 12 min)는 자기 상자 `.ss-count__unit`에 있고, 숫자에서 한 올이거나 형식에 있으면 단어 간격입니다. `--ss-count-unit-gap`이 한 올을 넓히고, 더 작은 도 기호는 그 클래스에서 스타일링됩니다. `Roll`은 바뀐 span의 너비를 측정하고 이즈하며 뒤를 함께 옮깁니다. 컨트롤 레이블에는 `variant="fade"`. `delay`는 굴러가기 전에 옛 텍스트를 유지해서, 총계가 그것을 먹이는 편집보다 한 비트 뒤에 바뀔 수 있습니다. 컨트롤 전체가 가장 큰 풋프린트를 유지해야 하면 대신 `States`를 쓰세요. |
+| `Connector` 추가 | 끝점 점은 기본 반지름 3px, 액센트 채움(선과 점 모두 `--ss-accent`), 2px 흰 테두리, 은은한 그림자입니다. 시작 처리이므로 다시 스타일링하거나, 다른 것이 관계를 더 잘 설명하면 `dots="none"`으로 빼세요(`both`는 양끝에 하나). 방향은 `arrow`(나가는 요청, 돌아오는 응답), 선 위의 단어는 `label`("POST", "200 OK") 또는 단계 마커의 숫자, `labelAt`( `from`에서 0에서 1). 레이블은 선이 그려진 뒤에 도착합니다. `route="step"`(가로, 중간에서 아래나 위, 다시 가로)은 하나의 타겟으로 가는 여러 선용입니다. 그 앞에서 하나의 수평 주행으로 합쳐집니다. `h`이면 위와 아래에서 도착해 가장자리에서 엉킵니다. 열 사이에 약 80px을 남겨 꺾임과 합침이 타겟을 밀지 않게 하세요. `route="curve"`는 같은 수평 나감, 수평 들어옴 경로를 부드러운 S 하나로, 더 느슨한 다이어그램용입니다. 레이블과 화살은 곡선을 따릅니다. |
+| `States`, `Stream`, `Popover`, `Menu` | `States`: 한곳에 쌓여 크로스페이드되는 컨트롤 상태(레이블, 스피너, 완료), 상자는 가장 큰 것을 유지(전체 너비 버튼의 아이콘과 레이블은 각 상태의 전체 그룹을 한 셀에 쌓고 크로스페이드해서 옆으로 미끄러지지 않음(`examples/form-error`). `Swap`은 텍스트 줄에서 상자가 크기 조정되어야 하는 레이블용). `align`이 정렬을 정합니다. 각 상태는 평범한 레이블이 가질 줄 상자를 유지하므로, 안의 `Roll`이나 `Count`는 온전히 보이고, 이름 아래 작은 줄은 자기 줄 높이를 정합니다. `Stream`: 모든 단어가 이미 최종 자리에 있는 단어별 텍스트(리플로우 없음), 연속으로 이어지는 바뀐 단어는 `mark`. `Popover`: `origin`에서 한 터치 스케일되는 떠 있는 표면(`PopoverOrigin`: 기본 `'top left'`, 또는 `'bottom'`이나 `'right center'` 같은 쪽), 트리거에 가장 가까운 쪽, 내용이 페이드하는 동안, 열릴 때 크기 조정은 절대 없음. `--ss-popover-bg`와 `--ss-popover-shadow`로 다시 스타일링하고, `background`와 `box-shadow`는 쓰지 마세요. 기본 패딩 4px(클래스에 직접 설정). 닫힐 때 페이드가 끝날 때까지 열린 때의 자식과 위치를 얼리므로 리셋이 보이지 않습니다. 반대는 `show: false`와 같은 set의 변화가 보이지도 않는다는 것입니다. 닫히기 전에 안을 바꾸려면(행이 체크된 다음 메뉴가 감) 한 set에서 바꾸고 다음 set에서 닫으세요. `Menu`: `value` 하이라이트(행의 인덱스)가 있는 행, 고정 `--ss-row` 높이. `targets`는 커서 아래 항목을 하이라이트합니다. 필터링 팔레트(타이핑하며 떠나는 행)는 Menu가 아닙니다. 각각 `Collapse`의 행으로 목록을 만드세요(맞을 때 `open`), 아래 행이 닫히게 하고, 하이라이트는 첫 일치에 두세요. |
+| `Field`, `Segmented`, `Toggle`, `Tabs`, `Badge` | 모션이 된 양식 컨트롤: 텍스트 필드(레이블, 텍스트를 움직이지 않는 포커스 링, 첫 문자에서 떠나는 자리 표시자, 타이핑 중 단색이고 휴식에서 깜빡이는 캐럿, `password`, `status`는 valid 또는 error, `chip`은 타이핑된 텍스트를 타이핑된 곳의 필터 칩으로 확정, ×는 `remove`. `data-target`은 `box`에), 하이라이트가 미끄러지는 세그먼트 컨트롤과 탭(`items`, 선택된 인덱스인 `value`, 커서용으로 각 항목을 이름 짓는 `targets`), 스위치, 상태 알약(`tone`은 neutral, accent, success, danger, warning. `dot`, 또는 레이블 옆 글리프의 `icon`, Matched의 틱처럼). 입력을 손으로 만들지 말고 이것을 쓰세요. |
+| `Button` | 누르는 버튼: `variant`는 primary, secondary(기본), tertiary, ghost, danger. `size`는 small 24px, medium 28px(기본), large 32px. 레이블 앞 `icon`, 뒤 `trailingIcon`. 패딩은 행에서 압축되지 않고(`flex: none`), 글리프가 있는 쪽은 조금 더 촘촘히 패딩되며, 레이블은 글자에 중앙입니다. 바뀌는 텍스트 레이블(Resolve에서 Resolved)은 크로스페이드하고 너비를 이즈해서 이웃이 함께 움직입니다. 나중에 더해진 `icon`은 슬롯을 열어 자랍니다. 커서의 클릭이 누릅니다. `data-target`을 그 위에 두세요. 버튼을 손으로 만들지 마세요. |
+| `Draft` | 제자리에서 게시된 댓글이 되는, 작성 중인 댓글: `value`(타이핑된 단어, `act.type`에서), `full`(완성된 텍스트, 높이를 유지해서 카드가 타이핑 중 줄을 키우지 않음), `editing`, `placeholder`. 댓글 열에 두세요(이름 아래). 편집 중 상자 가장자리는 그 열에 있고 단어는 안에 패딩됩니다. 게시하면 링이 페이드하고 패딩이 이즈되어 사라집니다. `--ss-draft-ring`, `--ss-draft-radius`, `--ss-draft-pad-y`, `--ss-draft-pad-x`로 다시 스타일링하세요. 댓글 상자를 손으로 만들지 마세요. |
+| `Card`, `Divider`, `Kbd` | `Card`: 모든 면의 패딩이 값 하나인 표면(`pad`는 small 12, medium 16, large 20), 마진이 아니라 `gap`으로 떨어진 자식, `tone`은 surface 또는 sunken(표면 안의 회색 그룹), 그라운드 위의 부드러운 그림자는 `lift`, 섹션 카드는 `flush`(각 직접 자식이 `pad`로 패딩, 사이에 전체 너비 헤어라인: 헤더와 푸터가 있는 스레드, 파일 목록, 설정 그룹). 안의 둥근 상자는 `border-radius: var(--ss-card-inner)`를 취해 곡선이 평행합니다. 댓글, 영수증, 설정 카드를 이것으로 만드세요. `Divider`: 헤어라인, 툴바 버튼 사이는 `vertical`, px의 `inset`. `Kbd`: 바로 가기, 키캡으로서의 `keys={['⌘', 'K']}`, 메뉴 항목 옆 평평한 회색 텍스트는 `plain`. |
+| `Code`, `Chart` | `Code`: 숫자, 조용한 구문 색, diff 줄이 있는 실제 코드 줄(`{ text, kind: 'add' \| 'del' }`). `count`는 리플로우 없이 줄을 스트리밍합니다. 긴 줄은 가장자리에서 페이드합니다. `Chart`: 부드러운 영역과 끝 점이 있는 부드러운 선, 또는 `kind="bars"`. `show`에서 그려지고 `data`가 바뀌면 데이터셋 사이를 이즈합니다. `chartPoints(props)`는 같은 props에서 각 점을 그리는 곳(바의 위 중앙)을 줍니다. 툴팁, 마커, 점 위의 헤어라인용입니다. 차트의 수학을 반복하지 마세요. |
+| `Slot` | 열리고 닫히는 목록의 간격(`open`, `height`, `gap`). 목록이나 열 사이로 카드를 옮길 때(점선 마크는 슬롯의 전체 높이로 그려지고 페이드만 함. 점선 테두리 크기를 애니메이션하지 마세요). 카드가 들릴 때 소스 슬롯이 닫히고, 이동할 때 목적지가 열리며(`dashed`), 카드가 그 안에 착지합니다. 슬롯이 열린 뒤 카드가 앉을 곳을 겨냥하세요(열리는 슬롯이 아니라 열을 측정). 열은 고정 너비(`minmax(0, 1fr)`)여야 하고, 아니면 카드가 열을 바꿀 때 이동합니다. |
+| `Scroll` | 스크롤 영역: `<Scroll name="list">`와 `a.scroll('list', 'row-5')`(또는 px 오프셋). 커서가 먼저 영역 위로 이동하고 콘텐츠가 움직이는 동안 가만히 있습니다. macOS 오버레이 스크롤바는 스크롤 중 보이고 뒤에 페이드합니다(`bar="always"`는 유지, `bar="none"`은 숨김). 가장자리는 스크롤된 뒤에만 부드러워집니다. 스크롤 크래프트는 `motion.md`에 있습니다. |
+| `Camera` | 장면의 일부로 밀어 넣었다가 나옵니다. 장면을 감싸고 `focus`를 `a.rect(name, { layout: true })` 또는 null로 설정하세요. 줌된 동안 뷰가 가장자리를 페더합니다. 언제 어떻게 밀어 넣는지는 `motion.md`, 스크롤과 카메라에 있습니다. |
+| `Follow`, `cellOf` | `Follow`는 오버레이를 rect로 스프링하고 다시 겨냥될 때 운동량을 유지합니다(선택 링, 하이라이트). `cellOf`는 드래그의 끈적한 셀 테두리를 줍니다 (`motion.md`, 드래그와 선택). |
+| `Tooltip` | 타겟 rect 아래(또는 위, `side="above"`)에 중앙인 작은 어두운 레이블, 그로부터 `gap`, `show`와 함께 페이드 인. `at={rect('archive')}`를 넘기세요. 모서리와 색을 제품에 맞게 다시 스타일링하세요. |
+| `Chip`, `Swap`, `Expand` | `Chip`: 제거 x가 있는 필터 칩(`remove`가 커서용으로 이름 지음), 자기 너비를 열고 닫음, `gap`은 행의 간격. `Swap id={step}`: 바뀐 것에 키잉된 교체 텍스트, 상자가 새 크기로 이즈하는 동안 크로스페이드해서 주위 줄이 스냅 대신 이동합니다. `Expand`: 하나의 요소로서의 iOS 카드에서 화면 열기, `from`(측정된 rect)에서 클립. `face`(탭한 것이 보이던 것, 알림이나 아이콘)가 있으면 앱 실행입니다. 창이 자라며 앱 표면(`--ss-expand-bg`)을 취하고, face는 일찍 페이드하며 앱 콘텐츠는 성장과 함께 페이드 인합니다. Phone 안에서 작동합니다. 닫혀 있으면 여전히 `from`에 face를 그리므로, 실행까지 숨은 레이어에 두세요. 그 레이어를 z-index 1, 상태 표시줄과 아일랜드 아래에 두고, 앱이 위를 덮을 때 Phone의 `dark`를 false로 해서 상태 표시줄이 그 위로 읽히게 하세요. |
+| `BrandMark` | `brand`를 통한 로컬 레지스트리의 실제 제품 마크(Visa, Mastercard, PayPal, Notion, Gmail과 다른 흔한 연동), 또는 커스텀 `name`과 `src`. `size`가 높이를 정하고, 넓은 결제 마크는 더 넓은 풋프린트를 유지하며, `tile={false}`는 타일을 제거하고, `surface`는 자동 라이트 또는 다크 아트워크를 덮어씁니다. `brands.md`와 `examples/brand-marks/`를 보세요. |
+| `Bar`, `Text` | 자리 표시자 줄(`tone` 1에서 5). 줄(숫자 `w`가 `h`의 세 배를 넘음)은 너무 좁은 행에서 양보하고 컨테이너를 넘지 않습니다. 맞는 곳에서는 정확히 `w`입니다. 아이콘 슬롯이나 점은 크기를 유지합니다. `shrink`가 어느 쪽이든 덮어씁니다. `Text`는 실제 텍스트이며, `wrap`을 넘기지 않으면 한 줄이고, 최소 충실도에서는 자리 표시자 줄이 됩니다(너비는 텍스트와 숫자 `style.fontSize`에서 추정. 정확히 하려면 `w`를 설정). `Text filler`는 반대입니다. 사실적 충실도에서만 보이는 단어이고 스탠다드와 최소에서는 바이므로, 필러 행을 한 번 쓰면 스테이지 충실도가 결정합니다. |
+| `inset`, `box`, `between`, `contains` | 측정된 타겟에서 오버레이를 배치하는 rect 도우미. `Rect`는 `{ x, y, width, height }`이며 `rect()` 값도 포함합니다. `w`와 `h`가 아니라 `width`와 `height`를 쓰세요. |
+| 룩 토큰 | 색과 타입 토큰 옆의 형태(`--ss-radius-sm`, `-md`, `-lg`, `-window`, `-pill`)와 밀도(`--ss-control`, `--ss-row`). 모든 둥근 부분이 읽습니다. `.ss-stage` 위의 클래스나 `Stage tokens={{ ... }}`로 룩을 설정하세요. `references/looks.md`를 보세요. |
+| `stageshow.css` | 한 번에 모든 스타일(각 컴포넌트도 자기 것을 임포트). 모든 키트 CSS는 `@layer stageshow`에 있으므로 데모 자신의 레이어 없는 CSS가 항상 이깁니다. 평범한 클래스로 부분을 다시 스타일링하고, `!important`는 쓰지 마세요. 몇 개의 레이어 없는 가드가 호스트 CSS를 스테이지 밖에 둡니다. 호스트 요소 규칙은 브라우저 기본으로 되돌리고, 유니버설 리셋(Tailwind preflight)은 키트에 돌려줍니다. 클래스가 있는 호스트 규칙(`.article p`)은 여전히 들어옵니다. `:not(:where(.ss-stage *))`로 스테이지를 제외하세요. 토큰(잉크 다섯, 표면, 선, 텍스트, 그라데이션용 `--ss-accent-2`가 있는 액센트 하나, `-soft` 채움과 `-text` 음영이 있는 상태 색, well, `--ss-raised`, 창, 히어로, 위성, 그라운드, 들림 그림자. `Stage greys="cool"`은 따뜻한 캔버스와 well을 차가운 것으로 바꿈), 룩, 가장자리 페이드(`--ss-fade`가 있는 `.ss-fade-b`, `-r`, `-br`), 커서, 크롬, 휴대폰, 키캡. |
 
-## Layout and CSS scope
+## 레이아웃과 CSS 범위
 
-In render code use the third `layout` argument; in a script use `a.layout`.
-Both are `'wide'` or `'compact'`. Do not infer layout from a child element's
-measured width: that element can be narrow in either composition.
+렌더 코드에서는 세 번째 `layout` 인자를 쓰고, 스크립트에서는 `a.layout`을 쓰세요.
+둘 다 `'wide'` 또는 `'compact'`입니다. 자식 요소의
+측정된 너비에서 레이아웃을 추론하지 마세요. 그 요소는 어느 구성에서든 좁을 수 있습니다.
 
-`<Stage className="demo">` puts the class on the outer `.ss-fit` wrapper.
-The inner `.ss-stage` owns `data-layout` and the design dimensions:
+`<Stage className="demo">`는 클래스를 바깥 `.ss-fit` 래퍼에 둡니다.
+안쪽 `.ss-stage`가 `data-layout`과 디자인 치수를 소유합니다.
 
 ```css
 .demo .ss-stage { background: #f5f5f5; }
 .demo .ss-stage[data-layout="compact"] .card { width: 300px; }
 ```
 
-`.demo[data-layout="compact"]` matches nothing. Scope the scene's other
-selectors under `.demo` too. Measure the host width before choosing the
-compact design size; the example dimensions are not defaults.
+`.demo[data-layout="compact"]`는 아무것도 맞지 않습니다. 장면의 다른
+선택자도 `.demo` 아래에 범위를 두세요. 컴팩트 디자인 크기를 고르기 전에
+호스트 너비를 측정하세요. 예시 치수는 기본값이 아닙니다.
 
-## Explicit replay
+## 명시적 다시 재생
 
-`Stage` has no imperative replay handle. Put a real, accessible Replay button
-in the host and remount the demo at that story boundary:
+`Stage`에는 명령형 다시 재생 핸들이 없습니다. 호스트에 실제이고 접근 가능한 Replay 버튼을
+두고 그 스토리 경계에서 데모를 다시 마운트하세요.
 
 ```tsx
 const [run, setRun] = useState(0)
@@ -176,10 +176,9 @@ return <>
 </>
 ```
 
-The click explains the return to the starting picture. Keep the wrapper's size
-fixed; for a soft restart, hide the scene before changing the key and reveal
-the fresh one after. A keyed replay is deliberate: never use changing keys for
-ordinary state changes, text changes or variant switches, which should keep
-the moving object's identity. Set `play="once"` for a scene that waits for
-Replay after its payoff, with a meaningful `poster` so reduced motion shows
-the same complete still.
+클릭이 시작 그림으로의 복귀를 설명합니다. 래퍼 크기를
+고정하세요. 부드러운 재시작에는 키를 바꾸기 전에 장면을 숨기고
+새것이 나온 뒤에 드러내세요. 키 다시 재생은 의도적입니다. 보통 상태 변화,
+텍스트 변화, 변형 전환에 바뀌는 키를 쓰지 마세요. 움직이는 객체의 정체성을
+유지해야 합니다. 보상 뒤에 Replay를 기다리는 장면에는 `play="once"`를 설정하고,
+모션 감소가 같은 완전한 스틸을 보여 주도록 의미 있는 `poster`를 두세요.
