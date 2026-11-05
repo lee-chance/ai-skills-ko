@@ -1,32 +1,32 @@
-# RESOURCES.md Format
+# RESOURCES.md 형식
 
-`RESOURCES.md` is the curated set of trusted sources for this topic. Knowledge for explainers should be drawn from here, not from parametric guesses. Wisdom comes from the communities listed here.
+`RESOURCES.md`는 이 주제에서 신뢰할 수 있는 출처를 엄선한 목록입니다. 설명자에 넣을 지식은 여기서 가져오세요. 매개변수 지식으로 추측하지 마세요. 지혜는 여기에 적힌 커뮤니티에서 옵니다.
 
-## Structure
+## 구조
 
 ```md
-# {Topic} Resources
+# {주제} 리소스
 
-## Knowledge
+## 지식
 
-- [Book: _The Science and Practice of Strength Training_ by Zatsiorsky & Kraemer](https://example.com)
-  Foundational text on programming and adaptation. Use for: anything to do with periodisation, recovery, intensity zones.
-- [Article: "How Much Should I Train?" by Greg Nuckols (Stronger By Science)](https://example.com)
-  Evidence-based review of volume landmarks. Use for: weekly set targets per muscle group.
+- [책: _The Science and Practice of Strength Training_, Zatsiorsky & Kraemer 저](https://example.com)
+  프로그래밍과 적응에 대한 기초 문헌입니다. 사용처: 주기화, 회복, 강도 구간과 관련된 모든 내용.
+- [글: "How Much Should I Train?", Greg Nuckols (Stronger By Science)](https://example.com)
+  볼륨 기준점에 대한 근거 중심 리뷰입니다. 사용처: 근육군별 주간 세트 목표.
 
-## Wisdom (Communities)
+## 지혜 (커뮤니티)
 
 - [r/weightroom](https://reddit.com/r/weightroom)
-  High-signal subreddit, moderated against bro-science. Use for: programme critique, plateau troubleshooting.
-- Local: Tuesday strength class at {gym name}
-  Use for: real-time coaching feedback on lifts.
+  알짜 정보가 많은 서브레딧이며, 브로 사이언스를 걸러 내도록 관리됩니다. 사용처: 프로그램 비평, 정체기 해결.
+- 로컬: {체육관 이름}의 화요일 근력 수업
+  사용처: 리프트에 대한 실시간 코칭 피드백.
 ```
 
-## Rules
+## 규칙
 
-- **High-trust only.** Prefer primary sources, recognised experts, peer-reviewed work, and communities with strong moderation. If a resource is marketing dressed as education, leave it out.
-- **Annotate every entry.** A bare link is useless in three months. Add one line: what it covers and when to reach for it.
-- **Group by Knowledge / Wisdom.** Mirrors the philosophy in [SKILL.md](./SKILL.md). It is fine for a resource to appear in only one group.
-- **Surface gaps explicitly.** If no good resource exists for an area the mission needs, write a `## Gaps` section listing what is missing. This drives future search.
-- **Prune ruthlessly.** A resource that turned out to be wrong, shallow, or off-mission should be removed, not buried. Better five sharp sources than thirty mediocre ones.
-- **Record community preferences.** If the user has opted out of joining communities, note it here so future sessions don't keep proposing them.
+- **신뢰가 높은 것만 남기세요.** 1차 자료, 인정받는 전문가, 동료 검토를 거친 연구, 모더레이션이 강한 커뮤니티를 우선하세요. 교육을 가장한 마케팅이면 빼세요.
+- **모든 항목에 주석을 다세요.** 링크만 있으면 석 달 뒤에 쓸모가 없습니다. 무엇을 다루는지, 언제 참고할지를 한 줄로 적으세요.
+- **지식 / 지혜로 묶으세요.** [SKILL.md](./SKILL.md)의 철학과 같습니다. 리소스가 한 그룹에만 나와도 됩니다.
+- **빈틈을 명시적으로 드러내세요.** 미션에 필요하지만 좋은 리소스가 없는 영역이 있으면, 무엇이 빠졌는지를 적는 `## 공백` 섹션을 작성하세요. 이것이 이후 검색을 이끕니다.
+- **가차 없이 가지치기하세요.** 틀리거나, 얕거나, 미션에서 벗어난 리소스는 목록 아래에 묻어 두지 말고 제거하세요. 평범한 서른 개보다 날카로운 다섯 개가 낫습니다.
+- **커뮤니티 선호를 기록하세요.** 사용자가 커뮤니티에 참여하고 싶지 않다고 했으면 여기에 적으세요. 이후 세션이 계속 제안하지 않게 하기 위해서입니다.

@@ -20,27 +20,27 @@ disable-model-invocation: true
 
 <spec-template>
 
-## Problem Statement
+## 문제
 
 사용자가 직면한 문제, 사용자의 관점에서.
 
-## Solution
+## 해결
 
 문제에 대한 솔루션, 사용자의 관점에서.
 
-## User Stories
+## 사용자 스토리
 
 사용자 스토리의 긴, 번호가 매겨진 목록. 각 사용자 스토리는 다음 형식이어야 합니다:
 
-1. As an <actor>, I want a <feature>, so that <benefit>
+1. <행위자>로서, 나는 <기능>을 원한다. 그래서 <이득>을 얻는다.
 
 <user-story-example>
-1. As a mobile bank customer, I want to see balance on my accounts, so that I can make better informed decisions about my spending
+1. 모바일 뱅킹 고객으로서, 나는 계좌 잔액을 보고 싶다. 그래서 지출에 대해 더 나은 결정을 내릴 수 있다.
 </user-story-example>
 
 이 사용자 스토리 목록은 극도로 광범위하고 기능의 모든 측면을 다루어야 합니다.
 
-## Implementation Decisions
+## 구현 결정
 
 만들어진 구현 결정 목록. 다음을 포함할 수 있습니다:
 
@@ -56,7 +56,7 @@ disable-model-invocation: true
 
 예외: 프로토타입이 산문이 할 수 있는 것보다 더 정확하게 결정을 인코딩하는 스니펫(상태 머신, 리듀서, 스키마, 타입 형태)을 생성했으면, 관련 결정 내에 인라인하고 프로토타입에서 왔다고 간략히 기록하세요. 작동하는 데모가 아니라 결정이 풍부한 부분으로 트림하세요. 중요한 비트만.
 
-## Testing Decisions
+## 테스트 결정
 
 만들어진 테스팅 결정 목록. 다음을 포함하세요:
 
@@ -64,11 +64,11 @@ disable-model-invocation: true
 - 테스트될 모듈
 - 테스트를 위한 선행 기술 (즉, 코드베이스의 유사한 유형의 테스트)
 
-## Out of Scope
+## 범위 밖
 
 이 스펙의 범위를 벗어난 것들에 대한 설명.
 
-## Further Notes
+## 추가 노트
 
 기능에 대한 추가 노트.
 

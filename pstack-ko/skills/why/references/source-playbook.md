@@ -1,17 +1,17 @@
-# Source playbooks
+# 소스 플레이북
 
-The why skill spawns one investigator per available evidence category, each reading a single source-specific playbook below. The playbooks are concrete examples for common MCPs. Adapt them for a different MCP in the same category.
+`why` 스킬은 사용 가능한 증거 카테고리마다 조사자 하나를 생성하며, 각 조사자는 아래의 소스별 플레이북 하나만 읽습니다. 플레이북은 흔한 MCP를 위한 구체적인 예시입니다. 같은 카테고리의 다른 MCP에 맞게 조정하세요.
 
-| Category | Playbook | Example MCP it documents |
+| 카테고리 | 플레이북 | 문서화하는 MCP 예시 |
 |---|---|---|
-| Source control history | [`code-archaeology.md`](./sources/code-archaeology.md) | git, `gh` |
-| Issue / ticket tracker | [`linear.md`](./sources/linear.md) | Linear (adapt for Jira, GitHub Issues, Plane, Shortcut) |
-| Long-form documents | [`notion.md`](./sources/notion.md) | Notion (adapt for Confluence, Google Docs, Coda) |
-| Real-time team chat | [`slack.md`](./sources/slack.md) | Slack (adapt for Discord, Microsoft Teams, Mattermost) |
-| Infrastructure observability | [`datadog.md`](./sources/datadog.md) | Datadog (adapt for New Relic, Honeycomb, Grafana, Splunk) |
-| Error / exception tracking | [`sentry.md`](./sources/sentry.md) | Sentry (adapt for Rollbar, Bugsnag, Airbrake) |
-| Product analytics warehouse | [`databricks.md`](./sources/databricks.md) | Databricks SQL (adapt for Snowflake, BigQuery, ClickHouse, dbt) |
+| 소스 제어 기록 | [`code-archaeology.md`](./sources/code-archaeology.md) | git, `gh` |
+| 이슈 / 티켓 트래커 | [`linear.md`](./sources/linear.md) | Linear (Jira, GitHub Issues, Plane, Shortcut에 맞게 조정) |
+| 장문 문서 | [`notion.md`](./sources/notion.md) | Notion (Confluence, Google Docs, Coda에 맞게 조정) |
+| 실시간 팀 채팅 | [`slack.md`](./sources/slack.md) | Slack (Discord, Microsoft Teams, Mattermost에 맞게 조정) |
+| 인프라 관찰 가능성 | [`datadog.md`](./sources/datadog.md) | Datadog (New Relic, Honeycomb, Grafana, Splunk에 맞게 조정) |
+| 오류 / 예외 추적 | [`sentry.md`](./sources/sentry.md) | Sentry (Rollbar, Bugsnag, Airbrake에 맞게 조정) |
+| 제품 분석 웨어하우스 | [`databricks.md`](./sources/databricks.md) | Databricks SQL (Snowflake, BigQuery, ClickHouse, dbt에 맞게 조정) |
 
-Cross-cutting:
+여러 카테고리에 걸치는 항목:
 
-- [`incident-postmortem.md`](./sources/incident-postmortem.md). Add this if the target code looks defensive (null checks, retry, timeout, rate limit, feature flag, egress guard, OOM handler).
+- [`incident-postmortem.md`](./sources/incident-postmortem.md). 대상 코드가 방어적으로 보이면 이것을 추가하세요 (null 검사, 재시도, 타임아웃, 속도 제한, 기능 플래그, 이그레스 가드, OOM 핸들러).

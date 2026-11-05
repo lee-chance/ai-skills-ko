@@ -1,217 +1,217 @@
 ---
 name: triage-issue-reports
-description: Triage Slack issue reports with one thread-only verdict, evidence review, cause-aware routing, tracker dedupe, and fail-closed ticket creation. Use only from the configured Benny triage automation.
+description: 스레드에만 남기는 판정 하나로 Slack 이슈 보고서를 분류하고, 증거를 검토하고, 원인을 반영해 라우팅하고, 추적기 중복을 확인하며, 불확실하면 티켓을 만들지 마세요. 구성된 Benny 분류 자동화에서만 사용하세요.
 disable-model-invocation: true
 ---
 
-# Triage issue reports
+# 이슈 보고서 분류
 
-Classify one Slack report and post one useful verdict in its source thread. Create a tracker issue only for a clear, new bug. Do not reproduce or fix it here.
+Slack 보고서 하나를 분류하고, 그 소스 스레드에 쓸모 있는 판정 하나를 게시하세요. 명확한 새 버그에만 추적기 이슈를 만드세요. 여기서 재현하거나 수정하지 마세요.
 
-Load the external Benny configuration supplied by the automation. If the config is missing, malformed, or incomplete, stop without posting or writing to the tracker.
+자동화가 제공하는 외부 Benny 구성을 로드하세요. 구성이 없거나, 형식이 잘못되었거나, 불완전하면 게시하거나 추적기에 쓰지 말고 멈추세요.
 
-## Hard safety rules
+## 엄격한 안전 규칙
 
-- The source channel and root thread coordinates are immutable.
-- Never post a root message in the source channel.
-- Never post to another channel, broadcast a reply, send a DM, or start a replacement thread.
-- Preflight the source parent before any tracker write and immediately before the verdict post.
-- If the parent is missing, deleted, inaccessible, or uncertain, stop with no writes.
-- Post one substantive verdict. Do not narrate progress.
-- The coordinator is the only Slack poster.
-- Delegated workers return findings only. They must be read-only and receive no Slack credentials or write actions.
-- Every child prompt must forbid `SendSlackMessage`, `PostToSlack`, `chat.postMessage`, and every other Slack write.
-- If worker isolation cannot enforce those limits, do the work in the coordinator.
-- Never create an issue that cannot link back to the source thread.
-- Prefer no ticket over a guessed or duplicate ticket.
-- Apply pstack's `principle-separate-before-serializing-shared-state` to source coordinates.
-- Apply pstack's `principle-minimize-reader-load` and `unslop` skills to the final verdict.
+- 소스 채널과 루트 스레드 좌표는 불변입니다.
+- 소스 채널에 루트 메시지를 절대 게시하지 마세요.
+- 다른 채널에 게시하거나, 답장을 브로드캐스트하거나, DM을 보내거나, 대체 스레드를 시작하지 마세요.
+- 추적기에 쓰기 전과, 판정을 게시하기 직전에 소스 부모를 사전 점검하세요.
+- 부모가 없거나, 삭제되었거나, 접근할 수 없거나, 불확실하면 아무것도 쓰지 말고 멈추세요.
+- 실질적인 판정 하나를 게시하세요. 진행 과정을 늘어놓지 마세요.
+- Slack에 게시하는 주체는 코디네이터뿐입니다.
+- 위임된 워커는 발견 사항만 반환합니다. 읽기 전용이어야 하고, Slack 자격 증명이나 쓰기 동작을 받으면 안 됩니다.
+- 모든 하위 프롬프트는 `SendSlackMessage`, `PostToSlack`, `chat.postMessage`, 그리고 그 밖의 모든 Slack 쓰기를 금지해야 합니다.
+- 워커 격리가 그 제한을 강제할 수 없으면 코디네이터에서 작업하세요.
+- 소스 스레드로 다시 연결할 수 없는 이슈는 절대 만들지 마세요.
+- 추측이거나 중복인 티켓보다는, 티켓을 만들지 않는 쪽을 택하세요.
+- 소스 좌표에는 pstack의 `principle-separate-before-serializing-shared-state`를 적용하세요.
+- 최종 판정에는 pstack의 `principle-minimize-reader-load`와 `unslop` 스킬을 적용하세요.
 
-## 1. Freeze source coordinates
+## 1. 소스 좌표 고정
 
-Before making a work list or delegating:
+작업 목록을 만들거나 위임하기 전에:
 
-1. Read `source_channel_id` from the trigger.
-2. Require it to equal the configured source channel.
-3. Set `SOURCE_THREAD_TS` to `trigger.thread_ts` when present. Otherwise use `trigger.ts`.
-4. Require a nonempty `SOURCE_THREAD_TS`.
-5. Store `SOURCE_CHANNEL_ID` and `SOURCE_THREAD_TS` as immutable values.
-6. Read the thread and verify that its root has exactly those coordinates.
-7. Fetch a stable source permalink.
+1. 트리거에서 `source_channel_id`를 읽으세요.
+2. 구성된 소스 채널과 같아야 합니다.
+3. `trigger.thread_ts`가 있으면 `SOURCE_THREAD_TS`를 그 값으로 설정하세요. 없으면 `trigger.ts`를 사용하세요.
+4. 비어 있지 않은 `SOURCE_THREAD_TS`가 필요합니다.
+5. `SOURCE_CHANNEL_ID`와 `SOURCE_THREAD_TS`를 불변 값으로 저장하세요.
+6. 스레드를 읽고, 루트가 정확히 그 좌표를 가지는지 확인하세요.
+7. 안정적인 소스 퍼머링크를 가져오세요.
 
-Every later source read and post must use those stored values. Never replace them with a reply timestamp or an operations-thread timestamp.
+이후의 모든 소스 읽기와 게시는 저장된 그 값을 써야 합니다. 답장 타임스탬프나 작업 스레드 타임스탬프로 바꾸지 마세요.
 
-## 2. Read the whole report
+## 2. 보고서 전체 읽기
 
-Read the root and current replies before deciding.
+결정하기 전에 루트와 현재 답장을 읽으세요.
 
-Capture:
+다음을 잡아내세요.
 
-- Reporter wording
-- Product version, app build, environment, and platform when present
-- Expected behavior
-- Observed behavior
-- Frequency and trigger
-- Error text or stack signature
-- Existing issue, commit, or pull request links
-- Any explicit statement that someone is already fixing it
+- 보고자가 쓴 말
+- 있을 때의 제품 버전, 앱 빌드, 환경, 플랫폼
+- 기대 동작
+- 관찰된 동작
+- 빈도와 트리거
+- 오류 텍스트 또는 스택 시그니처
+- 기존 이슈, 커밋, 풀 리퀘스트 링크
+- 누군가가 이미 고치고 있다는 명시적 말
 
-Inspect every relevant attachment.
+관련된 첨부를 모두 살펴보세요.
 
-- Read screenshots at full useful resolution.
-- Review video for the state transition that separates correct and broken behavior.
-- Read logs, traces, and crash text for concrete signatures.
-- If media needs specialist review, use a read-only media worker and ask a narrow question. The worker returns findings only.
-- If an attachment cannot be read, say so in the verdict. Do not invent what it shows.
+- 스크린샷은 알아보는 데 충분한 해상도로 읽으세요.
+- 비디오에서는 올바른 동작과 고장을 가르는 상태 전환을 보세요.
+- 로그, 트레이스, 크래시 텍스트에서 구체적인 시그니처를 읽으세요.
+- 미디어에 전문가 검토가 필요하면 읽기 전용 미디어 워커에 좁은 질문 하나를 하세요. 워커는 발견 사항만 반환합니다.
+- 첨부를 읽을 수 없으면 판정에 그렇게 말하세요. 무엇이 보이는지 지어내지 마세요.
 
-Use evidence already in the thread before asking the reporter for more.
+보고자에게 더 묻기 전에, 스레드에 이미 있는 증거를 쓰세요.
 
-## 3. Trace cause before routing
+## 3. 라우팅 전에 원인 추적
 
-Do a bounded source and history pass before choosing an owner or destination. Use pstack's `how` skill to trace the path from the reported action to the observed result. Use `why` when the report looks like a regression or touches defensive code.
+소유자나 목적지를 고르기 전에, 범위를 제한한 소스와 히스토리 검토를 하세요. pstack의 `how` 스킬로 보고된 동작에서 관찰된 결과까지의 경로를 추적하세요. 보고서가 회귀처럼 보이거나 방어 코드를 건드릴 때는 `why`를 쓰세요.
 
-1. Identify the likely code path from the reported action to the observed result.
-2. Check whether the visible symptom belongs to that code path or a dependency below it.
-3. Check recent changes when the report looks like a regression.
-4. Check whether a merged commit or open pull request already addresses the same symptom.
-5. Separate confirmed facts from hypotheses.
+1. 보고된 동작에서 관찰된 결과까지 유력한 코드 경로를 찾으세요.
+2. 보이는 증상이 그 코드 경로에 속하는지, 그 아래 의존성에 속하는지 확인하세요.
+3. 보고서가 회귀처럼 보이면 최근 변경을 확인하세요.
+4. 병합된 커밋이나 열린 풀 리퀘스트가 이미 같은 증상을 다루는지 확인하세요.
+5. 확인된 사실과 가설을 나누세요.
 
-This pass does not need a complete root cause. It must be strong enough to avoid routing a visible symptom to the wrong owner.
+이 검토에 완전한 근본 원인은 필요 없습니다. 보이는 증상을 잘못된 소유자에게 보내지 않을 만큼은 충분해야 합니다.
 
-If the repository cannot be read, do not guess a code owner. Continue with a conservative classification and say that cause tracing was unavailable.
+저장소를 읽을 수 없으면 코드 소유자를 추측하지 마세요. 보수적인 분류로 계속하고, 원인 추적을 할 수 없었다고 말하세요.
 
-## 4. Classify
+## 4. 분류
 
-Choose one category.
+범주 하나를 고르세요.
 
-### Bug
+### 버그
 
-Something violates intended behavior. Examples include wrong output, broken state, an error, a crash, a hang, a silent no-op, or a regression.
+의도된 동작에 어긋나는 경우입니다. 예로는 잘못된 출력, 깨진 상태, 오류, 크래시, 멈춤, 조용히 아무 일도 하지 않음, 회귀가 있습니다.
 
-### Performance
+### 성능
 
-The report describes measurable slowness, excess memory, battery drain, jank, or another resource problem. Treat it as a bug, but preserve measurements and profiles.
+보고서가 측정 가능한 지연, 과도한 메모리 사용, 배터리 소모, 버벅임, 또는 다른 자원 문제를 설명합니다. 버그로 다루되, 측정값과 프로파일은 보존하세요.
 
-### Feature request
+### 기능 요청
 
-The current behavior appears intentional and the reporter wants a different behavior or affordance.
+현재 동작이 의도된 것으로 보이고, 보고자가 다른 동작이나 다른 사용 방식을 원합니다.
 
-### Question or feedback
+### 질문 또는 피드백
 
-The report asks how something works, expresses a preference without a concrete defect, or gives general feedback.
+무언가가 어떻게 동작하는지 묻거나, 구체적인 결함 없이 선호를 밝히거나, 일반적인 피드백을 줍니다.
 
-### Reroute
+### 재라우팅
 
-Cause tracing shows that another configured destination owns the issue.
+원인 추적 결과, 구성된 다른 목적지가 이슈를 소유합니다.
 
-When the bug versus feature line is unclear, do not file. The one verdict may ask one focused question and use the `other` marker.
+버그인지 기능 요청인지 경계가 불명확하면 티켓을 접수하지 마세요. 판정 하나에서 초점을 맞춘 질문 하나를 묻고 `other` 마커를 쓸 수 있습니다.
 
-## 5. Apply configured routing
+## 5. 구성된 라우팅 적용
 
-Read the optional routing map from `routing.map_path`.
+선택적 라우팅 맵을 `routing.map_path`에서 읽으세요.
 
-- Match on confirmed product area, code path, or error signature.
-- A visible symptom alone is not enough when cause tracing points elsewhere.
-- If no route matches, say the owner is unclear. Do not guess.
-- Do not cross-post. Tell the reporter where to take the issue in the source thread.
+- 확인된 제품 영역, 코드 경로, 또는 오류 시그니처에 맞추세요.
+- 원인 추적이 다른 곳을 가리키면, 보이는 증상만으로는 충분하지 않습니다.
+- 맞는 경로가 없으면 소유자가 불명확하다고 말하세요. 추측하지 마세요.
+- 교차 게시하지 마세요. 소스 스레드에서 보고자에게 이슈를 어디로 가져가면 되는지 알려 주세요.
 
-Owner pings are off by default. A ping is allowed only when all of these hold:
+소유자 핑은 기본적으로 꺼져 있습니다. 다음이 모두 성립할 때만 핑이 허용됩니다.
 
-1. The routing map explicitly names the owner.
-2. The config allows that ping type.
-3. The item is a feature request that needs owner input, or recent history identifies a likely regression author with strong evidence.
-4. The owner is not a broad on-call group.
+1. 라우팅 맵이 소유자를 명시적으로 지목합니다.
+2. 구성이 그 핑 유형을 허용합니다.
+3. 항목이 소유자 의견이 필요한 기능 요청이거나, 최근 히스토리가 강한 증거로 유력한 회귀 작성자를 지목합니다.
+4. 소유자가 넓은 온콜 그룹이 아닙니다.
 
-No other case gets a ping.
+그 밖의 경우에는 핑하지 마세요.
 
-## 6. Use the issue-tracker adapter
+## 6. 이슈 추적기 어댑터 사용
 
-The tracker is an adapter, not a required vendor. A Linear adapter is one valid example. A GitHub Issues adapter or another tracker may implement the same contract.
+추적기는 어댑터이며, 특정 벤더가 필수는 아닙니다. Linear 어댑터는 유효한 예시 하나입니다. GitHub Issues 어댑터나 다른 추적기도 같은 계약을 구현할 수 있습니다.
 
-The configured adapter must provide:
+구성된 어댑터는 다음을 제공해야 합니다.
 
-- Search issues by text, state, label, source URL, and date range
-- Read one issue and its links
-- Create an issue with title, body, status, labels, and source URL
-- Update an existing issue without replacing unrelated fields
-- Add a source link and recurrence note
-- Cancel, close, or delete an issue created by this run if the Slack handoff fails
+- 텍스트, 상태, 레이블, 소스 URL, 날짜 범위로 이슈 검색
+- 이슈 하나와 그 링크 읽기
+- 제목, 본문, 상태, 레이블, 소스 URL이 있는 이슈 생성
+- 관련 없는 필드를 바꾸지 않는 기존 이슈 업데이트
+- 소스 링크와 재발 메모 추가
+- Slack 핸드오프가 실패하면, 이 실행이 만든 이슈의 취소, 종료, 삭제
 
-If a required operation is unavailable, fail closed for that write.
+필요한 동작을 쓸 수 없으면 그 쓰기는 닫힌 상태로 실패하세요.
 
-Resolve configured team, project, status, and labels at runtime. Do not invent IDs, create labels, assign owners, or set priority unless the config explicitly requires it.
+구성된 팀, 프로젝트, 상태, 레이블은 런타임에 실제 값으로 확정하세요. 구성이 명시적으로 요구하지 않으면 ID를 지어내거나, 레이블을 만들거나, 소유자를 지정하거나, 우선순위를 설정하지 마세요.
 
-## 7. Dedupe
+## 7. 중복 확인
 
-Always check whether this source permalink is already linked to a tracker issue or a prior triage reply. If so, do not post or create a duplicate.
+이 소스 퍼머링크가 이미 추적기 이슈나 이전 분류 답장에 연결되어 있는지 항상 확인하세요. 그렇다면 중복을 게시하거나 만들지 마세요.
 
-For bugs and performance reports, search the tracker using:
+버그와 성능 보고서이면 다음으로 추적기를 검색하세요.
 
-- Exact error or crash signature
-- Product area
-- Trigger
-- Symptom
-- Version or date window
-- Suspected regression commit
-- Source permalink
+- 정확한 오류 또는 크래시 시그니처
+- 제품 영역
+- 트리거
+- 증상
+- 버전 또는 날짜 범위
+- 의심되는 회귀 커밋
+- 소스 퍼머링크
 
-Choose one outcome:
+결과 하나를 고르세요.
 
-- Confident duplicate: same signature, or the same area, trigger, and symptom, or a confirmed shared cause.
-- Possibly related: a shared cause is plausible but not proven.
-- Weak resemblance: similarity is superficial.
-- No match.
+- 확신하는 중복: 같은 시그니처이거나, 영역과 트리거와 증상이 같거나, 공통 원인이 확인된 경우.
+- 관련 가능: 공통 원인이 그럴듯하지만 증명되지 않은 경우.
+- 약한 유사: 유사함이 겉모습에 그치는 경우.
+- 일치 없음.
 
-For a confident duplicate, update the existing issue with the source permalink and one short recurrence note. Do not reopen, relabel, or reassign it unless the config says to.
+확신하는 중복이면 기존 이슈에 소스 퍼머링크와 짧은 재발 메모 하나를 더하세요. 구성이 그렇게 하라고 하지 않으면 다시 열거나, 레이블을 바꾸거나, 담당을 바꾸지 마세요.
 
-For a possible match, link it in the verdict as uncertain and create nothing.
+가능한 일치이면 판정에 불확실하다고 링크하고, 아무것도 만들지 마세요.
 
-A long-closed issue is a regression lead, not automatically a live duplicate.
+오래전에 닫힌 이슈는 회귀의 단서일 뿐, 저절로 현재 진행 중인 중복이 되지는 않습니다.
 
-## 8. Decide whether to create
+## 8. 생성 여부 결정
 
-Create only when all of these are true:
+다음이 모두 참일 때만 만드세요.
 
-1. The classification is bug or performance.
-2. The behavior is clearly broken.
-3. The issue is still live or not known to be fixed.
-4. Dedupe found no confident or plausible live match.
-5. The source parent and permalink passed preflight.
-6. The tracker target fields resolved.
-7. The adapter can compensate if the verdict post fails.
+1. 분류가 버그 또는 성능입니다.
+2. 동작이 명확히 고장 나 있습니다.
+3. 이슈가 아직 진행 중이거나, 수정된 것으로 알려져 있지 않습니다.
+4. 중복 확인에서 확신할 수 있거나 그럴듯한 현재 일치가 없었습니다.
+5. 소스 부모와 퍼머링크가 사전 점검을 통과했습니다.
+6. 추적기 대상 필드가 확정되었습니다.
+7. 판정 게시가 실패하면 어댑터가 보상할 수 있습니다.
 
-Never create for a feature request, question, feedback item, reroute, possible duplicate, confident duplicate, or already-fixed issue.
+기능 요청, 질문, 피드백, 재라우팅, 가능한 중복, 확신하는 중복, 이미 수정된 이슈에는 절대 만들지 마세요.
 
-The new issue must be self-contained:
+새 이슈는 그 자체로 이해될 수 있어야 합니다.
 
-- Plain title that names the area and symptom
-- Reporter quote
-- Expected and observed behavior
-- Version and environment, or `unknown`
-- Trigger and frequency
-- Source thread permalink
-- Short cause-tracing findings with hypotheses labeled as hypotheses
-- Inline screenshot or representative video frame when supported
-- Links to remaining artifacts
-- Configured intake status and labels
+- 영역과 증상을 밝히는 평이한 제목
+- 보고자 인용
+- 기대 동작과 관찰된 동작
+- 버전과 환경, 또는 `unknown`
+- 트리거와 빈도
+- 소스 스레드 퍼머링크
+- 가설은 가설이라고 밝혀 둔 짧은 원인 추적 결과
+- 지원될 때의 인라인 스크린샷 또는 대표 비디오 프레임
+- 나머지 아티팩트로 가는 링크
+- 구성된 접수 상태와 레이블
 
-Do not put a guessed root cause in the title.
+추측한 근본 원인을 제목에 넣지 마세요.
 
-## 9. Post one verdict
+## 9. 판정 하나 게시
 
-Run a fresh source-parent preflight. Then post exactly one reply with `channel=SOURCE_CHANNEL_ID` and `thread_ts=SOURCE_THREAD_TS`.
+소스 부모 사전 점검을 새로 하세요. 그런 다음 `channel=SOURCE_CHANNEL_ID`와 `thread_ts=SOURCE_THREAD_TS`로 답장 정확히 하나를 게시하세요.
 
-Never call a source-channel posting action without a nonempty `thread_ts`.
+비어 있지 않은 `thread_ts` 없이는 소스 채널 게시 동작을 호출하지 마세요.
 
-Keep the reply short:
+답장은 짧게 유지하세요.
 
-- Lead with the outcome.
-- Link the existing or new tracker issue when there is one.
-- Mention a reroute or one missing fact when needed.
-- Include at most one allowed owner ping.
-- End with exactly one marker line.
+- 결과부터 말하세요.
+- 기존 또는 새 추적기 이슈가 있으면 링크하세요.
+- 필요하면 재라우팅이나 빠진 사실 하나를 언급하세요.
+- 허용된 소유자 핑은 최대 하나까지 넣으세요.
+- 마커 줄 정확히 하나로 끝내세요.
 
-Marker contract:
+마커 계약:
 
 ```text
 [benny:bug]
@@ -221,20 +221,20 @@ Marker contract:
 [benny:other]
 ```
 
-Use only the configured marker strings. The repro automation trusts the marker only when it comes from the configured triage identity in this source thread.
+구성된 마커 문자열만 사용하세요. 재현 자동화는 이 소스 스레드에서 구성된 분류 신원이 보낸 마커만 신뢰합니다.
 
-After posting, read the same source thread and verify the verdict appears under `SOURCE_THREAD_TS`. If it does not, never retry at the root.
+게시한 뒤 같은 소스 스레드를 읽고, 판정이 `SOURCE_THREAD_TS` 아래에 있는지 확인하세요. 그렇지 않으면 루트에서 재시도하지 마세요.
 
-If this run created a tracker issue and the verdict did not land, use the adapter's compensation action. Verify that the issue is canceled, closed, or deleted. If compensation cannot be verified, report the failure only in the automation run output.
+이 실행이 추적기 이슈를 만들었는데 판정이 게시되지 않았으면, 어댑터의 보상 동작을 사용하세요. 이슈가 취소되었거나, 닫혔거나, 삭제되었는지 확인하세요. 보상을 확인할 수 없으면 실패는 자동화 실행 출력에만 보고하세요.
 
-## 10. Watch one follow-up window
+## 10. 후속 창 하나 지켜보기
 
-Watch the source thread for the configured follow-up window, then stop.
+구성된 후속 창 동안 소스 스레드를 본 다음 멈추세요.
 
-- Answer only a direct question to the triage identity.
-- Apply a concrete correction to the tracker issue when safe.
-- Do not emit a second marker in the same run.
-- Stay out of human coordination and side chatter.
-- Stop early if someone asks the automation to stop.
+- 분류 신원에게 직접 한 질문에만 답하세요.
+- 안전할 때는 추적기 이슈에 구체적인 정정을 적용하세요.
+- 같은 실행에서 두 번째 마커를 내지 마세요.
+- 사람끼리의 조율과 옆 대화에는 끼어들지 마세요.
+- 누군가가 자동화에게 멈추라고 하면 일찍 멈추세요.
 
-Do not extend the window more than once. A new report should start a new run.
+창을 두 번 이상 연장하지 마세요. 새 보고서는 새 실행으로 시작해야 합니다.

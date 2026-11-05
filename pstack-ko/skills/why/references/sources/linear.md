@@ -1,48 +1,48 @@
-# Linear Tickets
+# Linear 티켓
 
-## What this source contains
+## 이 소스에 있는 것
 
-- Issues describing features, bugs, and their motivation
-- Project docs attached to issues (often PRDs or specs)
-- Parent/sub-issue relationships (broader initiative → specific tickets)
-- Comments on issues (clarifications, scope changes, "why we're doing this" rationale)
-- Labels (e.g., `compliance`, `customer-request`, `perf`) that signal the type of motivation
-- Status updates that explain scope changes
-- Attachments and linked GitHub PRs
+- 기능, 버그, 그리고 그 동기를 설명하는 이슈
+- 이슈에 첨부된 프로젝트 문서 (종종 PRD나 스펙)
+- 상위/하위 이슈 관계 (더 넓은 이니셔티브에서 구체적인 티켓으로)
+- 이슈 코멘트 (명확화, 범위 변경, "왜 이것을 하는가"라는 근거)
+- 동기의 종류를 알리는 라벨 (예: `compliance`, `customer-request`, `perf`)
+- 범위 변경을 설명하는 상태 업데이트
+- 첨부 파일과 링크된 GitHub 풀 리퀘스트
 
-Linear is where the product/business context often lives: the "we're doing this because customer X asked" or "this is for the Q3 compliance initiative" layer.
+Linear에는 제품/비즈니스 맥락이 있는 경우가 많습니다. "고객 X가 요청해서 이것을 합니다" 또는 "Q3 컴플라이언스 이니셔티브를 위한 것입니다"라는 층입니다.
 
-## How to search it
+## 검색 방법
 
-Use the Linear MCP.
+Linear MCP를 사용하세요.
 
-1. **Start with linked tickets.** If the seed commits or PRs reference ticket IDs (e.g., `ENG-1234`, `[BUG-567]`), fetch those first with `get_issue`. Read the full issue including comments.
-2. **List related issues by keyword.** Use `list_issues` with text search for the feature name, key symbol, or business term. Try multiple phrasings.
-3. **Walk the issue tree.** If you land on a sub-issue, fetch its parent. Sub-issues are tactical. Parents often carry the "why."
-4. **Read project docs.** If the issue belongs to a project, use `get_project` and check attached docs. Project-level documents are where specs and rationale are most often captured.
-5. **Check labels and milestones.** Labels hint at the category of motivation (customer-request, incident-followup, compliance). Milestones tie work to deadlines, which often reveal motivation.
+1. **링크된 티켓부터 시작하세요.** 시드 커밋이나 풀 리퀘스트가 티켓 ID를 참조하면 (예: `ENG-1234`, `[BUG-567]`) `get_issue`로 그것들을 먼저 가져오세요. 코멘트를 포함해 이슈 전체를 읽으세요.
+2. **키워드로 관련 이슈를 나열하세요.** 기능 이름, 핵심 심볼, 또는 비즈니스 용어의 텍스트 검색과 함께 `list_issues`를 사용하세요. 여러 표현을 시도하세요.
+3. **이슈 트리를 따라가세요.** 하위 이슈에 도착하면 상위를 가져오세요. 하위 이슈는 전술적입니다. 상위 이슈가 종종 이유를 담고 있습니다.
+4. **프로젝트 문서를 읽으세요.** 이슈가 프로젝트에 속하면 `get_project`를 쓰고 첨부 문서를 확인하세요. 스펙과 근거는 프로젝트 수준 문서에 가장 자주 담깁니다.
+5. **라벨과 마일스톤을 확인하세요.** 라벨은 동기 범주를 힌트로 줍니다 (`customer-request`, `incident-followup`, `compliance`). 마일스톤은 작업을 마감에 묶으며, 마감은 종종 동기를 드러냅니다.
 
-## What good evidence looks like here
+## 여기서 좋은 증거는 어떤 모습인가
 
-- An issue description stating the business problem: "Customer Acme needs X because of their SOC2 audit"
-- A comment recording a decision: "We decided to go with approach B because approach A would require touching the billing service"
-- A parent issue titled like an initiative: "Q3 Enterprise Readiness" or "Reduce Payment Failures"
-- An attached PRD or spec
-- Labels like `customer:acme`, `incident-followup`, `compliance`, `perf-regression`
+- 비즈니스 문제를 진술하는 이슈 설명: "고객 Acme는 SOC2 감사 때문에 X가 필요합니다"
+- 결정을 기록한 코멘트: "결제 서비스를 건드려야 해서 접근 A 대신 접근 B로 가기로 했습니다"
+- 이니셔티브처럼 보이는 상위 이슈 제목: "Q3 엔터프라이즈 준비" 또는 "결제 실패 줄이기"
+- 첨부된 PRD 또는 스펙
+- `customer:acme`, `incident-followup`, `compliance`, `perf-regression` 같은 라벨
 
-## Common pitfalls
+## 흔한 함정
 
-- **Scope drift.** The ticket the PR references may have been closed and reopened with a different scope. Read the whole history.
-- **Mechanical templates.** Some teams require "Why" sections but fill them with boilerplate. Generic text ("improve user experience") is probably not a real answer.
-- **Stale tickets.** Old tickets often reflect a version of the plan that changed. Check dates and cross-reference with the code's ship date.
-- **Closed-as-duplicate chains.** Follow the duplicate-of relationships back to the canonical ticket.
-- **Private workspace content.** If you can't access an issue, note that as a gap rather than guessing.
+- **범위 드리프트.** 풀 리퀘스트가 참조하는 티켓이 닫혔다가 다른 범위로 다시 열렸을 수 있습니다. 기록 전체를 읽으세요.
+- **기계적인 템플릿.** 어떤 팀은 "Why" 섹션을 요구하지만 상용구로 채웁니다. "사용자 경험을 개선한다" 같은 일반 문구는 아마도 진짜 답이 아닙니다.
+- **오래된 티켓.** 오래된 티켓은 이후 바뀐 계획의 한 버전을 반영하는 경우가 많습니다. 날짜를 확인하고 코드의 출시일과 교차 확인하세요.
+- **중복으로 닫힌 사슬.** `duplicate-of` 관계를 따라 정식 티켓까지 거슬러 올라가세요.
+- **비공개 워크스페이스 내용.** 이슈에 접근할 수 없으면 추측하는 대신 공백으로 기록하세요.
 
-## What to return
+## 반환할 내용
 
-For each relevant ticket:
-- Ticket ID and title
-- The problem/motivation quoted from the description or comments (not paraphrased. The synthesizer needs the exact text to cite)
-- Labels, parent issue, project
-- Author, created date, closed date
-- Link to the ticket if available
+관련된 각 티켓에 대해:
+- 티켓 ID와 제목
+- 설명이나 코멘트에서 인용한 문제/동기 (바꿔 쓰지 마세요. 합성기가 인용하려면 정확한 텍스트가 필요합니다)
+- 라벨, 상위 이슈, 프로젝트
+- 작성자, 생성일, 종료일
+- 가능하면 티켓 링크

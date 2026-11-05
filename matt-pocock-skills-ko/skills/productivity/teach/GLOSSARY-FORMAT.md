@@ -1,35 +1,35 @@
-# GLOSSARY.md Format
+# GLOSSARY.md 형식
 
-`GLOSSARY.md` is the canonical language for this teaching workspace. All explainers, exercises, and learning records should adhere to its terminology. Building it is itself part of learning: compressing a concept into a tight definition is evidence the user understands it.
+`GLOSSARY.md`는 이 교육 워크스페이스의 기준 언어입니다. 모든 설명자, 연습, 학습 기록은 이 용어를 따라야 합니다. 용어집을 만드는 일 자체가 학습입니다. 개념을 촘촘한 정의로 압축하는 것은 사용자가 이해했다는 증거입니다.
 
-## Structure
+## 구조
 
 ```md
-# {Topic} Glossary
+# {주제} 용어집
 
-{One or two sentence description of the topic this glossary covers.}
+{이 용어집이 다루는 주제를 한두 문장으로 설명합니다.}
 
-## Terms
+## 용어
 
-**Hypertrophy**:
-Muscle growth driven by mechanical tension and metabolic stress over repeated training sessions.
-_Avoid_: Bulking, getting big
+**근비대**:
+반복된 훈련 세션에 걸쳐 기계적 장력과 대사적 스트레스가 일으키는 근육 성장.
+_피할 말_: 벌크업, 덩치 키우기
 
-**Progressive overload**:
-Systematically increasing the demand on a muscle over time, via load, volume, or intensity.
-_Avoid_: Pushing harder, levelling up
+**점진적 과부하**:
+부하, 볼륨, 강도를 통해 시간에 걸쳐 근육에 대한 요구를 체계적으로 높이는 것.
+_피할 말_: 더 세게 밀기, 레벨업
 
-**RPE (Rate of Perceived Exertion)**:
-A 1–10 self-rating of how hard a set felt, where 10 is failure and 8 means two reps left in the tank.
-_Avoid_: Effort score, intensity rating
+**RPE (자각적 운동 강도)**:
+한 세트가 얼마나 힘들었는지에 대한 1-10 자기 평가. 10은 실패이고, 8은 실패까지 2회가 남은 상태입니다.
+_피할 말_: 노력 점수, 강도 평가
 ```
 
-## Rules
+## 규칙
 
-- **Add a term only when the user understands it.** The glossary is a record of compressed knowledge, not a dictionary the user reads to learn. If the user has just been introduced to a concept, wait until they can use it correctly before promoting it here.
-- **Be opinionated.** When several words exist for the same concept, pick the best one and list the rest as aliases to avoid. This is how language compresses.
-- **Keep definitions tight.** One or two sentences. Define what the term IS, not what it does or how to do it.
-- **Use the glossary's own terms inside definitions.** Once a term is in the glossary, prefer it everywhere, including inside other definitions. This is what makes complex terms easier to grasp later.
-- **Group under subheadings** when natural clusters emerge (e.g. `## Anatomy`, `## Programming`). A flat list is fine when terms cohere.
-- **Flag ambiguities explicitly.** If a term is used loosely in the wider field, note the resolution: "In this workspace, 'set' always means a working set; warm-ups are tracked separately."
-- **Revise as understanding deepens.** A definition the user wrote in week one may be wrong by week six. Update in place; do not leave stale entries.
+- **사용자가 이해할 때만 용어를 추가하세요.** 용어집은 압축된 지식의 기록입니다. 사용자가 배우려고 읽는 사전이 아닙니다. 개념을 막 소개했다면, 올바르게 쓸 수 있을 때까지 기다린 다음 여기에 올리세요.
+- **입장을 정하세요.** 같은 개념에 단어가 여러 개면 가장 좋은 것을 고르고, 나머지는 피할 별칭으로 적으세요. 이렇게 언어가 압축됩니다.
+- **정의를 촘촘하게 유지하세요.** 한두 문장입니다. 그 용어가 무엇인지를 정의하세요. 무엇을 하는지, 어떻게 하는지는 넣지 마세요.
+- **정의 안에서 용어집의 말을 쓰세요.** 용어집에 올린 용어는 다른 정의 안을 포함해 어디서나 그 말을 우선하세요. 그래야 나중에 복잡한 용어를 붙잡기 쉬워집니다.
+- **자연스러운 묶음이 생기면 소제목으로 나누세요** (예: `## 해부`, `## 프로그래밍`). 용어들이 한 덩어리로 맞으면 평평한 목록도 괜찮습니다.
+- **모호함은 명시적으로 표시하세요.** 더 넓은 분야에서 느슨하게 쓰이는 용어라면, 여기서의 결정을 적으세요. "이 워크스페이스에서 '세트'는 항상 워킹 세트를 뜻합니다. 워밍업은 따로 기록합니다."
+- **이해가 깊어지면 고치세요.** 1주차에 사용자가 쓴 정의가 6주차에는 틀릴 수 있습니다. 그 자리에서 고치세요. 낡은 항목을 남겨 두지 마세요.

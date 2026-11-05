@@ -20,33 +20,33 @@ disable-model-invocation: true
 
 <questionnaire-template>
 
-# <Questionnaire title>
+# <설문지 제목>
 
-**Purpose:** 이 설문지가 존재하는 이유와 그것에 타고 있는 결정.
+**목적:** 이 설문지가 존재하는 이유와 그것에 타고 있는 결정.
 
-**From:** <the user>, **To:** <the recipient>, **How your answers will be used:** <where they go>
+**보낸 사람:** <사용자>, **받는 사람:** <수신자>, **답변이 쓰이는 곳:** <답변이 가는 곳>
 
-## Context
+## 맥락
 
 수신자가 사용자의 머리에 없었던 사람을 오리엔테이션하는 한 문단. 잘 답하기에 충분하며, 페이지가 아닙니다.
 
-## How to answer
+## 답하는 방법
 
 마감일과 대략적인 노력. 부분 답변과 "모르겠습니다"는 유용합니다: 건너뛰는 대신 확신하지 못하는 것을 플래그하세요.
 
-## <Theme heading>
+## <테마 제목>
 
 테마당 하나의 `##` 섹션. 각각 아래에, 가장 중요한 것 먼저 질문. 모든 질문은 하나의 아이디어이며, 절대 복합적이지 않고, 바로 아래에 답변 스텁이 있으며, 질문이 오해되거나 일회용 답변을 초대할 수 있는 곳에서만 한 줄 _이것이 중요한 이유_.
 
 <question-example>
-### What load is the system expected to handle at launch?
+### 출시 시점에 시스템이 감당해야 하는 부하는 얼마인가요?
 
-_Why this matters: it decides whether we provision for burst traffic now or defer it._
+_이것이 중요한 이유: 지금 버스트 트래픽에 맞춰 준비할지, 나중으로 미룰지를 결정합니다._
 
 >
 </question-example>
 
-## Anything else?
+## 그 밖에
 
 마무리 캐치올: 우리가 묻지 않았지만 알아야 하는 것이 있나요?
 

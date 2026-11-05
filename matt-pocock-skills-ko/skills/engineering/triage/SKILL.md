@@ -48,10 +48,10 @@ PR의 경우, 같은 상태가 첨부된 코드에 대해 읽힙니다: `ready-f
 
 유지보수자가 `/triage`를 호출하고 자연어로 원하는 것을 설명합니다. 요청을 해석하고 행동하세요. 예제:
 
-- "Show me anything that needs my attention"
-- "Let's look at #42" (이슈 또는 PR)
-- "Move #42 to ready-for-agent"
-- "What's ready for agents to pick up?"
+- "내 주의가 필요한 것을 보여 주세요"
+- "42번을 봅시다" (이슈 또는 PR)
+- "42번을 ready-for-agent로 옮기세요"
+- "에이전트가 집을 준비가 된 것은 무엇인가요?"
 
 ## 주의가 필요한 것 보여주기
 
@@ -92,20 +92,20 @@ PR이 범위 내에 있으면, 이 버킷에 외부 PR을 포함하고 각 줄�
 ## Needs-info 템플릿
 
 ```markdown
-## Triage Notes
+## 분류 노트
 
-**What we've established so far:**
+**지금까지 확인한 것:**
 
 - 포인트 1
 - 포인트 2
 
-**What we still need from you (@reporter):**
+**아직 여러분에게 필요한 것 (@reporter):**
 
 - 질문 1
 - 질문 2
 ```
 
-그릴링 중 해결된 모든 것을 "established so far" 아래에 캡처하여 작업이 손실되지 않도록 하세요. 질문은 "더 많은 정보를 제공하세요"가 아니라 구체적이고 실행 가능해야 합니다.
+그릴링 중 해결된 모든 것을 "지금까지 확인한 것" 아래에 캡처하여 작업이 손실되지 않도록 하세요. 질문은 "더 많은 정보를 제공하세요"가 아니라 구체적이고 실행 가능해야 합니다.
 
 ## 이전 세션 재개
 

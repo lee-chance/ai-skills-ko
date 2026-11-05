@@ -1,17 +1,17 @@
-# Slack Conversations
+# Slack 대화
 
-## How to search it
+## 검색 방법
 
-Slack MCP tools vary. Check which Slack MCP is available and inspect its tool schema first. It may require `mcp_auth`. If authentication fails, stop and report the gap.
+Slack MCP 도구는 제각각입니다. 어느 Slack MCP를 쓸 수 있는지 확인하고 먼저 도구 스키마를 검사하세요. `mcp_auth`가 필요할 수 있습니다. 인증에 실패하면 멈추고 공백을 보고하세요.
 
-1. **Author-bounded search.** Messages from the PR author around the PR merge date. Limits scope dramatically and often hits gold.
-3. **PR URL search.** Slack often links PRs when they're reviewed or discussed. Search for the PR URL (or just `/pull/<number>`).
-4. **Error string search.** If the code handles a specific error, search for the error string. Incident threads often surface.
+1. **작성자 범위 검색.** 풀 리퀘스트 머지 날짜 무렵에 풀 리퀘스트 작성자가 보낸 메시지. 범위를 크게 좁히며, 종종 핵심을 찾습니다.
+3. **풀 리퀘스트 URL 검색.** Slack은 풀 리퀘스트가 리뷰되거나 논의될 때 링크하는 경우가 많습니다. 풀 리퀘스트 URL (또는 `/pull/<number>`만)을 검색하세요.
+4. **오류 문자열 검색.** 코드가 특정 오류를 처리하면 그 오류 문자열을 검색하세요. 인시던트 스레드가 나오는 경우가 많습니다.
 
-## Common pitfalls
+## 흔한 함정
 
-- **Channel archaeology limits.** Very old messages may be gone due to retention policies. If you can't find anything before a certain date, note the retention cliff.
-- **Unsearched DMs.** Many decisions happen in DMs that aren't searchable. You'll miss them. That's a known limitation.
-- **Speculative jokes as "decisions."** Slack is casual. "Lol just do the thing" isn't a decision, even if it preceded the commit. Look for considered discussion.
-- **Context collapse in single messages.** Without the thread, a single message often reads differently than in context. Always fetch threads.
-- **Auth failures.** If the MCP isn't authenticated, stop. Don't make up findings. Report that Slack wasn't searchable.
+- **채널 고고학의 한계.** 아주 오래된 메시지는 보존 정책 때문에 사라졌을 수 있습니다. 어떤 날짜 이전에는 아무것도 찾을 수 없으면 보존 기간 절벽을 적으세요.
+- **검색되지 않는 DM.** 많은 결정이 검색되지 않는 DM에서 일어납니다. 그것들을 놓칩니다. 알려진 한계입니다.
+- **결정을 가장한 즉흥적인 농담.** Slack은 캐주얼합니다. 커밋 직전에 나왔더라도 "Lol just do the thing"(그냥 그거 하자) 같은 말은 결정이 아닙니다. 숙고된 논의를 찾으세요.
+- **단일 메시지에서 맥락이 무너짐.** 스레드가 없으면 메시지 하나는 맥락 안에서와 다르게 읽히는 경우가 많습니다. 항상 스레드를 가져오세요.
+- **인증 실패.** MCP가 인증되지 않았으면 멈추세요. 발견 사항을 지어내지 마세요. Slack을 검색할 수 없었다고 보고하세요.

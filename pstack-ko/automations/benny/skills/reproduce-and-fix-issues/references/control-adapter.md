@@ -1,169 +1,169 @@
-# Control-adapter contract
+# 제어 어댑터 계약
 
-Benny does not know how to start or drive every app. The user must configure one control skill or adapter that implements this contract for the target app.
+Benny는 모든 앱을 어떻게 시작하고 구동하는지 알지 못합니다. 사용자는 대상 앱에 대해 이 계약을 구현하는 제어 스킬이나 어댑터를 하나 구성해야 합니다.
 
-Set its skill name in `control.skill_name`.
+스킬 이름은 `control.skill_name`에 설정하세요.
 
-Set the completed user-facing feature map path in `control.feature_map_path`. Copy and fill [`feature-map.example.md`](./feature-map.example.md) outside `.cursor/automations/benny/` instead of editing the copied example.
+완성된 사용자 대면 피처 맵 경로는 `control.feature_map_path`에 설정하세요. 복사된 예시를 고치지 말고, [`feature-map.example.md`](./feature-map.example.md)를 `.cursor/automations/benny/` 밖으로 복사해 채우세요.
 
-If the skill, feature map, or a required capability is absent, ambiguous, or incomplete, repro and fix work must fail closed.
+스킬, 피처 맵, 또는 필요한 기능이 없거나, 모호하거나, 불완전하면 재현과 수정 작업은 닫힌 상태로 실패해야 합니다.
 
-## Required capabilities
+## 필요한 기능
 
-### Bring up
+### 띄우기
 
-Start the requested app revision in the requested test environment.
+요청된 테스트 환경에서 요청된 앱 리비전을 시작하세요.
 
-Input:
+입력:
 
-- Repository and revision
-- Build or start mode
-- Workspace, account, fixture, and feature-state requirements
-- Artifact directory
-- Completed feature-map path
+- 저장소와 리비전
+- 빌드 또는 시작 모드
+- 워크스페이스, 계정, 픽스처, 기능 상태 요구
+- 아티팩트 디렉터리
+- 완성된 피처 맵 경로
 
-Return:
+반환:
 
-- Session identifier
-- How the adapter confirmed the correct app and environment
-- Stable app markers
-- Running process or target details needed by later calls
-- Any missing capability
+- 세션 식별자
+- 어댑터가 올바른 앱과 환경을 확인한 방법
+- 안정적인 앱 마커
+- 이후 호출에 필요한, 실행 중인 프로세스나 대상 정보
+- 빠진 기능
 
-The adapter must distinguish the target app from a similar window, shell, or production instance.
+어댑터는 대상 앱을 비슷한 창, 셸, 프로덕션 인스턴스와 구분해야 합니다.
 
-### Drive UI
+### UI 구동
 
-Perform real user actions:
+실제 사용자 동작을 수행하세요.
 
-- Click
-- Type
-- Press keys
-- Scroll
-- Drag
-- Resize
-- Navigate through app controls
+- 클릭
+- 입력
+- 키 누르기
+- 스크롤
+- 드래그
+- 크기 조절
+- 앱 컨트롤을 통한 이동
 
-Prefer roles, labels, and stable selectors. Use coordinates only after a fresh screenshot.
+역할, 레이블, 안정적인 셀렉터를 우선하세요. 좌표는 새 스크린샷을 본 뒤에만 사용하세요.
 
-Return each action and the observed state change.
+각 동작과 관찰된 상태 변화를 반환하세요.
 
-Do not set internal state, call hidden app methods, write directly to storage, or inject DOM changes to create the symptom.
+증상을 만들기 위해 내부 상태를 설정하거나, 숨은 앱 메서드를 호출하거나, 스토리지에 직접 쓰거나, DOM 변경을 주입하지 마세요.
 
-### Drive mapped features and states
+### 매핑된 기능과 상태 구동
 
-Read the relevant feature-map section before driving the app.
+앱을 구동하기 전에 관련 피처 맵 섹션을 읽으세요.
 
-The adapter must expose ways to:
+어댑터는 다음을 할 수 있는 방법을 제공해야 합니다.
 
-- Navigate every mapped feature through the user-visible path.
-- Invoke the adapter action names listed for that feature.
-- Interact with default, hover, focus-visible, active, disabled, loading, empty, error, selected, open, expanded, and feature-specific states when they apply.
-- Arrange a state through safe fixture data, permissions, flags, service responses, or supported test controls.
-- Reset the feature for a second independent repro attempt.
-- Capture the screenshot, video, and read-only cross-check named by the feature map.
+- 사용자가 보는 경로로 매핑된 기능마다 이동합니다.
+- 그 기능에 적힌 어댑터 동작 이름을 호출합니다.
+- 해당할 때 default, hover, focus-visible, active, disabled, loading, empty, error, selected, open, expanded, 그리고 기능별 상태를 다룹니다.
+- 안전한 픽스처 데이터, 권한, 플래그, 서비스 응답, 또는 지원되는 테스트 컨트롤로 상태를 마련합니다.
+- 두 번째 독립 재현을 위해 기능을 초기화합니다.
+- 피처 맵이 지명한 스크린샷, 비디오, 읽기 전용 교차 확인을 캡처합니다.
 
-Use roles, accessible names, ARIA relationships, stable component markers, and purpose-named data attributes. Never use generated CSS or StyleX classes, dynamic hashes, child indexes, or brittle DOM position.
+역할, 접근 가능한 이름, ARIA 관계, 안정적인 컴포넌트 마커, 목적이 드러나는 data 속성을 사용하세요. 생성된 CSS나 StyleX 클래스, 동적 해시, 자식 인덱스, 불안정한 DOM 위치는 사용하지 마세요.
 
-Arranging a precondition is not permission to inject the reported symptom. The repro itself must still come from real user interaction.
+전제 조건을 마련하는 것은 보고된 증상을 주입해도 된다는 허가가 아닙니다. 재현 자체는 여전히 실제 사용자 상호작용에서 나와야 합니다.
 
-### Inspect state
+### 상태 검사
 
-Read state to confirm what the UI shows.
+UI가 보여 주는 것을 확인하려고 상태를 읽으세요.
 
-Examples:
+예:
 
-- Accessibility tree
-- DOM or view hierarchy
-- Process state
-- Local logs
-- Network request status
-- App-exposed debug state
+- 접근성 트리
+- DOM 또는 뷰 계층
+- 프로세스 상태
+- 로컬 로그
+- 네트워크 요청 상태
+- 앱이 노출한 디버그 상태
 
-Inspection is read-only. If a query changes state, it belongs in `drive UI` and must represent a real user action.
+검사는 읽기 전용입니다. 조회가 상태를 바꾸면 `UI 구동`에 속하며, 실제 사용자 동작을 나타내야 합니다.
 
-### Screenshot
+### 스크린샷
 
-Capture the current app state to a requested path.
+현재 앱 상태를 요청된 경로에 캡처하세요.
 
-Return:
+반환:
 
-- File path
-- Capture time
-- App marker or window title
-- Short description of what should be visible
+- 파일 경로
+- 캡처 시각
+- 앱 마커 또는 창 제목
+- 무엇이 보여야 하는지에 대한 짧은 설명
 
-The screenshot must show enough app chrome to prove that the correct app is under test.
+스크린샷은 테스트 중인 앱이 올바른 앱임을 보일 만큼, 창 테두리와 주요 UI를 담아야 합니다.
 
-### Recording
+### 녹화
 
-Start and stop a screen recording around the full repro path.
+전체 재현 경로를 담도록 화면 녹화를 시작하고 중지하세요.
 
-Return:
+반환:
 
-- File path
-- Start and stop times
-- Captured window or region
-- Whether audio or sensitive overlays were omitted
+- 파일 경로
+- 시작 시각과 중지 시각
+- 캡처한 창 또는 영역
+- 오디오나 민감한 오버레이를 뺐는지
 
-The recording must show the discriminating final state, not only setup or a loading screen.
+녹화는 준비 과정이나 로딩 화면만이 아니라, 구분되는 최종 상태를 보여야 합니다.
 
-### Cleanup
+### 정리
 
-Stop processes and sessions created by the adapter.
+어댑터가 만든 프로세스와 세션을 중지하세요.
 
-Remove disposable:
+일회용으로 만든 다음을 제거하세요.
 
-- Browser or app profiles
-- Temporary workspaces
-- Test accounts or fixtures when the adapter created them
-- Debug ports and tunnels
-- Captures past their retention window
+- 브라우저 또는 앱 프로필
+- 임시 워크스페이스
+- 어댑터가 만든 테스트 계정이나 픽스처
+- 디버그 포트와 터널
+- 보존 기간이 지난 캡처
 
-Return what was stopped, removed, retained, or left for a person.
+중지한 것, 제거한 것, 보관한 것, 사람에게 남긴 것을 반환하세요.
 
-Cleanup must not delete user work.
+정리는 사용자의 작업을 지우면 안 됩니다.
 
-## Adapter behavior
+## 어댑터 동작
 
-The adapter must:
+어댑터는 다음을 해야 합니다.
 
-- Report capabilities before the repro starts.
-- Report which feature-map sections it can drive and which are blocked.
-- Use the same environment inputs for baseline and patched builds.
-- Surface startup failures as failures.
-- Bound retries.
-- Keep secrets out of logs and artifacts.
-- Keep captures outside the repository.
-- Support a fresh or reset state between the two repro attempts.
-- Avoid production changes unless the user explicitly configured a safe test action.
+- 재현을 시작하기 전에 제공 가능한 기능을 보고합니다.
+- 구동할 수 있는 피처 맵 섹션과 차단된 섹션을 보고합니다.
+- 베이스라인과 패치된 빌드에 같은 환경 입력을 사용합니다.
+- 시작 실패를 실패로 드러냅니다.
+- 재시도에 상한을 둡니다.
+- 로그와 아티팩트에 비밀을 넣지 않습니다.
+- 캡처를 저장소 밖에 둡니다.
+- 두 번의 재현 시도 사이에 새 상태나 초기화된 상태를 지원합니다.
+- 사용자가 안전한 테스트 동작을 명시적으로 구성하지 않았다면 프로덕션 변경을 피합니다.
 
-## Environment translation
+## 환경 변환
 
-Before declaring an environment block, restate the defect without platform-specific nouns and ask whether the same behavior can be tested safely in the available environment.
+환경 차단을 선언하기 전에, 플랫폼에 묶인 명사를 빼고 결함을 다시 말한 다음, 지금 있는 환경에서 같은 동작을 안전하게 테스트할 수 있는지 물어보세요.
 
-Examples:
+예:
 
-- A named browser may mean any external browser.
-- A named key may mean the configured shortcut.
-- A named remote host may mean a delayed or disconnected remote target.
+- 이름이 있는 브라우저는 아무 외부 브라우저나 뜻할 수 있습니다.
+- 이름이 있는 키는 구성된 단축키를 뜻할 수 있습니다.
+- 이름이 있는 원격 호스트는 지연되거나 끊긴 원격 대상을 뜻할 수 있습니다.
 
-Use a translated attempt only when it tests the same underlying behavior. Label it as translated evidence. Do not call it an exact repro when the missing environment is part of the defect.
+변환된 시도는 같은 근본 동작을 시험할 때만 사용하세요. 변환된 증거라고 표시하세요. 빠진 환경이 결함의 일부라면 정확한 재현이라고 부르지 마세요.
 
-Hardware prompts, operating-system permission dialogs, device-only APIs, and unavailable account states may be real blocks.
+하드웨어 확인 창, 운영체제 권한 대화상자, 기기에만 있는 API, 사용할 수 없는 계정 상태는 실제 차단일 수 있습니다.
 
-## Setup check
+## 설정 점검
 
-Before enabling the repro automation, run one harmless adapter check:
+재현 자동화를 켜기 전에, 무해한 어댑터 점검을 한 번 실행하세요.
 
-1. Bring up the app.
-2. Confirm the stable app marker.
-3. Load one completed feature-map section.
-4. Navigate to that feature through its user path.
-5. Exercise one disposable state through mapped adapter actions.
-6. Inspect the resulting state.
-7. Capture a screenshot.
-8. Record a short clip.
-9. Clean up.
+1. 앱을 띄웁니다.
+2. 안정적인 앱 마커를 확인합니다.
+3. 완성된 피처 맵 섹션 하나를 로드합니다.
+4. 사용자 경로로 그 기능까지 이동합니다.
+5. 매핑된 어댑터 동작으로 일회용 상태 하나를 다룹니다.
+6. 결과 상태를 검사합니다.
+7. 스크린샷을 캡처합니다.
+8. 짧은 클립을 녹화합니다.
+9. 정리합니다.
 
-Enable repro work only when all nine steps succeed and no source-channel Slack post is involved.
+아홉 단계가 모두 성공하고, 소스 채널 Slack 게시가 끼지 않을 때만 재현 작업을 켜세요.

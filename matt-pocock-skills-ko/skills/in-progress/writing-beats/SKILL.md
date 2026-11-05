@@ -1,67 +1,67 @@
 ---
 name: writing-beats
-description: Writing, exploit; assemble raw material into a journey of beats, grounding each term before a beat leans on it.
+description: "글쓰기, 활용. 원시 자료를 비트의 여정으로 조립하고, 비트가 용어에 기대기 전에 각 용어의 기반을 다집니다."
 disable-model-invocation: true
 ---
 
 <what-to-do>
 
-The user has passed (or will pass) a markdown file of raw material. This is **exploit**: the exploring is done, the pile is fixed. Commit to a path through it and mine the pile to fill each beat.
+사용자가 원시 자료의 마크다운 파일을 넘겼거나 넘길 것입니다. 이것은 **활용**입니다. 탐색은 끝났고, 더미는 고정되었습니다. 그것을 통과하는 경로에 커밋하고, 더미를 캐내 각 비트를 채우세요.
 
-If the user did not say where to save the article, ask once and remember the path.
+사용자가 기사를 어디에 저장할지 말하지 않았으면, 한 번 묻고 그 경로를 기억하세요.
 
-Then run a beat-by-beat journey, choose-your-own-adventure style:
+그런 다음 비트 단위의 여정을, 선택-자신의-모험 스타일로 실행하세요.
 
-1. **Establish the prerequisites.** Before any beats, settle with the user what the audience already knows walking in: the concepts that are **grounded** from the start. Everything else must be grounded by a beat before a later beat can use it. See [Grounding](#grounding).
-2. Write 2–3 candidate **starting beats**, drawn from the raw material. Each is a different entry point into the article. Each may only lean on grounded concepts; note what new concepts each one grounds. Show the user the beats before writing to the article file. The user picks one. Preview what beats that pick unlocks, as if the user is seeing a little way down the path.
-3. Once the user picks a starting beat, write **only that beat** to the article file. A beat may be one sentence or several paragraphs, whatever that beat naturally is. Stop there.
-4. Re-read the article file from disk. Then offer 2–3 candidate **next beats**: different directions the journey could pivot to from where the article now stands. Each must be reachable from the current grounded set; note what each one grounds.
-5. Loop steps 3–5 until the article reaches a natural end.
+1. **전제 조건을 확립하세요.** 어떤 비트보다 먼저, 독자가 들어올 때 이미 아는 것을 사용자와 정하세요. 처음부터 **기반이 다져진** 개념들입니다. 그 외의 모든 것은 나중 비트가 쓰기 전에 어떤 비트가 기반을 다져야 합니다. [기반 다지기](#기반-다지기)를 보세요.
+2. 원시 자료에서 가져온 후보 **시작 비트**를 2-3개 쓰세요. 각각은 기사로 들어가는 다른 입구입니다. 각각은 기반이 다져진 개념에만 기대도 됩니다. 각각이 새로 기반을 다지는 개념을 적으세요. 기사 파일에 쓰기 전에 사용자에게 비트를 보여주세요. 사용자가 하나를 고릅니다. 그 선택이 어떤 비트를 여는지, 사용자가 경로를 조금 내려다보는 것처럼 미리 보여 주세요.
+3. 사용자가 시작 비트를 고르면, **그 비트만** 기사 파일에 쓰세요. 비트는 한 문장일 수도, 여러 문단일 수도 있습니다. 그 비트가 자연스럽게 그런 크기입니다. 거기서 멈추세요.
+4. 디스크에서 기사 파일을 다시 읽으세요. 그런 다음 후보 **다음 비트**를 2-3개 제시하세요. 기사가 지금 서 있는 곳에서 여정이 피벗할 수 있는 다른 방향입니다. 각각은 현재 기반이 다져진 집합에서 도달 가능해야 합니다. 각각이 기반을 다지는 것을 적으세요.
+5. 기사가 자연스러운 끝에 도달할 때까지 3-5단계를 반복하세요.
 
 </what-to-do>
 
 <supporting-info>
 
-## Grounding
+## 기반 다지기
 
-Every **concept** has to be **grounded** before a beat can lean on it: the audience either walked in knowing it or met it in an earlier beat. A beat that reaches for an ungrounded concept loses the reader; that is the one move the journey can't make. The unit is the concept, not the word for it: a beat can lean on an idea the reader lacks even with no jargon in sight. Where a concept has a name (a **term**), grounding it means landing the idea and the term together.
+모든 **개념**은 비트가 그것에 기대기 전에 **기반이 다져져** 있어야 합니다. 독자가 들어올 때 이미 알았거나, 앞선 비트에서 만났거나. 기반이 다져지지 않은 개념에 손을 뻗는 비트는 독자를 잃습니다. 그것이 여정이 할 수 없는 한 가지 움직임입니다. 단위는 그것을 가리키는 단어가 아니라 개념입니다. 전문 용어가 하나도 보이지 않아도, 비트는 독자에게 없는 아이디어에 기댈 수 있습니다. 개념에 이름(**용어**)이 있으면, 기반을 다진다는 것은 아이디어와 용어를 함께 착지시키는 것입니다.
 
-A concept gets grounded one of two ways:
+개념의 기반이 다져지는 방법은 둘입니다.
 
-- **Prerequisite**: grounded before the first beat. The audience brings it. Fixed at the start.
-- **Introduced**: a beat establishes it, and from then on it's grounded for every later beat.
+- **전제 조건**: 첫 비트 전에 기반이 다져집니다. 독자가 가지고 옵니다. 시작 시점에 고정됩니다.
+- **도입됨**: 비트가 그것을 확립하고, 그때부터 이후의 모든 비트에 대해 기반이 다져집니다.
 
-So each beat does two jobs: it **requires** concepts that are already grounded, and it **grounds** new ones. Keep a running list of what's grounded so far, and update it each time a beat lands.
+그래서 각 비트는 두 가지 일을 합니다. 이미 기반이 다져진 개념을 **요구**하고, 새로운 개념의 **기반을 다집니다**. 지금까지 기반이 다져진 것의 목록을 유지하고, 비트가 착지할 때마다 갱신하세요.
 
-This is what shapes the choose-your-own-adventure. A candidate beat is only reachable if everything it requires is already grounded; picking a beat that grounds concept X unlocks every beat that was waiting on X. When you offer next beats, they must all be reachable from the current grounded set, and say what each one grounds, so the user can see which paths it opens.
+이것이 선택-자신의-모험을 빚습니다. 후보 비트는 그것이 요구하는 모든 것의 기반이 이미 다져져 있을 때만 도달 가능합니다. 개념 X의 기반을 다지는 비트를 고르면, X를 기다리던 모든 비트가 열립니다. 다음 비트를 제시할 때, 모두 현재 기반이 다져진 집합에서 도달 가능해야 하고, 각각이 기반을 다지는 것을 말해서, 사용자가 어떤 경로가 열리는지 보게 하세요.
 
-The big lever is what you make a prerequisite versus what you ground inside the piece. Demand too much up front and you shut out readers who don't have it; ground too much inside and the early beats drown in definitions. Settle this with the user when you establish prerequisites, and revisit it whenever a tempting beat turns out to require a concept nothing has grounded yet: the fix is either a grounding beat before it, or promoting the concept to a prerequisite.
+큰 레버는 무엇을 전제 조건으로 두고, 무엇의 기반을 글 안에서 다질지입니다. 앞에서 너무 많이 요구하면 그것을 갖지 않은 독자를 배제합니다. 안에서 너무 많이 기반을 다지면 초반 비트가 정의에 빠집니다. 전제 조건을 확립할 때 사용자와 이것을 정하고, 끌리는 비트가 아직 아무것도 기반을 다지지 않은 개념을 요구하는 것으로 드러날 때마다 다시 보세요. 고치는 방법은 그 앞에 기반을 다지는 비트를 두거나, 그 개념을 전제 조건으로 올리는 것입니다.
 
-## What is a beat
+## 비트란 무엇인가
 
-A beat is one move in the journey. It does one thing: sets a scene, lands a point, asks a question, drops an aside, twists the angle. Then it stops, leaving the reader at a place where the next beat can pivot.
+비트는 여정의 한 움직임입니다. 한 가지를 합니다. 장면을 놓거나, 포인트를 착지시키거나, 질문을 하거나, 곁가지를 떨어뜨리거나, 각도를 비틉니다. 그런 다음 멈추고, 다음 비트가 피벗할 수 있는 곳에 독자를 둡니다.
 
-A beat is sized by what it needs:
+비트의 크기는 그것이 필요로 하는 것으로 정해집니다.
 
-- A single sentence if that's all the move is ("And then nothing happened for three weeks.").
-- A short paragraph if the move needs setup.
-- Multiple paragraphs if the beat is a self-contained vignette, argument, or example.
+- 움직임이 그것뿐이면 한 문장 ("그리고 나서 3주 동안 아무 일도 없었습니다.").
+- 움직임에 셋업이 필요하면 짧은 문단.
+- 비트가 스스로 완결된 짧은 장면, 논증, 또는 예시이면 여러 문단.
 
-If a "beat" needs five paragraphs and three subheadings, it's not a beat; it's two beats glued together. Split it.
+"비트"에 다섯 문단과 소제목 셋이 필요하면 비트가 아닙니다. 두 비트를 붙여 놓은 것입니다. 나누세요.
 
-## Pulling from the pile
+## 더미에서 끌어오기
 
-Pull material from the raw pile to populate each beat. You can paraphrase, split, recombine, or quote. The pile is a quarry.
+각 비트를 채우려고 원시 더미에서 자료를 끌어오세요. 바꿔 말하거나, 나누거나, 재조합하거나, 인용할 수 있습니다. 더미는 채석장입니다.
 
-## Ending the journey
+## 여정 끝내기
 
-The article ends when the journey is complete, not when the pile is empty. Most piles will have leftover fragments that don't make it in. That is fine; that is the point of having more raw material than you need.
+기사는 더미가 비어서가 아니라 여정이 완료되면 끝납니다. 대부분의 더미에는 들어오지 못한 남은 파편이 있습니다. 괜찮습니다. 필요한 것보다 원시 자료가 많은 것의 요점이 그것입니다.
 
-## Writing rhythm
+## 글쓰기 리듬
 
-- Append one beat at a time. Never write ahead.
-- Re-read the article file from disk before every write. Preserve user edits absolutely.
-- If the user edits a previous beat substantially, let it change what comes next.
-- If the user says "rewrite that beat" or "go back and try a different beat 3", do it: edit in place, leave the rest alone.
+- 한 번에 비트 하나를 덧붙이세요. 미리 앞서 쓰지 마세요.
+- 쓸 때마다 그 전에 디스크에서 기사 파일을 다시 읽으세요. 사용자 편집은 그대로 보존하세요.
+- 사용자가 이전 비트를 상당히 고치면, 그것이 다음에 오는 것을 바꾸게 두세요.
+- 사용자가 "그 비트를 다시 써" 또는 "돌아가서 다른 3번 비트를 시도해"라고 하면 그렇게 하세요. 그 자리를 고치고, 나머지는 그대로 두세요.
 
 </supporting-info>

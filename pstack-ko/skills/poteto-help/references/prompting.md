@@ -1,51 +1,51 @@
-# Word the prompt
+# 프롬프트 작성하기
 
-A prompt states the intent and the check for done. The playbook supplies the steps, so a few plain sentences beat a spec.
+프롬프트는 의도와 완료 검사를 밝힙니다. 플레이북이 단계를 주므로, 스펙보다 평범한 문장 몇 개가 낫습니다.
 
-## Put in
+## 넣을 것
 
-- The goal. Say what is wrong or what the user wants.
-- The done check. It can pass or fail. "Make it better" and a duration are not checks.
-- The proof to show. Ask for the real command output, a video of the flow, the stored value, or a before and after number.
-- What the user already knows. A symptom, a repro step, a log, or a link saves the agent a search.
-- The real constraints. "repro first", "don't change any code yet", "zero behavior change", and "let me review before proceeding" each change what the agent does.
+- 목표. 무엇이 잘못되었는지, 또는 사용자가 무엇을 원하는지 말하세요.
+- 완료 검사. 통과하거나 실패할 수 있어야 합니다. "더 좋게 만들어 줘"와 기간은 검사가 아닙니다.
+- 보여줄 증명. 실제 명령 출력, 흐름의 영상, 저장된 값, 또는 이전과 이후의 숫자를 요청하세요.
+- 사용자가 이미 아는 것. 증상, 재현 단계, 로그, 링크는 에이전트의 검색을 아낍니다.
+- 실제 제약 조건. "먼저 재현", "아직 코드는 바꾸지 마세요", "동작 변경 없음", "진행하기 전에 검토하게 해 주세요"는 각각 에이전트가 하는 일을 바꿉니다.
 
-## Leave out
+## 빼둘 것
 
-- The how. Say what to achieve, and leave the agent room to find a better way.
-- A list of skills or steps. A hand-written order drops or reorders steps the playbook keeps. Name a skill only to override one choice.
-- The user's theory of the cause, until the agent restates the problem. A stated guess narrows the search.
+- 방법. 무엇을 이룰지 말하고, 더 나은 길을 찾을 여지는 에이전트에게 남기세요.
+- 스킬이나 단계의 목록. 손으로 쓴 순서는 플레이북이 지키는 단계를 빼거나 다시 배열합니다. 선택 하나를 덮어쓸 때만 스킬 이름을 적으세요.
+- 원인이라고 사용자가 생각하는 이론. 에이전트가 문제를 다시 말하기 전까지. 미리 말한 추측은 검색을 좁힙니다.
 
-## Load the context first
+## 먼저 맥락을 넣기
 
-- For a noisy report, ask the agent to restate the underlying issue in its own words and in plain English before it does anything else. A misreading shows up before any code exists.
-- In a fresh chat, `/recall` earlier work on the topic. Old chats hold context that the new agent lacks.
-- Before a change to unfamiliar code, ask `/how` for the mechanics and `/why` for the reasons. An agent with no traced model fixes the symptom at the first plausible spot.
-- Ask `/teach` to make the case for a choice, as in "convince me it fixes the cause and not the symptom". A case is easier to check than a summary.
+- 시끄러운 보고라면, 다른 어떤 일보다 먼저 기저의 이슈를 자신의 말로, 평범한 말로 다시 말하라고 요청하세요. 잘못 읽은 것은 코드가 생기기 전에 드러납니다.
+- 새 채팅에서는 그 주제에 대한 이전 작업을 `/recall`하세요. 옛 채팅에는 새 에이전트에게 없는 맥락이 있습니다.
+- 낯선 코드를 바꾸기 전에, 동작은 `/how`로, 이유는 `/why`로 요청하세요. 따라가 본 모델이 없는 에이전트는 첫 번째 그럴듯한 자리에서 증상만 고칩니다.
+- 선택에 대한 논거를 만들라고 `/teach`에 요청하세요. "원인을 고치는 것이지 증상이 아님을 납득시켜 주세요"처럼. 요약보다 논거가 검사하기 쉽습니다.
 
-## Design before the plan
+## 계획보다 설계가 먼저
 
-- Never take the first design. Ask for prototypes of a few options, with screenshots or videos for UI, and pick from the evidence.
-- Let prototypes answer the open questions. Don't review an abstract plan adversarially, because reviewers invent risks that never happen.
-- For a shared package or API, ask for the README or a tutorial first, then work back to the code. The doc becomes the target the agent checks itself against.
-- Ask for the plan only after the design is settled. Each step of the plan ends in a check.
+- 첫 설계를 그대로 받지 마세요. 옵션 몇 개의 프로토타입을 요청하고, UI라면 스크린샷이나 영상을 받아, 증거에서 고르세요.
+- 열린 질문은 프로토타입이 답하게 하세요. 추상적인 계획을 적대적으로 검토하지 마세요. 리뷰어는 일어나지 않을 위험을 만들어 냅니다.
+- 공유 패키지나 API라면, 먼저 README나 튜토리얼을 요청한 다음 코드로 거슬러 올라가세요. 그 문서가, 에이전트가 스스로 대조하는 목표가 됩니다.
+- 설계가 자리 잡은 뒤에만 계획을 요청하세요. 계획의 각 단계는 검사로 끝납니다.
 
-## Follow up short
+## 짧게 이어가기
 
-- "do it", "continue", and "keep going until done" are whole prompts once the chat holds the task.
-- Start with "new task" when the subject changes. Otherwise the mode treats the message as the next step.
+- 채팅이 이미 작업을 담고 있으면 "해", "계속", "끝날 때까지 계속"은 그 자체로 완전한 프롬프트입니다.
+- 주제가 바뀌면 "new task"로 시작하세요. 그렇지 않으면 모드가 그 메시지를 다음 단계로 취급합니다.
 
-## Before stepping away
+## 자리를 비우기 전에
 
-- Say "im going to bed" or "im stepping away" so the agent stops asking.
-- Write done as checks every iteration can run, and give `/loop` that predicate.
-- Ask for a fresh worktree off a named base.
-- Pre-answer what the agent would stop for, such as "don't ask me before committing".
-- Ask for a decision log to audit later.
-- Give an exit: "if you're truly stuck after a few hours, stop and write up why".
+- 에이전트가 질문을 멈추도록 "im going to bed" 또는 "im stepping away"라고 말하세요.
+- 완료를, 매 반복이 실행할 수 있는 검사로 쓰고, 그 조건을 `/loop`에 주세요.
+- 이름 붙인 베이스에서 새 worktree를 요청하세요.
+- 에이전트가 멈추고 물을 것에 미리 답하세요. "커밋하기 전에 묻지 마세요"처럼.
+- 나중에 살펴볼 결정 로그를 요청하세요.
+- 빠져나갈 문을 주세요. "몇 시간 뒤에도 정말 막히면, 멈추고 왜인지 적으세요."
 
-## Steer in one line
+## 한 줄로 조종하기
 
-- Restate the goal: "i said the goal is to repro. i did not ask for a fix yet."
-- Name the principle: "apply prove it works. show me the real output, not the build log."
-- A principle name works because the agent already read the rule. Its reply names the decision the rule changed.
+- 목표를 다시 말하기: "목표는 재현이라고 했습니다. 아직 수정을 요청하지 않았습니다."
+- 원칙 이름 대기: "apply prove it works. 빌드 로그가 아니라 실제 출력을 보여 주세요."
+- 원칙 이름이 통하는 이유는 에이전트가 이미 그 규칙을 읽었기 때문입니다. 답은 그 규칙이 바꾼 결정을 이름 붙입니다.

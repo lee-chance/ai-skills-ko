@@ -1,98 +1,98 @@
 ---
 name: software-factory
-description: Shared language for designing a software factory: the tasks it runs and the services it plugs into.
+description: "소프트웨어 팩토리를 설계하기 위한 공유 언어: 실행하는 작업과 연결하는 서비스."
 disable-model-invocation: true
 ---
 
-A **software factory** is a system of agents that turns tickets, PRs and schedules into merged code, deployed on remote infrastructure the user chooses. This skill is the language for designing one. Use these terms, and only these, when discussing or whiteboarding a factory; when the user reaches for a word under _Avoid_, name the canonical term.
+**소프트웨어 팩토리**는 티켓, PR, 스케줄을 병합된 코드로 바꾸는 에이전트 시스템이며, 사용자가 고른 원격 인프라에 배포됩니다. 이 스킬은 하나를 설계하기 위한 언어입니다. 팩토리를 논의하거나 화이트보드에 그려 볼 때는 이 용어만 사용하세요. 사용자가 _피하세요_ 아래의 단어에 손을 뻗으면, 정규 용어를 말하세요.
 
-## Tasks and runs
+## 작업과 런
 
 **Task**:
-A kind of work the factory performs, defined once and run many times: review, explore, implement, ratchet. A task may work on a ticket, a PR, or the codebase as a whole.
-_Avoid_: job, workflow, action
+팩토리가 수행하는 일의 한 종류. 한 번 정의하고 여러 번 실행합니다. review, explore, implement, ratchet. 작업은 티켓, PR, 또는 코드베이스 전체를 다룰 수 있습니다.
+_피하세요_: job, workflow, action
 
 **Trigger**:
-The event that starts a run: a change in the ticket tracker or git host, a clock in the orchestrator, or another run.
+런을 시작하는 이벤트. 티켓 트래커나 Git 호스트의 변경, 오케스트레이터의 시계, 또는 다른 런.
 
 **Run**:
-One execution of a task on one runner, from its trigger to its finish, treated as a black box. A run triggers further runs either directly, through logic in the orchestrator, or by changing the ticket tracker or git host. A run never waits for a human: it ends, and the human's later change to the ticket tracker or git host triggers a new run.
-_Avoid_: session
+하나의 러너에서 한 작업이 한 번 실행되는 것. 트리거부터 끝까지이며, 블랙박스로 취급합니다. 런은 직접, 오케스트레이터의 로직을 통해, 또는 티켓 트래커나 Git 호스트를 바꿈으로써 다음 런을 트리거합니다. 런은 사람을 기다리지 않습니다. 끝나고, 사람이 나중에 티켓 트래커나 Git 호스트를 바꾸면 새 런이 트리거됩니다.
+_피하세요_: session
 
 **Runner**:
-The disposable machine a run executes on. Nothing on it survives the run, even when the machine itself is long-lived: a run's only memory of earlier runs is the ticket tracker, the git host and the orchestrator.
-_Avoid_: server, host, box, compute, sandbox
+런이 실행되는 일회용 머신. 머신 자체가 오래 살아도, 그 위의 것은 런을 넘기지 못합니다. 런이 앞선 런을 기억하는 곳은 티켓 트래커, Git 호스트, 오케스트레이터뿐입니다.
+_피하세요_: server, host, box, compute, sandbox
 
-## Services
+## 서비스
 
 **Ticket tracker**:
-Where tickets live, and the factory's human interface: humans schedule work by filing tickets, talk to agents in their comments, and their changes to tickets trigger runs.
-_Avoid_: issue tracker, ticket manager, project board
+티켓이 사는 곳이자 팩토리의 사람 인터페이스. 사람은 티켓을 접수해 일을 일정에 올리고, 댓글에서 에이전트와 이야기하며, 티켓을 바꾸면 런이 트리거됩니다.
+_피하세요_: issue tracker, ticket manager, project board
 
 **Ticket source**:
-Anything outside the factory that creates tickets in the ticket tracker: a feedback button, a monitor, an error tracker, an inbox.
-_Avoid_: data source, trigger source, intake
+팩토리 밖에서 티켓 트래커에 티켓을 만드는 모든 것. 피드백 버튼, 모니터, 오류 트래커, 수신함.
+_피하세요_: data source, trigger source, intake
 
 **Git host**:
-Where branches, PRs and reviews live.
-_Avoid_: code host, forge, repo
+브랜치, PR, 리뷰가 사는 곳.
+_피하세요_: code host, forge, repo
 
 **Orchestrator**:
-The component that receives triggers, starts runs on runners, and records which runs are queued, in flight or finished.
-_Avoid_: dispatcher, scheduler, control plane
+트리거를 받고, 러너에서 런을 시작하고, 어떤 런이 대기 중인지, 진행 중인지, 끝났는지 기록하는 컴포넌트.
+_피하세요_: dispatcher, scheduler, control plane
 
 **Observability platform**:
-Where runners send logs, traces and status, so a human can see what happened inside each run. Optional: the product filling the runner or orchestrator slot often shows enough on its own. A run never decides on it until something writes it into the ticket tracker or git host.
-_Avoid_: observability, logs, monitoring, dashboard
+러너가 로그, 트레이스, 상태를 보내 사람이 각 런 안에서 무슨 일이 있었는지 보는 곳. 선택 사항입니다. 러너나 오케스트레이터 슬롯을 채우는 제품이 스스로 충분히 보여 주는 경우가 많습니다. 무언가가 그것을 티켓 트래커나 Git 호스트에 쓰기 전까지, 런은 그것에 대해 결정하지 않습니다.
+_피하세요_: observability, logs, monitoring, dashboard
 
-## Designing a factory
+## 팩토리 설계
 
-A design has two halves: the **services**, each a slot filled with a product, and the **tasks** whose runs move work through them.
+설계에는 두 반쪽이 있습니다. 각각 제품으로 채우는 슬롯인 **서비스**, 그리고 그 서비스를 통해 일을 옮기는 런을 가진 **작업**.
 
-Start from the user's problem, not the factory: untriaged tickets, PRs waiting for automated review, a stricter automated check to migrate to, bugs nobody reads. When the user names a problem or doesn't know what to build, read [EXAMPLE-TASKS.md](EXAMPLE-TASKS.md) for the tasks that solve common ones.
+팩토리가 아니라 사용자의 문제에서 시작하세요. 트리아지되지 않은 티켓, 자동 리뷰를 기다리는 PR, 마이그레이션할 더 엄격한 자동 검사, 아무도 읽지 않는 버그. 사용자가 문제를 이름 붙이거나 무엇을 만들지 모르면, 흔한 문제를 푸는 작업을 위해 [EXAMPLE-TASKS.md](EXAMPLE-TASKS.md)를 읽으세요.
 
-### Start slow
+### 천천히 시작
 
-Every trigger is an accelerator. Accelerators without brakes make a slop cannon. There are three brakes:
+모든 트리거는 가속기입니다. 브레이크 없는 가속기는 조악한 산출물만 쏟아내는 대포가 됩니다. 브레이크는 세 가지입니다.
 
-- **Automated checks**: deterministic gates (types, lint, tests) that every run must pass.
-- **Automated review**: a separate run that reads the diff cold against the codebase's standards and the ticket, when there is one.
-- **Human review**: a human reads the PR before it merges; what it catches becomes new automated checks and sharper automated review.
+- **자동 검사**: 모든 런이 통과해야 하는 결정적 게이트(타입, lint, 테스트).
+- **자동 리뷰**: 코드베이스의 기준과 티켓(있을 때)에 대해 diff를 사전 지식 없이 읽는 별도의 런.
+- **사람 리뷰**: 병합 전에 사람이 PR을 읽습니다. 그것이 잡는 것은 새 자동 검사와 더 날카로운 자동 리뷰가 됩니다.
 
-Add one automated trigger at a time, throttled at first (one bug report in ten, a clock once a day), with human review on every PR. Open the throttle as the brakes earn trust, and cap every loop of runs at a few tries before a human.
+자동 트리거를 한 번에 하나씩 추가하세요. 처음에는 스로틀합니다 (버그 보고 열 개 중 하나, 하루에 한 번인 시계). 모든 PR에 사람 리뷰를 두세요. 브레이크가 신뢰를 얻을수록 스로틀을 열고, 런의 모든 루프는 사람 앞에 오기 전에 몇 번의 시도로 상한을 두세요.
 
-### Fill every slot
+### 모든 슬롯을 채우기
 
-Each service is a slot. One product can fill several slots, and one server can host several services. Three designs, side by side:
+각 서비스는 슬롯입니다. 제품 하나가 여러 슬롯을 채울 수 있고, 서버 하나가 여러 서비스를 호스트할 수 있습니다. 세 설계를 나란히 둡니다.
 
-| Service                | All on GitHub                   | Linear tickets                 | Own tracker              |
-| ---------------------- | ------------------------------- | ------------------------------ | ------------------------ |
-| Ticket tracker         | GitHub Issues                   | Linear                         | own app                  |
-| Ticket source          | feedback button                 | feedback button, monitor       | feedback button, monitor |
-| Git host               | GitHub                          | GitHub                         | GitHub                   |
-| Orchestrator           | GitHub Actions                  | own server + database          | own app                  |
-| Runner                 | Actions runner                  | Actions, E2B, Daytona or a VPS | own app, or sandboxes    |
-| Observability platform | none: Actions run pages suffice | an LLM tracing platform        | own app                  |
+| 서비스 | 전부 GitHub | Linear 티켓 | 자체 트래커 |
+| --- | --- | --- | --- |
+| 티켓 트래커 | GitHub Issues | Linear | 자체 앱 |
+| 티켓 소스 | 피드백 버튼 | 피드백 버튼, 모니터 | 피드백 버튼, 모니터 |
+| Git 호스트 | GitHub | GitHub | GitHub |
+| 오케스트레이터 | GitHub Actions | 자체 서버 + 데이터베이스 | 자체 앱 |
+| 러너 | Actions 러너 | Actions, E2B, Daytona 또는 VPS | 자체 앱, 또는 샌드박스 |
+| 옵저버빌리티 플랫폼 | 없음: Actions 실행 페이지로 충분 | LLM 트레이싱 플랫폼 | 자체 앱 |
 
-When the user is choosing a product for a slot, read that slot's survey to get oriented, then research the current options yourself; each survey groups the options by type and lists the questions that decide the slot:
+사용자가 슬롯의 제품을 고를 때, 방향을 잡으려고 그 슬롯의 조사를 읽은 다음 현재 선택지를 직접 조사하세요. 각 조사는 유형별로 선택지를 묶고, 슬롯을 결정하는 질문을 나열합니다.
 
 - [TICKET-TRACKERS.md](TICKET-TRACKERS.md)
 - [GIT-HOSTS.md](GIT-HOSTS.md)
 - [RUNNERS.md](RUNNERS.md)
 - [OBSERVABILITY-PLATFORMS.md](OBSERVABILITY-PLATFORMS.md)
 
-Buy the services and build the tasks: the tasks carry the user's design, the services are generic. Favour an off-the-shelf ticket tracker: it is robust, people already know it, and outside users are easy to let in.
+서비스는 구매하고 작업은 만드세요. 작업이 사용자의 설계를 담고, 서비스는 범용입니다. 기성 티켓 트래커를 우선하세요. 튼튼하고, 사람들이 이미 알고, 바깥 사용자를 들이기 쉽습니다.
 
-### Question every task
+### 모든 작업을 질문하기
 
-For each task, answer:
+각 작업에 답하세요.
 
-1. What triggers it?
-2. What does it do, and which services does it read and write?
-3. What does it trigger next?
-4. Where does a human re-enter?
-5. What stops two runs doing the same work?
+1. 무엇이 그것을 트리거하나요?
+2. 그것은 무엇을 하며, 어떤 서비스를 읽고 쓰나요?
+3. 다음에 무엇을 트리거하나요?
+4. 사람은 어디에서 다시 들어오나요?
+5. 무엇이 두 런이 같은 일을 하는 것을 막나요?
 
-For each ticket source, answer: what stops it filing the same ticket twice?
+각 티켓 소스에 답하세요. 무엇이 같은 티켓을 두 번 접수하는 것을 막나요?
 
-A design is finished when every slot names a product (or, for the observability platform, a deliberate none) and every task and ticket source has an answer to every question.
+모든 슬롯이 제품을 이름 붙이고 (옵저버빌리티 플랫폼은 의도적인 없음도 됩니다), 모든 작업과 티켓 소스가 모든 질문에 답이 있으면 설계가 끝입니다.

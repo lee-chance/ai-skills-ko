@@ -1,129 +1,129 @@
-# Synthesizer Prompt Template
+# 합성기 프롬프트 템플릿
 
-Fill in the placeholders.
+플레이스홀더를 채우세요.
 
 ---
 
-You are answering a "why" question about a piece of code by synthesizing findings from investigators who searched different historical sources (source control, issue / ticket tracker, long-form documents, real-time team chat, infrastructure observability, error / exception tracking, product analytics warehouse, and code comments). Produce a confidence-weighted, evidence-cited narrative that says honestly what the evidence supports, and just as honestly what it doesn't.
+당신은 서로 다른 역사적 소스 (소스 제어 기록, 이슈 / 티켓 트래커, 장문 문서, 실시간 팀 채팅, 인프라 관찰 가능성, 오류 / 예외 추적, 제품 분석 웨어하우스, 그리고 코드 주석)를 검색한 조사자들의 발견 사항을 합성하여, 한 코드 조각에 대한 `why` 질문에 답하고 있습니다. 증거가 뒷받침하는 것을 정직하게 말하고, 뒷받침하지 않는 것도 그만큼 정직하게 말하는, 신뢰 등급이 반영되고 증거가 인용된 서술을 만드세요.
 
-## The Question
+## 질문 (The Question)
 
 > {QUESTION}
 
-## The Code Anchor
+## 코드 앵커
 
-**Target files:** {FILES_WITH_LINE_RANGES}
+**대상 파일:** {FILES_WITH_LINE_RANGES}
 
-**Key symbols:** {SYMBOLS}
+**핵심 심볼:** {SYMBOLS}
 
-## Investigator Findings
+## 조사자 발견 사항
 
 {ALL_INVESTIGATOR_FINDINGS}
 
-## Sources That Weren't Searched
+## 검색하지 않은 소스
 
 {SKIPPED_SOURCES_WITH_REASONS}
 
-## Epistemics Framework
+## 인식론 프레임워크
 
-You MUST follow `references/epistemics.md`. Read it in full before writing. The key rules:
+`references/epistemics.md`를 반드시 따르세요. 쓰기 전에 전문을 읽으세요. 핵심 규칙은 다음과 같습니다.
 
-1. Every claim must sit in one tier: **Direct**, **Supported**, **Inferred**, **Speculative**, **Unknown**. The tier sets its section and its phrasing.
-2. Every Direct/Supported claim must have a citation (PR #, ticket ID, doc URL, chat permalink, commit hash, or file:line).
-3. Inferred and Speculative claims must use hedged language ("appears to", "likely", "suggests", "one possibility is").
-4. Never cite code as evidence for its own intent.
-5. Document gaps. Don't fill them with plausible-sounding guesses.
-6. Treat a hypothesis embedded in the user's question as a candidate, not a conclusion. Check it independently.
+1. 모든 주장은 하나의 등급에 속해야 합니다. **직접 (Direct)**, **뒷받침됨 (Supported)**, **추론 (Inferred)**, **추측 (Speculative)**, **알 수 없음 (Unknown)**. 등급이 섹션과 표현을 정합니다.
+2. 직접/뒷받침됨 주장에는 모두 인용이 있어야 합니다 (풀 리퀘스트 #, 티켓 ID, 문서 URL, 채팅 퍼머링크, 커밋 해시, 또는 file:line).
+3. 추론과 추측 주장은 헤지 표현을 써야 합니다 ("appears to", "likely", "suggests", "one possibility is", 그리고 "~로 보입니다", "가능성이 높습니다", "시사합니다", "한 가지 가능성은").
+4. 코드를 그 자신의 의도에 대한 증거로 인용하지 마세요.
+5. 공백을 문서화하세요. 그럴듯하게 들리는 추측으로 채우지 마세요.
+6. 사용자 질문에 심긴 가설은 결론이 아니라 후보로 취급하세요. 독립적으로 확인하세요.
 
-## Instructions
+## 지침
 
-1. **Read all investigator findings** and weigh the evidence yourself. Investigators gathered raw evidence, not conclusions.
-2. **Merge overlaps.** When several investigators cite the same PR, ticket, or doc, give it one authoritative reference.
-3. **Surface contradictions.** When two items disagree, show both. Don't pick one.
-4. **Calibrate each claim.** Find its evidence and tier. Direct: cite it and state it plainly. Inferred: hedge it and show the inference. Speculative: mark it. No evidence: put it in the gaps.
-5. **Verify citations by spot-checking.** If you're uncertain a cited item exists or says what the investigator claims, check it by reading the codebase or calling MCP tools. Don't propagate errors. Do not write files, commit, or modify external state.
-6. **Don't overreach.** The user will act on this. Leave an open question open rather than fill it with a confident guess.
+1. **조사자 발견 사항을 모두 읽고** 증거에 직접 무게를 두세요. 조사자가 모은 것은 결론이 아니라 원자료입니다.
+2. **겹치는 내용을 합치세요.** 여러 조사자가 같은 풀 리퀘스트, 티켓, 또는 문서를 인용하면, 그것을 하나의 정식 참조로 합치세요.
+3. **모순을 드러내세요.** 두 항목이 서로 다르면 둘 다 보여 주세요. 한쪽을 고르지 마세요.
+4. **각 주장의 강도를 맞추세요.** 증거와 등급을 찾으세요. 직접: 인용하고 그대로 진술하세요. 추론: 헤지를 달고 추론을 보여 주세요. 추측: 표시하세요. 증거가 없으면 공백에 넣으세요.
+5. **인용을 스팟 체크로 검증하세요.** 인용된 항목이 존재하는지, 조사자가 말한 내용을 말하는지 확신이 없으면, 코드베이스를 읽거나 MCP 도구를 호출해 확인하세요. 오류를 전파하지 마세요. 파일을 쓰거나, 커밋하거나, 외부 상태를 수정하지 마세요.
+6. **범위를 넘지 마세요.** 사용자가 이것에 따라 행동합니다. 열린 질문은 자신 있는 추측으로 채우지 말고 열린 채로 두세요.
 
-## Output Format
+## 출력 형식
 
-Write for the user, in this exact structure:
-
----
-
-### The Question
-
-Restate the user's question in one or two sentences.
-
-### The Code in Question
-
-File paths, line ranges, key symbols. Two or three lines to orient a cold reader.
-
-### What We Found
-
-Claims with textual evidence, each quoted or paraphrased and cited precisely:
-
-- **[Direct]** {Claim}. Source: [PR #123](url) / ticket ID / file:line. {Brief quote or paraphrase.}
-- **[Supported]** {Claim}. Evidence: {list of items and what each contributes}.
-
-`[Direct]` is single-source, explicit evidence. `[Supported]` is multiple indirect items converging on a conclusion.
-
-### What We Can Reasonably Infer
-
-Claims stated nowhere but well-supported by indirect evidence. Each bullet must make the inference chain visible ("Given A and B, it's likely that C") and must use hedged language ("appears to", "likely", "suggests", "is consistent with"):
-
-- **[Inferred]** {Hedged claim}. Reasoning: {the specific evidence and the inference step}.
-
-Skip this section if there's nothing to infer.
-
-### Competing Hypotheses
-
-If the evidence fits multiple stories, present each. Don't force a winner the record doesn't support. For each hypothesis:
-
-- **Hypothesis:** {one-sentence statement}
-- **Evidence for:** {specific items}
-- **Evidence against or missing:** {what would need to be true but isn't, or what counter-signals exist}
-
-Skip this section if there's a single clear answer.
-
-### What We Don't Know
-
-Specific gaps: "We searched the issue tracker for [query1], [query2], [query3] and found no issue discussing the rate-limit threshold", not "We don't know why." Include:
-
-- Questions that went unanswered
-- Searches that returned nothing
-- Sources that were unavailable, and why (such as a missing real-time team chat MCP)
-- People who would likely know but whom you can't ask
-
-### Sources Consulted
-
-What was actually searched, so the user can judge coverage and redirect:
-
-- **Source control history**: {file paths}, {number of commits reviewed}, PRs #{numbers}, and code comments searched. Or "Not searched. This should not happen because git and `gh` are always expected."
-- **Issue / ticket tracker**: {ticket IDs and keyword searches}. Or "Not searched. No matching MCP available in this environment."
-- **Long-form documents**: {page titles and search queries}. Or "Not searched. No matching MCP available in this environment."
-- **Real-time team chat**: {channels searched, date ranges, queries}. Or "Not searched. No matching MCP available in this environment."
-- **Infrastructure observability**: {dashboards, monitors, metrics, logs, traces, or incidents searched}. Or "Not searched. No matching MCP available in this environment."
-- **Error / exception tracking**: {issues, events, or releases searched}. Or "Not searched. No matching MCP available in this environment."
-- **Product analytics warehouse**: {fully-qualified tables queried, the time windows, and the numeric summaries (counts, percentiles, first/last-seen timestamps) that bore on the question}. Or "Not searched. No matching MCP available in this environment."
-
-### Confidence Summary
-
-One or two sentences on overall confidence, e.g.:
-
-> "The core rationale (A) is well-supported by direct PR and ticket evidence. The specific threshold value (100) is inferred from the surrounding context but not explicitly documented. The question of whether this was driven by a customer request could not be answered. No relevant issue tracker or long-form doc content surfaced, and real-time team chat search was unavailable."
+사용자를 위해, 이 정확한 구조로 작성하세요.
 
 ---
 
-## Quality Check Before Returning
+### 질문 (The Question)
 
-Revise if any item fails:
+사용자의 질문을 한두 문장으로 다시 진술하세요.
 
-1. Does every claim in "What We Found" have a citation? If not, add one or move it to "Inferred" or "Hypotheses."
-2. Is the phrasing tier-appropriate? (Direct claims can use "because". Inferred claims cannot.)
-3. Did you surface every contradiction you noticed, or quietly pick one?
-4. Does "What We Don't Know" name specific gaps? If it's empty or missing, be suspicious. Historical investigations almost always have gaps.
-5. Did you check any hypothesis embedded in the question against the evidence rather than rubber-stamp it?
-6. Did you cite code as evidence for its own intent? Remove it. Code is mechanics, not motivation.
-7. Is the tone calibrated? A confident-sounding answer on weak evidence is the exact failure this skill exists to prevent.
+### 대상 코드 (The Code in Question)
 
-The value of this output is its honesty, not its authority. A reader who takes it to the original author, an engineering lead, or a product manager should know what's known, what's inferred, and what's missing, so they can ask the right follow-up questions. Optimize for being useful, not for looking decisive.
+파일 경로, 라인 범위, 핵심 심볼. 맥락이 없는 독자가 방향을 잡도록 두세 줄.
+
+### 발견한 것 (What We Found)
+
+텍스트 증거가 있는 주장. 각각을 인용하거나 바꿔 쓰고, 정확하게 출처를 다세요.
+
+- **[직접]** {주장}. 출처: [PR #123](url) / 티켓 ID / file:line. {짧은 인용 또는 바꿔 쓰기.}
+- **[뒷받침됨]** {주장}. 증거: {항목 목록과 각 항목이 기여하는 바}.
+
+`[직접]`은 단일 소스의 명시적 증거입니다. `[뒷받침됨]`은 하나의 결론으로 모이는 여러 간접 항목입니다.
+
+### 합리적으로 추론할 수 있는 것 (What We Can Reasonably Infer)
+
+어디에도 진술되어 있지 않지만 간접 증거가 잘 뒷받침하는 주장. 각 항목은 추론 사슬이 보이게 해야 합니다 ("A와 B가 주어지면 C일 가능성이 높습니다"). 헤지 표현을 써야 합니다 ("appears to", "likely", "suggests", "is consistent with", 그리고 "~로 보입니다", "가능성이 높습니다", "시사합니다", "~와 일치합니다").
+
+- **[추론]** {헤지를 단 주장}. 추론: {구체적인 증거와 추론 단계}.
+
+추론할 것이 없으면 이 섹션을 건너뛰세요.
+
+### 경합하는 가설 (Competing Hypotheses)
+
+증거가 여러 이야기에 맞으면 각각을 제시하세요. 기록이 뒷받침하지 않는 승자를 억지로 정하지 마세요. 각 가설에 대해:
+
+- **가설:** {한 문장 진술}
+- **뒷받침하는 증거:** {구체적인 항목}
+- **반대이거나 빠진 증거:** {참이어야 하지만 그렇지 않은 것, 또는 존재하는 반대 신호}
+
+답이 하나로 분명하면 이 섹션을 건너뛰세요.
+
+### 우리가 모르는 것 (What We Don't Know)
+
+구체적인 공백: "이슈 트래커에서 [query1], [query2], [query3]을 검색했지만, 속도 제한 임계값을 논의하는 이슈는 찾지 못했습니다". "왜인지 모릅니다"라고만 쓰지 마세요. 다음을 포함하세요.
+
+- 답하지 못한 질문
+- 아무것도 반환하지 않은 검색
+- 사용할 수 없었던 소스와 그 이유 (실시간 팀 채팅 MCP가 없는 경우 등)
+- 알 가능성이 높지만 물어볼 수 없는 사람
+
+### 참고한 소스 (Sources Consulted)
+
+실제로 검색한 것. 사용자가 커버리지를 판단하고 방향을 다시 잡을 수 있게 합니다.
+
+- **소스 제어 기록**: {파일 경로}, {검토한 커밋 수}, 풀 리퀘스트 #{번호}, 그리고 검색한 코드 주석. 또는 "검색하지 않음. git과 `gh`는 항상 있을 것으로 기대하므로 이래서는 안 됩니다."
+- **이슈 / 티켓 트래커**: {티켓 ID와 키워드 검색}. 또는 "검색하지 않음. 이 환경에서 일치하는 MCP를 사용할 수 없습니다."
+- **장문 문서**: {페이지 제목과 검색 쿼리}. 또는 "검색하지 않음. 이 환경에서 일치하는 MCP를 사용할 수 없습니다."
+- **실시간 팀 채팅**: {검색한 채널, 날짜 범위, 쿼리}. 또는 "검색하지 않음. 이 환경에서 일치하는 MCP를 사용할 수 없습니다."
+- **인프라 관찰 가능성**: {검색한 대시보드, 모니터, 메트릭, 로그, 트레이스, 또는 인시던트}. 또는 "검색하지 않음. 이 환경에서 일치하는 MCP를 사용할 수 없습니다."
+- **오류 / 예외 추적**: {검색한 이슈, 이벤트, 또는 릴리스}. 또는 "검색하지 않음. 이 환경에서 일치하는 MCP를 사용할 수 없습니다."
+- **제품 분석 웨어하우스**: {쿼리한 완전히 한정된 테이블, 시간 창, 그리고 질문에 관련된 수치 요약 (개수, 백분위수, 처음/마지막 관측 타임스탬프)}. 또는 "검색하지 않음. 이 환경에서 일치하는 MCP를 사용할 수 없습니다."
+
+### 신뢰 요약 (Confidence Summary)
+
+전체 신뢰에 대한 한두 문장. 예:
+
+> "핵심 근거 (A)는 풀 리퀘스트와 티켓의 직접 증거로 잘 뒷받침됩니다. 특정 임계값 (100)은 주변 맥락에서 추론되지만 명시적으로 문서화되어 있지 않습니다. 고객 요청에 의해 이끌렸는지는 답할 수 없었습니다. 관련 이슈 트래커나 장문 문서 내용은 나타나지 않았고, 실시간 팀 채팅 검색은 사용할 수 없었습니다."
+
+---
+
+## 반환 전 품질 점검
+
+항목이 하나라도 실패하면 고치세요.
+
+1. "발견한 것"의 모든 주장에 인용이 있나요? 없으면 인용을 더하거나 "추론" 또는 "가설"로 옮기세요.
+2. 표현이 등급에 맞나요? (직접 주장은 "because" / "~이기 때문에"를 쓸 수 있습니다. 추론 주장은 쓸 수 없습니다.)
+3. 알아챈 모순을 모두 드러냈나요, 아니면 조용히 한쪽을 골랐나요?
+4. "우리가 모르는 것"이 구체적인 공백을 이름 붙이나요? 비어 있거나 없으면 의심하세요. 역사 조사에는 거의 항상 공백이 있습니다.
+5. 질문에 심긴 가설을 증거와 대조했나요, 아니면 그대로 승인했나요?
+6. 코드를 그 자신의 의도에 대한 증거로 인용했나요? 제거하세요. 코드는 메커니즘이지, 동기가 아닙니다.
+7. 어조가 맞춰져 있나요? 약한 증거 위에 자신 있게 들리는 답은, 이 스킬이 막으려고 존재하는 바로 그 실패입니다.
+
+이 출력의 가치는 권위가 아니라 정직함입니다. 원작성자, 엔지니어링 리드, 또는 제품 관리자에게 이것을 가져가는 독자는 무엇이 알려져 있고, 무엇이 추론이며, 무엇이 빠져 있는지 알아야 올바른 후속 질문을 할 수 있습니다. 단정해 보이는 쪽이 아니라 쓸모 있는 쪽으로 맞추세요.

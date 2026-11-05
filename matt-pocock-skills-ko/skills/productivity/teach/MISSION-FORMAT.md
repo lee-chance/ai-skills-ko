@@ -1,31 +1,31 @@
-# MISSION.md Format
+# MISSION.md 형식
 
-`MISSION.md` lives at the workspace root. It captures the _reason_ the user is learning this topic. Every teaching decision (what to teach next, which resources to surface, which exercises to design) should trace back to this document.
+`MISSION.md`는 워크스페이스 루트에 있습니다. 사용자가 이 주제를 배우는 _이유_를 캡처합니다. 모든 교육 결정(다음에 무엇을 가르칠지, 어떤 리소스를 꺼내 보일지, 어떤 연습을 설계할지)은 이 문서로 거슬러 올라가야 합니다.
 
-## Template
+## 템플릿
 
 ```md
-# Mission: {Topic}
+# 미션: {주제}
 
-## Why
-{1-3 sentences. The concrete real-world goal the user is chasing. What changes in their life or work when they have this skill? Avoid abstract framings like "to understand X"; push for the underlying outcome.}
+## 왜
+{1-3문장. 사용자가 쫓는 구체적인 실세계 목표. 이 스킬을 갖추면 삶이나 일에서 무엇이 바뀌나요? "X를 이해하기 위해" 같은 추상적인 틀은 피하고, 그 밑의 결과를 끌어내세요.}
 
-## Success looks like
-- {A specific, observable thing the user will be able to do}
-- {Another specific thing}
-- {…}
+## 성공은 이렇게 보입니다
+- {사용자가 할 수 있게 될, 구체적이고 관찰 가능한 것}
+- {또 다른 구체적인 것}
+- {...}
 
-## Constraints
-- {Time, budget, prior commitments, learning preferences, anything that bounds the approach}
+## 제약 조건
+- {시간, 예산, 기존 약속, 학습 선호 등 접근을 한정하는 모든 것}
 
-## Out of scope
-- {Adjacent topics the user explicitly does not want to chase right now, protecting the zone of proximal development}
+## 범위 밖
+- {사용자가 지금 쫓고 싶지 않다고 명시한 인접 주제. 근접 발달 영역을 지킵니다}
 ```
 
-## Rules
+## 규칙
 
-- **One mission per workspace.** If the user wants to learn two unrelated things, that is two workspaces.
-- **Concrete over abstract.** "Run a half marathon by October" beats "get fitter." "Ship a Rust CLI to my team" beats "learn Rust."
-- **Push back on vagueness.** If the user cannot articulate why, interview them before writing anything. A bad mission is worse than no mission.
-- **Revise when reality shifts.** Missions change. When the user's goal moves, update this file: don't leave a stale mission steering future sessions.
-- **Keep it short.** If `MISSION.md` runs past a screen, it has stopped being a compass and started being a plan.
+- **워크스페이스당 미션은 하나입니다.** 사용자가 서로 무관한 두 가지를 배우고 싶어 하면, 워크스페이스도 두 개입니다.
+- **구체적인 쪽을 고르세요.** "10월까지 하프 마라톤을 완주한다"가 "더 건강해진다"보다 낫습니다. "팀에 Rust CLI를 배포한다"가 "Rust를 배운다"보다 낫습니다.
+- **모호하면 되묻으세요.** 사용자가 이유를 말로 풀지 못하면, 무엇이든 쓰기 전에 인터뷰하세요. 나쁜 미션은 미션이 없는 것보다 더 해롭습니다.
+- **현실이 바뀌면 고치세요.** 미션은 변합니다. 사용자의 목표가 옮겨 가면 이 파일을 업데이트하세요. 낡은 미션이 이후 세션을 이끌게 두지 마세요.
+- **짧게 유지하세요.** `MISSION.md`가 한 화면을 넘어가면, 나침반이기를 멈추고 계획이 되기 시작한 것입니다.

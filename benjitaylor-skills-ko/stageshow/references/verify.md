@@ -70,15 +70,15 @@
 - 컴포넌트 옆에 `REHEARSAL.md`를 썼는가? 템플릿:
 
 ```md
-# Rehearsal: <demo>
-Gold: <example> (what you kept, what you changed)
-Beats: 1 … 2 … 3 … payoff, loop <n>s
-Captured: widths <wide, 390>, looks, states, reduced motion
-Gate: <the last line of film.mjs --gate on the loop, pasted>
-Film: <each gate line> → <frame> → <fix or why it stands>
-Review: <reviewer's list> → <your response>
-Assumptions:
-Unresolved:
-Not checked:
+# 리허설: <데모>
+골드: <예시> (남긴 것, 바꾼 것)
+비트: 1 … 2 … 3 … 보상, 루프 <n>초
+촬영: 너비 <wide, 390>, 룩, 상태, 모션 감소
+게이트: <루프에서 film.mjs --gate의 마지막 줄, 붙여 넣기>
+필름: <각 게이트 줄> → <프레임> → <수정, 또는 그대로 둔 이유>
+리뷰: <리뷰어 목록> → <응답>
+가정:
+미해결:
+확인하지 않음:
 ```
 - 보지 않은 것을 말했는가?

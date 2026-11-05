@@ -1,79 +1,79 @@
 ---
 name: writing-shape
-description: "Writing, exploit: shape raw material into an article, paragraph by paragraph."
+description: "글쓰기, 활용: 원시 자료를 문단별로 기사로 빚습니다."
 disable-model-invocation: true
 ---
 
 <what-to-do>
 
-The user has passed (or will pass) a markdown file of raw material. Treat it as the input pile: anything from a tidy list of fragments to a wall of unstructured prose to a transcript. The format does not matter. Read it end-to-end before doing anything else.
+사용자가 원시 자료의 마크다운 파일을 넘겼거나 넘길 것입니다. 그것을 입력 더미로 취급하세요. 정돈된 파편 목록부터 구조 없는 산문의 벽, 트랜스크립트까지 무엇이든 됩니다. 형식은 중요하지 않습니다. 다른 일을 하기 전에 끝까지 읽으세요.
 
-Then run a shaping session that produces a separate article document. This is **exploit**: the exploring is done, the pile is fixed: commit to a structure and mine the pile to fill it. Do not edit the raw material file: it is read-only to this skill.
+그런 다음 별도의 기사 문서를 만들어 내는 형성 세션을 실행하세요. 이것은 **활용**입니다. 탐색은 끝났고, 더미는 고정되었습니다. 구조에 커밋하고 더미를 캐내 그것을 채우세요. 원시 자료 파일은 편집하지 마세요. 이 스킬에게는 읽기 전용입니다.
 
-If the user did not say where to save the article, ask once and remember the path.
+사용자가 기사를 어디에 저장할지 말하지 않았으면, 한 번 묻고 그 경로를 기억하세요.
 
 </what-to-do>
 
 <supporting-info>
 
-## The loop
+## 루프
 
-1. **Read the pile.** Read the input file in full. Form a sense of what's in it.
-2. **Establish the prerequisites.** Settle with the user what the reader knows walking in: the concepts that are **grounded** from the start. Everything else must be grounded by a block before a later block can lean on it. See [Grounding](#grounding).
-3. **Draft 2–3 candidate openings.** Each opening should imply a different thesis or angle for the article. Show all of them. Force the user to pick or compose a hybrid. The chosen opening defines what the rest of the article must do.
-4. **Grow paragraph by paragraph.** After the opening lands, ask "given this opening, what does the reader need to hear next?" Pull material from the pile to answer. The next block may only lean on grounded concepts, and grounds new ones as it lands. Argue about the form the next block takes: a paragraph, a list, a table, a callout, a quote, a code block. Each format choice should be deliberate and defensible.
-5. **Append to the article file as you go.** Don't batch. Write each agreed paragraph or block immediately so the user can see the article taking shape.
-6. **Loop step 4 until the article is done.** The user decides when it's done.
+1. **더미를 읽으세요.** 입력 파일을 전부 읽으세요. 그 안에 무엇이 있는지 감을 잡으세요.
+2. **전제 조건을 확립하세요.** 독자가 들어올 때 아는 것을 사용자와 정하세요. 처음부터 **기반이 다져진** 개념들입니다. 그 외의 모든 것은 나중 블록이 기대기 전에 어떤 블록이 기반을 다져야 합니다. [기반 다지기](#기반-다지기)를 보세요.
+3. **후보 오프닝을 2-3개 초안하세요.** 각 오프닝은 기사에 대한 다른 논지나 각도를 함의해야 합니다. 모두 보여주세요. 사용자가 고르거나 혼합을 짓도록 강제하세요. 고른 오프닝이 기사의 나머지가 해야 할 일을 정의합니다.
+4. **문단별로 키우세요.** 오프닝이 착지한 뒤, "이 오프닝이 주어졌을 때, 독자는 다음에 무엇을 들어야 하나요?"라고 물으세요. 더미에서 자료를 끌어와 답하세요. 다음 블록은 기반이 다져진 개념에만 기대도 되고, 착지하면서 새로운 개념의 기반을 다집니다. 다음 블록이 취하는 형식을 논쟁하세요. 문단, 리스트, 표, 콜아웃, 인용, 코드 블록. 각 형식 선택은 의도적이고 방어 가능해야 합니다.
+5. **가면서 기사 파일에 덧붙이세요.** 모으지 마세요. 합의된 문단이나 블록을 즉시 써서, 사용자가 기사가 형태를 갖추는 것을 보게 하세요.
+6. **기사가 끝날 때까지 4단계를 반복하세요.** 끝났는지는 사용자가 결정합니다.
 
-## Grounding
+## 기반 다지기
 
-Every **concept** has to be **grounded** before a block can lean on it: the reader either walked in knowing it or met it in an earlier block. A block that reaches for an ungrounded concept loses the reader. The unit is the concept, not the word for it: a block can lean on an idea the reader lacks even with no jargon in sight. Where a concept has a name (a **term**), grounding it means landing the idea and the term together.
+모든 **개념**은 블록이 그것에 기대기 전에 **기반이 다져져** 있어야 합니다. 독자가 들어올 때 이미 알았거나, 앞선 블록에서 만났거나. 기반이 다져지지 않은 개념에 손을 뻗는 블록은 독자를 잃습니다. 단위는 그것을 가리키는 단어가 아니라 개념입니다. 전문 용어가 하나도 보이지 않아도, 블록은 독자에게 없는 아이디어에 기댈 수 있습니다. 개념에 이름(**용어**)이 있으면, 기반을 다진다는 것은 아이디어와 용어를 함께 착지시키는 것입니다.
 
-A concept gets grounded one of two ways:
+개념의 기반이 다져지는 방법은 둘입니다.
 
-- **Prerequisite**: grounded before the opening. The reader brings it. Fixed at the start.
-- **Introduced**: a block establishes it, and from then on it's grounded for the rest of the article.
+- **전제 조건**: 오프닝 전에 기반이 다져집니다. 독자가 가지고 옵니다. 시작 시점에 고정됩니다.
+- **도입됨**: 블록이 그것을 확립하고, 그때부터 기사의 나머지에 대해 기반이 다져집니다.
 
-Keep a running list of what's grounded. When you ask "what does the reader need to hear next?", an ungrounded concept the next move needs is itself the answer: ground it first (here or in an earlier block) or you can't make the move. This is the gap-naming of [Pulling from the pile](#pulling-from-the-pile) one level up: there the pile is missing material; here the article is missing a foundation.
+기반이 다져진 것의 목록을 유지하세요. "독자는 다음에 무엇을 들어야 하나요?"라고 물을 때, 다음 움직임이 필요로 하는 기반 없는 개념 자체가 답입니다. 먼저 기반을 다지세요 (여기 또는 앞선 블록에서). 그렇지 않으면 그 움직임을 할 수 없습니다. 이것은 [더미에서 끌어오기](#더미에서-끌어오기)의 빈틈 이름 붙이기를 한 단계 올린 것입니다. 거기서는 더미에 자료가 없고, 여기서는 기사에 토대가 없습니다.
 
-The lever is what you make a prerequisite versus what you ground inside the article. Demand too much up front and you shut readers out; ground too much inside and the opening drowns in definitions. Settle it with the user when you establish prerequisites.
+레버는 무엇을 전제 조건으로 두고, 무엇의 기반을 기사 안에서 다질지입니다. 앞에서 너무 많이 요구하면 독자를 배제합니다. 안에서 너무 많이 기반을 다지면 오프닝이 정의에 빠집니다. 전제 조건을 확립할 때 사용자와 정하세요.
 
-## Conversational feel
+## 대화의 느낌
 
-This is a grilling session inverted. In ideation, the question was "what are you actually noticing?" Here it's "what is this article actually arguing, and in what order does the reader need to hear it?" Push back. Refuse to let weak transitions slide. If a paragraph doesn't earn its place, cut it.
+이것은 뒤집힌 그릴링 세션입니다. 발상에서는 질문이 "실제로 무엇을 알아차리고 있나요?"였습니다. 여기서는 "이 기사는 실제로 무엇을 논증하며, 독자는 어떤 순서로 그것을 들어야 하나요?"입니다. 밀어붙이세요. 약한 전환을 그냥 넘기지 마세요. 문단이 자기 자리를 벌지 못하면 자르세요.
 
-Specific moves to keep using:
+계속 쓸 구체적인 움직임:
 
-- "What does this paragraph do for the reader that the previous one didn't?"
-- "If I cut this, what breaks?"
-- "Is this prose, or should it be a list? Why prose?"
-- "This sentence is doing two jobs: split it or pick one."
-- "The opening promised X. We've drifted to Y. Either re-thread it or change the opening."
+- "이 문단은 이전 문단이 하지 않은 일 중 독자에게 무엇을 하나요?"
+- "이것을 자르면 무엇이 깨지나요?"
+- "이것은 산문인가요, 아니면 리스트여야 하나요? 왜 산문인가요?"
+- "이 문장은 두 가지 일을 합니다. 나누거나 하나를 고르세요."
+- "오프닝이 X를 약속했습니다. 우리는 Y로 흘러갔습니다. 다시 잇거나 오프닝을 바꾸세요."
 
-## Pulling from the pile
+## 더미에서 끌어오기
 
-Treat the raw material as a quarry, not a script. Pull a fragment, rework it to fit the surrounding paragraph, and place it. A fragment may be split across multiple paragraphs, merged with another, or paraphrased. The pile's job is to be mined; the article's job is to read as one voice.
+원시 자료를 대본이 아니라 채석장으로 취급하세요. 파편을 끌어와, 주변 문단에 맞게 다시 다듬고, 놓으세요. 파편은 여러 문단에 나뉘거나, 다른 것과 합쳐지거나, 바꿔 말해질 수 있습니다. 더미의 일은 캐내지는 것이고, 기사의 일은 하나의 목소리로 읽히는 것입니다.
 
-If the pile lacks something the article needs, name the gap explicitly: "We need an example here and the pile doesn't have one. Give me one now or we cut this section."
+더미에 기사가 필요로 하는 것이 없으면, 빈틈을 명시적으로 이름 붙이세요. "여기 예시가 필요한데 더미에 없습니다. 지금 하나를 주시거나, 이 섹션을 자릅니다."
 
-## Format arguments to actually have
+## 실제로 해야 할 형식 논쟁
 
-When choosing how to render a block, weigh these tradeoffs out loud with the user, not silently:
+블록을 어떻게 렌더할지 고를 때, 이 트레이드오프를 혼잣말이 아니라 사용자와 소리 내어 저울질하세요.
 
-- **Prose vs. list.** Prose carries argument; lists carry parallel items. If items aren't truly parallel, prose is better. If they are, a list is faster to scan.
-- **Inline vs. callout.** Tips, warnings, and asides go in callouts (`> [!TIP]`, `> [!NOTE]`), but only if they'd genuinely derail the main argument inline. Otherwise leave them inline.
-- **Table vs. repeated structure.** If the same shape repeats 3+ times with the same fields, a table. Otherwise prose with bold leads.
-- **Quote vs. paraphrase.** Quote when the original wording is the point. Paraphrase when only the idea matters.
-- **Code block vs. inline code.** Multi-line, runnable, or illustrative → block. Single token or identifier → inline.
+- **산문 대 리스트.** 산문은 논증을 나르고, 리스트는 병렬 항목을 나릅니다. 항목이 진정으로 병렬이 아니면 산문이 낫습니다. 병렬이면 리스트가 훑기에 더 빠릅니다.
+- **본문 안 대 콜아웃.** 팁, 경고, 곁가지는 콜아웃(`> [!TIP]`, `> [!NOTE]`)에 두되, 본문에 두면 본 논증을 정말로 탈선시킬 때만 그렇습니다. 그렇지 않으면 본문에 두세요.
+- **표 대 반복 구조.** 같은 형태가 같은 필드로 3번 이상 반복되면 표입니다. 그렇지 않으면 굵은 도입이 있는 산문입니다.
+- **인용 대 바꿔 말하기.** 원래 표현이 요점일 때 인용하세요. 아이디어만 중요할 때 바꿔 말하세요.
+- **코드 블록 대 인라인 코드.** 여러 줄이거나, 실행 가능하거나, 설명용이면 블록. 토큰 하나나 식별자면 인라인.
 
-## Writing rhythm
+## 글쓰기 리듬
 
-Append to the article file as each block is agreed. Re-read the file from disk before every write: the user may have edited between turns. Never overwrite blindly. If the user wants a paragraph rewritten, edit that specific paragraph in place; leave the rest alone.
+각 블록이 합의될 때마다 기사 파일에 덧붙이세요. 쓸 때마다 그 전에 디스크에서 파일을 다시 읽으세요. 사용자가 턴 사이에 편집했을 수 있습니다. 확인 없이 덮어쓰지 마세요. 사용자가 문단을 다시 쓰길 원하면, 그 특정 문단을 그 자리에서 편집하세요. 나머지는 그대로 두세요.
 
-## Out of scope
+## 범위 밖
 
-- Mining for new fragments that aren't in the pile (handle gaps as in "Pulling from the pile").
-- Editing the raw material file.
-- Publishing, formatting for a specific platform, or adding frontmatter the user didn't ask for.
+- 더미에 없는 새 파편을 캐기 ("더미에서 끌어오기"에서처럼 빈틈을 다루세요).
+- 원시 자료 파일 편집.
+- 게시, 특정 플랫폼용 서식, 또는 사용자가 요청하지 않은 frontmatter 추가.
 
 </supporting-info>

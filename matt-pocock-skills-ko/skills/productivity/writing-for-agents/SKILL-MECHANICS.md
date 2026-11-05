@@ -1,22 +1,22 @@
-# Skill mechanics
+# 스킬 메커니즘
 
-The skill-specific branch of [`writing-for-agents`](SKILL.md): what changes when the document is a skill (frontmatter, the invocation choice, and router skills). Everything else about writing it is the universal reference in `SKILL.md`.
+[`writing-for-agents`](SKILL.md)에서 문서가 스킬일 때만 달라지는 부분입니다. frontmatter, 호출 선택, 라우터 스킬을 다룹니다. 작성의 나머지는 `SKILL.md`의 보편 참조입니다.
 
-## Invocation
+## 호출
 
-Two choices, trading the two loads:
+두 가지 선택이며, 두 로드를 맞바꿉니다.
 
-- A **model-invoked** skill keeps a `description`, so the agent can fire it autonomously, and other skills can reach it. You can still type its name: model-invocation always _includes_ user reach; a description only ever adds agent discovery, never removes the human's. The description is the skill's top-level context pointer, forced to stay loaded at all times: permanent context load in exchange for discoverability. A model-invoked skill whose content is all reference is also one home for shared reference: another skill can invoke it, so reference needed by several skills lives in one place. Mechanics: omit `disable-model-invocation`, and write a model-facing description carrying the trigger branches (the pointer-writing rules in `SKILL.md` apply in full).
-- A **user-invoked** skill strips the description from the agent's reach: only the human typing its name can invoke it, and no other skill can. Zero context load, but it spends cognitive load: you are the index that must remember it exists. Mechanics: set `disable-model-invocation: true`; the `description` becomes human-facing: a one-line summary, trigger lists stripped.
+- **모델 호출** 스킬은 `description`을 유지합니다. 그래서 에이전트가 자율적으로 발화할 수 있고, 다른 스킬이 도달할 수 있습니다. 이름을 직접 입력하는 것도 여전히 됩니다. 모델 호출은 항상 사용자의 도달을 _포함_합니다. description이 더하는 것은 에이전트의 발견뿐이며, 사람의 도달은 그대로입니다. description은 스킬의 최상위 컨텍스트 포인터이며, 항상 로드된 채로 강제됩니다. 발견 가능성을 얻는 대가로 영구적인 컨텍스트 로드를 치릅니다. 내용이 전부 참조인 모델 호출 스킬은 공유 참조가 머무는 곳이기도 합니다. 다른 스킬이 그것을 호출할 수 있으므로, 여러 스킬이 필요로 하는 참조가 한곳에 있습니다. 방법: `disable-model-invocation`을 생략하고, 트리거 분기를 담은 모델 대면 description을 작성하세요 (`SKILL.md`의 포인터 작성 규칙이 전부 적용됩니다).
+- **사용자 호출** 스킬은 description을 에이전트의 도달 범위에서 뺍니다. 이름을 입력하는 사람만 호출할 수 있고, 다른 스킬은 호출할 수 없습니다. 컨텍스트 로드는 0이지만, 인지 로드를 지출합니다. 여러분이 이것이 존재함을 기억해야 하는 인덱스입니다. 방법: `disable-model-invocation: true`로 설정하세요. `description`은 사람 대면이 됩니다. 한 줄 요약이며, 트리거 목록은 빠집니다.
 
-Pick model-invocation only when the agent must reach the skill on its own, or another skill must. If it only ever fires by hand, make it user-invoked and pay no context load.
+에이전트가 스스로 스킬에 도달해야 하거나, 다른 스킬이 도달해야 할 때만 모델 호출을 고르세요. 오직 손으로만 발화한다면 사용자 호출로 만들고, 컨텍스트 로드는 지불하지 마세요.
 
-Shared reference that two user-invoked skills both need can live in neither: with no descriptions, neither can fire the other. Push it to a plain file outside the skill system: external reference any skill can point at.
+사용자 호출 스킬 둘이 함께 필요로 하는 공유 참조는 어느 쪽에도 둘 수 없습니다. description이 없으면 서로 발화할 수 없습니다. 스킬 시스템 밖의 일반 파일로 밀어내세요. 어떤 스킬이든 가리킬 수 있는 외부 참조입니다.
 
-## Splitting by invocation
+## 호출별 분할
 
-The invocation cut of splitting (the sequence cut lives in `SKILL.md`): split off a model-invoked skill when you have a distinct leading word that should trigger it on its own (a trigger word you actually use in your prompts), or another skill must reach it. You pay context load for the new always-loaded description, so that independent reach has to be worth it.
+분할의 호출별 기준입니다 (시퀀스별 기준은 `SKILL.md`에 있습니다). 스스로 트리거되어야 하는 뚜렷한 선행 단어가 있을 때 (프롬프트에서 실제로 쓰는 트리거 단어), 또는 다른 스킬이 도달해야 할 때, 모델 호출 스킬을 분리하세요. 새로 항상 로드되는 description에 컨텍스트 로드를 지불하므로, 그 독립적인 도달은 그만한 값어치가 있어야 합니다.
 
-## Router skills
+## 라우터 스킬
 
-When user-invoked skills multiply past what you can remember, that piled-up cognitive load is cured by a **router skill**: one user-invoked skill that names the others and when to reach for each, so the human has one skill to remember instead of many. It can only hint, never fire them: user-invoked skills have no description, so nothing but the human can reach them.
+사용자 호출 스킬이 기억할 수 있는 수를 넘어서면, 쌓인 인지 로드는 **라우터 스킬**로 해소됩니다. 다른 스킬의 이름과 각각에 언제 도달할지를 적는 사용자 호출 스킬 하나입니다. 사람은 여러 개 대신 하나의 스킬만 기억하면 됩니다. 힌트만 할 수 있고, 그것들을 발화할 수는 없습니다. 사용자 호출 스킬에는 description이 없으므로, 사람 외에는 도달할 수 없습니다.

@@ -1,85 +1,85 @@
-# Ticket trackers
+# 티켓 트래커
 
-> Surveyed 2026-10, and not guaranteed to be up to date. Use it to get oriented, then research the current options yourself: products, prices, limits and betas change fast.
+> 2026-10에 조사했으며, 최신 상태를 보장하지 않습니다. 방향을 잡는 데 사용한 다음, 현재 선택지를 직접 조사하세요. 제품, 가격, 한도, 베타는 빠르게 바뀝니다.
 
-The ticket tracker is the factory's human interface. Each type below is a starting point: read what it is and when a factory picks it, then check the examples against the questions in [Researching further](#researching-further).
+티켓 트래커는 팩토리의 사람 인터페이스입니다. 아래 각 유형은 시작점입니다. 그것이 무엇이고 팩토리가 언제 그것을 고르는지 읽은 다음, 예시를 [추가 조사](#추가-조사)의 질문에 대조하세요.
 
-## The types
+## 유형
 
-### 1. Git-host tracker
+### 1. Git 호스트 트래커
 
-The tracker built into the git host, so tickets, branches and PRs share one product, one permission model and one identity. A factory picks it when it is small, the team already lives on the git host, or the repo is public. This is the "All on GitHub" design: the git host's CI fills the orchestrator slot with no glue. Labels are the dependable router, because statuses live on a separate board. Outside developers file where the code is; non-developers need an account, so a feedback button files through the API. Self-hosted git hosts carry their tracker with them.
+Git 호스트에 내장된 트래커라, 티켓, 브랜치, PR이 하나의 제품, 하나의 권한 모델, 하나의 신원을 공유합니다. 팩토리가 작거나, 팀이 이미 Git 호스트에 살거나, 저장소가 공개일 때 고릅니다. 이것이 "전부 GitHub" 설계입니다. Git 호스트의 CI가 풀 없이 오케스트레이터 슬롯을 채웁니다. 상태는 별도의 보드에 살므로, 라벨이 믿을 수 있는 라우터입니다. 바깥 개발자는 코드가 있는 곳에 접수합니다. 비개발자에게는 계정이 필요하므로, 피드백 버튼이 API를 통해 접수합니다. 셀프 호스트 Git 호스트는 트래커를 함께 가져갑니다.
 
-- [GitHub Issues](https://docs.github.com/en/copilot/concepts/agents/about-third-party-agents): the default; assign-to-agent for Copilot, Claude and Codex.
-- [GitLab Issues](https://about.gitlab.com/blog/how-to-use-a-work-item-created-trigger/): Duo Agent Platform flows triggered from work items.
-- [Forgejo](https://forgejo.org/2026-10-release-v17-0/): self-hosted, Actions-compatible.
+- [GitHub Issues](https://docs.github.com/en/copilot/concepts/agents/about-third-party-agents): 기본값. Copilot, Claude, Codex를 위한 에이전트에 할당.
+- [GitLab Issues](https://about.gitlab.com/blog/how-to-use-a-work-item-created-trigger/): work item에서 트리거되는 Duo Agent Platform 플로우.
+- [Forgejo](https://forgejo.org/2026-10-release-v17-0/): 셀프 호스트, Actions 호환.
 
-To verify: which assign-to-agent features are still in preview and which plans include them; whether a native agent reads later comments or only the ticket at assignment (as of 2026-10, Copilot reads it at assignment only).
+확인할 것: 어떤 에이전트 할당 기능이 아직 preview이고 어떤 플랜이 그것을 포함하는지. 네이티브 에이전트가 이후 댓글을 읽는지, 할당 시점의 티켓만 읽는지 (2026-10 기준, Copilot은 할당 시점에만 읽습니다).
 
-### 2. Agent-native dev tracker
+### 2. 에이전트 네이티브 개발 트래커
 
-A standalone SaaS tracker for software teams that treats agents as first-class assignees, with an agent API and its own coding agent. A factory picks it when product, support or design staff schedule work, the team already lives there, or it wants polished triage and planning views. The "Linear tickets" design. Statuses and workflows are first-class, so "moved to Ready" is a clean trigger. Agents appear as app users a human delegates to, and runs can stream progress into the ticket. Native agents here are the deepest of any type, so one can partly fill the orchestrator and runner slots too.
+에이전트를 일급 담당자로 다루는, 소프트웨어 팀을 위한 독립형 SaaS 트래커. 에이전트 API와 자체 코딩 에이전트가 있습니다. 제품, 지원, 설계 직원이 일을 일정에 올리거나, 팀이 이미 거기 살거나, 다듬어진 트리아지와 계획 뷰를 원할 때 팩토리가 고릅니다. "Linear 티켓" 설계. 상태와 워크플로우가 일급이라, "Ready로 이동"이 깨끗한 트리거입니다. 에이전트는 사람이 위임하는 앱 사용자로 나타나고, 런은 진행을 티켓으로 스트림할 수 있습니다. 여기의 네이티브 에이전트는 어떤 유형보다 깊어서, 하나가 오케스트레이터와 러너 슬롯의 일부를 채울 수도 있습니다.
 
-- [Linear](https://linear.app/developers/agents): the most agent-shaped tracker.
-- [Jira](https://support.atlassian.com/jira-software-cloud/docs/collaborate-on-work-items-with-ai-agents/): status-triggered agents; fits an org already on Atlassian.
-- [Shortcut](https://www.shortcut.com/help/integrations/using-ai-agents): assign a story or mention an agent in a comment.
-- [YouTrack](https://www.jetbrains.com/youtrack/): workflows-as-code; self-hosts.
+- [Linear](https://linear.app/developers/agents): 가장 에이전트 형태인 트래커.
+- [Jira](https://support.atlassian.com/jira-software-cloud/docs/collaborate-on-work-items-with-ai-agents/): 상태로 트리거되는 에이전트. 이미 Atlassian에 있는 조직에 맞습니다.
+- [Shortcut](https://www.shortcut.com/help/integrations/using-ai-agents): 스토리를 할당하거나 댓글에서 에이전트를 멘션합니다.
+- [YouTrack](https://www.jetbrains.com/youtrack/): workflows-as-code. 셀프 호스트합니다.
 
-To verify: agent API status (Linear's was a developer preview as of 2026-10); how native agent runs are metered and priced; agent seat cost; acknowledgement deadlines on agent webhooks; which plan unlocks customer-facing forms; self-hosted edition end-of-life dates.
+확인할 것: 에이전트 API 상태 (Linear는 2026-10 기준 개발자 preview였습니다). 네이티브 에이전트 런이 어떻게 계량되고 가격이 매겨지는지. 에이전트 시트 비용. 에이전트 웹훅의 확인 응답 기한. 어떤 플랜이 고객용 폼을 여는지. 셀프 호스트 에디션의 지원 종료일.
 
-### 3. Open-source dev tracker
+### 3. 오픈 소스 개발 트래커
 
-A Linear-style tracker you can run on your own infrastructure, with a cloud edition beside it. A factory picks it when data stays in-house (air-gapped, regulated) or the user wants to read and patch the tracker's source while still buying it. Routing by states, labels and custom properties works much as in type 2; native agents are younger.
+자기 인프라에서 돌릴 수 있는 Linear 스타일 트래커. 옆에 클라우드 에디션이 있습니다. 데이터가 사내에 있어야 하거나 (에어갭, 규제), 사용자가 트래커 소스를 읽고 패치하면서도 그것을 사고 싶을 때 팩토리가 고릅니다. 상태, 라벨, 사용자 정의 속성으로 라우팅하는 것은 유형 2와 거의 같습니다. 네이티브 에이전트는 더 어립니다.
 
-- [Plane](https://developers.plane.so/dev-tools/agents/overview): Linear-like; bot users per app; agents reply in comments.
-- [Huly](https://github.com/hcengineering/huly-selfhost): all-in-one workspace with two-way GitHub sync; a heavy stack to operate.
-- [OpenProject](https://www.openproject.org/): mature, classic project management.
+- [Plane](https://developers.plane.so/dev-tools/agents/overview): Linear와 비슷합니다. 앱당 봇 사용자. 에이전트가 댓글에 답합니다.
+- [Huly](https://github.com/hcengineering/huly-selfhost): 양방향 GitHub 동기화가 있는 올인원 워크스페이스. 운영하기 무거운 스택.
+- [OpenProject](https://www.openproject.org/): 성숙한, 고전적 프로젝트 관리.
 
-To verify: agent feature status (Plane's was beta as of 2026-10); which edition carries guest roles and intake forms; licence; the self-hosted stack's operating cost.
+확인할 것: 에이전트 기능 상태 (Plane은 2026-10 기준 베타였습니다). 어떤 에디션이 게스트 역할과 접수 폼을 갖는지. 라이선스. 셀프 호스트 스택의 운영 비용.
 
-### 4. General work tool
+### 4. 일반 업무 도구
 
-A work-management or docs tool whose database or task list doubles as the tracker. A factory picks it when it serves a non-engineering team already living there, or tickets are mostly content, ops or research rather than code. Forms are the strength: anyone with a link files a ticket. Routing is flexible database properties, so every factory invents its own schema. Developer context (diffs, PRs) sits a click away on the git host. SaaS only.
+데이터베이스나 작업 목록이 트래커를 겸하는 업무 관리 또는 문서 도구. 이미 거기 사는 비엔지니어링 팀을 섬기거나, 티켓이 코드보다 콘텐츠, 운영, 조사일 때 팩토리가 고릅니다. 폼이 강점입니다. 링크가 있는 누구나 티켓을 접수합니다. 라우팅은 유연한 데이터베이스 속성이라, 모든 팩토리가 자기 스키마를 발명합니다. 개발자 컨텍스트(diff, PR)는 Git 호스트에서 한 클릭 떨어져 있습니다. SaaS만.
 
-- [Notion](https://www.notion.com/help/custom-agents): database-as-tracker; agents fire on database changes.
-- [Asana](https://asana.com/product/ai/ai-teammates): AI Teammates take assigned tasks.
-- [ClickUp](https://clickup.com/brain/cloud-agents): Cloud Agents return a PR in the task thread.
-- [Trello](https://developer.atlassian.com/cloud/trello/guides/rest-api/webhooks/): boards and lists; webhooks plus Butler automation.
+- [Notion](https://www.notion.com/help/custom-agents): 데이터베이스를 트래커로. 에이전트는 데이터베이스 변경에서 발화합니다.
+- [Asana](https://asana.com/product/ai/ai-teammates): AI Teammates가 할당된 작업을 받습니다.
+- [ClickUp](https://clickup.com/brain/cloud-agents): Cloud Agents가 작업 스레드에 PR을 돌려줍니다.
+- [Trello](https://developer.atlassian.com/cloud/trello/guides/rest-api/webhooks/): 보드와 리스트. 웹훅과 Butler 자동화.
 
-To verify: webhook latency and granularity (as of 2026-10, Notion batched content updates, arriving a minute or two late); which plan includes agents.
+확인할 것: 웹훅 지연과 세분성 (2026-10 기준, Notion은 콘텐츠 업데이트를 묶어 1-2분 늦게 도착했습니다). 어떤 플랜이 에이전트를 포함하는지.
 
-### 5. Repo-native tracker
+### 5. 저장소 네이티브 트래커
 
-Tickets stored as files in the repo (JSONL, Markdown), edited by agents through a CLI or MCP server and merged like code. A factory picks it when one developer drives agents locally and wants the plan in git, or as a run's working memory beside a real tracker. A push to the git host is the only trigger, so the orchestrator diffs files to find what changed. Identity is the git host's. Outside filing is a commit or PR, the weakest of any type, so a factory graduates to a git-host tracker once others file tickets.
+저장소 안의 파일(JSONL, Markdown)로 저장된 티켓. 에이전트가 CLI나 MCP 서버로 편집하고 코드처럼 병합합니다. 개발자 한 명이 로컬에서 에이전트를 몰고 계획을 git에 두고 싶거나, 진짜 트래커 옆에서 런의 작업 기억으로 쓸 때 팩토리가 고릅니다. Git 호스트로의 푸시가 유일한 트리거라, 오케스트레이터가 파일을 diff하여 무엇이 바뀌었는지 찾습니다. 신원은 Git 호스트의 것입니다. 바깥 접수는 커밋이나 PR이라 어떤 유형보다 약하므로, 다른 사람이 티켓을 접수하기 시작하면 팩토리는 Git 호스트 트래커로 졸업합니다.
 
-- [Beads](https://github.com/steveyegge/beads): JSONL with dependency tracking, so a run picks the next unblocked ticket.
-- [Backlog.md](https://github.com/MrLesk/Backlog.md): Markdown tasks with a Kanban view and MCP server.
+- [Beads](https://github.com/steveyegge/beads): 의존성 추적이 있는 JSONL. 그래서 런이 다음으로 막히지 않은 티켓을 고릅니다.
+- [Backlog.md](https://github.com/MrLesk/Backlog.md): 칸반 뷰와 MCP 서버가 있는 Markdown 작업.
 
-### 6. Build-your-own
+### 6. 직접 만들기
 
-The factory's own app holds tickets in its own database, usually beside the orchestrator. The "Own tracker" design. A factory picks it when the tracker *is* the product (an internal platform, a customer-facing support factory) or no off-the-shelf model fits. Triggers become function calls; every trait in the questions below becomes code to write and maintain, which is why the skill favours buying. An [Airtable](https://airtable.com/developers/web/api/webhooks-overview) base with webhooks is a half-built middle.
+팩토리 자신의 앱이 자기 데이터베이스에 티켓을 둡니다. 보통 오케스트레이터 옆입니다. "자체 트래커" 설계. 트래커가 *곧* 제품이거나 (내부 플랫폼, 고객용 지원 팩토리), 기성 모델이 맞지 않을 때 팩토리가 고릅니다. 트리거는 함수 호출이 됩니다. 아래 질문의 모든 특성이 작성하고 유지할 코드가 되며, 그래서 이 스킬은 사는 쪽을 우선합니다. 웹훅이 있는 [Airtable](https://airtable.com/developers/web/api/webhooks-overview) 베이스는 절반만 만든 중간 지점입니다.
 
-## Researching further
+## 추가 조사
 
-Check each candidate against these questions. They decide the slot:
+각 후보를 이 질문에 대조하세요. 이것이 슬롯을 결정합니다.
 
-- **Triggers**: which ticket changes (created, labelled, status moved, assigned, commented, mentioned) emit a webhook or event the orchestrator can turn into a run? How fast and how granular?
-- **Routing**: which labels, statuses or fields can a run read to know its kind (explore, implement, rework)?
-- **Thread**: can a human answer an agent in comments, and does that reply trigger the next run?
-- **Identity**: is there an API plus a bot identity, so runs act as themselves and humans tell agent from colleague? Does the bot cost a seat?
-- **Native agents**: can a ticket be assigned to an agent directly? Which agents, on which plan, metered how? What does it read: the ticket at assignment, or the whole thread?
-- **Outside filing**: how does a ticket source or customer create tickets: forms, email, chat, API? Which plan unlocks it?
-- **Hosting**: SaaS only, or self-hosted, and under which licence?
+- **트리거**: 어떤 티켓 변경(생성, 라벨, 상태 이동, 할당, 댓글, 멘션)이 오케스트레이터가 런으로 바꿀 수 있는 웹훅이나 이벤트를 내보내나요? 얼마나 빠르고 얼마나 잘게 나뉘나요?
+- **라우팅**: 런이 자신의 종류(explore, implement, rework)를 알기 위해 어떤 라벨, 상태, 필드를 읽을 수 있나요?
+- **스레드**: 사람이 댓글에서 에이전트에게 답할 수 있나요? 그 답이 다음 런을 트리거하나요?
+- **신원**: API와 봇 신원이 있어, 런이 자기 자신으로 행동하고 사람이 에이전트와 동료를 구분할 수 있나요? 봇이 시트 비용을 드나요?
+- **네이티브 에이전트**: 티켓을 에이전트에게 직접 할당할 수 있나요? 어떤 에이전트, 어떤 플랜, 어떻게 계량되나요? 무엇을 읽나요? 할당 시점의 티켓인가요, 스레드 전체인가요?
+- **외부 접수**: 티켓 소스나 고객이 티켓을 어떻게 만드나요? 폼, 이메일, 채팅, API? 어떤 플랜이 그것을 여나요?
+- **호스팅**: SaaS만인가요, 셀프 호스트인가요? 어떤 라이선스 아래인가요?
 
-Answers live in primary sources: the API and webhook reference (event lists, payloads, delivery and retry rules), the agent or app developer docs, the pricing page and plan comparison table, and the changelog or release notes. Prefer these over blog posts and comparison sites.
+답은 주요 소스에 있습니다. API와 웹훅 레퍼런스(이벤트 목록, 페이로드, 전달과 재시도 규칙), 에이전트 또는 앱 개발자 문서, 가격 페이지와 플랜 비교표, 체인지로그 또는 릴리스 노트. 블로그 글과 비교 사이트보다 이것을 우선하세요.
 
-Stalest first: agent features and their preview or beta status, agent metering and credit prices, plan gating of agents and forms, rate limits, and acquisitions, shutdowns and end-of-life dates for self-hosted editions. Webhook event lists and routing models change slowly.
+가장 빨리 낡는 것부터: 에이전트 기능과 그 preview 또는 베타 상태, 에이전트 계량과 크레딧 가격, 에이전트와 폼의 플랜 게이팅, 요청 한도, 그리고 셀프 호스트 에디션의 인수, 종료, 지원 종료일. 웹훅 이벤트 목록과 라우팅 모델은 천천히 바뀝니다.
 
-## Durable gotchas
+## 오래 남는 함정
 
-Verify each still holds before relying on it:
+그것에 기대기 전에 각각이 아직 맞는지 확인하세요.
 
-- **GitHub's `GITHUB_TOKEN` trap**: changes made with the default `GITHUB_TOKEN` trigger no new workflow runs. A run that labels or comments on a ticket to trigger the next run acts through a GitHub App token.
-- **Assignment-time context**: some native agents read the ticket only when assigned, so later context goes on the PR.
-- **Agent webhooks expect a fast acknowledgement**: the orchestrator acknowledges at once and starts the run afterwards.
-- **Batched webhooks in general work tools** arrive late; a factory needing prompt runs triggers on property changes or picks another type.
+- **GitHub의 `GITHUB_TOKEN` 함정**: 기본 `GITHUB_TOKEN`으로 만든 변경은 새 워크플로우 런을 트리거하지 않습니다. 다음 런을 트리거하려고 티켓에 라벨을 붙이거나 댓글을 다는 런은 GitHub App 토큰을 통해 행동합니다.
+- **할당 시점의 컨텍스트**: 일부 네이티브 에이전트는 할당될 때만 티켓을 읽으므로, 이후 컨텍스트는 PR에 둡니다.
+- **에이전트 웹훅은 빠른 확인 응답을 기대합니다**: 오케스트레이터는 즉시 확인하고, 그 뒤에 런을 시작합니다.
+- **일반 업무 도구의 묶음 웹훅**은 늦게 도착합니다. 신속한 런이 필요한 팩토리는 속성 변경으로 트리거하거나 다른 유형을 고릅니다.

@@ -1,142 +1,120 @@
-# Bugbot triage
+# Bugbot 분류
 
-Use this reference when the Babysit playbook (`../playbooks/babysit.md`) handles Bugbot or review-automation comments. The goal is not to ignore Bugbot by default. The goal is to stop treating every comment as a required code change.
+Babysit 플레이북(`../playbooks/babysit.md`)이 Bugbot 또는 리뷰 자동화 코멘트를 다룰 때 이 참조를 사용하세요. 목표는 Bugbot을 기본적으로 무시하는 것이 아닙니다. 목표는 모든 코멘트를 필수 코드 변경으로 취급하지 않는 것입니다.
 
-## Decision rubric
+## 결정 루브릭
 
-Classify each Bugbot thread before acting:
+행동하기 전에 각 Bugbot 스레드를 분류하세요.
 
-- `fix`: The comment identifies a plausible correctness, security, privacy, data loss, auth, billing, migration, idempotency, race, or shipped-behavior issue. Fix it in the lowest owning PR, then reply with the commit SHA and resolve the thread.
-- `dismiss`: The comment matches a documented low-risk noisy pattern, and the current code/context proves the concern does not need a code change. Reply with a short reason and resolve the thread.
-- `ask`: The comment is novel, high-severity, security/privacy/data-related, or ambiguous. Ask the user instead of guessing.
+- `fix` (수정): 코멘트가 있을 법한 정확성, 보안, 프라이버시, 데이터 손실, 인증, 청구, 마이그레이션, 멱등성, 레이스, 또는 이미 출시된 동작 문제를 짚습니다. 코드를 소유하는 가장 낮은 PR에서 수정한 다음, 커밋 SHA를 적어 답하고 스레드를 해결하세요.
+- `dismiss` (무시): 코멘트가 문서화된 저위험 노이즈 패턴과 맞고, 현재 코드와 맥락이 코드 변경이 필요 없음을 증명합니다. 짧은 이유를 답하고 스레드를 해결하세요.
+- `ask` (질문): 코멘트가 새롭거나, 심각도가 높거나, 보안, 프라이버시, 데이터와 관련되거나, 모호합니다. 추측하지 말고 사용자에게 질문하세요.
 
-When in doubt, ask. Skipping a noisy code-quality comment is cheap; skipping a real data or security bug is not.
+의심스러우면 질문하세요. 노이즈가 많은 코드 품질 코멘트를 건너뛰는 대가는 작습니다. 실제 데이터 버그나 보안 버그를 건너뛰는 대가는 큽니다.
 
-## Learned pattern format
+## 학습한 패턴 형식
 
-Add future patterns in this shape:
+앞으로의 패턴은 이 형태로 추가하세요.
 
 ```markdown
-### <short pattern name>
+### <짧은 패턴 이름>
 
-- Confidence: candidate | recurring | strong
-- Skip when: <conditions that must be true>
-- Do not skip when: <risk boundaries>
-- Example signal: <phrases or code context that identify the pattern>
-- Source: <PR/comment URL or short historical note>
+- 확신도: 후보 | 반복 | 강함
+- 건너뛸 때: <참이어야 하는 조건>
+- 건너뛰지 말 때: <위험 경계>
+- 예시 신호: <패턴을 식별하는 문구 또는 코드 맥락>
+- 출처: <PR/코멘트 URL 또는 짧은 이력 메모>
 ```
 
-Use `candidate` for one or two examples. Use `recurring` after multiple real dismissals. Use `strong` only when the pattern is narrow, repeatedly verified, and low-risk.
+예시가 하나나 둘이면 `후보`를 사용하세요. 실제로 여러 번 무시한 뒤에는 `반복`을 사용하세요. 패턴이 좁고, 반복해서 검증되었고, 위험이 낮을 때만 `강함`을 사용하세요.
 
-## Recurring skip candidates
+## 반복해서 건너뛰는 후보
 
-### Intentional UI or design-system visual changes
+### 의도적인 UI 또는 디자인 시스템 시각 변경
 
-- Confidence: candidate
-- Skip when: The PR description, screenshots, design review, or nearby code makes the visual change explicit, and the Bugbot comment is only restating that a shared visual default changed.
-- Do not skip when: The comment points to accessibility, focus visibility, keyboard navigation, color contrast, or a component API contract that the PR did not intentionally change.
-- Example signal: Comments about focus outlines, button sizes, spacing, or shared component visual defaults where the owner replies "intentional" or "intended".
+- 확신도: 후보
+- 건너뛸 때: PR 설명, 스크린샷, 설계 리뷰, 또는 근처 코드가 시각적 변경을 명시하고, Bugbot 코멘트가 공유된 시각적 기본값이 바뀌었다는 사실만 되풀이할 때.
+- 건너뛰지 말 때: 코멘트가 접근성, 포커스 가시성, 키보드 탐색, 색 대비, 또는 PR이 의도적으로 바꾸지 않은 컴포넌트 API 계약을 가리킬 때.
+- 예시 신호: 포커스 아웃라인, 버튼 크기, 간격, 또는 공유 컴포넌트의 시각적 기본값에 대한 코멘트. 소유자가 "intentional" 또는 "intended"라고 답한 경우.
 
-### Upstack or stack-local usage Bugbot cannot see
+### Bugbot이 볼 수 없는 업스택 또는 스택 로컬 사용
 
-- Confidence: candidate
-- Skip when: Bugbot flags an export, component, helper, or file as unused, and the active forge's PR list and diffs, upper-stack diffs, or PR context show it is used by a later PR in the stack.
-- Do not skip when: The current PR is not part of a stack, the symbol is public API, or the supposed upstack use cannot be verified.
-- Example signal: "Exported component is never used" with a human reply like "used upstack".
+- 확신도: 후보
+- 건너뛸 때: Bugbot이 export, 컴포넌트, 헬퍼, 또는 파일을 미사용으로 표시하고, 활성 forge의 PR 목록과 diff, 상위 스택 diff, 또는 PR 맥락이 스택에서 더 나중 PR이 그것을 쓰는 것을 보여 줄 때.
+- 건너뛰지 말 때: 현재 PR이 스택의 일부가 아니거나, 심볼이 공개 API이거나, 주장된 업스택 사용을 검증할 수 없을 때.
+- 예시 신호: "Exported component is never used". 사람이 "used upstack"처럼 답한 경우.
 
-### Temporary duplication during parallel implementation
+### 병렬 구현 중의 일시적 중복
 
-- Confidence: candidate
-- Skip when: The PR intentionally duplicates a small amount of code to keep a new path parallel to an old path that is being deleted, replaced, or proven out.
-- Do not skip when: The duplicated code changes security, billing, data access, API behavior, or a long-lived shared abstraction would clearly reduce risk.
-- Example signal: "Significant duplication" or "duplicated validation logic" where the owner explains the old path will be deleted or the duplicate logic is intentionally local.
+- 확신도: 후보
+- 건너뛸 때: PR이 삭제되거나, 교체되거나, 검증 중인 옛 경로와 새 경로를 나란히 두려고 소량의 코드를 의도적으로 중복할 때.
+- 건너뛰지 말 때: 중복된 코드가 보안, 청구, 데이터 접근, API 동작을 바꾸거나, 오래 유지되는 공유 추상화가 위험을 분명히 줄일 때.
+- 예시 신호: "Significant duplication" 또는 "duplicated validation logic". 소유자가 옛 경로를 삭제할 것이라거나, 중복 로직이 의도적으로 로컬이라고 설명할 때.
 
-### Existing framework or component invariant covers the warning
+### 기존 프레임워크 또는 컴포넌트 불변 조건이 경고를 이미 보장함
 
-- Confidence: candidate
-- Skip when: The concern is already guaranteed by a shared component, framework contract, type invariant, or single source of truth visible in the current diff or nearby code.
-- Do not skip when: The invariant is assumed but not enforced, depends on timing, or crosses async/state boundaries where values can diverge.
-- Example signal: Comments about missing max-height on an inner popover when the shared popover enforces viewport bounds, or nullable values where the local checked value and passed value share the same source.
+- 확신도: 후보
+- 건너뛸 때: 우려가 공유 컴포넌트, 프레임워크 계약, 타입 불변 조건, 또는 현재 diff나 근처 코드에서 보이는 단일 출처로 이미 보장될 때.
+- 건너뛰지 말 때: 불변 조건이 가정만 되고 강제되지 않거나, 타이밍에 의존하거나, 값이 어긋날 수 있는 비동기 또는 상태 경계를 넘을 때.
+- 예시 신호: 공유 popover가 뷰포트 경계를 강제하는데 안쪽 popover에 `max-height`가 없다는 코멘트, 또는 로컬에서 확인한 값과 전달된 값이 같은 출처를 공유하는 nullable 값에 대한 코멘트.
 
-### Owner-declared follow-up or deferred cleanup
+### 소유자가 선언한 후속 작업 또는 미룬 정리
 
-- Confidence: candidate
-- Skip when: The PR owner explicitly says the issue is a known follow-up, the behavior is not made worse by the current PR, and the comment is not about a high-risk area.
-- Do not skip when: The agent is acting without owner input, the issue is medium/high severity product behavior, or deferring would merge a new regression.
-- Example signal: "I'll worry about that later" or "we'll delete this eventually".
+- 확신도: 후보
+- 건너뛸 때: PR 소유자가 그 이슈가 알려진 후속 작업이라고 명시하고, 현재 PR이 동작을 더 나쁘게 만들지 않으며, 코멘트가 고위험 영역에 관한 것이 아닐 때.
+- 건너뛰지 말 때: 에이전트가 소유자 입력 없이 행동 중이거나, 이슈가 중간 또는 높은 심각도의 제품 동작이거나, 미루면 새로운 회귀가 병합될 때.
+- 예시 신호: "I'll worry about that later" 또는 "we'll delete this eventually".
 
-### Self-withdrawn or explicit false-positive rule comments
+### 스스로 철회한 코멘트 또는 명시적 오탐 규칙 코멘트
 
-- Confidence: recurring
-- Skip when: The comment body or a later Bugbot reply explicitly says the finding is withdrawn, compliant, or a false positive, and the agent can verify the relevant rule locally.
-- Do not skip when: The only evidence is a human saying "false positive" on a high-risk issue without explanation.
-- Example signal: A file-naming rule comment whose body says the file is already compliant.
+- 확신도: 반복
+- 건너뛸 때: 코멘트 본문 또는 이후 Bugbot 답장이 발견이 철회되었거나, 규칙을 지키거나, 오탐이라고 명시하고, 에이전트가 관련 규칙을 로컬에서 검증할 수 있을 때.
+- 건너뛰지 말 때: 유일한 증거가, 고위험 이슈에 대해 설명 없이 "false positive"라고 말하는 사람일 때.
+- 예시 신호: 파일이 이미 규칙을 지킨다고 본문이 말하는 파일 이름 규칙 코멘트.
 
-## Ask by default
+## 기본적으로 질문
 
-Do not auto-skip these categories, even if a previous PR dismissed something similar:
+이전 PR이 비슷한 것을 무시했더라도, 이 범주는 자동으로 건너뛰지 마세요.
 
-- Security, privacy, auth, billing, data retention, training-data, and permission-boundary findings.
-- High-severity findings.
-- Migration, schema, idempotency, concurrency, and cross-system behavior findings.
-- Comments where the suggested fix is small and clearly reduces risk without changing product intent.
+- 보안, 프라이버시, 인증, 청구, 데이터 보존, 학습 데이터, 권한 경계에 대한 발견.
+- 심각도가 높은 발견.
+- 마이그레이션, 스키마, 멱등성, 동시성, 시스템 간 동작에 대한 발견.
+- 제안된 수정이 작고, 제품 의도를 바꾸지 않은 채 위험을 분명히 줄이는 코멘트.
 
-Historical data showed humans sometimes dismiss security/data-flow comments. Treat those as owner judgment calls, not team-wide skip rules.
+과거 데이터에서 사람은 보안과 데이터 흐름 코멘트를 때때로 무시했습니다. 그것을 팀 전체의 건너뛰기 규칙이 아니라 소유자의 판단으로 취급하세요.
 
-## Candidate learnings from recent babysits
+## 최근 Babysit에서 나온 후보 학습
 
-Append new candidate learnings here during or after babysitting when they look team-useful but not yet mature. Prefer promoting recurring candidates into the section above once several PRs confirm the pattern.
+돌보는 도중이나 후에, 팀에 유용해 보이지만 아직 성숙하지 않은 새 후보 학습을 여기에 추가하세요. 여러 PR이 패턴을 확인하면, 반복 후보를 위 섹션으로 올리는 쪽을 선호하세요.
 
-### Manual reimplementations of native browser behavior
+### 네이티브 브라우저 동작의 수동 재구현
 
-- Confidence: candidate
-- Skip when: Practically never. When a diff replaces native browser behavior with a manual equivalent (native sticky → JS-positioned clones, native scroll targeting → forwarded wheel/touch events, paint-order occlusion → masks/clip-path), Bugbot's logic-bug findings against that code have been consistently legitimate.
-- Do not skip when: The finding concerns event-forwarding gaps (wheel deltaMode, touch pans, scroll-chaining at edges, tap slop), mask/clip hit-testing divergence, or observer-vs-React state timing races in such code. Default to fix.
-- Example signal: "masks do not affect hit-testing", "overlay blocks wheel scroll", "ignores deltaMode", "runs in the IntersectionObserver callback before React applies state".
-- Source: one sticky-occlusion PR: six Bugbot passes, roughly eighteen findings, every one fixed rather than dismissed.
+- 확신도: 후보
+- 건너뛸 때: 사실상 없습니다. diff가 네이티브 브라우저 동작을 수동 등가물로 바꿀 때 (네이티브 sticky → JS로 배치한 클론, 네이티브 스크롤 타기팅 → 전달된 휠/터치 이벤트, 페인트 순서 가림 → mask/`clip-path`), 그 코드에 대한 Bugbot의 로직 버그 발견은 일관되게 타당했습니다.
+- 건너뛰지 말 때: 발견이 이벤트 전달의 빈틈 (휠 `deltaMode`, 터치 팬, 가장자리에서의 스크롤 체이닝, 탭 슬롭), mask/clip 히트 테스트 차이, 또는 그런 코드에서 observer와 React 상태의 타이밍 레이스에 관한 경우. 기본값은 `fix`입니다.
+- 예시 신호: "masks do not affect hit-testing", "overlay blocks wheel scroll", "ignores deltaMode", "runs in the IntersectionObserver callback before React applies state".
+- 출처: sticky 가림 PR 하나. Bugbot 패스 여섯 번, 발견 대략 열여덟 개. 무시하지 않고 모두 수정했습니다.
 
-### Contract-test drift claims are cheaply verifiable — run the test first
+### 계약 테스트 드리프트 주장은 싸게 검증할 수 있습니다. 먼저 테스트를 실행하세요
 
-- Confidence: candidate
-- Skip when: Never skip the verification itself; it costs one command. When a PR
-  ships a contract test that pins protocol or documentation prose (regexes over
-  a SKILL.md, snapshot of doc wording), and Bugbot claims "the test no longer
-  matches the doc" (or vice versa), run that test on the PR tip before
-  classifying. A red run confirms the claim empirically; a green run is a
-  concrete disproof for the dismissal reply.
-- Do not skip when: n/a — this is a verification shortcut, not a dismissal
-  pattern. Note that repeat-pass lean-dismiss heuristics would misfire here:
-  prose-pinning tests drift precisely BECAUSE earlier fix rounds edit the prose.
-- Example signal: "Contract test omits the pre-fix wait" on a PR whose earlier
-  fix commits reworded the pinned passage; the test run on the tip failed on
-  exactly the cited assertion.
-- Source: one prose-pinning PR with eight Bugbot passes; the claim was real on
-  pass 7 despite every earlier pass being fixed-and-resolved.
+- 확신도: 후보
+- 건너뛸 때: 검증 자체는 건너뛰지 마세요. 명령 하나면 됩니다. PR이 프로토콜이나 문서 산문을 고정하는 계약 테스트를 실을 때 (SKILL.md를 대상으로 한 regex, 문서 문구의 스냅샷), Bugbot이 "테스트가 더 이상 문서와 맞지 않는다"고 하거나 그 반대를 주장하면, 분류하기 전에 PR 팁에서 그 테스트를 실행하세요. 빨간 실행은 주장을 경험적으로 확인합니다. 초록 실행은 무시 답장에 쓸 구체적인 반증입니다.
+- 건너뛰지 말 때: 해당 없음. 이것은 무시 패턴이 아니라 검증 지름길입니다. 패스가 반복되면 무시 쪽으로 기우는 휴리스틱은 여기서 빗나갑니다. 산문을 고정하는 테스트가 드리프트하는 것은, 앞선 수정 라운드가 바로 그 산문을 고치기 때문입니다.
+- 예시 신호: "Contract test omits the pre-fix wait". 앞선 수정 커밋이 고정된 문단의 문구를 바꾼 PR에서, 팁에서 돌린 테스트가 인용된 단언에서 정확히 실패했습니다.
+- 출처: 산문을 고정하는 PR 하나, Bugbot 패스 여덟 번. 앞선 패스는 모두 수정된 뒤 해결되었는데도, 패스 7의 주장은 사실이었습니다.
 
-### Stale security-review finding already fixed later in the same PR
+### 같은 PR 후반에 이미 고쳐진, 낡은 보안 리뷰 발견
 
-- Confidence: candidate
-- Skip when: An agentic security review (or similar) claims a missing authz/validation call, and the current PR tip clearly includes that exact gate (with tests), typically added in a later hardening commit after the review ran.
-- Do not skip when: The cited helper is a no-op for the principal under discussion, the check runs after the side effect it guards, or coverage for the claimed principal is missing.
-- Example signal: A HIGH "missing authorization check" finding while the exact guard is already called before the side effect on the tip.
-- Source: one webhook-endpoint PR whose hardening commit postdated the review run.
+- 확신도: 후보
+- 건너뛸 때: 에이전틱 보안 리뷰(또는 그와 비슷한 리뷰)가 인가 또는 검증 호출의 누락을 주장하고, 현재 PR 팁이 그 정확한 게이트를 테스트와 함께 분명히 포함할 때. 보통 리뷰가 실행된 뒤 나중에 올라온 강화 커밋에서 추가됩니다.
+- 건너뛰지 말 때: 인용된 헬퍼가 논의 중인 주체에게는 no-op이거나, 검사가 막아야 하는 부작용보다 나중에 실행되거나, 주장된 주체에 대한 커버리지가 없을 때.
+- 예시 신호: 팁에서는 정확한 가드가 이미 부작용 전에 호출되는데, HIGH "missing authorization check" 발견.
+- 출처: 강화 커밋이 리뷰 실행보다 나중인 webhook 엔드포인트 PR 하나.
 
-### Widening a deliberately narrow error condition would mask the real error
+### 의도적으로 좁힌 오류 조건을 넓히면 실제 오류가 가려집니다
 
-- Confidence: candidate
-- Skip when: The finding asks to broaden a narrow error condition (a specific
-  `errno`, error code, or status class) into a catch-all, and that narrowness
-  encodes a real distinction. The canonical shape is a dependency fallback
-  gated on `ENOENT`: "binary is not installed" is a different situation from
-  "the command ran and failed". Retrying on any non-zero exit would re-run a
-  legitimate failure (not found, expired auth, network) against the fallback
-  and then report the fallback's error, hiding the true one.
-- Do not skip when: The narrow condition misses a case in the SAME category
-  (another "binary unusable" errno such as `EACCES`, another transport-level
-  failure), the unhandled path loses data or leaves partial state, or the retry
-  is idempotent AND the original error is still surfaced.
-- Example signal: "only retries when X fails with ENOENT … never tries the
-  fallback even when a working Y exists", pointing at code whose fallback
-  exists for a missing dependency rather than a failed operation.
-- Source: one CLI-rename PR whose fallback existed for a missing binary rather
-  than a failed command.
+- 확신도: 후보
+- 건너뛸 때: 발견이 좁은 오류 조건 (특정 `errno`, 오류 코드, 또는 상태 클래스)을 포괄 조건으로 넓히라고 하고, 그 좁음이 실제 구분을 담고 있을 때. 대표적인 형태는 `ENOENT`일 때만 의존성 폴백을 타는 경우입니다. "바이너리가 설치되어 있지 않음"은 "명령이 실행된 뒤 실패함"과 다른 상황입니다. 0이 아닌 모든 종료 코드에서 재시도하면, 정당한 실패 (대상을 찾을 수 없음, 만료된 인증, 네트워크)를 폴백에 대해 다시 실행한 다음 폴백의 오류를 보고하게 되어, 진짜 오류가 숨습니다.
+- 건너뛰지 말 때: 좁은 조건이 같은 범주의 다른 경우를 놓칠 때 (또 다른 "바이너리를 쓸 수 없음" errno인 `EACCES`, 또 다른 전송 계층 실패), 처리하지 않은 경로가 데이터를 잃거나 부분 상태를 남길 때, 또는 재시도가 멱등이고 원래 오류도 여전히 드러날 때.
+- 예시 신호: "only retries when X fails with ENOENT … never tries the fallback even when a working Y exists". 폴백이 실패한 연산이 아니라 없는 의존성을 위해 존재하는 코드를 가리킬 때.
+- 출처: 폴백이 실패한 명령이 아니라 없는 바이너리를 위한 CLI 이름 변경 PR 하나.

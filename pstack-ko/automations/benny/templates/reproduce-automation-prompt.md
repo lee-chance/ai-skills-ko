@@ -1,16 +1,16 @@
-# Reproduce automation prompt
+# 재현 자동화 프롬프트
 
-> Source material for the copied setup workflow. Paraphrase this intent into a built-in `automate` draft after `automate` confirms that the copied pack is committed in the repository where the automation will run.
+> 복사된 setup 워크플로우의 출처 자료입니다. `automate`가 복사된 팩이 자동화가 실행될 저장소에 커밋되었음을 확인한 다음, 이 의도를 내장 `automate` 초안에 패러프레이즈하세요.
 
-Read and follow `.cursor/automations/benny/skills/reproduce-and-fix-issues/SKILL.md` for this run.
+이 실행에서는 `.cursor/automations/benny/skills/reproduce-and-fix-issues/SKILL.md`를 읽고 따르세요.
 
-Configuration source. Include this repository-relative path only when it is committed in the same target repository. Otherwise paraphrase the configured values. Never use a plugin source or cache path:
+구성 소스. 이 저장소 상대 경로는 같은 대상 저장소에 커밋되어 있을 때만 넣으세요. 그렇지 않으면 구성된 값을 패러프레이즈하세요. 플러그인 소스나 캐시 경로는 절대 쓰지 마세요.
 
 ```text
 {{BENNY_CONFIG_PATH}}
 ```
 
-Trigger:
+트리거:
 
 ```json
 {
@@ -20,14 +20,14 @@ Trigger:
 }
 ```
 
-The creation intent should describe this as a new top-level report in the configured source Slack channel. It should include the configured repository, default branch, issue tracker, control adapter, feature map, and draft pull request capability.
+생성 의도는 이것을 구성된 소스 Slack 채널의 새 최상위 보고서로 설명해야 합니다. 구성된 저장소, 기본 브랜치, 이슈 추적기, 제어 어댑터, 피처 맵, 초안 풀 리퀘스트 기능을 포함해야 합니다.
 
-Treat the source channel and root thread timestamp as immutable. If either is missing or does not match configuration, stop without posting.
+소스 채널과 루트 스레드 타임스탬프는 불변으로 취급하세요. 둘 중 하나라도 없거나 구성과 맞지 않으면, 게시하지 말고 멈추세요.
 
-Wait for a configured triage marker from the configured triage identity in this exact thread. Proceed only for `[benny:bug]` or `[benny:performance]`.
+바로 이 스레드에서, 구성된 분류 신원이 보낸 구성된 분류 마커를 기다리세요. `[benny:bug]` 또는 `[benny:performance]`일 때만 진행하세요.
 
-Require the configured control-adapter skill before attempting a repro. Reproduce the exact discriminating symptom twice through the real UI. Verify existing pull requests or commits without authoring over them. Attempt a bounded fix only after a confirmed repro and the operational file's fix gate.
+재현을 시도하기 전에 구성된 제어 어댑터 스킬이 있어야 합니다. 실제 UI로 정확한 구분 증상을 두 번 재현하세요. 기존 풀 리퀘스트나 커밋은 그 위에 작성하지 말고 검증하세요. 확인된 재현과 운영 파일의 수정 게이트 이후에만 제한된 수정을 시도하세요.
 
-The coordinator is the only Slack poster. Every child prompt must forbid `SendSlackMessage`, `PostToSlack`, `chat.postMessage`, and all other Slack writes. Children return findings only.
+Slack에 게시하는 주체는 코디네이터뿐입니다. 모든 하위 프롬프트는 `SendSlackMessage`, `PostToSlack`, `chat.postMessage`, 그리고 그 밖의 모든 Slack 쓰기를 금지해야 합니다. 하위는 발견 사항만 반환합니다.
 
-Never post a root message in the source channel.
+소스 채널에 루트 메시지를 절대 게시하지 마세요.

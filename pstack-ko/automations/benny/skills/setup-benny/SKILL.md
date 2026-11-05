@@ -1,39 +1,39 @@
 ---
 name: setup-benny
-description: Configure Benny and prepare its triage and repro automations. Use when installing Benny or changing its Slack, tracker, repository, routing, control, model, or budget settings.
+description: Benny를 구성하고 분류 자동화와 재현 자동화를 준비하세요. Benny를 설치하거나 Slack, 추적기, 저장소, 라우팅, 제어, 모델, 예산 설정을 바꿀 때 사용하세요.
 disable-model-invocation: true
 ---
 
-# Set up Benny
+# Benny 설정
 
-Benny ships as a dormant automation pack inside pstack. The plugin manifest exposes only pstack's normal skill root; this file and the two operational files are not slash skills.
+Benny는 pstack 안의 휴면 자동화 팩으로 제공됩니다. 플러그인 매니페스트는 pstack의 일반 스킬 루트만 노출합니다. 이 파일과 두 운영 파일은 슬래시 스킬이 아닙니다.
 
-The human enters setup by pointing Cursor at the pack's `FOR_AGENTS.md`. The bootstrap flow copies the whole pack into the target repository, then reads this file directly at `.cursor/automations/benny/skills/setup-benny/SKILL.md`.
+사람은 팩의 `FOR_AGENTS.md`에 Cursor를 가리켜 setup에 진입합니다. 부트스트랩 흐름은 팩 전체를 대상 저장소에 복사한 다음, `.cursor/automations/benny/skills/setup-benny/SKILL.md`에서 이 파일을 직접 읽습니다.
 
-Benny needs external configuration and two live Cursor automations.
+Benny에는 외부 구성과 라이브 Cursor 자동화 두 개가 필요합니다.
 
-Do not create or update an automation until the user explicitly asks. Never put a secret value in plugin files, prompts, or committed configuration.
+사용자가 명시적으로 요청하기 전에는 자동화를 만들거나 업데이트하지 마세요. 비밀 값을 플러그인 파일, 프롬프트, 커밋된 구성에 절대 넣지 마세요.
 
-## 1. Copy the pack and enable shared pstack skills
+## 1. 팩을 복사하고 공유 pstack 스킬을 켜기
 
-Do this before asking for Benny configuration and before invoking the built-in `/automate` skill.
+Benny 구성을 묻기 전에, 그리고 내장 `/automate` 스킬을 호출하기 전에 이 작업을 하세요.
 
-Ask which repository will run the automations. The source pack is the directory containing `FOR_AGENTS.md`. The destination is `<target-repository>/.cursor/automations/benny/`.
+어느 저장소가 자동화를 실행할지 물어보세요. 소스 팩은 `FOR_AGENTS.md`가 있는 디렉터리입니다. 대상은 `<target-repository>/.cursor/automations/benny/`입니다.
 
-Merge the entire source pack into the destination:
+소스 팩 전체를 대상에 병합하세요.
 
-1. Create the destination when it is absent.
-2. Copy every source file to the same relative path.
-3. Preserve destination-only files. Never delete unrelated files during install or refresh.
-4. Keep user-owned configuration, feature maps, and routing maps outside the destination. Never overwrite them.
-5. When an existing source-managed file differs, inspect the diff and merge without discarding local edits. If ownership is ambiguous, stop and ask before replacing it.
-6. Verify that the destination contains `FOR_AGENTS.md`, this setup file, both operational files, their references, and the templates.
+1. 대상이 없으면 만드세요.
+2. 모든 소스 파일을 같은 상대 경로로 복사하세요.
+3. 대상에만 있는 파일을 보존하세요. 설치나 새로 고침 중에 관련 없는 파일을 절대 지우지 마세요.
+4. 사용자 소유 구성, 피처 맵, 라우팅 맵은 대상 밖에 두세요. 절대 덮어쓰지 마세요.
+5. 기존 소스 관리 파일이 다르면 diff를 보고, 로컬 편집을 버리지 않은 채 병합하세요. 소유권이 모호하면 교체하기 전에 멈추고 물어보세요.
+6. 대상에 `FOR_AGENTS.md`, 이 setup 파일, 운영 파일 둘, 그 참조 문서, 템플릿이 있는지 확인하세요.
 
-If this file is already being read from the target destination, treat the copy as complete and run the same verification before continuing.
+이 파일을 이미 대상 위치에서 읽고 있다면 복사가 끝난 것으로 보고, 계속하기 전에 같은 확인을 하세요.
 
-Add pstack to the target repository's `.cursor/settings.json`. If the file or `.cursor` directory does not exist, create it.
+대상 저장소의 `.cursor/settings.json`에 pstack을 추가하세요. 파일이나 `.cursor` 디렉터리가 없으면 만드세요.
 
-Merge this entry into the existing JSON or JSONC:
+이 항목을 기존 JSON 또는 JSONC에 병합하세요.
 
 ```json
 {
@@ -43,9 +43,9 @@ Merge this entry into the existing JSON or JSONC:
 }
 ```
 
-Preserve every unrelated top-level setting and every other plugin entry. If `plugins.pstack` already exists, change only its `enabled` value. Preserve comments and valid JSONC syntax when the file uses JSONC. Validate the file after editing it.
+관련 없는 최상위 설정과 다른 모든 플러그인 항목을 보존하세요. `plugins.pstack`이 이미 있으면 `enabled` 값만 바꾸세요. 파일이 JSONC이면 주석과 유효한 JSONC 구문을 보존하세요. 편집한 뒤 파일을 검증하세요.
 
-Reload the target project or start a fresh agent rooted there. Verify that these shared pstack skills resolve from project scope:
+대상 프로젝트를 다시 로드하거나, 그곳에 루트를 둔 새 에이전트를 시작하세요. 다음 공유 pstack 스킬이 프로젝트 범위에서 해결되는지 확인하세요.
 
 - `how`
 - `why`
@@ -58,209 +58,209 @@ Reload the target project or start a fresh agent rooted there. Verify that these
 - `principle-fix-root-causes`
 - `principle-prove-it-works`
 
-Do not count a skill loaded from the current session or a user-scoped plugin. The check must show that a fresh agent in the target repository receives pstack through project settings.
+현재 세션이나 사용자 범위 플러그인에서 로드된 스킬은 세지 마세요. 확인은, 대상 저장소의 새 에이전트가 프로젝트 설정을 통해 pstack을 받는다는 것을 보여야 합니다.
 
-If project-scoped plugin installation is unavailable or any shared dependency does not resolve, stop and explain the failure.
+프로젝트 범위 플러그인 설치를 쓸 수 없거나 공유 종속성이 하나라도 해결되지 않으면, 멈추고 무엇이 실패했는지 설명하세요.
 
-The Benny files are read directly from `.cursor/automations/benny/`. Do not add that directory to a plugin manifest or expect its `SKILL.md` files to appear in the slash-skill list.
+Benny 파일은 `.cursor/automations/benny/`에서 직접 읽습니다. 그 디렉터리를 플러그인 매니페스트에 넣거나, 그 `SKILL.md` 파일들이 슬래시 스킬 목록에 나타날 것으로 기대하지 마세요.
 
-Tell the user that `.cursor/settings.json`, `.cursor/automations/benny/`, and any referenced secret-free configuration must be committed before either automation is enabled. Do not commit them unless the user asks.
+어느 자동화든 켜기 전에 `.cursor/settings.json`, `.cursor/automations/benny/`, 참조된 비밀 없는 구성이 커밋되어야 한다고 사용자에게 말하세요. 사용자가 요청하지 않으면 커밋하지 마세요.
 
-Once this check passes, live automation prompts may read the committed operational files by their stable repository-relative paths. They must not embed a plugin cache path or copy the file contents.
+이 확인을 통과하면, 라이브 자동화 프롬프트는 안정적인 저장소 상대 경로로 커밋된 운영 파일을 읽을 수 있습니다. 플러그인 캐시 경로를 넣거나 파일 내용을 복사하면 안 됩니다.
 
-## 2. Adapt the configuration
+## 2. 구성 맞추기
 
-Open these copied examples:
+복사된 다음 예시를 여세요.
 
 - `../../templates/configuration.example.yaml`
 - `../reproduce-and-fix-issues/references/feature-map.example.md`
 
-Create user-owned copies outside `.cursor/automations/benny/`. These are configuration files, not pack files. Example locations:
+`.cursor/automations/benny/` 밖에 사용자 소유 복사본을 만드세요. 이것은 팩 파일이 아니라 구성 파일입니다. 예시 위치:
 
-- Project config, such as `.cursor/benny/configuration.yaml`
-- Project feature map, such as `.cursor/benny/feature-map.md`
-- Project routing map, such as `.cursor/benny/routing.md`
-- User config, such as `~/.config/benny/configuration.yaml`
-- User feature map, such as `~/.config/benny/feature-map.md`
+- 프로젝트 구성, 예를 들어 `.cursor/benny/configuration.yaml`
+- 프로젝트 피처 맵, 예를 들어 `.cursor/benny/feature-map.md`
+- 프로젝트 라우팅 맵, 예를 들어 `.cursor/benny/routing.md`
+- 사용자 구성, 예를 들어 `~/.config/benny/configuration.yaml`
+- 사용자 피처 맵, 예를 들어 `~/.config/benny/feature-map.md`
 
-Fill one feature-map section for every user-facing feature the automation may reproduce. Keep it at the user point of view. Do not freeze implementation details or current code paths in the map.
+자동화가 재현할 수 있는 사용자 대면 기능마다 피처 맵 섹션 하나를 채우세요. 사용자가 보는 시점을 유지하세요. 구현 세부 사항이나 현재 코드 경로를 맵에 고정하지 마세요.
 
-Do not edit the copied examples. Pack refreshes may update source-managed files after conflict review, but they must never touch the user-owned copies.
+복사된 예시는 고치지 마세요. 팩 새로 고침은 충돌을 검토한 뒤 소스 관리 파일을 업데이트할 수 있지만, 사용자 소유 복사본은 절대 건드리면 안 됩니다.
 
-Prefer committed, secret-free files in the target repository when a fresh automation checkout must read them. Otherwise paraphrase the required values into the live prompt. Reference a repository file only after the built-in `/automate` skill confirms that the file is committed in the repository where the automation runs.
+새 자동화 체크아웃이 파일을 읽어야 하면, 대상 저장소에 커밋된 비밀 없는 파일을 우선하세요. 그렇지 않으면 필요한 값을 라이브 프롬프트에 패러프레이즈하세요. 저장소 파일은, 내장 `/automate` 스킬이 그 파일이 자동화가 실행되는 저장소에 커밋되었음을 확인한 뒤에만 참조하세요.
 
-Use stable repository-relative paths for committed pack and configuration files. Never reference the plugin source directory or a plugin cache path from a live automation.
+커밋된 팩과 구성 파일에는 안정적인 저장소 상대 경로를 사용하세요. 라이브 자동화에서 플러그인 소스 디렉터리나 플러그인 캐시 경로를 절대 참조하지 마세요.
 
-## 3. Fill the required choices
+## 3. 필요한 선택 채우기
 
-Ask for or confirm:
+다음을 묻거나 확인하세요.
 
-- Source Slack channel ID
-- Optional operations or status channel ID
-- Repository URL and default branch
-- Triage identity or Slack user ID
-- Issue tracker type, team, project, labels, and intake status
-- Tracker adapter skill or MCP actions
-- Optional routing map path
-- Required control skill name
-- Required user-facing feature-map path
-- Status emoji strings
-- Pull request URL format
-- Polling and effort budgets
-- Model slug for triage, repro, code work, and media review
+- 소스 Slack 채널 ID
+- 선택적 작업 채널 또는 상태 채널 ID
+- 저장소 URL과 기본 브랜치
+- 분류 신원 또는 Slack 사용자 ID
+- 이슈 추적기 종류, 팀, 프로젝트, 레이블, 접수 상태
+- 추적기 어댑터 스킬 또는 MCP 동작
+- 선택적 라우팅 맵 경로
+- 필수 제어 스킬 이름
+- 필수인 사용자 대면 피처 맵 경로
+- 상태 이모지 문자열
+- 풀 리퀘스트 URL 형식
+- 폴링 예산과 노력 예산
+- 분류, 재현, 코드 작업, 미디어 검토에 쓸 모델 슬러그
 
-Use only model slugs shown as available in the user's Cursor model picker or supported model list. Do not guess a slug and do not carry over a private default.
+사용자의 Cursor 모델 선택기나 지원 모델 목록에 사용 가능하다고 나온 모델 슬러그만 사용하세요. 슬러그를 추측하지 말고, 비공개 기본값을 가져오지 마세요.
 
-The source channel, triage identity, repository, tracker adapter, control skill, and feature map must be explicit. Fail setup if any required value stays ambiguous.
+소스 채널, 분류 신원, 저장소, 추적기 어댑터, 제어 스킬, 피처 맵은 명시적이어야 합니다. 필요한 값이 하나라도 모호하면 setup을 실패로 처리하세요.
 
-Use pstack's `unslop` skill on the final automation names, descriptions, and prompt shims before saving them.
+최종 자동화 이름, 설명, 연결용 프롬프트를 저장하기 전에 pstack의 `unslop` 스킬을 적용하세요.
 
-## 4. Check integration capabilities
+## 4. 통합 기능 확인
 
-The triage automation needs:
+분류 자동화에 필요한 것:
 
-- Read access to the configured source Slack channel and its threads
-- Thread-reply access in that channel
-- Attachment metadata and file download access when reports include media
-- Search, read, create, and update access through the configured issue-tracker adapter
+- 구성된 소스 Slack 채널과 그 스레드에 대한 읽기 접근
+- 그 채널의 스레드 답장 접근
+- 보고서에 미디어가 있을 때 첨부 메타데이터와 파일 다운로드 접근
+- 구성된 이슈 추적기 어댑터를 통한 검색, 읽기, 생성, 업데이트 접근
 
-The repro automation needs:
+재현 자동화에 필요한 것:
 
-- Read access to the source thread
-- Thread-reply access in the source channel
-- Optional post and edit access in the configured operations channel
-- Repository read and history access
-- A pull request action that can open a draft pull request
-- The configured control-adapter skill
+- 소스 스레드에 대한 읽기 접근
+- 소스 채널의 스레드 답장 접근
+- 구성된 작업 채널에서의 선택적 게시와 편집 접근
+- 저장소 읽기와 히스토리 접근
+- 초안 풀 리퀘스트를 열 수 있는 풀 리퀘스트 동작
+- 구성된 제어 어댑터 스킬
 
-Prefer configured Cursor Slack actions for reads and posts. The optional `BENNY_SLACK_BOT_TOKEN` may fill a narrow gap such as editing one operations status message or downloading an attachment. Store the value in a secret manager or environment, not in YAML.
+읽기와 게시에는 구성된 Cursor Slack 동작을 우선하세요. 선택적 `BENNY_SLACK_BOT_TOKEN`은 작업 상태 메시지 하나를 고치거나 첨부를 받는 것처럼 좁은 빈틈을 메울 수 있습니다. 값은 YAML이 아니라 비밀 관리자나 환경에 보관하세요.
 
-Do not use undocumented integration endpoints.
+문서화되지 않은 통합 엔드포인트를 사용하지 마세요.
 
-## 5. Prepare the routing map
+## 5. 라우팅 맵 준비
 
-If the user wants reroutes or owner pings:
+사용자가 재라우팅이나 소유자 핑을 원하면:
 
-1. Copy `../triage-issue-reports/references/routing.example.md` outside `.cursor/automations/benny/`.
-2. Replace every placeholder with public or organization-local values.
-3. Keep owner pings off by default.
-4. Allow a ping only for a configured feature owner or a confirmed likely regression author.
+1. `../triage-issue-reports/references/routing.example.md`를 `.cursor/automations/benny/` 밖으로 복사하세요.
+2. 모든 플레이스홀더를 공개 값이나 조직 내부 값으로 바꾸세요.
+3. 소유자 핑은 기본적으로 꺼 두세요.
+4. 구성된 기능 소유자나, 확인된 유력 회귀 작성자에게만 핑을 허용하세요.
 
-If no routing map is configured, triage may classify a report but must not guess a destination or owner.
+라우팅 맵이 없으면 보고서의 범주는 정할 수 있지만, 목적지나 소유자를 추측하면 안 됩니다.
 
-## 6. Verify the control adapter
+## 6. 제어 어댑터 검증
 
-Read `../reproduce-and-fix-issues/references/control-adapter.md` and the user's completed feature map.
+`../reproduce-and-fix-issues/references/control-adapter.md`와 사용자가 완성한 피처 맵을 읽으세요.
 
-Confirm that the named skill can:
+이름이 지정된 스킬이 다음을 할 수 있는지 확인하세요.
 
-- Bring up the target app
-- Navigate every mapped feature through the real UI
-- Exercise mapped states through declared adapter actions
-- Inspect state without forcing the result
-- Capture screenshots
-- Start and stop a recording
-- Clean up its processes and temporary data
+- 대상 앱을 띄우기
+- 실제 UI로 매핑된 모든 기능에 이동하기
+- 선언된 어댑터 동작으로 매핑된 상태 다루기
+- 결과를 강제하지 않고 상태 검사하기
+- 스크린샷 캡처하기
+- 녹화 시작과 중지
+- 프로세스와 임시 데이터 정리하기
 
-If any capability is missing, leave the repro automation disabled. It must fail closed rather than claim a reproduction it did not perform.
+기능이 하나라도 빠지면 재현 자동화를 끈 채로 두세요. 하지 않은 재현을 주장하지 말고, 닫힌 상태로 실패해야 합니다.
 
-## 7. Prepare the live automations
+## 7. 라이브 자동화 준비
 
-Ask whether this is first-time creation or configuration of existing automations.
+처음 만드는 것인지, 기존 자동화를 구성하는 것인지 물어보세요.
 
-Read `../../FOR_AGENTS.md` from the copied pack as the primary user-intent source for either path. Use it to understand the two triggers, tools, instructions, outcomes, and shared rules.
+어느 경로이든 복사된 팩의 `../../FOR_AGENTS.md`를 주된 사용자 의도 출처로 읽으세요. 두 트리거, 도구, 지시, 결과, 공유 규칙을 파악하는 데 쓰세요.
 
-### First-time creation
+### 처음 만들기
 
-Create one automation at a time.
+한 번에 자동화 하나만 만드세요.
 
-For each automation:
+각 자동화마다:
 
-1. Read the matching copied prompt template as secondary internal source material.
-2. Turn `FOR_AGENTS.md`, the finished Benny configuration, and the template intent into a complete natural-language request.
-3. Tell the live prompt to read and follow its exact committed operational file under `.cursor/automations/benny/`.
-4. Use the stable repository-relative path, not a plugin source or cache path. Do not copy the operational file contents into the live prompt.
-5. Read and follow the built-in `automate` skill.
-6. Let `automate` discover Slack channels, the repository, and connected integrations.
-7. Let `automate` confirm that the copied pack and any referenced configuration files are committed in the same repository where the automation will run.
-8. Let `automate` show its draft table, obtain approval, ask readiness, and open the Automations editor.
-9. Finish the editor handoff for this automation before starting the next one.
+1. 해당하는 복사된 프롬프트 템플릿을 보조 내부 출처로 읽으세요.
+2. `FOR_AGENTS.md`, 완성된 Benny 구성, 템플릿의 의도를 완전한 자연어 요청으로 바꾸세요.
+3. 라이브 프롬프트가 `.cursor/automations/benny/` 아래의 정확한 커밋된 운영 파일을 읽고 따르게 하세요.
+4. 플러그인 소스나 캐시 경로가 아니라 안정적인 저장소 상대 경로를 사용하세요. 운영 파일 내용을 라이브 프롬프트에 복사하지 마세요.
+5. 내장 `automate` 스킬을 읽고 따르세요.
+6. `automate`가 Slack 채널, 저장소, 연결된 통합을 찾게 하세요.
+7. `automate`가, 복사된 팩과 참조된 구성 파일이 자동화가 실행될 같은 저장소에 커밋되었는지 확인하게 하세요.
+8. `automate`가 초안 표를 보여주고, 승인을 받고, 준비 상태를 묻고, Automations 에디터를 열게 하세요.
+9. 이 자동화의 에디터 핸드오프를 끝낸 뒤에 그다음 자동화를 시작하세요.
 
-Give `automate` this complete triage intent, filled from configuration:
+구성으로 채운 다음 분류 의도를 `automate`에 주세요.
 
-- Name `benny-triage`.
-- Read and follow `.cursor/automations/benny/skills/triage-issue-reports/SKILL.md` for every run.
-- Trigger on each new top-level report in the configured source Slack channel.
-- Read the triggering thread and reply only inside it.
-- Use the configured issue-tracker integration.
-- Classify, inspect evidence, trace cause, dedupe, and create only clear new bugs.
-- End one thread-only verdict with the configured `[benny:bug]`, `[benny:performance]`, or `[benny:other]` marker and optional tracker URL.
-- Never post a source-channel root message.
+- 이름을 `benny-triage`로 하세요.
+- 매 실행마다 `.cursor/automations/benny/skills/triage-issue-reports/SKILL.md`를 읽고 따르세요.
+- 구성된 소스 Slack 채널의 새 최상위 보고서마다 트리거하세요.
+- 트리거된 스레드를 읽고, 그 안에서만 답장하세요.
+- 구성된 이슈 추적기 통합을 사용하세요.
+- 분류하고, 증거를 검사하고, 원인을 추적하고, 중복을 가려 내고, 명확한 새 버그만 만드세요.
+- 스레드에만 남기는 판정 하나를, 구성된 `[benny:bug]`, `[benny:performance]`, 또는 `[benny:other]` 마커와 선택적 추적기 URL로 끝내세요.
+- 소스 채널 루트 메시지는 절대 게시하지 마세요.
 
-After the triage editor handoff is complete, give `automate` this complete repro and fix intent:
+분류 에디터 핸드오프가 끝나면, 다음 재현 및 수정 의도를 `automate`에 주세요.
 
-- Name `benny-reproduce`.
-- Read and follow `.cursor/automations/benny/skills/reproduce-and-fix-issues/SKILL.md` for every run.
-- Trigger on the same new top-level reports in the configured source Slack channel.
-- Use the configured repository and default branch.
-- Read the source thread and reply only inside it.
-- Include pull request creation and the configured tracker, control-adapter, and feature-map requirements. Paraphrase mapped user paths and states unless `automate` confirms an eligible committed file in the same repository.
-- Wait for a trusted triage marker before acting.
-- Reproduce the exact symptom twice through the mapped real UI and capture evidence.
-- Verify an existing fix without authoring over it.
-- Attempt an optional bounded fix only after confirmed repro, then open a draft pull request when proof and checks pass.
-- Never post a source-channel root message.
+- 이름을 `benny-reproduce`로 하세요.
+- 매 실행마다 `.cursor/automations/benny/skills/reproduce-and-fix-issues/SKILL.md`를 읽고 따르세요.
+- 구성된 소스 Slack 채널의 같은 새 최상위 보고서에서 트리거하세요.
+- 구성된 저장소와 기본 브랜치를 사용하세요.
+- 소스 스레드를 읽고, 그 안에서만 답장하세요.
+- 풀 리퀘스트 생성과, 구성된 추적기, 제어 어댑터, 피처 맵 요구를 포함하세요. `automate`가 같은 저장소에서 쓸 수 있는 커밋된 파일을 확인하지 않는 한, 매핑된 사용자 경로와 상태는 패러프레이즈하세요.
+- 행동하기 전에 신뢰할 수 있는 분류 마커를 기다리세요.
+- 매핑된 실제 UI로 정확한 증상을 두 번 재현하고 증거를 캡처하세요.
+- 기존 수정은 그 위에 작성하지 말고 검증하세요.
+- 확인된 재현 이후에만 선택적인 제한된 수정을 시도하고, 증명과 체크가 통과하면 초안 풀 리퀘스트를 여세요.
+- 소스 채널 루트 메시지는 절대 게시하지 마세요.
 
-Do not duplicate `automate`'s Slack, repository, integration, completeness, authentication, draft-review, approval, readiness, or editor-handoff work.
+`automate`가 하는 Slack, 저장소, 통합, 완전성, 인증, 초안 검토, 승인, 준비 상태, 에디터 핸드오프 작업을 중복하지 마세요.
 
-### Existing automations
+### 기존 자동화
 
-The built-in `automate` skill is creation-only. Do not use it to search for, inspect, or update existing automations.
+내장 `automate` 스킬은 생성 전용입니다. 기존 자동화를 찾거나, 검사하거나, 업데이트하는 데 쓰지 마세요.
 
-Finish configuration, routing, control-adapter, and feature-map validation. Then give the user this concise editor checklist.
+구성, 라우팅, 제어 어댑터, 피처 맵 검증을 끝내세요. 그런 다음 사용자에게 이 간결한 에디터 체크리스트를 주세요.
 
-For the existing triage automation, update:
+기존 분류 자동화에서 업데이트할 항목:
 
-- Name and description
-- Direct instruction to read `.cursor/automations/benny/skills/triage-issue-reports/SKILL.md`
-- New top-level Slack report trigger and source channel
-- Slack thread read and reply capabilities
-- Issue-tracker integration
-- Paraphrased triage instructions, thread-only rule, and Benny verdict markers
+- 이름과 설명
+- `.cursor/automations/benny/skills/triage-issue-reports/SKILL.md`를 읽으라는 직접 지시
+- 새 최상위 Slack 보고서 트리거와 소스 채널
+- Slack 스레드 읽기와 답장 기능
+- 이슈 추적기 통합
+- 패러프레이즈한 분류 지시, 스레드 전용 규칙, Benny 판정 마커
 
-For the existing repro automation, update:
+기존 재현 자동화에서 업데이트할 항목:
 
-- Name and description
-- Direct instruction to read `.cursor/automations/benny/skills/reproduce-and-fix-issues/SKILL.md`
-- Matching Slack trigger and source channel
-- Repository and default branch
-- Slack thread read and reply capabilities
-- Pull request action
-- Tracker, control-adapter, and feature-map requirements
-- Paraphrased marker wait, evidence, verification, and bounded-fix instructions
+- 이름과 설명
+- `.cursor/automations/benny/skills/reproduce-and-fix-issues/SKILL.md`를 읽으라는 직접 지시
+- 같은 Slack 트리거와 소스 채널
+- 저장소와 기본 브랜치
+- Slack 스레드 읽기와 답장 기능
+- 풀 리퀘스트 동작
+- 추적기, 제어 어댑터, 피처 맵 요구
+- 패러프레이즈한 마커 대기, 증거, 검증, 제한된 수정 지시
 
-Ask the user to update each existing automation directly in its Automations editor. Do not create replacements or duplicates.
+각 기존 자동화를 그 Automations 에디터에서 직접 고치라고 사용자에게 요청하세요. 대체본이나 중복을 만들지 마세요.
 
-### Creation boundary
+### 생성 경계
 
-Never call a direct automation backend service or backend automation tool. Never use a browser URL that carries draft fields. Never build or open a Cursor protocol deep link. For new automations, the only finish path is the built-in `automate` skill's reviewed Automations editor handoff.
+자동화 백엔드 서비스나 백엔드 자동화 도구를 직접 호출하지 마세요. 초안 필드가 실린 브라우저 URL을 쓰지 마세요. Cursor 프로토콜 딥 링크를 만들거나 열지 마세요. 새 자동화의 유일한 마무리 경로는, 내장 `automate` 스킬이 검토하는 Automations 에디터 핸드오프입니다.
 
-Do not enable either automation until the thread-safety test passes after the editor save.
+에디터 저장 뒤 스레드 게시 안전성 테스트가 통과하기 전에는 어느 자동화도 켜지 마세요.
 
-## 8. Test thread safety
+## 8. 스레드 게시 안전성 테스트
 
-Use a test channel or a harmless test report.
+테스트 채널이나 무해한 테스트 보고서를 사용하세요.
 
-Before testing, confirm that the target repository's `.cursor/settings.json`, `.cursor/automations/benny/`, and every referenced secret-free configuration file are committed on the branch used by the automation checkout. Confirm that both live prompts point at their exact committed operational files. If any check fails, stop. Tell the user that the automation cannot be enabled yet.
+테스트 전에, 대상 저장소의 `.cursor/settings.json`, `.cursor/automations/benny/`, 참조된 모든 비밀 없는 구성 파일이 자동화 체크아웃이 쓰는 브랜치에 커밋되었는지 확인하세요. 두 라이브 프롬프트가 각자 정확한 커밋된 운영 파일을 가리키는지 확인하세요. 확인이 하나라도 실패하면 멈추세요. 자동화를 아직 켤 수 없다고 사용자에게 말하세요.
 
-Verify:
+다음을 확인하세요.
 
-1. Triage stores the root `thread_ts` and posts exactly one verdict as a reply.
-2. The verdict contains one configured marker.
-3. Repro accepts the marker only from the configured triage identity.
-4. Repro keeps the same immutable source coordinates.
-5. No source-channel root message appears.
-6. A delegated worker cannot use any Slack write action.
-7. Missing coordinates, a deleted parent, or a failed preflight produces no post and no tracker issue.
+1. 분류가 루트 `thread_ts`를 저장하고, 판정 정확히 하나를 답장으로 게시합니다.
+2. 판정에 구성된 마커가 하나 있습니다.
+3. 재현은 구성된 분류 신원에서 온 마커만 받아들입니다.
+4. 재현이 같은 불변 소스 좌표를 유지합니다.
+5. 소스 채널 루트 메시지가 나타나지 않습니다.
+6. 위임된 워커는 Slack 쓰기 동작을 하나도 쓸 수 없습니다.
+7. 좌표가 없거나, 부모가 삭제되었거나, 사전 점검이 실패하면 게시도 추적기 이슈도 생기지 않습니다.
 
-Enable normal traffic only after all seven checks pass.
+일곱 가지 확인이 모두 통과한 뒤에만 일반 트래픽을 켜세요.

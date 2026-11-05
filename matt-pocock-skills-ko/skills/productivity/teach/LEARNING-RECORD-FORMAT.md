@@ -1,46 +1,46 @@
-# Learning Record Format
+# 학습 기록 형식
 
-Learning records live in `./learning-records/` and use sequential numbering: `0001-slug.md`, `0002-slug.md`, etc. Create the directory lazily: only when the first record is written.
+학습 기록은 `./learning-records/`에 두며, 순번을 사용합니다. `0001-slug.md`, `0002-slug.md` 식입니다. 디렉토리는 첫 기록을 쓸 때만 만드세요.
 
-They are the teaching equivalent of ADRs: they capture non-obvious lessons, key insights, and stated prior knowledge that will steer future sessions. They are used to calculate the zone of proximal development.
+학습 기록은 ADR(아키텍처 결정 기록)의 교육 버전입니다. 명확하지 않은 교훈, 핵심 통찰, 그리고 이후 세션을 이끌 사전 지식을 캡처합니다. 근접 발달 영역을 계산하는 데 쓰입니다.
 
-## Template
+## 템플릿
 
 ```md
-# {Short title of what was learned or established}
+# {배운 것 또는 확정된 것의 짧은 제목}
 
-{1-3 sentences: what was learned (or what prior knowledge was established), and why it matters for future sessions.}
+{1-3문장: 무엇을 배웠는지(또는 어떤 사전 지식이 확립되었는지), 그리고 이후 세션에 왜 중요한지.}
 ```
 
-That is the whole format. A learning record can be a single paragraph. The value is recording _that_ this is now known and _why_ it changes what to teach next, not in filling out sections.
+이 형식이 전부입니다. 학습 기록은 한 문단일 수 있습니다. 가치는 칸을 채우는 데 있지 않습니다. _이것_이 이제 알려져 있고, 그래서 _왜_ 다음에 가르칠 내용이 바뀌는지를 남기는 데 있습니다.
 
-## Optional sections
+## 선택 섹션
 
-Only include these when they add genuine value. Most records won't need them.
+진짜 가치를 더할 때만 넣으세요. 대부분의 기록에는 필요 없습니다.
 
-- **Status** frontmatter (`active | superseded by LR-NNNN`): useful when an earlier understanding turns out to be wrong and is replaced.
-- **Evidence**: how the user demonstrated the understanding (a question answered, an exercise completed, prior experience cited). Useful when the claim might be revisited.
-- **Implications**: what this unlocks or rules out for future sessions. Worth recording when non-obvious.
+- **상태** frontmatter (`활성 | LR-NNNN으로 대체됨`): 이전 이해가 틀린 것으로 드러나 대체될 때 유용합니다.
+- **증거**: 사용자가 이해를 어떻게 보여 주었는지입니다 (답한 질문, 끝낸 연습, 밝힌 이전 경험). 그 주장을 다시 볼 수 있을 때 유용합니다.
+- **함의**: 이것이 이후 세션에서 무엇을 열어 주거나 막아 내는지입니다. 명확하지 않을 때 기록할 가치가 있습니다.
 
-## Numbering
+## 번호
 
-Scan `./learning-records/` for the highest existing number and increment by one.
+`./learning-records/`에서 기존 번호의 최댓값을 찾아 1을 더하세요.
 
-## When to write a learning record
+## 학습 기록을 쓸 때
 
-Write one when any of these is true:
+다음 중 하나라도 참이면 작성하세요:
 
-1. **The user demonstrated genuine understanding of something non-trivial**: not just exposure, but evidence they can use the concept correctly. This sets a new floor for what to teach next.
-2. **The user disclosed prior knowledge**: "I already know X." Record it so future sessions don't re-teach it. Also record the _depth_ claimed.
-3. **A misconception was corrected**: the user previously believed something wrong and now sees why. These are high-value: they predict future stumbling blocks for related topics.
-4. **The mission shifted in response to learning**: the user discovered they cared about something different than they thought. Cross-link to [[MISSION.md]] and update it.
+1. **사용자가 사소하지 않은 것을 진정으로 이해했음을 보여 주었습니다.** 한 번 접한 것만으로는 부족합니다. 개념을 올바르게 쓸 수 있다는 근거가 있어야 합니다. 이것은 다음에 가르칠 내용의 새 기준선이 됩니다.
+2. **사용자가 사전 지식을 밝혔습니다.** "X는 이미 압니다." 이후 세션이 그것을 다시 가르치지 않도록 기록하세요. 주장한 _깊이_도 기록하세요.
+3. **오개념이 바로잡혔습니다.** 사용자가 이전에 틀린 것을 믿었고, 이제는 그 이유를 봅니다. 가치가 높습니다. 관련 주제에서 앞으로 걸릴 지점을 예측하기 때문입니다.
+4. **학습에 따라 미션이 옮겨 갔습니다.** 사용자가 스스로 생각했던 것과 다른 것에 관심이 있음을 알았습니다. [[MISSION.md]]에 교차 링크하고 그 파일을 업데이트하세요.
 
-### What does _not_ qualify
+### 해당하지 않는 것
 
-- Material that was merely covered. Coverage is not learning. Wait for evidence.
-- Anything already captured tersely in [[GLOSSARY.md]] as a term definition. Don't duplicate.
-- Session-by-session activity logs. Learning records are not a journal: they are decision-grade insights.
+- 단지 다룬 자료. 다룬 것은 학습이 아닙니다. 근거를 기다리세요.
+- [[GLOSSARY.md]]에 용어 정의로 이미 짧게 잡혀 있는 것. 중복하지 마세요.
+- 세션마다의 활동 로그. 학습 기록은 일지가 아닙니다. 의사결정에 쓸 통찰입니다.
 
-## Supersession
+## 대체
 
-When a later record contradicts an earlier one (the user's understanding deepened or corrected), mark the old record `Status: superseded by LR-NNNN` rather than deleting it. The history of how understanding evolved is itself useful signal.
+이후 기록이 이전 기록과 어긋나면 (이해가 깊어졌거나 바로잡힌 경우), 이전 기록을 지우지 말고 `상태: LR-NNNN으로 대체됨`이라고 표시하세요. 이해가 어떻게 바뀌어 왔는지는 그 자체로 유용한 신호입니다.
