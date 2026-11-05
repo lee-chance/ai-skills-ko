@@ -1,78 +1,78 @@
-## What it does
+## 무엇을 하는가
 
-`to-questionnaire` turns a decision you can't settle on your own into a **questionnaire**: a Markdown document you hand to the one person who holds what you're missing, for them to fill in async or for the two of you to work through in a meeting.
+`to-questionnaire`는 혼자서는 결정할 수 없는 사안을 **설문지**로 바꿔줍니다: 여러분에게 부족한 것을 가진 한 사람에게 건네는 Markdown 문서로, 상대가 비동기로 채우거나 둘이서 회의에서 함께 작업할 수 있습니다.
 
-It grills you about the **send**, never the subject. An interview about the topic is pointless, because not knowing the topic is why you're writing to someone else. So it asks the two things you can always answer (who this is going to, and what you need back from them) and aims every question in the document at the **gap** between the two.
+주제가 아니라 **전달**에 대해 grilling 합니다. 주제에 대한 인터뷰는 무의미합니다. 주제를 모르는 것이 다른 사람에게 쓰는 이유이기 때문입니다. 따라서 항상 답할 수 있는 두 가지(누구에게 가는지, 그들로부터 무엇을 돌려받아야 하는지)를 묻고, 문서의 모든 질문을 둘 사이의 **간격**에 맞춥니다.
 
-## When to reach for it
+## 언제 사용하는가
 
-You invoke this by typing `/to-questionnaire`; the [agent](https://www.aihero.dev/ai-coding-dictionary/agent) won't reach for it on its own.
+`/to-questionnaire`를 입력하여 호출합니다. [에이전트](https://www.aihero.dev/ai-coding-dictionary/agent)는 스스로 이것을 사용하지 않습니다.
 
-Reach for it when a decision is blocked on knowledge that lives in one other person's head: a client, a domain expert, an exec who owns the business rules, a colleague on a team you don't sit with. Which skill you want depends on where the answers are:
+다른 한 사람의 머릿속에 있는 지식에 결정이 막혔을 때 사용하세요: 클라이언트, 도메인 전문가, 비즈니스 규칙을 소유한 임원, 함께 일하지 않는 팀의 동료. 어떤 스킬을 원하는지는 답이 어디 있는지에 따라 다릅니다:
 
-| The answers are in… | Reach for |
+| 답이 있는 곳은… | 사용할 도구 |
 | --- | --- |
-| Your own head, unsharpened | [grill-me](https://aihero.dev/skills-grill-me) |
-| The codebase | [grill-with-docs](https://aihero.dev/skills-grill-with-docs) |
-| Someone else's head | `to-questionnaire` |
-| Nobody's head yet, the question needs something to react to | [prototype](https://aihero.dev/skills-prototype) |
+| 여러분 머릿속, 정리되지 않음 | [grill-me](https://aihero.dev/skills-grill-me) |
+| 코드베이스 | [grill-with-docs](https://aihero.dev/skills-grill-with-docs) |
+| 다른 사람의 머릿속 | `to-questionnaire` |
+| 아직 아무 머릿속에도 없음, 질문이 반응할 무언가가 필요함 | [prototype](https://aihero.dev/skills-prototype) |
 
-The common case is a [grilling](https://www.aihero.dev/ai-coding-dictionary/grilling) session that stalls because some of the questions it raised aren't yours to answer. Run `/to-questionnaire` in that same conversation to take those questions offline, then bring the answers back and carry on.
+일반적인 경우는 제기된 질문 중 일부가 여러분이 답할 것이 아니어서 멈춘 [grilling](https://www.aihero.dev/ai-coding-dictionary/grilling) 세션입니다. 같은 대화에서 `/to-questionnaire`를 실행하여 그 질문들을 오프라인으로 가져간 다음, 답을 가지고 돌아와 계속하세요.
 
-## The send, not the subject
+## 주제가 아닌 전달
 
-The interview is two exchanges, and then it stops.
+인터뷰는 두 번의 교환으로 끝납니다.
 
-- **Who is it going to?** Their role, their expertise, their relationship to you. This sets the tone and how much context the document has to carry. An outside client needs orienting; a teammate does not.
-- **What do you need back?** The concrete decisions or facts you can't resolve alone. This becomes the checklist for the finished document. Every item you name gets a question aimed at it.
+- **누구에게 가는가?** 상대의 역할, 전문성, 여러분과의 관계. 이것이 어조와 문서가 담아야 하는 맥락의 양을 설정합니다. 외부 클라이언트는 안내가 필요하지만 팀원은 그렇지 않습니다.
+- **무엇을 돌려받아야 하는가?** 혼자서는 해결할 수 없는 구체적인 결정이나 사실. 이것이 완성된 문서의 체크리스트가 됩니다. 여러분이 명시한 모든 항목은 그것을 겨냥한 질문을 받습니다.
 
-Everything after that is drafting. The skill writes the file to `to-questionnaire-<slug>.md` in the current directory. There is no setup, no workspace, and nothing to configure.
+그 이후는 모두 초안 작성입니다. 스킬은 현재 디렉터리에 `to-questionnaire-<slug>.md` 파일을 작성합니다. 설정도 없고 작업 공간도 없으며 구성할 것도 없습니다.
 
-## The document
+## 문서
 
-The document is a **discovery questionnaire**, because you lack the context and the recipient has it. That sets its shape:
+문서는 **발견 설문지**입니다. 여러분에게는 맥락이 부족하고 수신자가 그것을 가지고 있기 때문입니다. 이것이 형태를 설정합니다:
 
-- A purpose line naming the decision that depends on it, and a short context section for a recipient who knows none of your background.
-- Questions ordered **most-important-first** and grouped under themed headings, because async means you may only get one pass.
-- One idea per question, never compound, with an answer stub beneath it and a *why this matters* line only where a question could be misread.
-- Explicit permission to answer "I don't know", because a flagged uncertainty is useful and a confident guess that reads like a fact is not.
-- A closing catch-all: anything we didn't ask that we should know?
+- 그것에 의존하는 결정을 명시하는 목적 라인, 그리고 여러분의 배경을 전혀 모르는 수신자를 위한 짧은 맥락 섹션.
+- **가장 중요한 것이 먼저** 오도록 정렬되고 주제별 제목으로 그룹화된 질문들. 비동기는 한 번만 받을 수 있다는 것을 의미하기 때문입니다.
+- 질문당 하나의 아이디어, 절대 복합적이지 않으며, 그 아래에 답변 스텁이 있고, 질문이 오해될 수 있는 경우에만 *이것이 중요한 이유* 라인이 있습니다.
+- "모르겠습니다"라고 답할 수 있는 명시적 허가. 표시된 불확실성은 유용하지만, 사실처럼 읽히는 자신 있는 추측은 그렇지 않기 때문입니다.
+- 마무리 총괄: 우리가 묻지 않았지만 알아야 할 것이 있나요?
 
-The document is deliberately not two things. It isn't **branching**. The questions are a flat, grouped list, not a tree that skips section D if you answered A. It isn't **multi-recipient** either. One run produces one document for one person.
+문서는 의도적으로 두 가지가 아닙니다. **분기**하지 않습니다. 질문은 평평하고 그룹화된 목록이며, A에 답하면 섹션 D를 건너뛰는 트리가 아닙니다. **다중 수신자**도 아닙니다. 한 번 실행하면 한 사람을 위한 한 문서가 생성됩니다.
 
-## Common questions
+## 자주 묻는 질문
 
-**Does it read my grilling session and extract the questions from it?**
-Not as a step of its own. The skill has no ingest phase. It asks about the send, then drafts. What makes it work after a grilling session is that you run it in the **same conversation**, so the [session](https://www.aihero.dev/ai-coding-dictionary/session) is already in [context](https://www.aihero.dev/ai-coding-dictionary/context) and the drafting can draw on it. If you start it in a fresh session, it knows nothing about the grilling, and you supply the topic again yourself when you answer "what do you need back?".
+**grilling 세션을 읽고 거기서 질문을 추출하나요?**
+자체 단계로서는 아닙니다. 스킬에는 수집 단계가 없습니다. 전달에 대해 묻고 초안을 작성합니다. grilling 세션 후에 작동하는 이유는 **같은 대화**에서 실행하기 때문입니다. 따라서 [세션](https://www.aihero.dev/ai-coding-dictionary/session)이 이미 [컨텍스트](https://www.aihero.dev/ai-coding-dictionary/context)에 있고 초안 작성이 그것을 활용할 수 있습니다. 새 세션에서 시작하면 grilling에 대해 아무것도 모르며, "무엇을 돌려받아야 하는가?"에 답할 때 주제를 다시 제공해야 합니다.
 
-**The missing answers don't all live with the same person. Can it split them by recipient?**
-No. Step one asks for *the* recipient, singular, and the skill pitches the tone and context of the whole document at them. If three people hold three parts of the answer, run it three times, once per person. People have asked for one document that routes questions by discipline or role, but that did not ship.
+**누락된 답변이 모두 같은 사람에게 있지 않습니다. 수신자별로 나눌 수 있나요?**
+아니요. 첫 단계는 *그* 수신자를 단수로 묻고, 스킬은 전체 문서의 어조와 맥락을 그 사람에게 맞춥니다. 세 사람이 답의 세 부분을 가지고 있다면, 사람당 한 번씩 세 번 실행하세요. 사람들은 분야나 역할별로 질문을 라우팅하는 한 문서를 요청했지만 배포되지 않았습니다.
 
-**Are the questions dependent: does it skip sections based on earlier answers?**
-No. The dependent-question design was explored and did not ship. The output is a static document: themed groups, most-important-first, every question live. The objection to it is fair. A [model](https://www.aihero.dev/ai-coding-dictionary/model) that plans more than two or three questions ahead of a real answer plans badly, and a branching document has to plan all of them ahead of every answer.
+**질문이 종속적인가요: 이전 답변에 따라 섹션을 건너뛰나요?**
+아니요. 종속 질문 설계는 탐구되었지만 배포되지 않았습니다. 출력은 정적 문서입니다: 주제별 그룹, 가장 중요한 것이 먼저, 모든 질문이 활성화됩니다. 그에 대한 반대는 타당합니다. 실제 답변보다 두세 개 이상의 질문을 미리 계획하는 [모델](https://www.aihero.dev/ai-coding-dictionary/model)은 계획을 잘못 세우며, 분기 문서는 모든 답변보다 앞서 모든 질문을 계획해야 합니다.
 
-**What if the recipient doesn't know either?**
-The document tells them to say so. It explicitly asks for "I don't know" and partial answers. A flagged uncertainty is worth more than a guess, because a vague answer and a confidently wrong one look identical once they're back in your context.
+**수신자도 모른다면 어떻게 하나요?**
+문서가 그렇게 말하라고 알려줍니다. "모르겠습니다"와 부분 답변을 명시적으로 요청합니다. 표시된 불확실성이 추측보다 가치 있습니다. 모호한 답변과 자신 있게 틀린 답변은 여러분의 맥락으로 돌아오면 똑같이 보이기 때문입니다.
 
-**Does it send it anywhere (Slack, an issue tracker, email)?**
-No. It writes a Markdown file in the current directory and tells you the path. Delivery is yours: paste it into a [ticket](https://www.aihero.dev/ai-coding-dictionary/ticket), drop it in a Slack thread, attach it to an email, or open it on a shared screen and work through it live. People have done all four by hand.
+**어딘가(Slack, 이슈 트래커, 이메일)로 보내나요?**
+아니요. 현재 디렉터리에 Markdown 파일을 작성하고 경로를 알려줍니다. 전달은 여러분 몫입니다: [티켓](https://www.aihero.dev/ai-coding-dictionary/ticket)에 붙여넣거나, Slack 스레드에 넣거나, 이메일에 첨부하거나, 공유 화면에서 열어 라이브로 작업하세요. 사람들은 네 가지 모두 직접 해왔습니다.
 
-**Isn't this just `/grill-me` in batch mode?**
-No. `grill-me` already asks in **rounds**. It asks the whole frontier of open questions at once, then recomputes it from your answers, so it already meets the "give me all the questions at once" need. `to-questionnaire` differs on another axis. It is about whose head the answers are in, not how the questions are delivered. To answer them yourself faster, use `grill-me`. To get them out of someone else, use this.
+**이건 그냥 배치 모드의 `/grill-me` 아닌가요?**
+아니요. `grill-me`는 이미 **라운드**로 묻습니다. 열린 질문의 전체 프론티어를 한 번에 묻고 여러분의 답변에서 재계산하므로, "모든 질문을 한 번에 주세요" 요구를 이미 충족합니다. `to-questionnaire`는 다른 축에서 다릅니다. 질문이 어떻게 전달되는지가 아니라 답이 누구의 머릿속에 있는지에 관한 것입니다. 더 빨리 직접 답하려면 `grill-me`를 사용하세요. 다른 사람에게서 얻으려면 이것을 사용하세요.
 
-**Couldn't I just ask the agent for this without a skill?**
-Yes, and plenty of people did before it existed: `OPEN_QUESTIONS.md` files, spreadsheets sent to clients, a "needs more info" ticket per unanswered question. The skill buys you two things: the interview never drifts onto the subject, and the document comes out in a shape a non-technical recipient can fill in. If you already have a house format that works, you don't need this.
+**스킬 없이 에이전트에게 이걸 요청할 수 없나요?**
+네, 이것이 존재하기 전에 많은 사람들이 그렇게 했습니다: `OPEN_QUESTIONS.md` 파일, 클라이언트에게 보낸 스프레드시트, 답변되지 않은 질문당 "더 많은 정보 필요" 티켓. 스킬은 두 가지를 제공합니다: 인터뷰가 주제로 흘러가지 않고, 문서가 비기술적인 수신자가 채울 수 있는 형태로 나옵니다. 이미 작동하는 사내 형식이 있다면 이것이 필요하지 않습니다.
 
-## It's working if
+## 제대로 작동한다는 신호
 
-- It asks about the recipient and about what you need back, then stops asking. If it asks about the subject itself, the skill has gone wrong.
-- Every item you named as "what I need back" is traceable to a question in the file.
-- The questions read as aimed at what the *recipient* knows, not as your own open questions copied down verbatim.
-- You could hand the file to someone who wasn't in the conversation and they would know why they got it and by when to reply.
-- The answers that come back are usable input for a new grilling round, rather than a fresh set of questions.
+- 수신자와 무엇을 돌려받아야 하는지에 대해 묻고 질문을 멈춥니다. 주제 자체에 대해 묻는다면 스킬이 잘못된 것입니다.
+- "무엇을 돌려받아야 하는가"로 명시한 모든 항목이 파일의 질문으로 추적할 수 있습니다.
+- 질문이 여러분 자신의 열린 질문을 그대로 복사한 것이 아니라, *수신자*가 아는 것을 겨냥한 것으로 읽힙니다.
+- 대화에 없던 사람에게 파일을 건네도 그들이 왜 받았는지와 언제까지 답해야 하는지 알 수 있습니다.
+- 돌아오는 답변이 새로운 질문 세트가 아니라 새 grilling 라운드의 사용 가능한 입력입니다.
 
-## Where it fits
+## 어디에 적용되는지
 
-`to-questionnaire` is a reach-for-it-anytime standalone. You use it where your own knowledge ends and the next move is to ask another person, not to run another skill. That is most often mid-flow, when planning has stalled on something that isn't yours to decide.
+`to-questionnaire`는 언제든 사용할 수 있는 독립형 도구입니다. 여러분 자신의 지식이 끝나고 다음 단계가 다른 스킬을 실행하는 것이 아니라 다른 사람에게 묻는 것인 곳에서 사용합니다. 대부분 중간 흐름에서, 여러분이 결정할 것이 아닌 무언가에 계획이 막혔을 때입니다.
 
-Its neighbour is [grill-me](https://aihero.dev/skills-grill-me), and the two differ on where the answers live. Grilling gets the answers from you; a questionnaire gets them from someone else. Feed what comes back into another grilling round, or into [grill-with-docs](https://aihero.dev/skills-grill-with-docs) or [to-spec](https://aihero.dev/skills-to-spec) if the work is heading for a build. When you're unsure which skill fits the moment, [ask-matt](https://aihero.dev/skills-ask-matt) routes you.
+이웃은 [grill-me](https://aihero.dev/skills-grill-me)이며, 둘은 답이 어디 있는지에서 다릅니다. Grilling은 여러분으로부터 답을 얻습니다. 설문지는 다른 사람에게서 얻습니다. 돌아온 것을 다른 grilling 라운드에 공급하거나, 작업이 빌드로 향하고 있다면 [grill-with-docs](https://aihero.dev/skills-grill-with-docs)나 [to-spec](https://aihero.dev/skills-to-spec)에 공급하세요. 어떤 스킬이 이 순간에 맞는지 확실하지 않을 때, [ask-matt](https://aihero.dev/skills-ask-matt)가 안내합니다.
