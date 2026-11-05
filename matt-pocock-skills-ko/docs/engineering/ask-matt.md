@@ -1,91 +1,91 @@
-## What it does
+## 무엇을 하나요
 
-`ask-matt` is the router over the skills in this repo. You describe the situation you are in (an idea you cannot start, a pile of incoming bug reports, a [session](https://www.aihero.dev/ai-coding-dictionary/session) that has run long), and it names the skill or the sequence of skills that fits, plus where the human decisions in that sequence sit.
+`ask-matt`는 이 저장소의 스킬들에 대한 라우터입니다. 현재 상황(시작할 수 없는 아이디어, 쌓여 있는 버그 리포트, 길어진 [세션](https://www.aihero.dev/ai-coding-dictionary/session))을 설명하면, 적합한 스킬 또는 스킬 시퀀스와 해당 시퀀스에서 사람의 결정이 필요한 지점을 알려줍니다.
 
-It recommends and stops. It does not grill, write a [spec](https://www.aihero.dev/ai-coding-dictionary/spec), open a file or fire the skill it just named; what you get back is the next thing to type, and you type it. It is also a hand-written map of the skills in this repo rather than a scan of what you have installed, so it will not route you over your own skills or another author's.
+권장하고 멈춥니다. 그릴링을 하거나, [spec](https://www.aihero.dev/ai-coding-dictionary/spec)을 작성하거나, 파일을 열거나, 방금 언급한 스킬을 실행하지 않습니다. 돌아오는 것은 다음에 입력할 것이며, 여러분이 입력합니다. 이것은 설치된 것을 스캔하는 것이 아니라 이 저장소의 스킬들에 대한 수작업 맵이므로, 여러분 자신의 스킬이나 다른 저자의 스킬로 라우팅하지 않습니다.
 
-## When to reach for it
+## 언제 사용하나요
 
-You invoke this by typing `/ask-matt`; the agent won't reach for it on its own.
+`/ask-matt`를 입력하여 호출합니다. 에이전트가 스스로 이것을 찾지 않습니다.
 
-| Your situation | What the router gives back |
+| 여러분의 상황 | 라우터가 돌려주는 것 |
 | --- | --- |
-| An idea, and no idea where to start | The head of the main flow, and whether the build is small enough to skip the spec |
-| Bugs and requests arriving from other people | The [triage](https://aihero.dev/skills-triage) on-ramp, and why [tickets](https://www.aihero.dev/ai-coding-dictionary/ticket) you generated yourself don't belong on it |
-| Two skills that look interchangeable | The line between them, and it is usually one concrete test rather than a matter of taste. [grill-me](https://aihero.dev/skills-grill-me) or [grill-with-docs](https://aihero.dev/skills-grill-with-docs) turns on whether you are in a working directory; [grill-with-docs](https://aihero.dev/skills-grill-with-docs) or [wayfinder](https://aihero.dev/skills-wayfinder) turns on whether the effort fits one session |
-| A long session and a decision about the [context](https://www.aihero.dev/ai-coding-dictionary/context) | The ordered tree over the five options at a phase boundary |
-| A skill you have already picked | Nothing useful. Invoke that skill directly. |
+| 아이디어가 있지만 어디서 시작해야 할지 모름 | 메인 플로우의 시작점, 그리고 빌드가 spec을 건너뛸 만큼 작은지 여부 |
+| 다른 사람들로부터 도착한 버그와 요청 | [triage](https://aihero.dev/skills-triage) 진입 경로, 그리고 여러분이 직접 생성한 [티켓](https://www.aihero.dev/ai-coding-dictionary/ticket)이 여기에 속하지 않는 이유 |
+| 교체 가능해 보이는 두 스킬 | 그들 사이의 경계선, 보통 취향의 문제가 아니라 구체적인 하나의 테스트입니다. [grill-me](https://aihero.dev/skills-grill-me) 또는 [grill-with-docs](https://aihero.dev/skills-grill-with-docs)는 작업 디렉토리에 있는지 여부에 달려 있습니다. [grill-with-docs](https://aihero.dev/skills-grill-with-docs) 또는 [wayfinder](https://aihero.dev/skills-wayfinder)는 노력이 하나의 세션에 맞는지 여부에 달려 있습니다 |
+| 긴 세션과 [컨텍스트](https://www.aihero.dev/ai-coding-dictionary/context)에 대한 결정 | 단계 경계에서의 다섯 가지 옵션에 대한 순서 있는 트리 |
+| 이미 선택한 스킬 | 유용한 것이 없습니다. 해당 스킬을 직접 호출하세요. |
 
-## Prerequisites
+## 전제 조건
 
-The router names skills; it does not install them. Everything it points at has to be installed for the recommendation to be actionable, and it only knows the promoted skills in this repo.
+라우터는 스킬 이름을 알려줍니다. 설치하지는 않습니다. 권장 사항이 실행 가능하려면 지시하는 모든 것이 설치되어 있어야 하며, 이 저장소의 승격된 스킬만 알고 있습니다.
 
-The tracker-dependent routes (triage, `to-spec`, `to-tickets`, `implement`) assume [setup-matt-pocock-skills](https://aihero.dev/skills-setup-matt-pocock-skills) has already configured an issue tracker in the repo. The router recommends them even before that has happened.
+트래커 의존 경로(triage, `to-spec`, `to-tickets`, `implement`)는 [setup-matt-pocock-skills](https://aihero.dev/skills-setup-matt-pocock-skills)가 이미 저장소에 이슈 트래커를 구성했다고 가정합니다. 라우터는 그것이 일어나기 전에도 이들을 권장합니다.
 
-## Flows, not skills
+## 스킬이 아니라 플로우
 
-The skill's leading word is **flow**, a path *through* the skills rather than a single skill. When you name your situation, the router places you at a step on a flow. That is a different answer from "here is the skill that matches your keywords". There are five kinds of route, and the skill itself describes them in full:
+스킬의 핵심 단어는 **플로우**입니다. 단일 스킬이 아니라 스킬들을 *통과하는* 경로입니다. 여러분이 상황을 설명하면, 라우터는 플로우의 한 단계에 여러분을 배치합니다. 이것은 "여기 키워드와 일치하는 스킬이 있습니다"와는 다른 대답입니다. 다섯 가지 종류의 경로가 있으며, 스킬 자체가 이를 완전히 설명합니다:
 
-- **The main flow**, idea to ship. Grill, spec, tickets, implement (one ticket at a time, or the whole task graph in parallel with [implement-spec](https://aihero.dev/skills-implement-spec)), review, then [retro](https://aihero.dev/skills-retro), which feeds what the build taught back into the agent's environment. It has two branches. One is a prototype detour, for when a question needs runnable code to settle it. The other is the spec-and-tickets split, which is only worth its cost when the build spans more than one session.
-- **On-ramps**, for a situation that generates work and then merges onto the main flow: incoming bug reports, something broken, or an effort too foggy and too large to hold in one session.
-- **Codebase health**, upkeep rather than feature work. [improve-codebase-architecture](https://aihero.dev/skills-improve-codebase-architecture) surveys the code for deepening opportunities, and each one it finds re-enters the main flow as an idea.
-- **Standalones**, which sit off every flow and which you use on their own: the prototype, the questionnaire, the research run.
-- **A vocabulary layer underneath**, the two references the other skills pull in when the words rather than the process are the problem.
+- **메인 플로우**, 아이디어에서 배포까지. 그릴링, spec, 티켓, 구현(한 번에 하나의 티켓, 또는 [implement-spec](https://aihero.dev/skills-implement-spec)으로 전체 작업 그래프를 병렬로), 리뷰, 그런 다음 [retro](https://aihero.dev/skills-retro)로 빌드가 가르쳐준 것을 에이전트 환경에 피드백합니다. 두 가지 분기가 있습니다. 하나는 질문을 해결하기 위해 실행 가능한 코드가 필요할 때를 위한 프로토타입 우회로입니다. 다른 하나는 spec-and-tickets 분할로, 빌드가 하나 이상의 세션에 걸쳐 있을 때만 비용 대비 가치가 있습니다.
+- **진입 경로**, 작업을 생성한 다음 메인 플로우에 병합되는 상황을 위한 것입니다: 들어오는 버그 리포트, 무언가 깨진 것, 또는 너무 불명확하고 커서 하나의 세션에 담을 수 없는 노력.
+- **코드베이스 상태**, 기능 작업이 아니라 유지 관리. [improve-codebase-architecture](https://aihero.dev/skills-improve-codebase-architecture)는 코드를 조사하여 심화 기회를 찾고, 찾은 각각은 아이디어로 메인 플로우에 다시 들어갑니다.
+- **스탠드얼론**, 모든 플로우에서 벗어나 독자적으로 사용하는 것: 프로토타입, 설문지, 리서치 실행.
+- **하부 어휘 계층**, 프로세스가 아니라 단어가 문제일 때 다른 스킬들이 끌어오는 두 가지 참조.
 
-## The phase boundary
+## 단계 경계
 
-The skill's other key idea is the **phase boundary**. A phase is a chunk of work inside a session (the [grilling](https://www.aihero.dev/ai-coding-dictionary/grilling), the implementation, the QA), and the boundary between two of them is the only place the question "what do I do with this context?" belongs. Mid-phase there is nothing to decide: continue, or split what is left into [subagents](https://www.aihero.dev/ai-coding-dictionary/subagent).
+스킬의 또 다른 핵심 아이디어는 **단계 경계**입니다. 단계는 세션 내의 작업 덩어리([그릴링](https://www.aihero.dev/ai-coding-dictionary/grilling), 구현, QA)이며, 두 단계 사이의 경계는 "이 컨텍스트를 어떻게 할까?"라는 질문이 속하는 유일한 장소입니다. 단계 중간에는 결정할 것이 없습니다: 계속하거나, 남은 것을 [서브에이전트](https://www.aihero.dev/ai-coding-dictionary/subagent)로 분할하세요.
 
-| Option | Take it when |
+| 옵션 | 선택할 때 |
 | --- | --- |
-| **Continue** | The next phase wants this one verbatim, or you have [smart zone](https://www.aihero.dev/ai-coding-dictionary/smart-zone) left. It is the only move that keeps the session as a [primary source](https://www.aihero.dev/ai-coding-dictionary/primary-source), so rule it out first |
-| **`/clear`** | Everything behind you is disposable. The cheapest option, and you cannot undo it if you were wrong |
-| **[handoff](https://aihero.dev/skills-handoff)** | Something has to travel: a new [harness](https://www.aihero.dev/ai-coding-dictionary/harness), a new directory, a colleague, a side task forked mid-phase |
-| **Subagent** | The task is scoped tightly enough to run with you [away from the keyboard](https://www.aihero.dev/ai-coding-dictionary/afk) |
-| **`/compact`** | None of the above. It is the default, and the tree often ends here |
+| **Continue** | 다음 단계가 이것을 그대로 원하거나, [스마트 존](https://www.aihero.dev/ai-coding-dictionary/smart-zone)이 남아 있습니다. 세션을 [1차 소스](https://www.aihero.dev/ai-coding-dictionary/primary-source)로 유지하는 유일한 방법이므로 먼저 배제하세요 |
+| **`/clear`** | 뒤에 있는 모든 것이 일회용입니다. 가장 저렴한 옵션이며, 잘못되었을 경우 되돌릴 수 없습니다 |
+| **[handoff](https://aihero.dev/skills-handoff)** | 무언가가 이동해야 합니다: 새로운 [하네스](https://www.aihero.dev/ai-coding-dictionary/harness), 새로운 디렉토리, 동료, 단계 중간에 분기된 사이드 작업 |
+| **Subagent** | 작업이 여러분이 [키보드에서 멀리 있는](https://www.aihero.dev/ai-coding-dictionary/afk) 동안 실행될 만큼 충분히 범위가 좁습니다 |
+| **`/compact`** | 위의 것이 아닙니다. 기본값이며, 트리는 종종 여기서 끝납니다 |
 
-People often get two of these wrong, which is why the router gives the order and not only the list. `/handoff` looks like the general way to move between context windows, but it is not. All it gives you is portability. `/compact` is the last option in the tree, not the first, because each of the four options above it is cheaper or more precise.
+사람들은 이 중 두 가지를 자주 잘못 이해하므로, 라우터는 목록뿐만 아니라 순서도 제공합니다. `/handoff`는 컨텍스트 창 사이를 이동하는 일반적인 방법처럼 보이지만 그렇지 않습니다. 그것이 제공하는 것은 이식성뿐입니다. `/compact`는 트리의 첫 번째 옵션이 아니라 마지막 옵션입니다. 위의 네 가지 옵션 각각이 더 저렴하거나 더 정확하기 때문입니다.
 
-## Common questions
+## 자주 묻는 질문
 
-**Isn't there just a list of the skills in the right order?**
+**올바른 순서로 정렬된 스킬 목록이 없나요?**
 
-People keep asking for one in the README. This skill is that list. A static table would say `wayfinder → to-spec → to-tickets → implement → code-review → retro` and be wrong for most situations. The important parts are the branches: is there a codebase, does the build span sessions, can talking settle this question. The cost is that the router is maintained by hand, so it lags behind the repo. `/grilling` shipped long before the router named it.
+사람들은 README에서 계속 이를 요청합니다. 이 스킬이 바로 그 목록입니다. 정적 표는 `wayfinder → to-spec → to-tickets → implement → code-review → retro`라고 말할 것이고 대부분의 상황에서 틀릴 것입니다. 중요한 부분은 분기입니다: 코드베이스가 있는가, 빌드가 세션에 걸쳐 있는가, 대화로 이 질문을 해결할 수 있는가. 비용은 라우터가 수작업으로 유지 관리되므로 저장소보다 뒤처진다는 것입니다. `/grilling`은 라우터가 이름을 지정하기 훨씬 전에 출시되었습니다.
 
-**It told me half the skills aren't installed.**
+**스킬의 절반이 설치되지 않았다고 말했습니다.**
 
-This is a known bug, and it is not fixed. Most of the skills the router routes you through set `disable-model-invocation: true`, which means the harness leaves them out of the skill list it injects into the agent's context. The agent reads that list as exhaustive and reports them missing. In one reported session, it declared the whole spec-and-tickets flow absent and rerouted to bare `/grilling` and `/tdd`. Sixteen of the plugin's twenty-seven skills carry the flag, so this is the common case rather than an edge. They are installed. Type the slash command anyway, or check `.claude-plugin/plugin.json`, which is the authority on what is present.
+이것은 알려진 버그이며 수정되지 않았습니다. 라우터가 안내하는 대부분의 스킬은 `disable-model-invocation: true`로 설정되어 있으며, 이는 하네스가 에이전트 컨텍스트에 주입하는 스킬 목록에서 이를 제외한다는 것을 의미합니다. 에이전트는 해당 목록을 완전한 것으로 읽고 누락되었다고 보고합니다. 보고된 한 세션에서 전체 spec-and-tickets 플로우가 없다고 선언하고 단순한 `/grilling`과 `/tdd`로 재라우팅했습니다. 플러그인의 27개 스킬 중 16개가 플래그를 가지고 있으므로 이것은 엣지 케이스가 아니라 일반적인 경우입니다. 설치되어 있습니다. 어쨌든 슬래시 명령을 입력하거나 `.claude-plugin/plugin.json`을 확인하세요. 이것이 존재하는 것의 권위입니다.
 
-**It described a skill's behaviour, and the skill doesn't do that.**
+**스킬의 동작을 설명했는데, 스킬이 그렇게 하지 않습니다.**
 
-This is also a real bug, and also not fixed. The router answers from its own one-line summary of each skill rather than from the skill. One detailed report tracked three instances in a single session, including a recommendation to skip [to-spec](https://aihero.dev/skills-to-spec) based only on the summary "turn the thread into a spec". The router never opened `to-spec/SKILL.md`. In every case it verified only after the user pushed back, and never on its own initiative. Skipping `to-spec` there cost a real seam check, and the tickets that came out undercounted the work. When the router states something about another skill that you will act on, ask it to open that `SKILL.md` first. The same applies to questions the map does not cover at all, such as whether to use [plan mode](https://www.aihero.dev/ai-coding-dictionary/agent-mode): that answer is the [model](https://www.aihero.dev/ai-coding-dictionary/model)'s inference, not something written down here.
+이것도 실제 버그이며 수정되지 않았습니다. 라우터는 스킬에서가 아니라 각 스킬에 대한 자체 한 줄 요약에서 답변합니다. 한 상세한 보고서는 단일 세션에서 세 가지 인스턴스를 추적했으며, 여기에는 "스레드를 spec으로 전환"이라는 요약만을 기반으로 [to-spec](https://aihero.dev/skills-to-spec)을 건너뛰라는 권장 사항이 포함되었습니다. 라우터는 `to-spec/SKILL.md`를 열지 않았습니다. 모든 경우에 사용자가 반발한 후에만 확인했으며 자체적으로는 절대 하지 않았습니다. 거기서 `to-spec`을 건너뛰는 것은 실제 심 검사를 놓쳤고, 나온 티켓은 작업을 과소 계산했습니다. 라우터가 여러분이 실행할 다른 스킬에 대해 무언가를 진술할 때, 먼저 해당 `SKILL.md`를 열도록 요청하세요. 맵이 전혀 다루지 않는 질문에도 동일하게 적용됩니다. 예를 들어 [plan mode](https://www.aihero.dev/ai-coding-dictionary/agent-mode)를 사용할지 여부: 그 대답은 [모델](https://www.aihero.dev/ai-coding-dictionary/model)의 추론이지 여기에 작성된 것이 아닙니다.
 
-**Why is it prose instead of a numbered checklist?**
+**왜 번호가 매겨진 체크리스트가 아니라 산문인가요?**
 
-It is a fair complaint. An open issue argues that most of the routing is deterministic and that the narrative makes it hard to scan. Nothing stops you asking for the compressed form: "just give me the sequence" gets you the sequence. The prose carries the conditional part: the branches, where a human decision is expected, and where to clear or compact between steps. A flat checklist drops exactly that.
+정당한 불만입니다. 열린 이슈는 대부분의 라우팅이 결정론적이며 내러티브가 스캔하기 어렵게 만든다고 주장합니다. 압축된 형식을 요청하는 것을 막는 것은 없습니다: "순서만 알려주세요"라고 하면 순서를 얻습니다. 산문은 조건부 부분을 담고 있습니다: 분기, 사람의 결정이 예상되는 곳, 단계 사이에서 지우거나 압축할 곳. 평평한 체크리스트는 정확히 그것을 생략합니다.
 
-**Can it route over my own skills, or another author's?**
+**내 자신의 스킬이나 다른 저자의 스킬로 라우팅할 수 있나요?**
 
-No. Three separate proposals have asked for a router that reads your local `skills/` directory and recommends from whatever is installed. `ask-matt` is not that. It is a map of one set, maintained by hand, and it knows nothing about skills you wrote or installed from elsewhere.
+아니요. 세 가지 별도의 제안이 로컬 `skills/` 디렉토리를 읽고 설치된 것에서 권장하는 라우터를 요청했습니다. `ask-matt`는 그것이 아닙니다. 수작업으로 유지 관리되는 하나의 세트의 맵이며, 여러분이 작성하거나 다른 곳에서 설치한 스킬에 대해 아무것도 모릅니다.
 
-**It told me to edit a SKILL.md.**
+**SKILL.md를 편집하라고 말했습니다.**
 
-That advice is often correct, but the edit rarely lasts. Someone asked it how to make [implement](https://aihero.dev/skills-implement) close tickets, was told to add a line to the skill, and saw the problem at once. `npx skills update` overwrites the file, and the plugin install is read-only. Put standing behaviour in your own `CLAUDE.md` or `AGENTS.md`, or say it in the invocation. Changes you make in the prompt survive updates. People point the flow at Linear instead of GitHub this way, or ask it which open tickets could run in parallel.
+그 조언은 종종 올바르지만, 편집은 거의 지속되지 않습니다. 누군가가 [implement](https://aihero.dev/skills-implement)가 티켓을 닫도록 만드는 방법을 물었고, 스킬에 한 줄을 추가하라고 들었고, 즉시 문제를 발견했습니다. `npx skills update`는 파일을 덮어쓰고, 플러그인 설치는 읽기 전용입니다. 자신의 `CLAUDE.md` 또는 `AGENTS.md`에 지속적인 동작을 넣거나 호출에서 말하세요. 프롬프트에서 변경한 내용은 업데이트에서 살아남습니다. 사람들은 이렇게 Linear 대신 GitHub로 플로우를 가리키거나 어떤 열린 티켓을 병렬로 실행할 수 있는지 묻습니다.
 
-**It named a skill I don't have, or missed one I do.**
+**내가 가지고 있지 않은 스킬을 지목하거나, 내가 가진 것을 놓쳤습니다.**
 
-Check the changelog for a rename before assuming it is gone. `writing-great-skills` became [writing-for-agents](https://aihero.dev/skills-writing-for-agents) with no alias, `to-prd` became [to-spec](https://aihero.dev/skills-to-spec), and `pathfinder` became [wayfinder](https://aihero.dev/skills-wayfinder). Four skills were retired outright into the skills that absorbed them: `ubiquitous-language`, `design-an-interface`, `qa` and `request-refactor-plan`. If it misses a skill you have, that is the router's own lag, described above.
+사라졌다고 가정하기 전에 변경 로그에서 이름 변경을 확인하세요. `writing-great-skills`는 별칭 없이 [writing-for-agents](https://aihero.dev/skills-writing-for-agents)가 되었고, `to-prd`는 [to-spec](https://aihero.dev/skills-to-spec)이 되었고, `pathfinder`는 [wayfinder](https://aihero.dev/skills-wayfinder)가 되었습니다. 네 가지 스킬은 그것들을 흡수한 스킬로 완전히 은퇴했습니다: `ubiquitous-language`, `design-an-interface`, `qa` 그리고 `request-refactor-plan`. 가지고 있는 스킬을 놓쳤다면, 그것은 위에서 설명한 라우터 자체의 지연입니다.
 
-## It's working if
+## 제대로 작동하는지 확인하는 방법
 
-- It ends by naming what to type and stops there, instead of starting the work itself.
-- The route it gives back mentions where to clear or compact context and where you are expected to review, not just a list of skill names.
-- Where two skills are close, it says which one and why the other is wrong for you.
-- Any claim it makes about another skill's behaviour shows up in the trace as it reading that skill's `SKILL.md`.
-- You recognise your own situation in what it hands back, rather than the nearest generic scenario.
+- 작업 자체를 시작하는 대신 입력할 내용을 지목하고 거기서 멈춥니다.
+- 돌려주는 경로는 스킬 이름 목록뿐만 아니라 컨텍스트를 지우거나 압축할 위치와 검토가 예상되는 위치를 언급합니다.
+- 두 스킬이 가까울 때, 어느 것인지 그리고 왜 다른 것이 여러분에게 적합하지 않은지 말합니다.
+- 다른 스킬의 동작에 대해 주장하는 내용은 해당 스킬의 `SKILL.md`를 읽는 것으로 추적에 나타납니다.
+- 가장 가까운 일반적인 시나리오가 아니라 돌려주는 것에서 자신의 상황을 인식합니다.
 
-## Where it fits
+## 어디에 적합한가요
 
-`ask-matt` is a **standalone router** that sits over the whole set. It is never a step in a chain. It points into every chain, and the other docs pages link back to it so none of them has to redraw the graph. From here you most often land on [grill-with-docs](https://aihero.dev/skills-grill-with-docs), the head of the main flow, or [triage](https://aihero.dev/skills-triage), the on-ramp for work that arrived rather than work you started.
+`ask-matt`는 전체 세트 위에 있는 **스탠드얼론 라우터**입니다. 체인의 단계가 아닙니다. 모든 체인을 가리키며, 다른 문서 페이지는 다시 링크하므로 그래프를 다시 그릴 필요가 없습니다. 여기에서 가장 자주 [grill-with-docs](https://aihero.dev/skills-grill-with-docs)(메인 플로우의 시작) 또는 [triage](https://aihero.dev/skills-triage)(여러분이 시작한 작업이 아니라 도착한 작업을 위한 진입 경로)에 도착합니다.
 
-It is a [secondary source](https://www.aihero.dev/ai-coding-dictionary/secondary-source) over the skills it describes. Where the router and a `SKILL.md` disagree, the `SKILL.md` is right.
+설명하는 스킬에 대한 [2차 소스](https://www.aihero.dev/ai-coding-dictionary/secondary-source)입니다. 라우터와 `SKILL.md`가 일치하지 않는 곳에서는 `SKILL.md`가 옳습니다.
