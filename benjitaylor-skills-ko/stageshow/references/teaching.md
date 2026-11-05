@@ -1,111 +1,110 @@
-# Teaching pairs
+# 가르치는 쌍
 
-`teaching/` holds bad/good pairs: the same scene twice, with one thing wrong on the left. Open **Comparisons** in the playground (`?example=contrasts`) and pick a principle; only that pair mounts, so its controls stay nearby and the others don't keep running. Use **Replay pair** to restart both halves together.
+`teaching/`은 나쁨/좋음 쌍을 담습니다. 같은 장면을 두 번, 왼쪽에는 잘못된 것 하나입니다. 플레이그라운드에서 **비교**를 열고 (`?example=contrasts`) 원칙을 고르세요. 그 쌍만 마운트되므로 컨트롤이 가까이 있고 나머지는 계속 실행되지 않습니다. **쌍 다시 재생**으로 양쪽을 함께 다시 시작하세요.
 
-Use a pair to diagnose a problem in your own demo: find the one that looks like your bug, then read why the good half works. The bad halves are never starting points. Watch at normal speed first, then pause and step through the transition. On a narrow screen the halves stack rather than shrink. Under reduced motion the motion pairs show matching endpoints, because the difference is in the transition, not the end state.
+자기 데모의 문제를 진단할 때 쌍을 쓰세요. 버그처럼 보이는 것을 찾고, 좋은 쪽이 왜 되는지 읽으세요. 나쁜 쪽은 시작점이 아닙니다. 먼저 보통 속도로 본 다음, 일시정지하고 전환을 단계별로 보세요. 좁은 화면에서는 줄어드는 대신 양쪽이 쌓입니다. 모션 감소에서 모션 쌍은 맞는 끝점을 보여 줍니다. 차이는 끝 상태가 아니라 전환에 있기 때문입니다.
 
-## Motion
+## 모션
 
-Both halves share one stage and one timeline, with a duplicated stationary pointer so each gets exactly the same input at the same moment. That pointer is a teaching device; a product demo uses the Stage's real cursor and `a.click`. The first four pairs use a 180ms press and hold the result for 1.8s before returning. The longer ones play once and hold their ending.
+양쪽은 스테이지 하나와 타임라인 하나를 공유하고, 복제된 정지 포인터가 있어 각각 같은 순간에 정확히 같은 입력을 받습니다. 그 포인터는 가르치는 장치입니다. 제품 데모는 Stage의 실제 커서와 `a.click`을 씁니다. 처음 네 쌍은 180ms 누르기를 쓰고 돌아가기 전에 1.8초 동안 결과를 유지합니다. 더 긴 것은 한 번 재생하고 끝을 유지합니다.
 
-| Failure | Look at | Correction |
+| 실패 | 볼 것 | 교정 |
 | --- | --- | --- |
-| Instant label replacement | "Open preview" becoming "Back to editor", then returning | A stable button and a clipped label slot; the old words leave as the new words enter (`Roll`). |
-| Result without press feedback | "Save changes" under the pointer, before "Saved" appears | A small press and surface response before the result. In a demo, change state after `a.click` completes. |
-| New row shoves its neighbors | "Standard shipping" below the delivery note | Animate the note's containing track so the line moves with its height. Reserving the space is the other option. |
-| Object loses its identity | The plus becoming a close icon, then returning | Keep the same strokes and rotate them; replacing the icon skips the relationship between the shapes. |
-| Exit is skipped | "Link copied" when its close control is pressed | Keep the message mounted for its 320ms exit, then remove it. |
-| Interrupted motion restarts | The highlight heading to Month, redirected to Week after 200ms | Keep the highlight mounted and retarget from where it is; re-keying its entrance restarts it from Day. |
-| Landing jumps at handoff | The 24px avatar when the flyer becomes the assignee | Measure the avatar itself with `rect()`, not its padded wrapper. The bad flight takes the wrapper's origin and lands four pixels off. |
-| Loop erases accumulated work | Three files clearing after they have been added | Give the reset a visible cause: the good side presses Clear. |
-| Added content shifts its neighbor | A status icon appearing beside a label | Open the icon's width and gap together while the label travels; close both on removal. |
-| A list jumps around a new row | Existing rows during insertion and removal | Animate their space as the new row enters whole; let it exit before its space closes. |
-| A changing action shoves another | The secondary action beside a growing label | Carry the neighbor with the changing width, not in one frame at the end. |
-| Surface and content resize separately | A popup opening its details, returning, reversing | Surface and content on one coordinated geometry, with text that never stretches. |
-| Drag starts from the wrong point | The file just after an off-center grab | Keep the pointer's offset inside the object through travel and release. |
-| Spinner begins after appearing | The first saving-state frames | Start rotation before the spinner is visible; keep it turning through the fade out. |
-| Text shifts as it settles | The changed label and the word "Optional" as the old label hides | Move the label by transform inside a stable grid. Margin travel on overlapping inline-grid items moves the shared baseline even while hidden. |
-| A label hits a hard edge | Letters crossing the top and bottom of a label slot | Soften the moving boundary locally; resting text stays sharp and wholly inside the control. |
-| Scrolling reveals a harsh crop | Rows crossing the viewport edge | Start with whole rows; after scrolling, fade only the edges hiding content, and clear the fade at the end. |
-| Dependent changes start together | Currency, price, payment method and address in one checkout | Offset the related starts while their movements overlap. Same layout, curve and masks on both sides; see `choreography.md`. |
+| 즉각적인 레이블 교체 | "Open preview"가 "Back to editor"가 되었다가 돌아옴 | 안정된 버튼과 잘린 레이블 슬롯. 새 단어가 들어올 때 옛 단어가 나갑니다 (`Roll`). |
+| 누르기 피드백 없는 결과 | 포인터 아래의 "Save changes", "Saved"가 나타나기 전 | 결과 전의 작은 누르기와 표면 반응. 데모에서는 `a.click`이 끝난 뒤에 상태를 바꾸세요. |
+| 새 행이 이웃을 밀어냄 | 배송 메모 아래의 "Standard shipping" | 줄이 높이와 함께 움직이도록 메모의 컨테이너 트랙을 애니메이션하세요. 공간을 예약하는 것이 다른 선택입니다. |
+| 객체가 정체성을 잃음 | 플러스가 닫기 아이콘이 되었다가 돌아옴 | 같은 획을 유지하고 회전하세요. 아이콘을 바꾸면 형태 사이의 관계가 건너뛰어집니다. |
+| 퇴장이 생략됨 | 닫기 컨트롤을 눌렀을 때의 "Link copied" | 메시지를 320ms 퇴장 동안 마운트한 채 둔 다음 제거하세요. |
+| 끊긴 모션이 다시 시작됨 | Month로 가던 하이라이트가 200ms 뒤 Week로 방향이 바뀜 | 하이라이트를 마운트한 채 두고 있는 곳에서 다시 겨냥하세요. 입장을 다시 키잉하면 Day에서 다시 시작합니다. |
+| 핸드오프에서 착지가 점프함 | 플라이어가 담당자가 될 때의 24px 아바타 | 패딩된 래퍼가 아니라 아바타 자체를 `rect()`로 측정하세요. 나쁜 비행은 래퍼의 원점을 취해 4픽셀 빗나가 착지합니다. |
+| 루프가 쌓인 일을 지움 | 추가된 뒤 지워지는 파일 세 개 | 리셋에 보이는 원인을 주세요. 좋은 쪽은 Clear를 누릅니다. |
+| 추가된 콘텐츠가 이웃을 옮김 | 레이블 옆에 나타나는 상태 아이콘 | 레이블이 이동하는 동안 아이콘의 너비와 간격을 함께 여세요. 제거할 때는 둘 다 닫으세요. |
+| 목록이 새 행 주위로 점프함 | 삽입과 제거 중의 기존 행 | 새 행이 온전히 들어오는 동안 그들의 공간을 애니메이션하세요. 공간이 닫히기 전에 나가게 하세요. |
+| 바뀌는 액션이 다른 것을 밀어냄 | 커지는 레이블 옆의 보조 액션 | 끝의 한 프레임이 아니라, 바뀌는 너비와 함께 이웃을 운반하세요. |
+| 표면과 콘텐츠가 따로 크기 조정됨 | 상세를 열고, 돌아가고, 뒤집는 팝업 | 표면과 콘텐츠를 하나의 조율된 지오메트리에 두고, 텍스트는 늘어나지 않게 하세요. |
+| 드래그가 잘못된 점에서 시작함 | 중심에서 벗어난 그랩 직후의 파일 | 이동과 놓기 동안 객체 안의 포인터 오프셋을 유지하세요. |
+| 스피너가 나타난 뒤에 시작함 | 저장 상태의 첫 프레임 | 스피너가 보이기 전에 회전을 시작하세요. 페이드 아웃 동안에도 계속 돌게 하세요. |
+| 정착하면서 텍스트가 이동함 | 바뀐 레이블과, 옛 레이블이 숨는 동안의 "Optional" | 안정된 그리드 안에서 변환으로 레이블을 옮기세요. 겹치는 인라인 그리드 항목의 마진 이동은 숨겨진 동안에도 공유 기준선을 옮깁니다. |
+| 레이블이 단단한 가장자리에 부딪힘 | 레이블 슬롯의 위와 아래를 가로지르는 글자 | 움직이는 경계를 로컬로 부드럽게 하세요. 쉬는 텍스트는 선명하고 컨트롤 안에 온전히 있습니다. |
+| 스크롤이 거친 크롭을 드러냄 | 뷰포트 가장자리를 가로지르는 행 | 온전한 행으로 시작하세요. 스크롤 뒤에는 콘텐츠를 가리는 가장자리만 페이드하고, 끝에서 페이드를 지우세요. |
+| 의존 변화가 함께 시작함 | 한 체크아웃의 통화, 가격, 결제 수단, 주소 | 움직임이 겹치는 동안 관련 시작을 오프셋하세요. 양쪽의 레이아웃, 곡선, 마스크는 같습니다. `choreography.md`를 보세요. |
 
-The neighbor pairs live in `teaching/relationships.tsx`, the drag and spinner pairs in `teaching/continuity.tsx`, the label and scroll edges in `teaching/edges.tsx`, and the baseline bug in `teaching/text-settle.tsx`. They are small standalone patterns, not imports from a library.
+이웃 쌍은 `teaching/relationships.tsx`에, 드래그와 스피너 쌍은 `teaching/continuity.tsx`에, 레이블과 스크롤 가장자리는 `teaching/edges.tsx`에, 기준선 버그는 `teaching/text-settle.tsx`에 있습니다. 라이브러리에서 가져온 것이 아니라 작은 독립 패턴입니다.
 
-## Motion between neighbors
+## 이웃 사이의 모션
 
-An insertion changes two things: the arriving object and the space of what was already there. Animate both. Fading an icon in while its label jumps still breaks the relationship. The rules are in `motion.md` (Changing text and values; Things that appear, travel and leave; The cursor): a label's icon opens its width and gap together, a list's height carries the rows below (`Collapse reveal="drop"`), the cursor stays where the press happened, a resizing surface moves size, position and content as one transition. For a changing control, a measured `Roll variant="fade"` resizes its label; keep the actions beside it in normal flex flow so they follow, because a transform that only moves the new label can't move its neighbor.
+삽입은 두 가지를 바꿉니다. 도착하는 객체와, 이미 있던 것의 공간입니다. 둘 다 애니메이션하세요. 레이블이 점프하는 동안 아이콘을 페이드 인해도 관계는 여전히 깨집니다. 규칙은 `motion.md`에 있습니다 (텍스트와 값 변경, 나타나고 이동하고 떠나는 것, 커서). 레이블의 아이콘은 너비와 간격을 함께 열고, 목록의 높이는 아래 행을 운반하며 (`Collapse reveal="drop"`), 커서는 누른 곳에 있고, 크기가 바뀌는 표면은 크기, 위치, 콘텐츠를 하나의 전환으로 움직입니다. 바뀌는 컨트롤에는 측정된 `Roll variant="fade"`가 레이블 크기를 바꿉니다. 옆의 액션은 보통 플렉스 흐름에 두어 따라오게 하세요. 새 레이블만 옮기는 변환은 이웃을 옮길 수 없습니다.
 
-Watch the unchanged neighbor through an insertion and a removal, then the popup's reversal before its first move finishes. Matching endpoint screenshots prove nothing about the frames between.
+삽입과 제거 동안 변하지 않은 이웃을 본 다음, 첫 이동이 끝나기 전의 팝업 반전을 보세요. 맞는 끝점 스크린샷은 그 사이 프레임에 대해 아무것도 증명하지 않습니다.
 
-## UI details (stills)
+## UI 디테일 (스틸)
 
-Thirteen still pairs in `teaching/composition.tsx`, same content on both sides, so the difference is framing and structure, not a prettier story. Each pair's rule lives in `craft.md` or `framing.md`; the pair shows it.
+`teaching/composition.tsx`의 스틸 쌍 열세 개. 양쪽 콘텐츠가 같아서 차이는 더 예쁜 스토리가 아니라 프레이밍과 구조입니다. 각 쌍의 규칙은 `craft.md`나 `framing.md`에 있고, 쌍이 그것을 보여 줍니다.
 
-- **Framing:** clear gutters around the useful part; a window may continue past an edge, a cropped title or a status covering a row hides the story (`framing.md`, rules 2, 4 and 10).
-- **Anatomy:** headings, values, metadata and actions read as different roles; related rows share columns (`craft.md`, Spacing and alignment).
-- **Emphasis:** nested borders, shadows and accents make every subpart compete; quieten the supporting details before adding another container (`craft.md`, Restraint; Color and looks).
-- **Compact:** reflow before shrinking; a desktop screen scaled into a small slot passes an overflow check while its text becomes unreadable (`framing.md`, Small formats and the page).
-- **Edges:** near-tangents; check corners too (`craft.md`, Spacing and alignment).
-- **Nested spacing:** carry the inset round the bottom (`craft.md`, Spacing and alignment).
-- **Control alignment:** label and icons on one balanced row; judge the visible glyph, not its SVG box (`craft.md`, Spacing and alignment).
-- **Density:** whitespace groups information (`craft.md`, Spacing and alignment).
-- **Contrast:** quiet is not faint (`craft.md`, Color and looks).
-- **Icons:** one construction, one stroke, one optical size (`craft.md`, Icons and logos).
-- **Decoration:** a gradient or glow serves the story or goes (`craft.md`, Color and looks).
-- **Task anatomy:** chrome for the task (`craft.md`, Chrome and devices).
-- **Unread gutter:** an unread dot never pushes its row in (`kit.md`, Row).
+- **프레이밍:** 쓸모 있는 부분 주위의 분명한 거터. 창은 가장자리를 지나 이어질 수 있습니다. 잘린 제목이나 행을 가리는 상태는 스토리를 숨깁니다 (`framing.md`, 규칙 2, 4, 10).
+- **구조:** 제목, 값, 메타데이터, 액션이 다른 역할로 읽힙니다. 관련 행은 열을 공유합니다 (`craft.md`, 간격과 정렬).
+- **강조:** 중첩된 테두리, 그림자, 액센트가 모든 하위 부분을 경쟁하게 합니다. 컨테이너를 더하기 전에 받치는 디테일을 조용히 하세요 (`craft.md`, 절제, 색과 룩).
+- **컴팩트:** 줄이기 전에 리플로우하세요. 작은 슬롯으로 스케일된 데스크톱 화면은 오버플로 검사를 통과하면서 텍스트가 읽히지 않게 됩니다 (`framing.md`, 작은 형식과 페이지).
+- **가장자리:** 거의 접하는 선. 모서리도 확인하세요 (`craft.md`, 간격과 정렬).
+- **중첩 간격:** 인셋을 바닥까지 가져가세요 (`craft.md`, 간격과 정렬).
+- **컨트롤 정렬:** 레이블과 아이콘이 균형 잡힌 한 행에 있습니다. SVG 상자가 아니라 보이는 글리프를 판단하세요 (`craft.md`, 간격과 정렬).
+- **밀도:** 여백이 정보를 묶습니다 (`craft.md`, 간격과 정렬).
+- **대비:** 조용한 것은 흐린 것이 아닙니다 (`craft.md`, 색과 룩).
+- **아이콘:** 구성 하나, 획 하나, 광학 크기 하나 (`craft.md`, 아이콘과 로고).
+- **장식:** 그라데이션이나 글로우는 스토리를 섬기거나 사라집니다 (`craft.md`, 색과 룩).
+- **작업 구조:** 작업에 맞는 크롬 (`craft.md`, 크롬과 기기).
+- **읽지 않음 거터:** 읽지 않음 점은 행을 밀어 넣지 않습니다 (`kit.md`, Row).
 
-## Whole scenes (stills)
+## 장면 전체 (스틸)
 
-Nine larger pairs in `teaching/scenes.tsx`, each 540 wide with a compact composition down to 280. The ground, the hero and the supporting pieces are judged as one picture.
+`teaching/scenes.tsx`의 더 큰 쌍 아홉 개. 각각 너비 540, 280까지의 컴팩트 구성입니다. 그라운드, 히어로, 받치는 조각이 하나의 그림으로 판단됩니다.
 
-- **Dashboard and phone:** each device gets a readable role; the phone never covers the amount or state it explains (`craft.md`, Chrome and devices). Compact stacks them and crops the phone's unused lower screen.
-- **Window and satellite:** the result sits in the hero's quiet margin; a product's own popup is not a satellite (`framing.md`, rules 16 and 19).
-- **Several windows:** choose the active step; supporting windows keep their titles and context while quieter contrast and shadow push them back (`craft.md`, Chrome and devices). Three equally loud surfaces compete even when all of them fit.
-- **Colored grounds:** the background frames the product. Choose surface, text and accent against that ground; tinting everything alike removes the separation (`backgrounds.md`).
-- **Dark and light materials:** a light document over a dark workspace stays a readable light document (`craft.md`, Color and looks).
-- **Action and payoff:** a whole application becomes an unreadable thumbnail. Crop to the useful content at reading size and let chrome run off; the title, action and result stay whole (`framing.md`, Small formats and the page).
-- **Result weight:** ask what the eye lands on first. A new file that is one thin row in a long list loses to the list; fewer, larger rows make it the heaviest thing in the frame (`examples/upload`).
-- **Crop filler, never the story:** move the window or narrow the column until the last value that matters is whole (`framing.md`, rule 4).
-- **One tile leads:** four equal tiles of heading and bars read as a template (`bento.md`, rule 2).
+- **대시보드와 휴대폰:** 각 기기는 읽히는 역할을 갖습니다. 휴대폰은 설명하는 금액이나 상태를 가리지 않습니다 (`craft.md`, 크롬과 기기). 컴팩트는 그것들을 쌓고 휴대폰의 쓰지 않는 아래 화면을 크롭합니다.
+- **창과 위성:** 결과는 히어로의 조용한 여백에 있습니다. 제품 자신의 팝업은 위성이 아닙니다 (`framing.md`, 규칙 16과 19).
+- **여러 창:** 활성 단계를 고르세요. 받치는 창은 제목과 맥락을 유지하고, 더 조용한 대비와 그림자가 그것들을 뒤로 밉니다 (`craft.md`, 크롬과 기기). 모두 들어가도 똑같이 시끄러운 표면 셋은 경쟁합니다.
+- **색이 있는 그라운드:** 배경이 제품을 프레임합니다. 그 그라운드에 맞춰 표면, 텍스트, 액센트를 고르세요. 모든 것을 같게 틴트하면 분리가 사라집니다 (`backgrounds.md`).
+- **다크와 라이트 재질:** 어두운 작업 공간 위의 밝은 문서는 읽히는 밝은 문서로 남습니다 (`craft.md`, 색과 룩).
+- **액션과 보상:** 전체 애플리케이션은 읽히지 않는 썸네일이 됩니다. 읽는 크기로 쓸모 있는 콘텐츠를 크롭하고 크롬은 벗어나게 하세요. 제목, 액션, 결과는 온전히 남습니다 (`framing.md`, 작은 형식과 페이지).
+- **결과의 무게:** 눈이 먼저 어디에 머무는지 물으세요. 긴 목록의 가는 행 하나인 새 파일은 목록에 집니다. 더 적고 더 큰 행이 프레임에서 가장 무거운 것이 되게 합니다 (`examples/upload`).
+- **스토리가 아니라 필러를 크롭하세요:** 중요한 마지막 값이 온전할 때까지 창을 옮기거나 열을 좁히세요 (`framing.md`, 규칙 4).
+- **타일 하나가 이끕니다:** 제목과 바의 같은 타일 넷은 템플릿으로 읽힙니다 (`bento.md`, 규칙 2).
 
-## Style (stills)
+## 스타일 (스틸)
 
-The same deploys card in every pair; the good side never changes, and each bad side has one fault. `?example=contrasts`, Style group.
+모든 쌍의 같은 배포 카드입니다. 좋은 쪽은 바뀌지 않고, 나쁜 쪽마다 결함 하나입니다. `?example=contrasts`, Style 그룹.
 
-- **Purple slop:** a violet-to-pink gradient ground, gradient text and a tinted card read as generated. The product's own neutrals, one accent on the thing that matters (`craft.md`, Color and looks).
-- **Tiny text:** 9 to 10px type shrunk to fit more in reads as a wireframe. 13 to 14px names, 11 to 12px metadata, fewer rows.
-- **Over-detailed:** a branch, hash, author, duration and badge on every row makes every row the subject. Real detail on the one row the story is about.
-- **Glow:** colored light on the card, button or status is a neon template. One soft neutral shadow.
-- **Capitals:** tracked caps on headings, labels and buttons. Sentence case, unless the product itself capitalizes.
-- **Invented icons:** glyphs drawn for the demo, in rainbow tiles, filled beside outlined. The product's own set or one pack, one stroke, color only where it carries status; draw an icon only when no pack has it (`craft.md`, Icons and logos).
-- **AI shorthand:** sparkles, wands and gradient "AI" chips say nothing about the feature. The product's own mark, or a plain label that says what happens (`craft.md`, Icons and logos).
-- **Onion skin:** an icon in a translucent ink paints darker wherever its strokes cross or join. One opaque color; a lighter opaque gray for a quieter icon.
+- **보라 슬롭:** 보라에서 분홍으로 가는 그라데이션 그라운드, 그라데이션 텍스트, 틴트된 카드는 생성된 것으로 읽힙니다. 제품 자신의 뉴트럴, 중요한 것 위의 액센트 하나 (`craft.md`, 색과 룩).
+- **아주 작은 텍스트:** 더 많이 넣으려고 줄인 9~10px 타입은 와이어프레임으로 읽힙니다. 이름 13~14px, 메타데이터 11~12px, 더 적은 행.
+- **과한 디테일:** 모든 행의 브랜치, 해시, 작성자, 시간, 배지는 모든 행을 주제로 만듭니다. 스토리가 다루는 한 행에만 실제 디테일.
+- **글로우:** 카드, 버튼, 상태 위의 색 빛은 네온 템플릿입니다. 부드러운 중립 그림자 하나.
+- **대문자:** 제목, 레이블, 버튼의 자간이 있는 대문자. 제품 자체가 대문자로 쓰지 않으면 문장 케이스.
+- **지어낸 아이콘:** 데모를 위해 그린 글리프, 무지개 타일, 윤곽 옆의 채움. 제품 자신의 세트나 팩 하나, 획 하나, 상태를 실을 때만 색. 팩에 없을 때만 아이콘을 그리세요 (`craft.md`, 아이콘과 로고).
+- **AI 약어:** 반짝임, 지팡이, 그라데이션 "AI" 칩은 기능에 대해 아무것도 말하지 않습니다. 제품 자신의 마크, 또는 무슨 일이 일어나는지 말하는 평범한 레이블 (`craft.md`, 아이콘과 로고).
+- **어니언 스킨:** 반투명 잉크의 아이콘은 획이 교차하거나 이어지는 곳에서 더 어둡게 칠해집니다. 불투명 색 하나. 더 조용한 아이콘에는 더 밝은 불투명 회색.
 
-## Making a comparison
+## 비교 만들기
 
-Change one thing. Same content, layout, endpoints and input timing; only the behavior being taught differs. No extra cards, status marks or decorative backgrounds competing for attention. Say the exact difference under each side, give the pair a replay, and make it readable at normal speed. If the lesson only shows at slow speed, the pair needs another go. How a bad example is marked on a page is in `craft.md`, A page of demos.
+한 가지만 바꾸세요. 같은 콘텐츠, 레이아웃, 끝점, 입력 타이밍. 가르치는 동작만 다릅니다. 주의를 끄는 추가 카드, 상태 마크, 장식 배경은 없습니다. 각 쪽 아래에 정확한 차이를 말하고, 쌍에 다시 재생을 주고, 보통 속도에서 읽히게 하세요. 교훈이 느린 속도에서만 보이면 쌍을 다시 만들어야 합니다. 페이지에서 나쁜 예시를 표시하는 방법은 `craft.md`, 데모의 페이지에 있습니다.
 
-## What a pair can't show
+## 쌍이 보여 줄 수 없는 것
 
-Some faults need the real demo, not a contrived pair:
+어떤 결함은 꾸민 쌍이 아니라 실제 데모가 필요합니다.
 
-- **Other text shifts:** the baseline pair reproduces one cause; the others are in `motion.md`, Changing text and values.
-- **Story continuity:** does the reset make sense for what the viewer just did? Compare `examples/story/`.
-- **Handoff timing:** does the flying object vanish before its destination takes over? Compare `examples/subscriptions/` and inspect the frame where ownership changes.
-- **Desktop at phone width:** can you read the important labels? A recognizable silhouette is not readable UI.
-- **Motion without hierarchy:** `motion.md`, Story.
+- **다른 텍스트가 이동함:** 기준선 쌍은 원인 하나를 재현합니다. 나머지는 `motion.md`, 텍스트와 값 변경에 있습니다.
+- **스토리 연속성:** 리셋이 보는 사람이 방금 한 일에 맞습니까? `examples/story/`와 비교하세요.
+- **핸드오프 타이밍:** 날아가는 객체가 목적지가 이어받기 전에 사라집니까? `examples/subscriptions/`와 비교하고 소유권이 바뀌는 프레임을 살펴보세요.
+- **휴대폰 너비의 데스크톱:** 중요한 레이블을 읽을 수 있습니까? 알아볼 수 있는 실루엣은 읽히는 UI가 아닙니다.
+- **계층 없는 모션:** `motion.md`, 스토리.
 
-A checker can flag a jump and still miss a wrong path, an implausible gesture, a bad story or an unreadable crop. Say what the tools covered and what you watched yourself.
+검사기는 점프를 표시하면서도 잘못된 경로, 그럴듯하지 않은 제스처, 나쁜 스토리, 읽히지 않는 크롭을 놓칠 수 있습니다. 도구가 다룬 것과 직접 본 것을 말하세요.
 
-## Details
+## 디테일
 
-Six small pairs in `teaching/details.tsx`, `?example=contrasts`, Details group. Four move, two are stills; the scene is the same on both sides but for the one choice.
+`teaching/details.tsx`의 작은 쌍 여섯 개. `?example=contrasts`, Details 그룹. 넷은 움직이고 둘은 스틸입니다. 선택 하나를 빼면 양쪽 장면이 같습니다.
 
-- **Throw a swipe at the finger's speed:** released, the row carries on at the speed it was moving and the gap closes in one ease. A pause at the hand-over, an ease-in from rest or a gap that snaps shut reads as harsh (`examples/swipe`).
-- **Draw a reaction as the app does:** the real emoji in a small pill on the bubble's lower corner, ringed in the ground, scaling in from that corner. Never a drawn glyph in a disc over the words.
-- **Draw a chart on from its start:** the line draws left to right, the area follows under it, the end dot lands when the line reaches it. Faded in whole, the trend is never seen (`examples/chart-scrub` for hover).
-- **Balance a top bar:** one control and an empty side reads as unfinished. Put what the product puts there, or drop the bar.
-- **Choose copy that fits:** unless the brief fixes them, pick names, emails and values whose length suits the layout: no truncated chips, wrapped names or ragged labels.
-- **Pin a changing label to its icon:** in a fixed-width control the label sits against its chevron and grows away from it, so the gap never changes.
-
+- **손가락 속도로 스와이프를 던지세요:** 놓으면 행은 움직이던 속도로 이어지고 간격이 하나의 이즈로 닫힙니다. 인수인계의 멈춤, 정지에서의 이즈인, 탁 닫히는 간격은 거칠게 읽힙니다 (`examples/swipe`).
+- **앱이 하듯 반응을 그리세요:** 버블 아래 모서리의 작은 알약 안 실제 이모지, 그라운드로 테두리, 그 모서리에서 스케일 인. 단어 위의 원반 안 그린 글리프는 안 됩니다.
+- **시작에서부터 차트를 그리세요:** 선이 왼쪽에서 오른쪽으로 그려지고, 영역이 그 아래를 따르며, 선이 도달할 때 끝 점이 착지합니다. 통째로 페이드 인되면 추세는 보이지 않습니다 (호버는 `examples/chart-scrub`).
+- **상단 바의 균형을 맞추세요:** 컨트롤 하나와 빈 쪽은 미완성으로 읽힙니다. 제품이 그곳에 두는 것을 두거나, 바를 빼세요.
+- **맞는 카피를 고르세요:** 브리프가 고정하지 않으면, 길이가 레이아웃에 맞는 이름, 이메일, 값을 고르세요. 잘린 칩, 줄바꿈된 이름, 들쭉날쭉한 레이블은 없습니다.
+- **바뀌는 레이블을 아이콘에 고정하세요:** 고정 너비 컨트롤에서 레이블은 셰브론에 붙어 그로부터 멀어지며 자라므로, 간격은 바뀌지 않습니다.

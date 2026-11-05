@@ -1,73 +1,73 @@
-# Verify
+# 검증
 
-The last pass. Every answer comes from a frame you looked at, never from the code. Fix the largest visible failure first, re-shoot, return to the top, iterate until every answer is yes. The rules are in `framing.md`, `craft.md` and `motion.md`.
+마지막 패스입니다. 모든 답은 본 프레임에서 나옵니다. 코드에서 나오지 않습니다. 가장 크게 보이는 실패를 먼저 고치고, 다시 촬영하고, 맨 위로 돌아가, 모든 답이 예가 될 때까지 반복하세요. 규칙은 `framing.md`, `craft.md`, `motion.md`에 있습니다.
 
-## Gate
+## 게이트
 
-- `film.mjs <url> --gate` on the wide loop ends `rehearsal passed`? (For a still, `--still --gate`.)
-- The same at `--width 390`, and at the brief's own width when it names one?
-- `--states --gate`: one sheet of the opening, every mark settled and the end, with nothing you would send back?
+- 넓은 루프의 `film.mjs <url> --gate`가 `rehearsal passed`로 끝나는가? (스틸이면 `--still --gate`.)
+- `--width 390`에서도, 브리프가 너비를 이름 지으면 그 너비에서도 같은가?
+- `--states --gate`: 열림, 모든 마크가 정착한 상태, 끝의 시트 하나. 돌려보내고 싶은 것이 없는가?
 
-## Framing (first, because nothing else matters if this is wrong)
+## 프레이밍 (먼저. 이것이 틀리면 나머지는 의미가 없습니다)
 
-- One gutter, and the window or phone bleeds off at least one edge, or sits whole because the brief wants it?
-- Is anything cut by the crop that has words on it, or that the eye needs whole?
-- Is the ground the page the brief named, no plate behind the device on a white or dark page?
-- Is any corner of the stage empty for no reason?
-- Panes full: no void under a list (`empty pane:`), rows at their own pitch (`loose list:`)?
-- Phone: nothing under the island, a sheet below the status bar, a cropped phone losing status bar and nav together?
+- 거터 하나, 그리고 창이나 휴대폰이 적어도 한 가장자리로 빠져나가거나, 브리프가 원해서 온전한가?
+- 단어가 있거나 눈이 온전히 필요로 하는 것이 크롭에 잘렸는가?
+- 그라운드가 브리프가 이름 지은 페이지인가? 흰 페이지나 어두운 페이지에서 기기 뒤에 플레이트가 없는가?
+- 스테이지 모서리가 이유 없이 비어 있는가?
+- 창이 가득 찼는가? 목록 아래 공백이 없고 (`empty pane:`), 행이 자기 피치인가 (`loose list:`)?
+- 휴대폰: 아일랜드 아래가 없고, 시트는 상태 표시줄 아래이며, 크롭된 휴대폰은 상태 표시줄과 내비게이션을 함께 잃는가?
 
-## Hierarchy and density
+## 계층과 밀도
 
-- The closest gold's still beside yours: say the one difference. Is yours the sparser, flatter or smaller one, and why?
-- Still: is the subject real words and values, with bars only beside it and on what the crop cuts?
-- Label and value both words or both bars?
-- Named avatars colored, gray discs only for filler?
-- At realistic fidelity, does a list of six or more rows have at most as many placeholders as real rows?
-- The heaviest mark sits on what the story is about?
-- A date range: air between weeks, fading where the range continues, capped only on real start and end days?
-- Bento: every tile a specific moment with its words on it; no tile that is a title over bars; stat and unit on one line?
+- 가장 가까운 골드의 스틸을 당신 것 옆에 두세요. 차이 하나를 말하세요. 당신 것이 더 성기거나, 더 평평하거나, 더 작은가, 그 이유는?
+- 스틸: 주제가 실제 단어와 값이고, 바는 그 옆과 크롭이 자르는 곳에만 있는가?
+- 레이블과 값이 둘 다 단어이거나 둘 다 바인가?
+- 이름 있는 아바타는 색이 있고, 회색 원반은 필러에만 있는가?
+- 사실적 충실도에서, 여섯 행 이상의 목록에 자리 표시자가 실제 행보다 많지 않은가?
+- 가장 무거운 마크가 스토리가 다루는 것 위에 있는가?
+- 날짜 범위: 주 사이에 공기가 있고, 범위가 이어지는 곳에서 페이드되며, 실제 시작일과 종료일에만 캡이 있는가?
+- 벤토: 모든 타일이 단어가 있는 구체적인 순간인가? 바 위의 제목인 타일이 없는가? 통계와 단위가 한 줄인가?
 
-## Motion (animated scenes)
+## 모션 (애니메이션 장면)
 
-- Each beat filmed at 40 to 80ms with `--at` and looked at: presses, morphs, hand-offs, exits, the seam?
-- Nothing appears without an entrance or leaves without an exit, except `Bubble` and `Fly` with a visible hand-off?
-- A swipe lands, presses, flicks a third of the screen, lifts still moving, and the page carries on as one motion?
-- A reaction grows from the bubble's corner with the room opening on the same clock?
-- A terminal's marks are glyphs in the grid, each line owning its own, swapped in place?
-- Rolling numbers roll in the right direction and settle once?
-- The loop ends where it began, or resets with a visible cause?
+- 각 비트를 `--at`으로 40~80ms에 촬영하고 봤는가? 누르기, 모프, 핸드오프, 퇴장, 이음새?
+- `Bubble`과 `Fly`의 보이는 핸드오프를 제외하면, 등장 없이 나타나거나 퇴장 없이 떠나는 것이 없는가?
+- 스와이프가 착지하고, 누르고, 화면의 1/3을 튕기고, 아직 움직이는 채 떼며, 페이지가 하나의 모션으로 이어지는가?
+- 반응이 같은 시계에 공간이 열리며 버블 모서리에서 자라는가?
+- 터미널 마크가 그리드의 글리프이고, 각 줄이 자기 것을 소유하며, 제자리에서 바뀌는가?
+- 롤링 숫자가 올바른 방향으로 굴러 한 번 정착하는가?
+- 루프가 시작한 곳에서 끝나거나, 보이는 원인으로 재설정되는가?
 
-## Polish (last)
+## 다듬기 (마지막)
 
-- Zoom every hand-drawn thing at 4x: would a stranger know what it is, and is any stroke clipped by its box?
-- No translucent icon, no onion skin, no hand-drawn mark where the kit has one?
-- Spacing even: words 12px from edges, stacks 4 to 6px of ink apart, dots 6px clear?
-- Type: nothing under 10px on the phone, nothing wrapping that shouldn't?
+- 손으로 그린 모든 것을 4배로 확대하세요. 낯선 사람이 무엇인지 알겠는가, 획이 상자에 잘렸는가?
+- 반투명 아이콘, 어니언 스킨, 키트에 있는 것을 손으로 그린 마크가 없는가?
+- 간격이 고른가? 단어는 가장자리에서 12px, 스택은 잉크 사이 4~6px, 점은 6px 떨어져 있는가?
+- 타입: 휴대폰에서 10px 미만이 없고, 줄바꿈되면 안 되는 것이 줄바꿈되지 않는가?
 
-## What you see, what you do
+## 보이는 것, 할 일
 
-| You see | You do |
+| 보이는 것 | 할 일 |
 |---|---|
-| A void under a list or pane (`empty pane:`) | More product into it until it runs off the crop, or crop the pane; never spread the rows |
-| A one-line row three times taller than its words (`fat row:`) | Padding 12px (8px dense) and more rows; never air inside the row |
-| Rows spaced wider than they are tall (`loose list:`) | Tighten the pitch to the row's padding; add rows |
-| A whole window floating with even margins on a hero | Bleed it off two edges with one gutter, or fill it |
-| Gray bars where the eye lands | Words there; bars beside it and off the crop stay |
-| A label beside a real value drawn as a bar | Both words, or drop the row |
-| A stat's unit on its own line (`unit wrapped:`) | Nowrap the pair, size the number to the tile, or move the unit to the lead |
-| A phone drawn small, or whole, in a narrow host | Crop it: a gutter from one edge, off the other, screen 1:1 |
-| A grabber or sheet under the island | Start the sheet below the status bar |
-| A popover that shifts while open (`anchor drift:`) | Pin it by the edge it opened from; reserve the height |
-| An emoji where an icon belongs (`emoji icon:`) | A drawn glyph from one family; emoji stay in messages and reactions |
-| An icon cut by its box (`clipped glyph:`) | Fit the drawing in its viewBox, or use the kit's glyph |
-| A reaction, dot or mark on the words | Move it to the edge or gutter the kit gives it |
-| A gate line you think is intentional | Look again; if it still looks fine, say so in REHEARSAL.md with the frame; never clear it by hiding the thing |
-| Ten film runs, gate green, frame unchanged | Stop. Fresh eye |
+| 목록이나 창 아래의 공백 (`empty pane:`) | 크롭을 벗어날 때까지 제품을 더 넣거나, 창을 크롭하세요. 행을 벌리지 마세요 |
+| 단어보다 세 배 큰 한 줄 행 (`fat row:`) | 패딩 12px(빽빽하면 8px)와 더 많은 행. 행 안의 공기는 안 됩니다 |
+| 높이보다 넓게 떨어진 행 (`loose list:`) | 피치를 행 패딩에 맞추세요. 행을 더하세요 |
+| 히어로에서 균일한 여백으로 떠 있는 전체 창 | 거터 하나로 두 가장자리로 빼거나, 채우세요 |
+| 눈이 머무는 곳의 회색 바 | 그곳에 단어를 두세요. 옆과 크롭 밖의 바는 남습니다 |
+| 실제 값 옆의 바로 그려진 레이블 | 둘 다 단어로 하거나, 행을 빼세요 |
+| 자체 줄의 통계 단위 (`unit wrapped:`) | 쌍에 nowrap을 주거나, 숫자를 타일에 맞추거나, 단위를 리드로 옮기세요 |
+| 좁은 호스트에 작게, 또는 온전히 그려진 휴대폰 | 크롭하세요. 한 가장자리에서 거터, 다른 쪽으로 벗어남, 화면 1:1 |
+| 아일랜드 아래의 그래버나 시트 | 시트를 상태 표시줄 아래에서 시작하세요 |
+| 열린 채 움직이는 팝오버 (`anchor drift:`) | 열린 가장자리로 고정하고 높이를 예약하세요 |
+| 아이콘 자리의 이모지 (`emoji icon:`) | 한 가족의 그린 글리프. 이모지는 메시지와 반응에 남습니다 |
+| 상자에 잘린 아이콘 (`clipped glyph:`) | 그림을 viewBox에 맞추거나 키트 글리프를 쓰세요 |
+| 단어 위의 반응, 점, 마크 | 키트가 주는 가장자리나 거터로 옮기세요 |
+| 의도적이라고 생각하는 게이트 줄 | 다시 보세요. 그래도 괜찮으면 프레임과 함께 REHEARSAL.md에 적으세요. 숨겨서 지우지 마세요 |
+| 필름 열 번, 게이트는 녹색, 프레임은 그대로 | 멈추세요. 새로운 눈 |
 
-## Hand over
+## 넘기기
 
-- `REHEARSAL.md` written beside the component? A template:
+- 컴포넌트 옆에 `REHEARSAL.md`를 썼는가? 템플릿:
 
 ```md
 # Rehearsal: <demo>
@@ -81,4 +81,4 @@ Assumptions:
 Unresolved:
 Not checked:
 ```
-- Did you say what you did not watch?
+- 보지 않은 것을 말했는가?
