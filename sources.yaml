@@ -16,3 +16,12 @@ sources:
     local_korean: matt-pocock-skills-ko
     last_synced_sha: 4ae2317ddb22b046e26455e4f9c9b3aaaf62212d
     description: Matt Pocock의 TypeScript/React 스킬 모음
+
+  - id: benjitaylor-skills
+    name: Benji Taylor Skills
+    upstream_repo: https://github.com/benjitaylor/skills
+    upstream_path: .
+    local_original: benjitaylor-skills
+    local_korean: benjitaylor-skills-ko
+    last_synced_sha: 299140fafd08df55a9c234e610c3f64af3f45531
+    description: Benji Taylor의 AI 스킬 모음
