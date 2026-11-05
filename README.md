@@ -20,11 +20,18 @@ pstack-ko의 번역은 [lee-chance/plugins](https://github.com/lee-chance/plugin
 - **커밋**: `4ae2317ddb22b046e26455e4f9c9b3aaaf62212d`
 - **설명**: Matt Pocock의 AI 코딩 스킬 모음. 모든 SKILL.md 파일과 문서 번역 완료.
 
+### 3. benjitaylor-skills
+- **원본**: `benjitaylor-skills/`
+- **한국어**: `benjitaylor-skills-ko/`
+- **출처**: [benjitaylor/skills](https://github.com/benjitaylor/skills)
+- **커밋**: `299140fafd08df55a9c234e610c3f64af3f45531`
+- **설명**: Benji Taylor의 디자인·모션 스킬 모음. Stageshow로 실제 제품처럼 보이는 가짜 제품 UI를 만듭니다. 마크다운 산문 번역 완료.
+
 ## 🚀 사용 방법
 
 ### 한국어 버전 사용하기
 
-한국어로 번역된 스킬을 사용하려면 번역 폴더(`pstack-ko/`, `matt-pocock-skills-ko/`)를 여러분의 AI 에이전트 환경에 설치하세요.
+한국어로 번역된 스킬을 사용하려면 번역 폴더(`pstack-ko/`, `matt-pocock-skills-ko/`, `benjitaylor-skills-ko/`)를 여러분의 AI 에이전트 환경에 설치하세요.
 
 #### Cursor (Claude Code)
 ```bash
@@ -33,6 +40,9 @@ claude plugin install pstack-ko --local /path/to/this/repo/pstack-ko
 
 # matt-pocock-skills-ko 설치
 claude plugin install matt-pocock-skills-ko --local /path/to/this/repo/matt-pocock-skills-ko
+
+# benjitaylor-skills-ko의 Stageshow 설치
+npx skills add /path/to/this/repo/benjitaylor-skills-ko --skill stageshow
 ```
 
 #### 수동 설치
@@ -40,11 +50,12 @@ claude plugin install matt-pocock-skills-ko --local /path/to/this/repo/matt-poco
 ```bash
 cp -r pstack-ko ~/.claude/skills/pstack-ko
 cp -r matt-pocock-skills-ko ~/.agents/skills/matt-pocock-skills-ko
+cp -r benjitaylor-skills-ko/stageshow ~/.agents/skills/stageshow
 ```
 
 ### 원본과 비교하기
 
-원본 폴더(`pstack/`, `matt-pocock-skills/`)를 참조하여 번역과 비교할 수 있습니다. 원본은 업스트림과 동일하게 유지됩니다.
+원본 폴더(`pstack/`, `matt-pocock-skills/`, `benjitaylor-skills/`)를 참조하여 번역과 비교할 수 있습니다. 원본은 업스트림 파일에 출처를 적는 `SOURCE.md`를 더한 상태로 유지됩니다.
 
 ## 🔄 업스트림 동기화
 
@@ -129,6 +140,11 @@ ai-skills-ko/
 │   ├── SOURCE.md             # 번역 상태 포함
 │   └── ...
 │
+├── benjitaylor-skills/       # 원본 (변경 금지)
+├── benjitaylor-skills-ko/    # 한국어 번역
+│   ├── SOURCE.md             # 번역 상태 포함
+│   └── ...
+│
 ├── TRANSLATION_GUIDE.md      # 번역 가이드
 ├── AGENTS.md                 # 유지보수 가이드
 └── README.md                 # 이 파일
@@ -150,6 +166,7 @@ ai-skills-ko/
 |------|-------------|-----------|--------|
 | pstack | ~60개 스킬 | ✅ 100% | 완료 |
 | matt-pocock-skills | ~113개 파일 | 🔄 ~5% | 진행 중 |
+| benjitaylor-skills | 377개 파일 (마크다운 24개) | ✅ 마크다운 산문 | 완료 |
 
 matt-pocock-skills의 완전한 번역은 진행 중입니다. 기여를 환영합니다!
 
@@ -158,6 +175,7 @@ matt-pocock-skills의 완전한 번역은 진행 중입니다. 기여를 환영�
 - **이 저장소**: MIT License
 - **pstack**: MIT License (Cursor)
 - **matt-pocock-skills**: MIT License (Matt Pocock)
+- **benjitaylor-skills**: MIT License (Benji Taylor, `stageshow/LICENSE`)
 
 각 원본 폴더에 해당 라이선스 파일이 포함되어 있습니다.
 
@@ -166,6 +184,7 @@ matt-pocock-skills의 완전한 번역은 진행 중입니다. 기여를 환영�
 - **업스트림 소스**:
   - [cursor/plugins](https://github.com/cursor/plugins) - pstack
   - [mattpocock/skills](https://github.com/mattpocock/skills) - Matt Pocock Skills
+  - [benjitaylor/skills](https://github.com/benjitaylor/skills) - Benji Taylor Skills
   - [lee-chance/plugins](https://github.com/lee-chance/plugins) - pstack-ko 원본
 - **관련 문서**:
   - [Cursor Documentation](https://docs.cursor.com/)
