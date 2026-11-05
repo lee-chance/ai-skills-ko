@@ -1,138 +1,138 @@
 ---
 name: diagnosing-bugs
-description: Diagnosis loop for hard bugs and performance regressions. Use when the user says "diagnose"/"debug this", or reports something broken/throwing/failing/slow.
+description: "어려운 버그와 성능 회귀를 위한 진단 루프. 사용자가 'diagnose'/'debug this'라고 말하거나, 무언가가 깨졌다/던지고 있다/실패하고 있다/느리다고 보고할 때 사용하세요."
 ---
 
 # Diagnosing Bugs
 
-A discipline for hard bugs. Skip phases only when explicitly justified.
+어려운 버그를 위한 규율. 명시적으로 정당화될 때만 단계를 건너뛰세요.
 
-When exploring the codebase, read `GLOSSARY.md` (if it exists) to get a clear mental model of the relevant modules, and check ADRs in the area you're touching.
+코드베이스를 탐색할 때, 관련 모듈의 명확한 정신 모델을 얻기 위해 `GLOSSARY.md`(존재하는 경우)를 읽고, 여러분이 건드리는 영역의 ADR을 확인하세요.
 
-## Redact
+## 삭제
 
-This skill has you show commands, outputs and captured artifacts. **Redact every secret first**: write `<REDACTED>` in its place. Build loops against env vars, so the credential stays in the environment rather than in what you show. Captured artifacts carry auth headers: quote only the lines that carry the signal.
+이 스킬은 여러분이 명령, 출력, 캡처된 아티팩트를 보여주도록 합니다. **먼저 모든 시크릿을 삭제하세요**: 그 자리에 `<REDACTED>`를 작성하세요. 자격 증명이 여러분이 보여주는 것에 있는 대신 환경에 남아 있도록 env vars에 대해 루프를 빌드하세요. 캡처된 아티팩트는 auth 헤더를 담습니다: 신호를 담는 줄만 인용하세요.
 
-If the redacted output is not enough to diagnose the bug, say so and ask the user.
+삭제된 출력이 버그를 진단하기에 충분하지 않으면, 그렇게 말하고 사용자에게 물어보세요.
 
-## Phase 1: Build a feedback loop
+## 단계 1: 피드백 루프 구축
 
-**This is the skill.** Everything else is mechanical. If you have a **tight** pass/fail signal for the bug (one that goes red on _this_ bug), you will find the cause; bisection, hypothesis-testing, and instrumentation all just consume it. If you don't have one, no amount of staring at code will save you.
+**이것이 스킬입니다.** 나머지는 모두 기계적입니다. 버그에 대한 **타이트** 통과/실패 신호(이 버그에 빨간색이 되는 것)를 가지면, 원인을 찾을 것입니다. 이분법, 가설 테스팅, 계측은 모두 단지 그것을 소비합니다. 하나를 가지지 않으면, 코드를 아무리 응시해도 여러분을 구하지 못합니다.
 
-Spend disproportionate effort here. **Be aggressive. Be creative. Refuse to give up.**
+여기에 불균형적인 노력을 쏟으세요. **공격적이세요. 창의적이세요. 포기를 거부하세요.**
 
-### Ways to construct one, in roughly this order
+### 구성하는 방법들, 대략 이 순서로
 
-1. **Failing test** at whatever seam reaches the bug: unit, integration, e2e.
-2. **Curl / HTTP script** against a running dev server.
-3. **CLI invocation** with a fixture input, diffing stdout against a known-good snapshot.
-4. **Headless browser script** (Playwright / Puppeteer) that drives the UI and asserts on DOM/console/network.
-5. **Replay a captured trace.** Save a real network request / payload / event log to disk; replay it through the code path in isolation.
-6. **Throwaway harness.** Spin up a minimal subset of the system (one service, mocked deps) that exercises the bug code path with a single function call.
-7. **Property / fuzz loop.** If the bug is "sometimes wrong output", run 1000 random inputs and look for the failure mode.
-8. **Bisection harness.** If the bug appeared between two known states (commit, dataset, version), automate "boot at state X, check, repeat" so you can `git bisect run` it.
-9. **Differential loop.** Run the same input through old-version vs new-version (or two configs) and diff outputs.
-10. **HITL bash script.** Last resort. If a human must click, drive _them_ with `scripts/hitl-loop.template.sh` so the loop is still structured. Captured output feeds back to you.
+1. 버그에 도달하는 어떤 심에서든 **실패하는 테스트**: unit, integration, e2e.
+2. 실행 중인 개발 서버에 대한 **Curl / HTTP 스크립트**.
+3. 고정 입력으로 **CLI 호출**, 알려진 좋은 스냅샷에 대해 stdout diff.
+4. UI를 구동하고 DOM/console/network에 어서트하는 **헤드리스 브라우저 스크립트** (Playwright / Puppeteer).
+5. **캡처된 추적을 재생합니다.** 실제 네트워크 요청 / 페이로드 / 이벤트 로그를 디스크에 저장합니다. 분리된 코드 경로를 통해 재생합니다.
+6. **일회용 하네스.** 시스템의 최소 하위 집합(하나의 서비스, 모킹된 deps)을 스핀업하여 단일 함수 호출로 버그 코드 경로를 실행합니다.
+7. **속성 / fuzz 루프.** 버그가 "때때로 잘못된 출력"이면, 1000개의 랜덤 입력을 실행하고 실패 모드를 찾습니다.
+8. **이분법 하네스.** 버그가 두 알려진 상태(커밋, 데이터 세트, 버전) 사이에 나타났으면, "상태 X에서 부팅, 확인, 반복"을 자동화하여 `git bisect run`할 수 있도록 합니다.
+9. **차등 루프.** 같은 입력을 old-version vs new-version (또는 두 설정)을 통해 실행하고 출력을 diff합니다.
+10. **HITL bash 스크립트.** 최후의 수단. 인간이 클릭해야 하면, 루프가 여전히 구조화되도록 `scripts/hitl-loop.template.sh`로 *그들을* 구동합니다. 캡처된 출력은 여러분에게 피드백합니다.
 
-Build the right feedback loop, and the bug is 90% fixed.
+올바른 피드백 루프를 빌드하면, 버그는 90% 수정됩니다.
 
-### Tighten the loop
+### 루프를 타이트하게 만들기
 
-Treat the loop as a product. Once you have _a_ loop, **tighten** it:
+루프를 제품으로 취급하세요. _하나의_ 루프를 가지면, **타이트하게** 만드세요:
 
-- Can I make it faster? (Cache setup, skip unrelated init, narrow the test scope.)
-- Can I make the signal sharper? (Assert on the specific symptom, not "didn't crash".)
-- Can I make it more deterministic? (Pin time, seed RNG, isolate filesystem, freeze network.)
+- 더 빠르게 만들 수 있나요? (설정 캐시, 무관한 init 건너뛰기, 테스트 범위 좁히기.)
+- 신호를 더 날카롭게 만들 수 있나요? ("크래시하지 않음"이 아니라 특정 증상에 어서트.)
+- 더 결정론적으로 만들 수 있나요? (시간 고정, RNG 시드, 파일 시스템 분리, 네트워크 동결.)
 
-A 30-second flaky loop is barely better than no loop; a 2-second deterministic one is tight, a debugging superpower.
+30초 플레이키 루프는 루프 없는 것보다 거의 낫지 않습니다. 2초 결정론적 루프는 타이트하고, 디버깅 초능력입니다.
 
-### Non-deterministic bugs
+### 비결정론적 버그
 
-The goal is not a clean repro but a **higher reproduction rate**. Loop the trigger 100×, parallelise, add stress, narrow timing windows, inject sleeps. A 50%-flake bug is debuggable; 1% is not, so keep raising the rate until it's debuggable.
+목표는 깨끗한 재현이 아니라 **더 높은 재현율**입니다. 트리거를 100×로 루프하고, 병렬화하고, 스트레스를 추가하고, 타이밍 창을 좁히고, 슬립을 주입합니다. 50%-플레이크 버그는 디버깅 가능합니다. 1%는 아니므로, 디버깅 가능할 때까지 비율을 계속 높이세요.
 
-### When you genuinely cannot build a loop
+### 진정으로 루프를 빌드할 수 없을 때
 
-Stop and say so explicitly. List what you tried. Ask the user for: (a) access to whatever environment reproduces it, (b) a redacted captured artifact (HAR file, log dump, core dump, screen recording with timestamps), or (c) permission to add temporary production instrumentation. Do **not** proceed to hypothesise without a loop.
+명시적으로 멈추고 말하세요. 시도한 것을 나열하세요. 사용자에게 다음을 요청하세요: (a) 재현하는 환경에 대한 액세스, (b) 삭제된 캡처된 아티팩트 (HAR 파일, 로그 덤프, 코어 덤프, 타임스탬프가 있는 화면 녹화), 또는 (c) 임시 프로덕션 계측을 추가할 권한. 루프 없이 가설화하기 위해 진행하지 **마세요**.
 
-### Completion criterion: a tight loop that goes red
+### 완료 기준: 빨간색이 되는 타이트 루프
 
-Phase 1 is done when the loop is **tight** and **red-capable**: you can name **one command** (a script path, a test invocation, a curl) that you have **already run at least once** (show the invocation and its output, redacted), and that is:
+단계 1은 루프가 **타이트**하고 **빨간색 가능**할 때 완료됩니다: 여러분이 **이미 최소 한 번 실행한**(호출과 출력을 보여주세요, 삭제됨) **하나의 명령**(스크립트 경로, 테스트 호출, curl)을 명명할 수 있으며, 그것은:
 
-- [ ] **Red-capable**: it drives the actual bug code path and asserts the **user's exact symptom**, so it can go red on this bug and green once fixed. Not "runs without erroring"; it must be able to _catch this specific bug_.
-- [ ] **Deterministic**: same verdict every run (flaky bugs: a pinned, high reproduction rate, per above).
-- [ ] **Fast**: seconds, not minutes.
-- [ ] **Agent-runnable**: you can run it unattended; a human in the loop only via `scripts/hitl-loop.template.sh`.
+- [ ] **빨간색 가능**: 실제 버그 코드 경로를 구동하고 **사용자의 정확한 증상**을 어서트하므로, 이 버그에 빨간색이 되고 수정되면 녹색이 될 수 있습니다. "오류 없이 실행"이 아닙니다. 이 특정 버그를 _잡을_ 수 있어야 합니다.
+- [ ] **결정론적**: 모든 실행마다 같은 평결 (플레이키 버그: 고정된, 높은 재현율, 위 참조).
+- [ ] **빠름**: 분이 아니라 초.
+- [ ] **에이전트 실행 가능**: 무인으로 실행할 수 있습니다. 루프의 인간은 `scripts/hitl-loop.template.sh`를 통해서만.
 
-If you catch yourself reading code to build a theory before this command exists, **stop: jumping straight to a hypothesis is the exact failure this skill prevents.** No red-capable command, no Phase 2.
+이 명령이 존재하기 전에 이론을 빌드하기 위해 코드를 읽는 자신을 발견하면, **멈추세요: 가설로 바로 뛰어드는 것은 이 스킬이 방지하는 정확한 실패입니다.** 빨간색 가능 명령 없음, 단계 2 없음.
 
-## Phase 2: Reproduce + minimise
+## 단계 2: 재현 + 최소화
 
-Run the loop. Watch it go red as the bug appears.
+루프를 실행하세요. 버그가 나타날 때 빨간색이 되는 것을 보세요.
 
-Confirm:
+확인:
 
-- [ ] The loop produces the failure mode the **user** described, not a different failure that happens to be nearby. Wrong bug = wrong fix.
-- [ ] The failure is reproducible across multiple runs (or, for non-deterministic bugs, reproducible at a high enough rate to debug against).
-- [ ] You have captured the exact symptom (error message, wrong output, slow timing) so later phases can verify the fix actually addresses it.
+- [ ] 루프는 근처에 일어나는 다른 실패가 아니라, **사용자**가 설명한 실패 모드를 생성합니다. 잘못된 버그 = 잘못된 수정.
+- [ ] 실패는 여러 실행에 걸쳐 재현 가능합니다(또는, 비결정론적 버그의 경우, 디버깅할 만큼 충분히 높은 비율로 재현 가능).
+- [ ] 정확한 증상(오류 메시지, 잘못된 출력, 느린 타이밍)을 캡처했으므로 나중 단계에서 수정이 실제로 그것을 해결하는지 검증할 수 있습니다.
 
-### Minimise
+### 최소화
 
-Once it's red, shrink the repro to the **smallest scenario that still goes red**. Cut inputs, callers, config, data, and steps **one at a time**, re-running the loop after each cut, and keep only what's load-bearing for the failure.
+빨간색이 되면, 재현을 **여전히 빨간색이 되는 가장 작은 시나리오**로 축소하세요. 입력, 호출자, 설정, 데이터, 단계를 **한 번에 하나씩** 자르고, 각 자르기 후 루프를 다시 실행하고, 실패에 부하를 지지하는 것만 유지하세요.
 
-Why bother: a minimal repro shrinks the hypothesis space in Phase 3 (fewer moving parts left to suspect) and becomes the clean regression test in Phase 5.
+왜 신경 쓰는가: 최소 재현은 단계 3에서 가설 공간을 축소하고(의심할 움직이는 부분이 더 적음) 단계 5에서 깨끗한 회귀 테스트가 됩니다.
 
-Done when **every remaining element is load-bearing**: removing any one of them makes the loop go green.
+**남은 모든 요소가 부하를 지지할 때** 완료됩니다: 그 중 하나를 제거하면 루프가 녹색이 됩니다.
 
-Do not proceed until you have reproduced **and** minimised.
+재현 **그리고** 최소화할 때까지 진행하지 마세요.
 
-## Phase 3: Hypothesise
+## 단계 3: 가설 세우기
 
-Generate **3–5 ranked hypotheses** before testing any of them. Single-hypothesis generation anchors on the first plausible idea.
+그 중 하나를 테스트하기 전에 **3-5개의 순위가 지정된 가설**을 생성하세요. 단일 가설 생성은 첫 번째 그럴듯한 아이디어에 고정됩니다.
 
-Each hypothesis must be **falsifiable**: state the prediction it makes.
+각 가설은 **반증 가능**해야 합니다: 그것이 만드는 예측을 진술하세요.
 
-> Format: "If <X> is the cause, then <changing Y> will make the bug disappear / <changing Z> will make it worse."
+> 형식: "만약 <X>가 원인이면, <Y를 변경>하면 버그가 사라질 것입니다 / <Z를 변경>하면 더 나빠질 것입니다."
 
-If you cannot state the prediction, the hypothesis is a vibe: discard or sharpen it.
+예측을 진술할 수 없으면, 가설은 분위기입니다: 폐기하거나 다듬으세요.
 
-**Show the ranked list to the user before testing.** They often have domain knowledge that re-ranks instantly ("we just deployed a change to #3"), or know hypotheses they've already ruled out. Cheap checkpoint, big time saver. Don't block on it; proceed with your ranking if the user is AFK.
+**테스트하기 전에 순위가 지정된 목록을 사용자에게 보여주세요.** 그들은 종종 즉시 재순위하는 도메인 지식을 가지고 있습니다("우리는 방금 #3에 변경을 배포했습니다"), 또는 그들이 이미 배제한 가설을 알고 있습니다. 저렴한 체크포인트, 큰 시간 절약. 그것에 차단되지 마세요. 사용자가 AFK이면 여러분의 순위로 진행하세요.
 
-## Phase 4: Instrument
+## 단계 4: 계측
 
-Each probe must map to a specific prediction from Phase 3. **Change one variable at a time.**
+각 프로브는 단계 3의 특정 예측에 매핑되어야 합니다. **한 번에 하나의 변수를 변경하세요.**
 
-Tool preference:
+도구 선호도:
 
-1. **Debugger / REPL inspection** if the env supports it. One breakpoint beats ten logs.
-2. **Targeted logs** at the boundaries that distinguish hypotheses.
-3. Never "log everything and grep".
+1. env가 지원하면 **디버거 / REPL 검사**. 하나의 브레이크포인트는 10개의 로그를 이깁니다.
+2. 가설을 구별하는 경계에서 **타겟 로그**.
+3. 절대 "모든 것을 로깅하고 grep".
 
-**Tag every debug log** with a unique prefix, e.g. `[DEBUG-a4f2]`. Cleanup at the end becomes a single grep. Untagged logs survive; tagged logs die.
+**모든 디버그 로그를 태그**하세요, 고유 접두사로, 예: `[DEBUG-a4f2]`. 끝에 정리는 단일 grep이 됩니다. 태그되지 않은 로그는 살아남습니다. 태그된 로그는 죽습니다.
 
-**Perf branch.** For performance regressions, logs are usually wrong. Instead: establish a baseline measurement (timing harness, `performance.now()`, profiler, query plan), then bisect. Measure first, fix second.
+**성능 분기.** 성능 회귀의 경우, 로그는 보통 잘못되었습니다. 대신: 기준 측정을 설정하고(타이밍 하네스, `performance.now()`, 프로파일러, 쿼리 계획), 그런 다음 이분법. 먼저 측정, 두 번째 수정.
 
-## Phase 5: Fix + regression test
+## 단계 5: 수정 + 회귀 테스트
 
-Write the regression test **before the fix**, but only if there is a **correct seam** for it.
+**수정 전에** 회귀 테스트를 작성하되, 그것을 위한 **올바른 심**이 있을 때만.
 
-A correct seam is one where the test exercises the **real bug pattern** as it occurs at the call site. If the only available seam is too shallow (single-caller test when the bug needs multiple callers, unit test that can't replicate the chain that triggered the bug), a regression test there gives false confidence.
+올바른 심은 테스트가 호출 사이트에서 발생하는 **실제 버그 패턴**을 실행하는 곳입니다. 사용 가능한 유일한 심이 너무 얕으면(버그가 여러 호출자를 필요로 할 때 단일 호출자 테스트, 버그를 트리거한 체인을 복제할 수 없는 unit 테스트), 거기의 회귀 테스트는 거짓 신뢰를 줍니다.
 
-**If no correct seam exists, that itself is the finding.** Note it. The codebase architecture is preventing the bug from being locked down. Flag this for the next phase.
+**올바른 심이 존재하지 않으면, 그것 자체가 발견입니다.** 그것을 기록하세요. 코드베이스 아키텍처가 버그가 잠기는 것을 방지하고 있습니다. 다음 단계를 위해 플래그하세요.
 
-If a correct seam exists:
+올바른 심이 존재하면:
 
-1. Turn the minimised repro into a failing test at that seam.
-2. Watch it fail. If you forced the red by mutating code or a fixture, `diff` against a pristine copy to prove the mutation landed before you trust it.
-3. Apply the fix.
-4. Watch it pass.
-5. Re-run the Phase 1 feedback loop against the original (un-minimised) scenario.
+1. 최소화된 재현을 해당 심에서 실패하는 테스트로 전환하세요.
+2. 실패하는 것을 보세요. 코드나 고정을 변이시켜 빨간색을 강제했으면, 변이가 착륙했음을 증명하기 위해 신뢰하기 전에 깨끗한 사본에 대해 `diff`하세요.
+3. 수정을 적용하세요.
+4. 통과하는 것을 보세요.
+5. 원래(최소화되지 않은) 시나리오에 대해 단계 1 피드백 루프를 다시 실행하세요.
 
-## Phase 6: Cleanup
+## 단계 6: 정리
 
-Required before declaring done:
+완료를 선언하기 전에 필요:
 
-- [ ] Original repro no longer reproduces (re-run the Phase 1 loop)
-- [ ] Regression test passes (or absence of seam is documented)
-- [ ] All `[DEBUG-...]` instrumentation removed (`grep` the prefix)
-- [ ] Throwaway prototypes deleted (or moved to a clearly-marked debug location)
-- [ ] The hypothesis that turned out correct is stated in the commit / PR message, so the next debugger learns
+- [ ] 원래 재현이 더 이상 재현되지 않음 (단계 1 루프를 다시 실행)
+- [ ] 회귀 테스트가 통과함 (또는 심의 부재가 문서화됨)
+- [ ] 모든 `[DEBUG-...]` 계측이 제거됨 (접두사를 `grep`)
+- [ ] 일회용 프로토타입이 삭제됨 (또는 명확히 표시된 디버그 위치로 이동됨)
+- [ ] 정확한 것으로 판명된 가설이 커밋 / PR 메시지에 진술됨, 다음 디버거가 배우도록

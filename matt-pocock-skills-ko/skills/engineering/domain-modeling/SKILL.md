@@ -1,15 +1,15 @@
 ---
 name: domain-modeling
-description: Build and sharpen a project's domain model. Use when discussing codebase terminology, writing or editing a GLOSSARY.md, or recording or editing an ADR.
+description: "프로젝트의 도메인 모델을 구축하고 다듬습니다. 코드베이스 용어를 논의하거나, GLOSSARY.md를 작성 또는 편집하거나, ADR을 기록 또는 편집할 때 사용하세요."
 ---
 
 # Domain Modeling
 
-Actively build and sharpen the project's domain model as you design. This is the *active* discipline: challenging terms, inventing edge-case scenarios, and writing the glossary and decisions down the moment they crystallise. (Merely *reading* `GLOSSARY.md` for vocabulary is not this skill: that's a one-line habit any skill can do. This skill is for when you're changing the model, not just consuming it.)
+설계하면서 프로젝트의 도메인 모델을 적극적으로 구축하고 다듬습니다. 이것은 *활성* 규율입니다: 용어에 도전하고, 엣지 케이스 시나리오를 발명하고, 용어집과 결정을 결정화되는 순간 작성합니다. (어휘를 위해 단순히 `GLOSSARY.md`를 *읽는* 것은 이 스킬이 아닙니다: 그것은 모든 스킬이 할 수 있는 한 줄 습관입니다. 이 스킬은 모델을 소비하는 것이 아니라 변경하는 것을 위한 것입니다.)
 
-## File structure
+## 파일 구조
 
-Most repos have a single context:
+대부분의 저장소는 단일 컨텍스트를 가집니다:
 
 ```
 /
@@ -21,54 +21,54 @@ Most repos have a single context:
 └── src/
 ```
 
-If a `GLOSSARY-MAP.md` exists at the root, the repo has multiple contexts. The map points to where each one lives:
+루트에 `GLOSSARY-MAP.md`가 존재하면, 저장소는 여러 컨텍스트를 가집니다. 맵은 각각이 어디에 있는지 가리킵니다:
 
 ```
 /
 ├── GLOSSARY-MAP.md
 ├── docs/
-│   └── adr/                          ← system-wide decisions
+│   └── adr/                          ← 시스템 전체 결정
 ├── src/
 │   ├── ordering/
 │   │   ├── GLOSSARY.md
-│   │   └── docs/adr/                 ← context-specific decisions
+│   │   └── docs/adr/                 ← 컨텍스트 전용 결정
 │   └── billing/
 │       ├── GLOSSARY.md
 │       └── docs/adr/
 ```
 
-Create files lazily: only when you have something to write. If no `GLOSSARY.md` exists, create one when the first term is resolved. If no `docs/adr/` exists, create it when the first ADR is needed.
+파일을 게으르게 생성하세요: 작성할 것이 있을 때만. `GLOSSARY.md`가 존재하지 않으면, 첫 번째 용어가 해결될 때 하나를 만드세요. `docs/adr/`이 존재하지 않으면, 첫 번째 ADR이 필요할 때 만드세요.
 
-## During the session
+## 세션 중
 
-### Challenge against the glossary
+### 용어집에 대해 도전
 
-When the user uses a term that conflicts with the existing language in `GLOSSARY.md`, call it out immediately. "Your glossary defines 'cancellation' as X, but you seem to mean Y. Which is it?"
+사용자가 `GLOSSARY.md`의 기존 언어와 충돌하는 용어를 사용하면, 즉시 지적하세요. "여러분의 용어집은 'cancellation'을 X로 정의하지만, Y를 의미하는 것 같습니다. 어느 것인가요?"
 
-### Sharpen fuzzy language
+### 흐릿한 언어를 다듬기
 
-When the user uses vague or overloaded terms, propose a precise canonical term. "You're saying 'account': do you mean the Customer or the User? Those are different things."
+사용자가 모호하거나 과부하된 용어를 사용하면, 정확한 정규 용어를 제안하세요. "여러분은 'account'라고 말하고 있습니다: Customer를 의미하나요 아니면 User를 의미하나요? 그것들은 다른 것입니다."
 
-### Discuss concrete scenarios
+### 구체적인 시나리오 논의
 
-When domain relationships are being discussed, stress-test them with specific scenarios. Invent scenarios that probe edge cases and force the user to be precise about the boundaries between concepts.
+도메인 관계가 논의될 때, 특정 시나리오로 스트레스 테스트하세요. 엣지 케이스를 탐색하고 사용자가 개념 사이의 경계에 대해 정확하도록 강제하는 시나리오를 발명하세요.
 
-### Cross-reference with code
+### 코드와 교차 참조
 
-When the user states how something works, check whether the code agrees. If you find a contradiction, surface it: "Your code cancels entire Orders, but you just said partial cancellation is possible. Which is right?"
+사용자가 무언가가 작동하는 방식을 진술할 때, 코드가 동의하는지 확인하세요. 모순을 발견하면, 표면화하세요: "여러분의 코드는 전체 Order를 취소하지만, 부분 취소가 가능하다고 방금 말했습니다. 어느 것이 맞나요?"
 
-### Update GLOSSARY.md inline
+### GLOSSARY.md를 인라인으로 업데이트
 
-When a term is resolved, update `GLOSSARY.md` right there. Don't batch these up: capture them as they happen. Use the format in [GLOSSARY-FORMAT.md](./GLOSSARY-FORMAT.md).
+용어가 해결되면, 바로 거기서 `GLOSSARY.md`를 업데이트하세요. 이것들을 일괄 처리하지 마세요: 그들이 일어날 때 캡처하세요. [GLOSSARY-FORMAT.md](./GLOSSARY-FORMAT.md)의 형식을 사용하세요.
 
-`GLOSSARY.md` should be totally devoid of implementation details. Do not treat `GLOSSARY.md` as a spec, a scratch pad, or a repository for implementation decisions. It is a glossary and nothing else.
+`GLOSSARY.md`는 구현 세부 사항이 완전히 없어야 합니다. `GLOSSARY.md`를 스펙, 스크래치 패드 또는 구현 결정을 위한 저장소로 취급하지 마세요. 용어집일 뿐입니다.
 
-### Offer ADRs sparingly
+### ADR을 아끼어 제공
 
-Only offer to create an ADR when all three are true:
+세 가지가 모두 참일 때만 ADR을 만들도록 제안하세요:
 
-1. **Hard to reverse**: the cost of changing your mind later is meaningful
-2. **Surprising without context**: a future reader will wonder "why did they do it this way?"
-3. **The result of a real trade-off**: there were genuine alternatives and you picked one for specific reasons
+1. **역전하기 어려움**: 나중에 마음을 바꾸는 비용이 의미 있습니다
+2. **컨텍스트 없이 놀라움**: 미래의 독자는 "왜 그들은 이렇게 했나요?"라고 궁금해할 것입니다
+3. **실제 트레이드오프의 결과**: 진정한 대안이 있었고 여러분은 특정 이유로 하나를 선택했습니다
 
-If any of the three is missing, skip the ADR. Use the format in [ADR-FORMAT.md](./ADR-FORMAT.md).
+세 가지 중 하나라도 누락되면, ADR을 건너뛰세요. [ADR-FORMAT.md](./ADR-FORMAT.md)의 형식을 사용하세요.
