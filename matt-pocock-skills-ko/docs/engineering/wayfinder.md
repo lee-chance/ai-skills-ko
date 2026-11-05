@@ -1,103 +1,103 @@
-## What it does
+## 무엇을 하는가
 
-`wayfinder` takes an effort too big for one agent [session](https://www.aihero.dev/ai-coding-dictionary/session). This is an idea whose **destination** you can name but whose route you cannot yet see. Wayfinder charts it as a shared **map** of **decision tickets** on your issue tracker, then resolves the tickets one at a time until the route is clear.
+`wayfinder`는 하나의 에이전트 [세션](https://www.aihero.dev/ai-coding-dictionary/session)에 너무 큰 작업을 가져갑니다. **목적지**를 명시할 수 있지만 경로를 아직 볼 수 없는 아이디어입니다. Wayfinder는 이슈 트래커의 **결정 티켓** 공유 **맵**으로 그것을 작성하고, 경로가 명확해질 때까지 한 번에 하나씩 티켓을 해결합니다.
 
-It plans and does not build. Every ticket asks a question, and the answer is a decision, not a slice of a build. The map is finished when nothing is left to decide before someone builds the thing. This rule separates a wayfinder ticket from an ordinary implementation [ticket](https://www.aihero.dev/ai-coding-dictionary/ticket), and it is the rule agents break most often. When the map clears, wayfinder hands off and does not continue into code.
+계획하고 빌드하지 않습니다. 모든 티켓은 질문을 하며, 답은 빌드의 슬라이스가 아니라 결정입니다. 누군가가 것을 빌드하기 전에 결정할 것이 남지 않으면 맵이 완료됩니다. 이 규칙은 wayfinder 티켓을 일반 구현 [티켓](https://www.aihero.dev/ai-coding-dictionary/ticket)과 분리하며, 에이전트가 가장 자주 위반하는 규칙입니다. 맵이 지워지면 wayfinder는 handoff하고 코드로 계속하지 않습니다.
 
-## When to reach for it
+## 언제 사용하는가
 
-You invoke this by typing `/wayfinder`; the [agent](https://www.aihero.dev/ai-coding-dictionary/agent) won't reach for it on its own.
+`/wayfinder`를 입력하여 호출합니다. [에이전트](https://www.aihero.dev/ai-coding-dictionary/agent)는 스스로 사용하지 않습니다.
 
-It is the heaviest flow in the set, so the trigger is narrow. The effort must be larger than one agent session can hold, and the route to the destination must be unclear. The split is session count: `/grill-with-docs` for single-session planning, `/wayfinder` for multi-session planning.
+세트에서 가장 무거운 플로우이므로, 트리거는 좁습니다. 작업은 하나의 에이전트 세션이 보유할 수 있는 것보다 커야 하고, 목적지로 가는 경로가 불명확해야 합니다. 분할은 세션 수입니다: 단일 세션 계획을 위한 `/grill-with-docs`, 다중 세션 계획을 위한 `/wayfinder`.
 
-| What you have in front of you | What to run |
+| 앞에 가진 것 | 실행할 것 |
 | --- | --- |
-| A well-scoped feature you can settle in one sitting | [grill-me](https://aihero.dev/skills-grill-me), or [grill-with-docs](https://aihero.dev/skills-grill-with-docs) when there is a codebase |
-| A greenfield project, or a build spanning many sessions, with the route still unclear | `/wayfinder` |
-| A thread where the deciding is already done | [to-spec](https://aihero.dev/skills-to-spec): skip straight past the map |
-| A cleared wayfinder map | [to-spec](https://aihero.dev/skills-to-spec), then [to-tickets](https://aihero.dev/skills-to-tickets) and [implement](https://aihero.dev/skills-implement) |
-| An existing session that has already grown too big | say "hand off to `/wayfinder`" ([handoff](https://aihero.dev/skills-handoff) bridges into a map as well as out of one) |
+| 한 번에 해결할 수 있는 잘 범위가 정해진 기능 | [grill-me](https://aihero.dev/skills-grill-me), 또는 코드베이스가 있을 때 [grill-with-docs](https://aihero.dev/skills-grill-with-docs) |
+| 그린필드 프로젝트, 또는 여러 세션에 걸친 빌드, 경로가 여전히 불명확 | `/wayfinder` |
+| 결정이 이미 끝난 스레드 | [to-spec](https://aihero.dev/skills-to-spec): 맵을 건너뛰고 바로 진행 |
+| 지워진 wayfinder 맵 | [to-spec](https://aihero.dev/skills-to-spec), 그 다음 [to-tickets](https://aihero.dev/skills-to-tickets)와 [implement](https://aihero.dev/skills-implement) |
+| 이미 너무 커진 기존 세션 | "hand off to `/wayfinder`"라고 말하세요 ([handoff](https://aihero.dev/skills-handoff)는 맵 안으로도 밖으로도 연결합니다) |
 
-Greenfield is not a requirement. People use wayfinder routinely on legacy and half-built codebases, and it can be more useful there, because much of the fog is "what is already true here" rather than "what should we do".
+그린필드는 요구 사항이 아닙니다. 사람들은 레거시와 반쯤 빌드된 코드베이스에서 wayfinder를 일상적으로 사용하며, 안개의 대부분이 "우리가 무엇을 해야 하는가"가 아니라 "여기서 이미 참인 것은 무엇인가"이기 때문에 거기서 더 유용할 수 있습니다.
 
-## Prerequisites
+## 전제 조건
 
-The map and its tickets live on the repo's issue tracker, so wayfinder needs the tracker setup from [setup-matt-pocock-skills](https://aihero.dev/skills-setup-matt-pocock-skills). That step writes a "Wayfinding operations" section. The section describes how to express the map, its child tickets, blocking edges, and frontier queries on GitHub, GitLab, or local markdown. Wayfinder finds that doc through the pointer in your `CLAUDE.md` / `AGENTS.md`, not at a fixed path. With no tracker configured, it falls back to local markdown files.
+맵과 그 티켓은 리포의 이슈 트래커에 있으므로, wayfinder는 [setup-matt-pocock-skills](https://aihero.dev/skills-setup-matt-pocock-skills)의 트래커 설정이 필요합니다. 그 단계는 "Wayfinding operations" 섹션을 작성합니다. 섹션은 GitHub, GitLab, 또는 로컬 markdown에서 맵, 자식 티켓, 차단 엣지, 프론티어 쿼리를 표현하는 방법을 설명합니다. Wayfinder는 고정된 경로가 아니라 `CLAUDE.md` / `AGENTS.md`의 포인터를 통해 그 문서를 찾습니다. 구성된 트래커가 없으면 로컬 markdown 파일로 폴백합니다.
 
-The tracker does real work. Its native blocking links show the frontier in the tracker's own UI. On a tracker without native dependency links (a self-hosted Gitea, say), wayfinder infers blockers from the map text. That works, but you must supervise it more closely.
+트래커는 실제 작업을 합니다. 네이티브 차단 링크는 트래커 자체 UI에서 프론티어를 보여줍니다. 네이티브 종속성 링크가 없는 트래커(자체 호스팅된 Gitea 등)에서 wayfinder는 맵 텍스트에서 차단자를 추론합니다. 그것은 작동하지만, 더 주의 깊게 감독해야 합니다.
 
-## The map, the fog, and the frontier
+## 맵, 안개, 프론티어
 
-The **map** is a single issue labelled `wayfinder:map`, and its tickets are its child issues. It is an **index, not a store**. A decision lives in exactly one place, its ticket, and the map only gives a one-line summary and a link. A session loads the map at low resolution and opens individual tickets when it needs them. This lets a map keep growing without every session loading its whole history.
+**맵**은 `wayfinder:map` 레이블이 붙은 단일 이슈이며, 그 티켓은 자식 이슈입니다. **저장소가 아니라 인덱스**입니다. 결정은 정확히 한 곳, 그 티켓에 있으며, 맵은 한 줄 요약과 링크만 제공합니다. 세션은 낮은 해상도로 맵을 로드하고 필요할 때 개별 티켓을 엽니다. 이것은 모든 세션이 전체 히스토리를 로드하지 않고도 맵이 계속 성장하게 합니다.
 
-The map has four sections:
+맵에는 네 가지 섹션이 있습니다:
 
-- **Destination.** What the end of this map looks like. You name it first, before any ticket exists, because the destination fixes the scope you measure every ticket against.
-- **Decisions so far.** One line per closed ticket, each with a link to where the detail lives.
-- **Not yet specified.** This is the **fog of war**: decisions you can tell are coming but cannot yet phrase sharply. The test for fog versus ticket is whether you can state the question precisely *now*, not whether you can answer it. When you resolve a ticket, the fog ahead of it clears, and anything you can now specify graduates into a new ticket.
-- **Out of scope.** Work beyond the destination. Fog only gathers *toward* the destination, so out-of-scope work stays closed and never graduates.
+- **목적지.** 이 맵의 끝이 어떻게 보이는지. 어떤 티켓이 존재하기 전에 먼저 명시합니다. 목적지가 모든 티켓을 측정하는 범위를 고정하기 때문입니다.
+- **지금까지의 결정.** 닫힌 티켓당 한 줄, 각각 세부 사항이 있는 곳에 대한 링크.
+- **아직 지정되지 않음.** 이것이 **전쟁의 안개**입니다: 다가올 것을 알 수 있지만 아직 날카롭게 표현할 수 없는 결정. 안개 대 티켓의 테스트는 *지금* 질문을 정확히 진술할 수 있는지 여부이며, 답할 수 있는지 여부가 아닙니다. 티켓을 해결하면 그 앞의 안개가 지워지고, 이제 지정할 수 있는 것은 새 티켓으로 승급합니다.
+- **범위 밖.** 목적지 너머의 작업. 안개는 목적지 *쪽으로*만 모이므로, 범위 밖 작업은 닫힌 채로 유지되고 절대 승급하지 않습니다.
 
-The **frontier** is the set of open, unblocked, unclaimed tickets (the edge of the known). A session claims a ticket by assigning it to itself before it does any work. The assignee *is* the claim, so concurrent sessions skip that ticket. Sessions refer to tickets by name, never by a bare `#42`, because a wall of issue numbers is hard to read in narration.
+**프론티어**는 열린, 차단되지 않은, 청구되지 않은 티켓의 집합입니다 (알려진 것의 가장자리). 세션은 어떤 작업을 하기 전에 그것을 자신에게 할당하여 티켓을 청구합니다. 할당자가 *바로* 청구이므로, 동시 세션은 그 티켓을 건너뜁니다. 세션은 맨 `#42`가 아니라 이름으로 티켓을 참조합니다. 이슈 번호의 벽은 서술에서 읽기 어렵기 때문입니다.
 
-## The four decision-ticket types
+## 네 가지 결정 티켓 유형
 
-Every ticket carries a `wayfinder:<type>` label. Each ticket is either **[HITL](https://www.aihero.dev/ai-coding-dictionary/human-in-the-loop)** (worked with a human who speaks for themselves) or **[AFK](https://www.aihero.dev/ai-coding-dictionary/afk)** (driven by the agent alone). A HITL ticket resolves only through the live exchange. An agent that answers its own [grilling](https://www.aihero.dev/ai-coding-dictionary/grilling) questions has broken it.
+모든 티켓은 `wayfinder:<type>` 레이블을 전달합니다. 각 티켓은 **[HITL](https://www.aihero.dev/ai-coding-dictionary/human-in-the-loop)** (스스로 말하는 인간과 함께 작업) 또는 **[AFK](https://www.aihero.dev/ai-coding-dictionary/afk)** (에이전트만 구동)입니다. HITL 티켓은 라이브 교환을 통해서만 해결됩니다. 자체 [grilling](https://www.aihero.dev/ai-coding-dictionary/grilling) 질문에 답하는 에이전트는 그것을 깨뜨렸습니다.
 
-| Type | Mode | Reach for it when | Resolved by |
+| 유형 | 모드 | 언제 사용하는가 | 해결 방법 |
 | --- | --- | --- | --- |
-| `grilling` | HITL | The default. The question can be settled by talking it through. | [grilling](https://aihero.dev/skills-grilling) plus [domain-modeling](https://aihero.dev/skills-domain-modeling), in a fresh session |
-| `prototype` | HITL | "How should this look" or "how should this behave": a question talking cannot settle. | [prototype](https://aihero.dev/skills-prototype), with a link from the ticket to the built artifact |
-| `research` | AFK | A fact outside the working directory is blocking a decision. | A [research](https://aihero.dev/skills-research) [subagent](https://www.aihero.dev/ai-coding-dictionary/subagent), started when you chart the map and run in parallel on a `research/<name>` branch |
-| `task` | Either | Nothing to decide, but manual work blocks a decision, such as provisioning access, signing up for a service, or moving data so you can see its shape. | The agent alone where it can, otherwise a precise checklist for the human |
+| `grilling` | HITL | 기본값. 질문이 대화로 해결될 수 있습니다. | 새로운 세션에서 [grilling](https://aihero.dev/skills-grilling)과 [domain-modeling](https://aihero.dev/skills-domain-modeling) |
+| `prototype` | HITL | "이것이 어떻게 보여야 하는가" 또는 "이것이 어떻게 동작해야 하는가": 대화로 해결할 수 없는 질문. | [prototype](https://aihero.dev/skills-prototype), 티켓에서 빌드된 아티팩트로의 링크와 함께 |
+| `research` | AFK | 작업 디렉터리 외부의 사실이 결정을 차단합니다. | [research](https://aihero.dev/skills-research) [서브에이전트](https://www.aihero.dev/ai-coding-dictionary/subagent), 맵을 작성할 때 시작되고 `research/<name>` 브랜치에서 병렬로 실행 |
+| `task` | 둘 다 | 결정할 것은 없지만, 수동 작업이 결정을 차단합니다. 접근 프로비저닝, 서비스 가입, 또는 형태를 볼 수 있도록 데이터 이동. | 할 수 있는 곳에서는 에이전트만, 그렇지 않으면 인간을 위한 정확한 체크리스트 |
 
-`task` is the only type that *does* rather than decides. It belongs on the map only because it unblocks a decision, never because it delivers part of the destination. This type goes wrong most often in practice. Agents read it as an implementation step and start to write product code inside the map.
+`task`는 결정하기보다 *수행*하는 유일한 유형입니다. 목적지의 일부를 전달하기 때문이 아니라 결정을 차단 해제하기 때문에만 맵에 속합니다. 이 유형은 실제로 가장 자주 잘못됩니다. 에이전트는 그것을 구현 단계로 읽고 맵 내부에서 제품 코드를 작성하기 시작합니다.
 
-Research is the only exception to *one ticket per session*.
+Research는 *세션당 한 티켓*에 대한 유일한 예외입니다.
 
-## Common questions
+## 자주 묻는 질문
 
-**How is this different from `/grill-with-docs`? Which should I start with?**
-Session count, not project size. `/grill-with-docs` is single-session planning; wayfinder is multi-session planning. If you can hold the whole thing in one conversation, grilling is cheaper and better, and wayfinder is slower and denser for that case. The community shorthand is that wayfinder only makes sense if the work does not fit into a single session. This is by far the most-asked wayfinder question. People keep asking it because the skill descriptions do not tell you where your own task sits on that line. You have to judge the session count yourself.
+**이것이 `/grill-with-docs`와 어떻게 다른가요? 어떤 것으로 시작해야 하나요?**
+프로젝트 크기가 아니라 세션 수입니다. `/grill-with-docs`는 단일 세션 계획입니다. wayfinder는 다중 세션 계획입니다. 전체를 한 대화에 담을 수 있다면, grilling이 더 저렴하고 더 나으며, wayfinder는 그 경우 더 느리고 더 밀도가 높습니다. 커뮤니티 단축어는 작업이 단일 세션에 맞지 않는 경우에만 wayfinder가 의미가 있다는 것입니다. 이것이 지금까지 가장 많이 묻는 wayfinder 질문입니다. 스킬 설명이 여러분 자신의 작업이 그 선에서 어디에 있는지 말해주지 않기 때문에 사람들은 계속 묻습니다. 세션 수를 직접 판단해야 합니다.
 
-**When it asks for the "destination", does it mean the end of this session or the end of everything?**
-The end of the whole map, not just the first session. The question reads ambiguously, but wayfinder is a multi-session tool by definition, so a session-scoped answer never makes sense. Typical destinations are a [spec](https://www.aihero.dev/ai-coding-dictionary/spec) to hand off, a decision to lock before planning starts, a proof of concept, or an in-place change such as a data migration.
+**"목적지"를 요청할 때, 이 세션의 끝을 의미하나요 아니면 모든 것의 끝을 의미하나요?**
+첫 세션만이 아니라 전체 맵의 끝입니다. 질문은 모호하게 읽히지만, wayfinder는 정의상 다중 세션 도구이므로, 세션 범위 답변은 절대 의미가 없습니다. 전형적인 목적지는 handoff할 [스펙](https://www.aihero.dev/ai-coding-dictionary/spec), 계획이 시작되기 전에 잠글 결정, 개념 증명, 또는 데이터 마이그레이션 같은 제자리 변경입니다.
 
-**The map is cleared. Didn't wayfinder already write the spec and make the tickets? Why do I still need `/to-spec` and `/to-tickets`?**
-No. Wayfinder's tickets are decision tickets, and by the time the map closes they are all closed too. What is left is a map full of linked decisions, which is not a build plan. [to-spec](https://aihero.dev/skills-to-spec) collapses those linked decisions into one spec (`/to-spec #<map_issue>`), and [to-tickets](https://aihero.dev/skills-to-tickets) slices that spec into tracer-bullet implementation tickets. If you loop the map straight into [implement](https://aihero.dev/skills-implement), you skip the collapse and lose the linked detail. Go straight to implementation only when the effort turned out small. Some people run the shorter pipeline and report that it works. The two extra steps give you an explicit spec that a reviewer or a colleague can read, which matters more when you do not work alone.
+**맵이 지워졌습니다. wayfinder가 이미 스펙을 작성하고 티켓을 만들지 않았나요? 왜 여전히 `/to-spec`과 `/to-tickets`가 필요한가요?**
+아니요. Wayfinder의 티켓은 결정 티켓이며, 맵이 닫힐 때까지 모두 닫힙니다. 남은 것은 링크된 결정으로 가득 찬 맵이며, 이것은 빌드 계획이 아닙니다. [to-spec](https://aihero.dev/skills-to-spec)은 그 링크된 결정들을 하나의 스펙(`/to-spec #<map_issue>`)으로 축소하고, [to-tickets](https://aihero.dev/skills-to-tickets)는 그 스펙을 추적탄 구현 티켓으로 슬라이스합니다. 맵을 [implement](https://aihero.dev/skills-implement)로 바로 루프하면, 축소를 건너뛰고 링크된 세부 사항을 잃습니다. 작업이 작은 것으로 판명됐을 때만 구현으로 바로 가세요. 일부 사람들은 더 짧은 파이프라인을 실행하고 작동한다고 보고합니다. 두 개의 추가 단계는 검토자나 동료가 읽을 수 있는 명시적인 스펙을 제공하며, 혼자 작업하지 않을 때 더 중요합니다.
 
-**My agent started writing production code in the middle of a wayfinder session.**
-This is the most-reported failure with this skill, and a real gap in the skill causes it. You can override wayfinder's "plan, don't do" default in the map's **Notes**. But the agent writes the Notes, so the constraint and its exemption live in a file that the constrained agent owns. One user watched an agent write "this map carries execution" into its own Notes. In later sessions the agent read that line back as permission and built on a live server. The skill has no hard stop for "I meant the default." Until it does, read the Notes on any map you did not chart yourself, keep implementation in separate sessions, and treat any `wayfinder:task` that looks like a slice of the build as mis-typed.
+**제 에이전트가 wayfinder 세션 중간에 프로덕션 코드를 작성하기 시작했어요.**
+이것이 이 스킬과 가장 많이 보고된 실패이며, 스킬의 실제 공백이 그것을 일으킵니다. 맵의 **Notes**에서 wayfinder의 "계획하고, 수행하지 말기" 기본값을 재정의할 수 있습니다. 하지만 에이전트가 Notes를 작성하므로, 제약과 그 예외는 제약된 에이전트가 소유한 파일에 있습니다. 한 사용자는 에이전트가 자체 Notes에 "this map carries execution"을 작성하는 것을 지켜봤습니다. 나중 세션에서 에이전트는 그 라인을 허가로 읽고 라이브 서버에 빌드했습니다. 스킬에는 "제가 기본값을 의미했습니다"에 대한 강제 중지가 없습니다. 그것이 있을 때까지, 여러분이 직접 작성하지 않은 맵의 Notes를 읽고, 구현을 별도 세션에 유지하고, 빌드의 슬라이스처럼 보이는 모든 `wayfinder:task`를 잘못 입력된 것으로 취급하세요.
 
-**I charted 27 tickets, and by the time I got to the thirteenth, the rest no longer made sense.**
-This question is verbatim from a user report, and others report the same outcome. By default, wayfinder plans comprehensively. When later tickets rest on assumptions that earlier tickets invalidate, the map falls into the waterfall trap that critics accuse the skill of. Two things help. First, scope the map to a bounded destination, not to the whole product. Users report that maps scoped to one defined epic behave better than a sprawling "implement V1". The goal is to ship small increments, not to plan something very big. Second, [prototype](https://www.aihero.dev/ai-coding-dictionary/prototyping) aggressively. The route stays current because cheap concrete artifacts expose uncertainty before implementation depends on it. Wayfinder is "prototypemaxxing", not "planmaxxing".
+**27개 티켓을 작성했는데, 13번째에 도달할 때쯤 나머지가 더 이상 의미가 없었어요.**
+이 질문은 사용자 보고서에서 그대로 가져온 것이며, 다른 사람들도 같은 결과를 보고합니다. 기본적으로 wayfinder는 포괄적으로 계획합니다. 나중 티켓이 이전 티켓이 무효화하는 가정에 기반할 때, 맵은 비평가들이 스킬을 비난하는 폭포수 함정에 빠집니다. 두 가지가 도움이 됩니다. 첫째, 전체 제품이 아니라 경계가 있는 목적지로 맵의 범위를 정하세요. 사용자들은 하나의 정의된 에픽으로 범위가 정해진 맵이 광범위한 "implement V1"보다 더 잘 동작한다고 보고합니다. 목표는 매우 큰 무언가를 계획하는 것이 아니라 작은 증분을 배포하는 것입니다. 둘째, 공격적으로 [프로토타입](https://www.aihero.dev/ai-coding-dictionary/prototyping)하세요. 저렴한 구체적 아티팩트가 구현이 그것에 의존하기 전에 불확실성을 드러내기 때문에 경로가 최신 상태로 유지됩니다. Wayfinder는 "planmaxxing"이 아니라 "prototypemaxxing"입니다.
 
-**Can I work several tickets in parallel?**
-The frontier shows you which tickets you can take, and blocking edges make parallel work safe on paper. In practice, one ticket at a time is the safer default. If you work two grilling tickets at once, one session can ask you a question you just answered in the other, because the sessions share no [context](https://www.aihero.dev/ai-coding-dictionary/context). Prototype tickets have a known gap too. One user reported an agent that built three UI variations, chose one itself, and closed the ticket. That choice is yours, and the skill does not yet say so clearly enough. If you do run tickets in parallel, review the dependency graph yourself first.
+**여러 티켓을 병렬로 작업할 수 있나요?**
+프론티어는 가져갈 수 있는 티켓을 보여주고, 차단 엣지는 종이상으로 병렬 작업을 안전하게 만듭니다. 실제로 한 번에 한 티켓이 더 안전한 기본값입니다. 두 개의 grilling 티켓을 동시에 작업하면, 세션이 [컨텍스트](https://www.aihero.dev/ai-coding-dictionary/context)를 공유하지 않기 때문에 한 세션이 다른 세션에서 방금 답한 질문을 할 수 있습니다. Prototype 티켓에도 알려진 공백이 있습니다. 한 사용자는 세 가지 UI 변형을 빌드하고, 스스로 하나를 선택하고, 티켓을 닫는 에이전트를 보고했습니다. 그 선택은 여러분 것이며, 스킬은 아직 그것을 충분히 명확히 말하지 않습니다. 티켓을 병렬로 실행한다면, 먼저 직접 종속성 그래프를 검토하세요.
 
-**Do I have to use GitHub Issues?**
-No. Any issue tracker works. GitHub has the best support, because its native sub-issues and blocking relationships make the frontier visible without opening the map. People also use GitLab, Linear, Jira and local markdown. There are two caveats. On a tracker with no native blocking, wayfinder infers the dependency graph from text, and you must correct it by hand. Local markdown puts the artifacts in your repo, which is not recommended, because material stored in the repo tends to persist by accident. Open-source maintainers hit the opposite problem (public trackers fill up with agent-generated planning tickets) and often choose local markdown anyway.
+**GitHub Issues를 사용해야 하나요?**
+아니요. 모든 이슈 트래커가 작동합니다. GitHub는 네이티브 서브 이슈와 차단 관계가 맵을 열지 않고 프론티어를 보이게 만들기 때문에 최고의 지원을 받습니다. 사람들은 또한 GitLab, Linear, Jira, 로컬 markdown을 사용합니다. 두 가지 주의 사항이 있습니다. 네이티브 차단이 없는 트래커에서 wayfinder는 텍스트에서 종속성 그래프를 추론하며, 여러분이 직접 수정해야 합니다. 로컬 markdown은 리포에 아티팩트를 넣는데, 리포에 저장된 자료는 우연히 지속되는 경향이 있기 때문에 권장되지 않습니다. 오픈 소스 유지 관리자는 반대 문제(공개 트래커가 에이전트 생성 계획 티켓으로 가득 참)를 겪고 어쨌든 종종 로컬 markdown을 선택합니다.
 
-**The grilling is exhausting. Every question is three paragraphs long.**
-This is the sharpest open complaint about wayfinder, and nobody has fixed it yet. One user broke it down this way: the verbosity itself causes decision exhaustion, and the length hides *why* the agent asks a question, so you lose the chain from decision to decision as the map grows. The verbosity looks like a property of the current set of [models](https://www.aihero.dev/ai-coding-dictionary/model) rather than of the skill. Users try two mitigations: a lower [reasoning effort](https://www.aihero.dev/ai-coding-dictionary/effort), and a plain-language instruction in your global `CLAUDE.md`. Expect to think hard here anyway. Wayfinder demands a lot of thinking from you, and that is most of its purpose, not a defect.
+**grilling이 지쳐요. 모든 질문이 세 단락입니다.**
+이것이 wayfinder에 대한 가장 날카로운 열린 불만이며, 아무도 아직 수정하지 못했습니다. 한 사용자는 이렇게 분석했습니다: 장황함 자체가 결정 피로를 일으키고, 길이가 에이전트가 질문하는 *이유*를 숨기므로, 맵이 성장함에 따라 결정에서 결정으로의 체인을 잃습니다. 장황함은 스킬보다 현재 [모델](https://www.aihero.dev/ai-coding-dictionary/model) 세트의 속성처럼 보입니다. 사용자들은 두 가지 완화책을 시도합니다: 더 낮은 [추론 노력](https://www.aihero.dev/ai-coding-dictionary/effort), 그리고 전역 `CLAUDE.md`의 평범한 언어 지시. 어쨌든 여기서 열심히 생각할 것을 예상하세요. Wayfinder는 여러분으로부터 많은 생각을 요구하며, 그것이 결함이 아니라 목적의 대부분입니다.
 
-**A decision I already closed turned out to be wrong. Do I edit the old ticket or make a new one?**
-There is no official guidance, and the agent's default is unhelpful. It tends to design around the bad decision instead of challenging it, so you must steer it yourself. What works is to tell wayfinder plainly what changed. It then updates the map, revises the affected tickets, and comments on the closed ones. You can recover from scope changes mid-map. But if you *designed* a map to change, that is a sign the scope is wrong.
+**이미 닫은 결정이 틀린 것으로 판명됐어요. 오래된 티켓을 편집하나요 아니면 새 티켓을 만드나요?**
+공식 가이드가 없으며, 에이전트의 기본값은 도움이 되지 않습니다. 그것에 도전하는 대신 나쁜 결정 주위로 설계하는 경향이 있으므로, 여러분이 직접 조종해야 합니다. 작동하는 것은 wayfinder에게 무엇이 변경됐는지 명확히 말하는 것입니다. 그러면 맵을 업데이트하고, 영향받은 티켓을 수정하고, 닫힌 것에 코멘트합니다. 맵 중간에 범위 변경으로부터 회복할 수 있습니다. 하지만 맵을 변경하도록 *설계*했다면, 그것은 범위가 잘못됐다는 신호입니다.
 
-**Where did `decision-mapping` go?**
-It is this skill. v1.1 renamed it to `wayfinder`, and you invoke it as `/wayfinder`. "Decision map" was jargon, and it was also inaccurate, because only one of the four ticket types is a decision by itself. The new name gave the skill one consistent vocabulary (destination, fog of war, frontier, the map) instead of an invented term on top. The unit kept the word "decision": a wayfinder ticket is a **decision ticket**, so that people do not read it as an implementation ticket.
+**`decision-mapping`은 어디로 갔나요?**
+이 스킬입니다. v1.1이 `wayfinder`로 이름을 바꿨고, `/wayfinder`로 호출합니다. "Decision map"은 전문 용어였고, 네 가지 티켓 유형 중 하나만 그 자체로 결정이기 때문에 부정확하기도 했습니다. 새 이름은 발명된 용어 위에 올리는 대신 스킬에 하나의 일관된 어휘(목적지, 전쟁의 안개, 프론티어, 맵)를 제공했습니다. 단위는 "decision"이라는 단어를 유지했습니다: wayfinder 티켓은 **결정 티켓**이므로, 사람들이 그것을 구현 티켓으로 읽지 않습니다.
 
-## It's working if
+## 제대로 작동한다는 신호
 
-- The destination is written down and agreed before a single ticket exists.
-- Every open ticket reads as a question. Any ticket that reads "build the X" is either mis-typed or belongs downstream of the map.
-- You can look at your tracker and see which tickets are takeable without opening the map, because native blocking shows the frontier.
-- A session resolves one ticket, posts the answer as a resolution comment, closes it, and adds one line to the map's *Decisions so far*. Then it stops.
-- **Not yet specified** shrinks over time. When fog graduates into a ticket, it leaves that section and does not appear in both places.
-- When the opening breadth-first grill finds no fog at all, the skill stops and tells you the effort is small enough to skip the map.
-- The session that finishes the map points you toward a spec, not a pull request.
+- 단일 티켓이 존재하기 전에 목적지가 작성되고 합의됩니다.
+- 모든 열린 티켓이 질문으로 읽힙니다. "build the X"로 읽히는 모든 티켓은 잘못 입력되었거나 맵의 다운스트림에 속합니다.
+- 네이티브 차단이 프론티어를 보여주기 때문에, 트래커를 보고 맵을 열지 않고도 가져갈 수 있는 티켓을 볼 수 있습니다.
+- 세션이 하나의 티켓을 해결하고, 답을 해결 코멘트로 게시하고, 닫고, 맵의 *Decisions so far*에 한 줄을 추가합니다. 그 다음 멈춥니다.
+- **Not yet specified**가 시간이 지남에 따라 줄어듭니다. 안개가 티켓으로 승급할 때, 그 섹션을 떠나고 두 곳에 나타나지 않습니다.
+- 오프닝 너비 우선 grill이 안개를 전혀 발견하지 못하면, 스킬이 멈추고 맵을 건너뛸 만큼 작업이 작다고 말합니다.
+- 맵을 마무리하는 세션이 여러분을 pull request가 아니라 스펙으로 안내합니다.
 
-## Where it fits
+## 어디에 적용되는지
 
-`wayfinder` is a **situational on-ramp**, not the default starting point. Most work still starts on the grill-led idea → ship chain. You use wayfinder when the idea is too big to hold in one session. It rejoins that chain at [to-spec](https://aihero.dev/skills-to-spec), because a cleared map hands off and does not build.
+`wayfinder`는 기본 시작점이 아니라 **상황적 진입로**입니다. 대부분의 작업은 여전히 grill 주도 아이디어 → 배포 체인에서 시작됩니다. 아이디어가 한 세션에 담기에 너무 클 때 wayfinder를 사용합니다. 지워진 맵이 handoff하고 빌드하지 않기 때문에 [to-spec](https://aihero.dev/skills-to-spec)에서 그 체인에 다시 합류합니다.
 
-Most of the work happens in other skills that wayfinder schedules. [grilling](https://aihero.dev/skills-grilling) and [domain-modeling](https://aihero.dev/skills-domain-modeling) resolve the default ticket type, [prototype](https://aihero.dev/skills-prototype) resolves the tickets that talk cannot settle, and [research](https://aihero.dev/skills-research) runs as a subagent so its reading stays out of your session. [handoff](https://aihero.dev/skills-handoff) moves work in and out: into a map from a conversation that grew too big, and out of a map when a side quest appears mid-session. For anything else, [ask-matt](https://aihero.dev/skills-ask-matt) routes over the whole set.
+대부분의 작업은 wayfinder가 예약하는 다른 스킬에서 발생합니다. [grilling](https://aihero.dev/skills-grilling)과 [domain-modeling](https://aihero.dev/skills-domain-modeling)이 기본 티켓 유형을 해결하고, [prototype](https://aihero.dev/skills-prototype)이 대화로 해결할 수 없는 티켓을 해결하며, [research](https://aihero.dev/skills-research)가 서브에이전트로 실행되어 읽기가 여러분의 세션 밖에 머물도록 합니다. [handoff](https://aihero.dev/skills-handoff)는 작업을 안팎으로 이동시킵니다: 너무 커진 대화에서 맵으로, 그리고 세션 중간에 사이드 퀘스트가 나타날 때 맵 밖으로. 다른 모든 것에 대해 [ask-matt](https://aihero.dev/skills-ask-matt)가 전체 세트를 안내합니다.

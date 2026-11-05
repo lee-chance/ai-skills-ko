@@ -1,113 +1,113 @@
-## What it does
+## 무엇을 하는지
 
-`improve-codebase-architecture` surveys a codebase for **deepening opportunities**. These are places where a shallow module (an interface nearly as complex as the thing it hides) could become a deep one. It writes them up as a self-contained HTML report, and then [grills](https://www.aihero.dev/ai-coding-dictionary/grilling) you through the one you pick.
+`improve-codebase-architecture`는 코드베이스에서 **심화 기회**를 조사합니다. 이는 얕은 모듈(숨기는 것만큼 거의 복잡한 인터페이스)이 깊은 모듈이 될 수 있는 곳입니다. 이를 독립적인 HTML 보고서로 작성하고, 선택한 것에 대해 [grill](https://www.aihero.dev/ai-coding-dictionary/grilling)합니다.
 
-It never changes the code. The whole run produces a conversation and one HTML file in your OS temp directory. You do the refactor later, in a separate [session](https://www.aihero.dev/ai-coding-dictionary/session), through the normal build flow. This makes it a survey, not a refactoring tool, so you can run it on a codebase you are not ready to touch yet.
+코드를 절대 변경하지 않습니다. 전체 실행은 대화 하나와 OS 임시 디렉터리의 HTML 파일 하나를 생성합니다. 리팩터링은 나중에 별도의 [세션](https://www.aihero.dev/ai-coding-dictionary/session)에서 일반 빌드 흐름을 통해 수행합니다. 이것이 리팩터링 도구가 아니라 조사이므로, 아직 손댈 준비가 되지 않은 코드베이스에서도 실행할 수 있습니다.
 
-Two filters stop the report from becoming generic cleanup advice. First, every candidate must pass the **deletion test**: if you removed this module, would its complexity move behind a smaller interface, or spread across the callers? Only the first case gets a card. Second, unless you point it at a specific area, it reads recent commit history first and focuses the scan on paths that change often. A deepening in code that nobody touches is a refactor that never pays back.
+두 가지 필터가 보고서가 일반적인 정리 조언이 되는 것을 막습니다. 첫째, 모든 후보는 **삭제 테스트**를 통과해야 합니다: 이 모듈을 제거하면 복잡성이 더 작은 인터페이스 뒤로 이동할까요, 아니면 호출자들에게 분산될까요? 첫 번째 경우만 카드를 받습니다. 둘째, 특정 영역을 지정하지 않는 한 먼저 최근 커밋 히스토리를 읽고 자주 변경되는 경로에 스캔을 집중합니다. 아무도 건드리지 않는 코드의 심화는 결코 보상을 받지 못하는 리팩터링입니다.
 
-## When to reach for it
+## 언제 사용하는지
 
-You invoke this by typing `/improve-codebase-architecture`; the [agent](https://www.aihero.dev/ai-coding-dictionary/agent) will not reach for it on its own.
+`/improve-codebase-architecture`를 입력하여 호출합니다; [에이전트](https://www.aihero.dev/ai-coding-dictionary/agent)가 스스로 이것을 선택하지는 않습니다.
 
-It is not a step in the main build loop. You run it periodically to queue up more work that improves the codebase. People use it in four situations:
+메인 빌드 루프의 단계가 아닙니다. 코드베이스를 개선하는 더 많은 작업을 큐에 넣기 위해 주기적으로 실행합니다. 사람들은 네 가지 상황에서 사용합니다:
 
-| Situation | How it is used |
+| 상황 | 사용 방법 |
 | --- | --- |
-| Routine upkeep | Run it every few days, or when you have a spare moment, so the structure does not decay between features. |
-| Before a big build | Point it at the [spec](https://www.aihero.dev/ai-coding-dictionary/spec) and ask "how can we make this change easy?" This is the most effective prompt for it. |
-| Brownfield audit | Run it on a large, unstructured or [vibe-coded](https://www.aihero.dev/ai-coding-dictionary/vibe-coding) repo to find out what shape it is in. |
-| Legacy test work | Use it to find the missing seams before you write tests against untestable code. |
+| 일상적인 유지보수 | 며칠마다, 또는 여유가 있을 때 실행하여 기능 사이에 구조가 무너지지 않도록 합니다. |
+| 큰 빌드 전 | [spec](https://www.aihero.dev/ai-coding-dictionary/spec)을 가리키고 "이 변경을 쉽게 만들려면 어떻게 해야 할까?"라고 묻습니다. 이것이 가장 효과적인 프롬프트입니다. |
+| Brownfield 감사 | 크고 구조화되지 않았거나 [vibe-coded](https://www.aihero.dev/ai-coding-dictionary/vibe-coding) 리포에서 실행하여 어떤 상태인지 알아냅니다. |
+| 레거시 테스트 작업 | 테스트할 수 없는 코드에 대해 테스트를 작성하기 전에 누락된 심을 찾는 데 사용합니다. |
 
-Where it is confusable with siblings:
+형제와 혼동될 수 있는 경우:
 
-- To design one module you have already chosen, use [codebase-design](https://aihero.dev/skills-codebase-design). This skill finds the module to work on, and `codebase-design` is where you design it.
-- For a whole effort too big to hold in one session, use [wayfinder](https://aihero.dev/skills-wayfinder).
-- For "this specific thing is broken," use [diagnosing-bugs](https://aihero.dev/skills-diagnosing-bugs). It sends you back here when the real finding is that there is no good seam to lock the bug down.
+- 이미 선택한 하나의 모듈을 설계하려면 [codebase-design](https://aihero.dev/skills-codebase-design)을 사용하세요. 이 스킬은 작업할 모듈을 찾고, `codebase-design`은 이를 설계하는 곳입니다.
+- 한 세션에 담기에 너무 큰 전체 노력의 경우 [wayfinder](https://aihero.dev/skills-wayfinder)를 사용하세요.
+- "이 특정한 것이 망가졌다"의 경우 [diagnosing-bugs](https://aihero.dev/skills-diagnosing-bugs)를 사용하세요. 실제 발견이 버그를 잠글 좋은 심이 없다는 것일 때 여기로 다시 보냅니다.
 
-## Prerequisites
+## 전제 조건
 
-None to run it. If `GLOSSARY.md` or ADRs in `docs/adr/` exist, it reads them and uses your domain's own nouns. A candidate then reads as "deepen the Order intake module," not "refactor the FooBarHandler."
+실행하는 데는 없습니다. `GLOSSARY.md`나 `docs/adr/`의 ADR이 존재하면 이를 읽고 도메인 고유의 명사를 사용합니다. 그러면 후보는 "FooBarHandler 리팩터링"이 아니라 "Order intake 모듈 심화"로 읽힙니다.
 
-It writes in two places. The report goes to `<tmpdir>/architecture-review-<timestamp>.html`, outside the repo. During the grilling loop it adds or sharpens terms in `GLOSSARY.md`, and creates that file if it does not exist. It also offers to record a rejected candidate as an ADR, so a future run does not suggest it again.
+두 곳에 씁니다. 보고서는 리포 밖의 `<tmpdir>/architecture-review-<timestamp>.html`로 갑니다. grilling 루프 중에 `GLOSSARY.md`에 용어를 추가하거나 다듬으며, 파일이 없으면 생성합니다. 또한 거부된 후보를 ADR로 기록할 것을 제안하므로, 향후 실행에서 다시 제안하지 않습니다.
 
-## Depth, and the report that hunts for it
+## 깊이, 그리고 이를 찾는 보고서
 
-The skill rests on one idea: **depth**. A deep module puts a lot of behaviour behind a small, stable interface. A shallow module exposes its implementation through an interface nearly as wide as the code beneath it. The report looks for three forms of shallowness:
+스킬은 하나의 아이디어에 기반합니다: **깊이**. 깊은 모듈은 작고 안정적인 인터페이스 뒤에 많은 동작을 둡니다. 얕은 모듈은 그 아래 코드만큼 거의 넓은 인터페이스를 통해 구현을 노출합니다. 보고서는 세 가지 형태의 얕음을 찾습니다:
 
-- Pure functions extracted only for testability, while the real bugs are in how callers use them (no **locality**).
-- Modules that leak across their **seams**.
-- A concept you cannot understand without opening five files.
+- 테스트 가능성을 위해서만 추출된 순수 함수이지만, 실제 버그는 호출자가 그것을 사용하는 방법에 있습니다(**지역성**이 없음).
+- **심**을 가로질러 누출되는 모듈.
+- 다섯 개의 파일을 열지 않고는 이해할 수 없는 개념.
 
-For each one, it proposes the deepening that fixes it.
+각각에 대해 이를 수정하는 심화를 제안합니다.
 
-Each candidate is a card with the files involved, the friction, a plain-English solution, the benefit in terms of **locality** and **leverage**, a before/after diagram, and a strength badge.
+각 후보는 관련된 파일, 마찰, 평범한 영어 솔루션, **지역성**과 **레버리지** 측면의 이점, before/after 다이어그램, 그리고 강도 배지가 있는 카드입니다.
 
-| Badge | What it means for you |
+| 배지 | 당신에게 의미하는 것 |
 | --- | --- |
-| `Strong` | The deletion test passes clearly and the friction is real. Take these seriously. |
-| `Worth exploring` | Plausible deepening, but the payoff depends on where the code is going next. |
-| `Speculative` | Included for completeness. You can ignore most of these. |
+| `Strong` | 삭제 테스트가 명확히 통과하고 마찰이 실제입니다. 이것을 진지하게 받아들이세요. |
+| `Worth exploring` | 그럴듯한 심화이지만, 보상은 코드가 다음에 어디로 가는지에 달려 있습니다. |
+| `Speculative` | 완전성을 위해 포함되었습니다. 대부분을 무시할 수 있습니다. |
 
-The report ends with a **Top recommendation**, the candidate it would do first. Then the skill stops and asks which candidate you want to explore. At that point you have decided nothing, and no code has changed.
+보고서는 **최상위 추천**으로 끝나며, 먼저 수행할 후보입니다. 그런 다음 스킬은 멈추고 탐색하고 싶은 후보를 묻습니다. 그 시점에 아무것도 결정하지 않았으며, 코드도 변경되지 않았습니다.
 
-## What happens after you pick one
+## 하나를 선택한 후 일어나는 일
 
-When you pick a candidate, a [grilling](https://aihero.dev/skills-grilling) session starts on it. It covers the constraints, what goes behind the seam, which tests survive, and what the deepened interface should look like. The output of that session is a decision, not a diff. From there the normal flow applies: take the decision into [to-spec](https://aihero.dev/skills-to-spec), then [to-tickets](https://aihero.dev/skills-to-tickets), then [implement](https://aihero.dev/skills-implement).
+후보를 선택하면 이에 대한 [grilling](https://aihero.dev/skills-grilling) 세션이 시작됩니다. 제약 조건, 심 뒤에 무엇이 들어가는지, 어떤 테스트가 살아남는지, 심화된 인터페이스가 어떻게 보여야 하는지를 다룹니다. 해당 세션의 출력은 diff가 아니라 결정입니다. 거기서부터 일반 흐름이 적용됩니다: 결정을 [to-spec](https://aihero.dev/skills-to-spec)로 가져간 다음, [to-tickets](https://aihero.dev/skills-to-tickets), 그 다음 [implement](https://aihero.dev/skills-implement)로 가져갑니다.
 
-## Common questions
+## 일반적인 질문
 
-**It grilled me for an hour about one idea instead of showing me options. Can I turn that off?**
+**옵션을 보여주는 대신 한 아이디어에 대해 한 시간 동안 grill했습니다. 이를 끌 수 있나요?**
 
-Yes. Say so when you invoke it ("don't grill me, just show the report"). This is the most common complaint about the skill. One user liked it as "a convenient way to get a thorough analysis of improvements," but after the grilling loop was added, found it "borderline unusable." In their sessions it proposed a single solution and then asked "10's or 100's of questions." The design intent is that the report comes first, and the grilling starts only on a candidate you chose. But weaker [models](https://www.aihero.dev/ai-coding-dictionary/model) skip straight to an interview about the first idea they had. Results in that thread vary a lot by model. It is an open issue, and the skill does not yet have a documented no-grill mode.
+예. 호출할 때 그렇게 말하세요("grill하지 말고 보고서만 보여줘"). 이것이 스킬에 대한 가장 일반적인 불만입니다. 한 사용자는 이를 "개선의 철저한 분석을 얻는 편리한 방법"으로 좋아했지만, grilling 루프가 추가된 후 "거의 사용할 수 없다"고 느꼈습니다. 그들의 세션에서는 단일 솔루션을 제안한 다음 "수십 또는 수백 개의 질문"을 했습니다. 설계 의도는 보고서가 먼저 나오고, grilling은 선택한 후보에서만 시작한다는 것입니다. 그러나 약한 [모델](https://www.aihero.dev/ai-coding-dictionary/model)은 첫 번째 아이디어에 대한 인터뷰로 바로 건너뜁니다. 해당 스레드의 결과는 모델에 따라 크게 다릅니다. 이것은 열린 이슈이며, 스킬에는 아직 문서화된 no-grill 모드가 없습니다.
 
-**The report opened as unstyled raw HTML with no diagrams. What happened?**
+**보고서가 다이어그램 없이 스타일이 없는 원시 HTML로 열렸습니다. 무슨 일이 있었나요?**
 
-The report loads Tailwind and Mermaid from CDNs, so it needs network access when you open it. If something blocks those scripts, the page breaks with no error. In the reported case, a security hook required SRI hashes. The agent added them, but the CDN served different bytes to the browser than to the `curl` that computed the hash, so the browser blocked the script. Offline and locked-down environments have the same problem. The agent cannot see it, because it never renders the page. As a workaround, ask for inline CSS and hand-built SVG diagrams instead of the CDN setup. This is an open issue.
+보고서는 CDN에서 Tailwind와 Mermaid를 로드하므로 열 때 네트워크 액세스가 필요합니다. 무언가가 해당 스크립트를 차단하면 오류 없이 페이지가 깨집니다. 보고된 경우 보안 훅이 SRI 해시를 요구했습니다. 에이전트가 이를 추가했지만, CDN이 해시를 계산한 `curl`과 다른 바이트를 브라우저에 제공하여 브라우저가 스크립트를 차단했습니다. 오프라인 및 잠긴 환경도 동일한 문제가 있습니다. 에이전트는 페이지를 렌더링하지 않기 때문에 이를 볼 수 없습니다. 해결 방법으로 CDN 설정 대신 인라인 CSS와 수작업으로 만든 SVG 다이어그램을 요청하세요. 이것은 열린 이슈입니다.
 
-**It gave me twelve candidates. Do I work through them in the same session or start a new one?**
+**열두 개의 후보를 주었습니다. 동일한 세션에서 작업해야 하나요, 아니면 새로운 세션을 시작해야 하나요?**
 
-Use one candidate per session. If you work through several in one conversation, the [context window](https://www.aihero.dev/ai-coding-dictionary/context-window) fills with the report, the grilling, the domain-model edits and the code changes all at once. The report is only a temp file, so carry the candidate forward, not the file. Pick one, grill it, and take the decision into `/to-spec`. Turn the rest into [tickets](https://www.aihero.dev/ai-coding-dictionary/ticket) that you can pick up separately later. Put the chosen improvement into a spec instead of going straight to implementation. People ask this often, and the skill itself documents no workflow for it.
+세션당 하나의 후보를 사용하세요. 한 대화에서 여러 개를 작업하면 [컨텍스트 윈도우](https://www.aihero.dev/ai-coding-dictionary/context-window)가 보고서, grilling, 도메인 모델 편집 및 코드 변경으로 한 번에 채워집니다. 보고서는 임시 파일일 뿐이므로 파일이 아니라 후보를 앞으로 가져가세요. 하나를 선택하고, grill하고, 결정을 `/to-spec`로 가져가세요. 나머지는 나중에 별도로 선택할 수 있는 [티켓](https://www.aihero.dev/ai-coding-dictionary/ticket)으로 전환하세요. 선택한 개선 사항을 구현으로 바로 가는 대신 spec에 넣으세요. 사람들은 이것을 자주 묻지만, 스킬 자체는 이에 대한 워크플로우를 문서화하지 않습니다.
 
-**How should I prompt it?**
+**어떻게 프롬프트해야 하나요?**
 
-Prompt it with the next thing you are building. If a big build is coming up, point it at the spec and ask "how can we make this change easy?" A run with no prompt looks for hot spots on its own. That is fine for routine upkeep, but a direction makes the report actionable.
+빌드하려는 다음 것으로 프롬프트하세요. 큰 빌드가 다가오면 spec을 가리키고 "이 변경을 쉽게 만들려면 어떻게 해야 할까?"라고 묻습니다. 프롬프트가 없는 실행은 자체적으로 핫 스팟을 찾습니다. 일상적인 유지보수에는 괜찮지만, 방향이 있으면 보고서가 실행 가능해집니다.
 
-**Does it work on a large legacy codebase?**
+**큰 레거시 코드베이스에서 작동하나요?**
 
-Partly. It works well on big existing codebases that lack consistent structure, and it is the recommended upkeep tool after any one-time structural setup. But users with out-of-control projects report it "helped a little but still doesn't seem to cut it." One developer with an eight-year-old legacy codebase reported that the model went in circles, though the same skill produces a clean graph on a tidy repo. There is no dedicated `/refactor` skill for that case yet. If the codebase has no shared vocabulary, run [grill-with-docs](https://aihero.dev/skills-grill-with-docs) first to create one. That usually makes this skill's output much better.
+부분적으로. 일관된 구조가 없는 큰 기존 코드베이스에서 잘 작동하며, 일회성 구조 설정 후 권장되는 유지보수 도구입니다. 그러나 통제 불능 프로젝트를 가진 사용자는 "조금 도움이 되었지만 여전히 충분하지 않은 것 같다"고 보고합니다. 8년 된 레거시 코드베이스를 가진 한 개발자는 모델이 원을 그리며 돌았다고 보고했지만, 동일한 스킬이 깔끔한 리포에서는 깨끗한 그래프를 생성합니다. 해당 경우를 위한 전용 `/refactor` 스킬은 아직 없습니다. 코드베이스에 공유 어휘가 없으면 먼저 [grill-with-docs](https://aihero.dev/skills-grill-with-docs)를 실행하여 하나를 만드세요. 이는 일반적으로 이 스킬의 출력을 훨씬 더 좋게 만듭니다.
 
-**How is this different from `/codebase-design`?**
+**이것은 `/codebase-design`과 어떻게 다른가요?**
 
-`/codebase-design` is a reference, not a session driver. It supplies the vocabulary (module, interface, depth, seam, adapter, leverage, locality), and this skill uses it. If you give a fresh agent `/codebase-design` as the task, it fails in a known way. It has no process of its own to follow, so the agent invents one, explores the code again, and runs for a very long time before it asks you anything. Run this skill, and let it use that one.
+`/codebase-design`은 세션 드라이버가 아니라 참조입니다. 어휘(모듈, 인터페이스, 깊이, 심, 어댑터, 레버리지, 지역성)를 제공하며, 이 스킬이 이를 사용합니다. 새로운 에이전트에게 `/codebase-design`을 작업으로 주면 알려진 방식으로 실패합니다. 따를 자체 프로세스가 없으므로 에이전트가 하나를 발명하고 코드를 다시 탐색하며 무언가를 묻기 전에 매우 오랫동안 실행됩니다. 이 스킬을 실행하고 그것이 저 스킬을 사용하도록 하세요.
 
-**Will it ever tell me the codebase is fine?**
+**코드베이스가 괜찮다고 말해줄까요?**
 
-Rarely, so know that before you start. The skill exists to output findings, so it tends to produce candidates instead of concluding that nothing is wrong. Use the strength badges to correct for this. If every candidate in a report is `Speculative`, the skill found nothing.
+드물게, 그래서 시작하기 전에 이를 알아두세요. 스킬은 발견을 출력하기 위해 존재하므로 아무것도 잘못되지 않았다고 결론짓는 대신 후보를 생성하는 경향이 있습니다. 이를 수정하려면 강도 배지를 사용하세요. 보고서의 모든 후보가 `Speculative`이면 스킬은 아무것도 찾지 못한 것입니다.
 
-**Does it work in Codex or another harness?**
+**Codex 또는 다른 harness에서 작동하나요?**
 
-Partly. The exploration step names Claude Code's `Agent` tool with `subagent_type=Explore` directly. A [harness](https://www.aihero.dev/ai-coding-dictionary/harness) without that tool may skip the parallel exploration instead of using its own equivalent. The skill still runs, but the scan is less thorough. Someone has proposed a harness-neutral rewrite, but it is not merged.
+부분적으로. 탐색 단계는 Claude Code의 `Agent` 도구를 `subagent_type=Explore`로 직접 명명합니다. 해당 도구가 없는 [harness](https://www.aihero.dev/ai-coding-dictionary/harness)는 자체 동등물을 사용하는 대신 병렬 탐색을 건너뛸 수 있습니다. 스킬은 여전히 실행되지만 스캔이 덜 철저합니다. 누군가가 harness 중립적인 재작성을 제안했지만 병합되지 않았습니다.
 
-**How do I actually implement deep modules in TypeScript?**
+**TypeScript에서 실제로 깊은 모듈을 구현하려면 어떻게 해야 하나요?**
 
-The skill does not ship a good answer. People often ask for a `TYPESCRIPT.md` with concrete file and module layouts for the principles, and it does not exist. The skill tells you where a deepening belongs and what goes behind the seam. You must turn that into a package or directory structure yourself.
+스킬은 좋은 답을 제공하지 않습니다. 사람들은 원칙에 대한 구체적인 파일 및 모듈 레이아웃이 있는 `TYPESCRIPT.md`를 자주 요청하지만, 존재하지 않습니다. 스킬은 심화가 어디에 속하는지와 심 뒤에 무엇이 들어가는지 알려줍니다. 이를 패키지 또는 디렉터리 구조로 직접 전환해야 합니다.
 
-## It's working if
+## 제대로 작동하고 있다면
 
-- The candidates name your domain's concepts, not invented class names: "the Order intake module," not "the FooBarHandler."
-- The candidates are in files you edited recently, not in parts of the repo nobody touches.
-- No code changed during the run. The only new file is the HTML report in your temp directory.
-- It stops after the report and asks which candidate you want. It does not continue on its own.
-- Each card explains the payoff as locality or leverage, and says which tests get simpler, not just "this is cleaner."
-- When you reject a candidate for a lasting reason, it offers to record an ADR, so the next run does not suggest it again.
+- 후보가 발명된 클래스 이름이 아니라 도메인의 개념을 명명합니다: "FooBarHandler"가 아니라 "Order intake 모듈".
+- 후보가 아무도 건드리지 않는 리포의 부분이 아니라 최근에 편집한 파일에 있습니다.
+- 실행 중에 코드가 변경되지 않았습니다. 유일한 새 파일은 임시 디렉터리의 HTML 보고서입니다.
+- 보고서 후에 멈추고 원하는 후보를 묻습니다. 스스로 계속하지 않습니다.
+- 각 카드는 보상을 지역성 또는 레버리지로 설명하고, 단지 "이것이 더 깔끔하다"가 아니라 어떤 테스트가 더 단순해지는지 말합니다.
+- 지속적인 이유로 후보를 거부하면 다음 실행에서 다시 제안하지 않도록 ADR을 기록할 것을 제안합니다.
 
-## Where it fits
+## 어디에 적합한지
 
-`improve-codebase-architecture` is **periodic maintenance**. You run it every few days, outside any chain, to queue up work, not to do it. Its neighbours:
+`improve-codebase-architecture`는 **주기적인 유지보수**입니다. 작업을 수행하기 위해서가 아니라 큐에 넣기 위해 며칠마다 체인 외부에서 실행합니다. 인접한 것들:
 
-- [codebase-design](https://aihero.dev/skills-codebase-design) owns the depth-and-seam vocabulary that every candidate uses.
-- [grilling](https://aihero.dev/skills-grilling) walks the decision tree after you choose a candidate.
-- [domain-modeling](https://aihero.dev/skills-domain-modeling) keeps `GLOSSARY.md` and the ADRs current as you make the decision.
+- [codebase-design](https://aihero.dev/skills-codebase-design)은 모든 후보가 사용하는 깊이-심 어휘를 소유합니다.
+- [grilling](https://aihero.dev/skills-grilling)은 후보를 선택한 후 의사 결정 트리를 걷습니다.
+- [domain-modeling](https://aihero.dev/skills-domain-modeling)은 결정을 내릴 때 `GLOSSARY.md`와 ADR을 최신 상태로 유지합니다.
 
-Its output is an idea, which goes back into the main build flow at [grill-with-docs](https://aihero.dev/skills-grill-with-docs) or [to-spec](https://aihero.dev/skills-to-spec). Its counterpart at the end of the main flow is [retro](https://aihero.dev/skills-retro). This skill improves the code the agent works in, and `retro` improves the environment around it (checks, standards, steering files) after a build. For which skill fits a situation, [ask-matt](https://aihero.dev/skills-ask-matt) is the router over the whole set.
+출력은 아이디어이며, [grill-with-docs](https://aihero.dev/skills-grill-with-docs) 또는 [to-spec](https://aihero.dev/skills-to-spec)에서 메인 빌드 흐름으로 돌아갑니다. 메인 흐름의 끝에 있는 대응물은 [retro](https://aihero.dev/skills-retro)입니다. 이 스킬은 에이전트가 작업하는 코드를 개선하고, `retro`는 빌드 후 주변 환경(체크, 표준, 조정 파일)을 개선합니다. 어떤 스킬이 상황에 적합한지는 [ask-matt](https://aihero.dev/skills-ask-matt)가 전체 세트에 대한 라우터입니다.

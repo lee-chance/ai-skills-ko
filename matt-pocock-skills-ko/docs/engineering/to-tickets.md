@@ -1,99 +1,99 @@
-## What it does
+## 무엇을 하는가
 
-`to-tickets` takes a plan, a [spec](https://www.aihero.dev/ai-coding-dictionary/spec), or the conversation you are in, and breaks it into a set of **[tickets](https://www.aihero.dev/ai-coding-dictionary/ticket)** on your issue tracker. Each ticket declares its **blocking edges**: the other tickets that have to finish before it can start.
+`to-tickets`는 계획, [스펙](https://www.aihero.dev/ai-coding-dictionary/spec), 또는 여러분이 있는 대화를 가져와서, 이슈 트래커의 **[티켓](https://www.aihero.dev/ai-coding-dictionary/ticket)** 세트로 나눕니다. 각 티켓은 **차단 엣지**를 선언합니다: 시작하기 전에 완료되어야 하는 다른 티켓들.
 
-Every ticket is a **tracer bullet**: a narrow but complete path through every layer of the change (schema, API, UI, tests) that you can demo on its own as soon as it lands. This is what makes the skill different from the obvious way to split work, which is to cut one layer at a time and integrate at the end. It also sizes each ticket to fit in a single fresh [context window](https://www.aihero.dev/ai-coding-dictionary/context-window), because a [session](https://www.aihero.dev/ai-coding-dictionary/session) that has never seen your spec will pick the ticket up.
+모든 티켓은 **추적탄**입니다: 변경의 모든 레이어(스키마, API, UI, 테스트)를 통과하는 좁지만 완전한 경로로, 도착하자마자 스스로 데모할 수 있습니다. 이것이 스킬을 작업을 나누는 명백한 방법과 다르게 만드는 것입니다. 그 방법은 한 번에 한 레이어를 잘라서 끝에서 통합합니다. 또한 각 티켓의 크기를 단일 새로운 [컨텍스트 윈도우](https://www.aihero.dev/ai-coding-dictionary/context-window)에 맞춥니다. 여러분의 스펙을 본 적이 없는 [세션](https://www.aihero.dev/ai-coding-dictionary/session)이 티켓을 선택할 것이기 때문입니다.
 
-## When to reach for it
+## 언제 사용하는가
 
-You invoke this by typing `/to-tickets`. The [agent](https://www.aihero.dev/ai-coding-dictionary/agent) won't reach for it on its own.
+`/to-tickets`를 입력하여 호출합니다. [에이전트](https://www.aihero.dev/ai-coding-dictionary/agent)는 스스로 사용하지 않습니다.
 
-| Where you are | What to run |
+| 현재 상황 | 실행할 것 |
 | --- | --- |
-| You have a spec issue and the build spans several sessions | `/to-tickets`, or `/to-tickets #<spec_issue>` |
-| The plan is only in the conversation, never written up | `/to-tickets` reads the thread directly, no spec needed |
-| The whole change fits in one context window | [implement](https://aihero.dev/skills-implement), skip the tickets |
-| Nothing is decided yet | [grill-with-docs](https://aihero.dev/skills-grill-with-docs), then [to-spec](https://aihero.dev/skills-to-spec) |
-| A [wayfinder](https://aihero.dev/skills-wayfinder) map has cleared | [to-spec](https://aihero.dev/skills-to-spec) first, to collapse the map, then `/to-tickets` |
+| 스펙 이슈가 있고 빌드가 여러 세션에 걸침 | `/to-tickets`, 또는 `/to-tickets #<spec_issue>` |
+| 계획이 대화에만 있고 작성되지 않음 | `/to-tickets`가 스레드를 직접 읽으며, 스펙 불필요 |
+| 전체 변경이 하나의 컨텍스트 윈도우에 맞음 | [implement](https://aihero.dev/skills-implement), 티켓 건너뜀 |
+| 아직 결정된 것이 없음 | [grill-with-docs](https://aihero.dev/skills-grill-with-docs), 그 다음 [to-spec](https://aihero.dev/skills-to-spec) |
+| [wayfinder](https://aihero.dev/skills-wayfinder) 맵이 완료됨 | [to-spec](https://aihero.dev/skills-to-spec) 먼저, 맵을 축소하고, 그 다음 `/to-tickets` |
 
-Tickets that `to-tickets` produced are agent-ready by construction. Don't run [triage](https://aihero.dev/skills-triage) over them. Triage is for work that arrived from someone else.
+`to-tickets`가 생성한 티켓은 구성상 에이전트 준비 완료입니다. 그것들에 [triage](https://aihero.dev/skills-triage)를 실행하지 마세요. Triage는 다른 사람에게서 도착한 작업을 위한 것입니다.
 
-## Prerequisites
+## 전제 조건
 
-`to-tickets` publishes into a tracker, so [setup-matt-pocock-skills](https://aihero.dev/skills-setup-matt-pocock-skills) must have configured one for this repo, along with the triage-label vocabulary. Either kind works: a real tracker like GitHub or Linear, or local markdown files under `.scratch/`, which work with no extra setup.
+`to-tickets`는 트래커에 게시하므로, [setup-matt-pocock-skills](https://aihero.dev/skills-setup-matt-pocock-skills)가 이 리포에 대해 triage-label 어휘와 함께 하나를 구성했어야 합니다. 두 종류 모두 작동합니다: GitHub이나 Linear 같은 실제 트래커, 또는 추가 설정 없이 작동하는 `.scratch/` 아래의 로컬 markdown 파일.
 
-## Tracer bullets, not layers
+## 레이어가 아닌 추적탄
 
-A **horizontal** slice ships one layer of the change. Nothing works until every layer has landed, and each ticket's acceptance criteria have to reach into work that another ticket owns. A **vertical** slice (the tracer bullet) ships one thin path through all the layers at once, so it is verifiable alone and owns everything it grades.
+**수평** 슬라이스는 변경의 한 레이어를 배포합니다. 모든 레이어가 도착할 때까지 아무것도 작동하지 않으며, 각 티켓의 승인 기준은 다른 티켓이 소유한 작업에 도달해야 합니다. **수직** 슬라이스(추적탄)는 모든 레이어를 한 번에 통과하는 하나의 얇은 경로를 배포하므로, 단독으로 검증 가능하고 평가하는 모든 것을 소유합니다.
 
-This is the rule people break most often. One team ran a 26-ticket stack sliced by layer (corpus, producer, aggregator, selector) and got roughly twenty agent runs per closed ticket, about three quarters of them rework. Their own post-mortem traced every failure class back to the horizontal slicing rather than to the implementations.
+이것이 사람들이 가장 자주 위반하는 규칙입니다. 한 팀은 레이어별로 슬라이스된(corpus, producer, aggregator, selector) 26개 티켓 스택을 실행했고, 닫힌 티켓당 약 20번의 에이전트 실행을 얻었으며, 그 중 약 4분의 3이 재작업이었습니다. 그들 자체의 사후 분석은 모든 실패 클래스를 구현이 아니라 수평 슬라이싱으로 추적했습니다.
 
-Two things happen before anything is published. `to-tickets` looks for prefactoring (the principle "make the change easy, then make the easy change") and orders that work first. Then it presents the breakdown as a numbered list and quizzes you on it: is the granularity right, are the blocking edges real, should anything merge or split. Nothing reaches the tracker until you approve, and that quiz is the place to push back.
+무엇이든 게시되기 전에 두 가지가 발생합니다. `to-tickets`는 prefactoring(원칙 "변경을 쉽게 만들고, 그 다음 쉬운 변경을 하라")을 찾고 그 작업을 먼저 정렬합니다. 그런 다음 분석을 번호 매긴 목록으로 제시하고 여러분에게 퀴즈를 냅니다: 세분성이 맞는가, 차단 엣지가 실제인가, 무언가를 병합하거나 분할해야 하는가. 여러분이 승인할 때까지 트래커에 도달하지 않으며, 그 퀴즈가 반대할 곳입니다.
 
-## Blocking edges
+## 차단 엣지
 
-The edges are the point of the artifact. They work in two ways, depending on the tracker:
+엣지는 아티팩트의 핵심입니다. 트래커에 따라 두 가지 방식으로 작동합니다:
 
-| Tracker | Where the edges live | How you work them |
+| 트래커 | 엣지가 있는 곳 | 어떻게 작업하는가 |
 | --- | --- | --- |
-| Local markdown | Text in one file per ticket under `.scratch/<feature>/issues/<NN>-<slug>.md`, numbered blockers-first | Top to bottom, by hand |
-| A real tracker (GitHub, Linear) | Native blocking links, or sub-issues where the tracker has them | Any ticket whose blockers are done is on the **frontier** and can be grabbed |
+| 로컬 markdown | `.scratch/<feature>/issues/<NN>-<slug>.md` 아래 티켓당 한 파일의 텍스트, 차단자 우선으로 번호 매김 | 위에서 아래로, 수동으로 |
+| 실제 트래커 (GitHub, Linear) | 네이티브 차단 링크, 또는 트래커가 가지고 있는 서브 이슈 | 차단자가 완료된 모든 티켓은 **프론티어**에 있으며 잡을 수 있습니다 |
 
-The edges live in the ticket either way. The tracker only decides whether anything can act on them in parallel. `to-tickets` produces the artifact; running it (one session at a time, or a fleet) is your job, not the skill's.
+엣지는 어느 쪽이든 티켓에 있습니다. 트래커는 무언가가 병렬로 그것들에 작용할 수 있는지 여부만 결정합니다. `to-tickets`는 아티팩트를 생성합니다. 그것을 실행하는 것(한 번에 한 세션, 또는 플릿)은 스킬이 아니라 여러분의 일입니다.
 
-## The wide-refactor exception
+## 광범위 리팩터 예외
 
-One shape breaks the tracer-bullet rule. A **wide refactor** is a single mechanical change (rename a column, retype a shared symbol) whose **blast radius** covers the whole codebase. One edit breaks thousands of call sites, so no vertical slice can land green.
+하나의 형태가 추적탄 규칙을 깨뜨립니다. **광범위 리팩터**는 **폭발 반경**이 전체 코드베이스를 덮는 단일 기계적 변경(열 이름 바꾸기, 공유 심볼 타입 변경)입니다. 하나의 편집이 수천 개의 호출 사이트를 깨뜨리므로, 어떤 수직 슬라이스도 green으로 도착할 수 없습니다.
 
-`to-tickets` sequences that as **expand–contract** instead:
+`to-tickets`는 그것을 대신 **확장–축소**로 시퀀스합니다:
 
-- **Expand**: add the new form beside the old, so nothing breaks.
-- **Migrate**: move call sites over in batches sized by blast radius (per package, per directory), one ticket per batch, each blocked by the expand. CI stays green because the old form still exists.
-- **Contract**: delete the old form once no caller remains, in a ticket blocked by every migrate batch.
+- **확장**: 오래된 형식 옆에 새 형식을 추가하여 아무것도 깨지지 않습니다.
+- **마이그레이션**: 폭발 반경에 따라 크기가 조정된 배치로 호출 사이트를 옮깁니다 (패키지당, 디렉터리당), 배치당 한 티켓, 각각 확장에 의해 차단됩니다. 오래된 형식이 여전히 존재하기 때문에 CI는 green을 유지합니다.
+- **축소**: 호출자가 남지 않으면 오래된 형식을 삭제하며, 모든 마이그레이션 배치에 의해 차단된 티켓에서.
 
-Where even the batches can't stay green alone, they share an integration branch and all block a final integrate-and-verify ticket. CI only has to be green at that ticket.
+배치조차도 단독으로 green을 유지할 수 없는 경우, 통합 브랜치를 공유하고 모두 최종 integrate-and-verify 티켓을 차단합니다. CI는 그 티켓에서만 green이어야 합니다.
 
-## Common questions
+## 자주 묻는 질문
 
-**It produced twelve tickets for a three-line change.**
-Over-decomposition is the most reported problem with this skill, and many users see it. The [model](https://www.aihero.dev/ai-coding-dictionary/model) defaults to atomic units and loses the grouping that would make them meaningful. The quiz step is where you fix this. Ask it to merge tickets, and it will. There is also a lower limit. If the whole change fits in one context window, you don't need this skill at all. Go straight to [implement](https://aihero.dev/skills-implement).
+**세 줄 변경에 대해 12개의 티켓을 생성했어요.**
+과도한 분해는 이 스킬과 가장 많이 보고된 문제이며, 많은 사용자가 이것을 봅니다. [모델](https://www.aihero.dev/ai-coding-dictionary/model)은 원자 단위로 기본 설정되고 의미 있게 만들 그룹화를 잃습니다. 퀴즈 단계가 이것을 수정하는 곳입니다. 티켓을 병합하라고 요청하면 그렇게 합니다. 하한선도 있습니다. 전체 변경이 하나의 컨텍스트 윈도우에 맞는다면, 이 스킬이 전혀 필요하지 않습니다. [implement](https://aihero.dev/skills-implement)로 바로 가세요.
 
-**The tickets came out one per layer: all the schema in one, all the API in another.**
-This is the failure the vertical-slice rule is written against, and the skill still produces it sometimes. Catch it at the quiz step by asking one question per ticket: what can I demo when this is done? A ticket with no answer is a horizontal slice. Some people add a "demo path" line to each ticket for this reason, and report that it pushes the model toward vertical slices.
+**티켓이 레이어당 하나씩 나왔어요: 모든 스키마가 하나에, 모든 API가 다른 하나에.**
+이것이 수직 슬라이스 규칙이 대항하여 작성된 실패이며, 스킬은 여전히 때때로 그것을 생성합니다. 퀴즈 단계에서 티켓당 한 질문을 물어서 잡으세요: 이것이 끝나면 무엇을 데모할 수 있나요? 답이 없는 티켓은 수평 슬라이스입니다. 일부 사람들은 이 이유로 각 티켓에 "demo path" 라인을 추가하며, 그것이 모델을 수직 슬라이스로 밀어낸다고 보고합니다.
 
-**On GitHub the tickets weren't created as sub-issues of the spec issue.**
-This was reported across a dozen runs and several models, [most fully in issue #554](https://github.com/mattpocock/skills/issues/554). Fixed: `to-tickets` now makes each ticket a sub-issue of its source issue, and the GitHub tracker template gives the command (`gh issue create --parent <n>`, `gh` 2.94+). Re-run [setup-matt-pocock-skills](https://aihero.dev/skills-setup-matt-pocock-skills) to refresh an older `docs/agents/issue-tracker.md`.
+**GitHub에서 티켓이 스펙 이슈의 서브 이슈로 생성되지 않았어요.**
+이것은 수십 번의 실행과 여러 모델에 걸쳐 보고되었으며, [이슈 #554에서 가장 완전히](https://github.com/mattpocock/skills/issues/554). 수정됨: `to-tickets`는 이제 각 티켓을 소스 이슈의 서브 이슈로 만들고, GitHub 트래커 템플릿은 명령(`gh issue create --parent <n>`, `gh` 2.94+)을 제공합니다. 더 오래된 `docs/agents/issue-tracker.md`를 새로 고치려면 [setup-matt-pocock-skills](https://aihero.dev/skills-setup-matt-pocock-skills)를 다시 실행하세요.
 
-**"Blocked by" was written into the issue body instead of a real blocking link.**
-This is the same kind of problem, [reported in issue #513](https://github.com/mattpocock/skills/issues/513), where the agent even stated that GitHub has no native blocking relationship at all. It does: `gh issue create --blocked-by 12,15`. Because the skill publishes blockers first, their numbers are always available at creation time. The body text is meant to be the fallback for trackers with no native edge, not the default. The ticket template now omits `## Blocked by` when the edges are native.
+**"Blocked by"가 실제 차단 링크 대신 이슈 본문에 작성되었어요.**
+이것은 같은 종류의 문제이며, [이슈 #513에서 보고됨](https://github.com/mattpocock/skills/issues/513), 에이전트는 GitHub에 네이티브 차단 관계가 전혀 없다고까지 명시했습니다. 있습니다: `gh issue create --blocked-by 12,15`. 스킬이 차단자를 먼저 게시하기 때문에, 그들의 번호는 생성 시 항상 사용 가능합니다. 본문 텍스트는 네이티브 엣지가 없는 트래커의 폴백을 위한 것이며, 기본값이 아닙니다. 티켓 템플릿은 이제 엣지가 네이티브일 때 `## Blocked by`를 생략합니다.
 
-**Where do the local tickets go? The v1.1 notes said a root-level `tickets.md`.**
-They did, and that was a bug. A single shared file also caused race conditions when parallel agents wrote to it. Local mode now writes one file per ticket under `.scratch/<feature-slug>/issues/<NN>-<slug>.md`, in dependency order, matching the layout the local tracker template already described. The `NN` prefix is a real ticket ID, so `/implement 03` works instead of retyping a long title.
+**로컬 티켓은 어디로 가나요? v1.1 노트에는 루트 레벨 `tickets.md`라고 되어 있었어요.**
+그랬고, 그것은 버그였습니다. 단일 공유 파일은 병렬 에이전트가 그것에 쓸 때 경쟁 조건도 일으켰습니다. 로컬 모드는 이제 `.scratch/<feature-slug>/issues/<NN>-<slug>.md` 아래에 티켓당 한 파일을 종속성 순서로 작성하며, 로컬 트래커 템플릿이 이미 설명한 레이아웃과 일치합니다. `NN` 접두사는 실제 티켓 ID이므로, `/implement 03`이 긴 제목을 다시 입력하는 대신 작동합니다.
 
-**It kept truncating when it tried to read my spec.**
-A very large spec can outgrow what a tracker issue serves back cleanly. There is no local copy to fall back on, so the agent spends [tool calls](https://www.aihero.dev/ai-coding-dictionary/tool-call) fetching chunks again and never reaches the end. Don't [clear](https://www.aihero.dev/ai-coding-dictionary/clearing) or [compact](https://www.aihero.dev/ai-coding-dictionary/compaction) between `/to-spec` and `/to-tickets`. Run them in the same context window and the agent never has to fetch the spec back.
+**제 스펙을 읽으려고 할 때 계속 잘렸어요.**
+매우 큰 스펙은 트래커 이슈가 깨끗하게 제공하는 것을 넘어설 수 있습니다. 대신 사용할 로컬 사본이 없으므로, 에이전트는 [도구 호출](https://www.aihero.dev/ai-coding-dictionary/tool-call)을 청크를 다시 가져오는 데 사용하고 끝에 도달하지 못합니다. `/to-spec`과 `/to-tickets` 사이에 [지우거나](https://www.aihero.dev/ai-coding-dictionary/clearing) [압축](https://www.aihero.dev/ai-coding-dictionary/compaction)하지 마세요. 같은 컨텍스트 윈도우에서 실행하면 에이전트는 스펙을 다시 가져올 필요가 없습니다.
 
-**The acceptance criteria graded nothing: some passed before any work was done.**
-The template asks for criteria and says nothing about whether they can fail, so this happens. Three shapes recur: a criterion already true at the base commit, a criterion that only work in another ticket can satisfy, and one that restates the request rather than deriving from the artifact. Vertical slicing prevents most of it, because a slice that delivers new behaviour fails at the base commit by construction. The check is still worth doing by hand. For each criterion, name the observation that would show it false, and confirm it fails at the commit the implementer starts from.
+**승인 기준이 아무것도 평가하지 않았어요: 어떤 작업을 하기 전에 일부가 통과했어요.**
+템플릿은 기준을 요청하고 실패할 수 있는지에 대해서는 아무 말도 하지 않으므로, 이런 일이 일어납니다. 세 가지 형태가 반복됩니다: 기본 커밋에서 이미 참인 기준, 다른 티켓의 작업만 만족시킬 수 있는 기준, 아티팩트에서 파생하지 않고 요청을 다시 진술하는 기준. 수직 슬라이싱은 대부분을 방지합니다. 새 동작을 전달하는 슬라이스는 구성상 기본 커밋에서 실패하기 때문입니다. 확인은 여전히 수동으로 할 가치가 있습니다. 각 기준에 대해, 그것을 거짓으로 보여줄 관찰을 명시하고, 구현자가 시작하는 커밋에서 실패하는지 확인하세요.
 
-**The tickets are published. How do I actually run them?**
-The skill stops at the artifact, and there is no auto-dispatch mode. Dispatch is manual: look at the board, count the tickets with no open blockers, and open that many agent sessions. Give each ticket a fresh context, and clear between them. [implement](https://aihero.dev/skills-implement) does not reliably close or check off the ticket when it finishes, on GitHub or in local markdown, so you update the ticket's state yourself.
+**티켓이 게시됩니다. 실제로 어떻게 실행하나요?**
+스킬은 아티팩트에서 멈추며, 자동 디스패치 모드는 없습니다. 디스패치는 수동입니다: 보드를 보고, 열린 차단자가 없는 티켓을 세고, 그만큼의 에이전트 세션을 엽니다. 각 티켓에 새로운 컨텍스트를 주고, 그들 사이에 지우세요. [implement](https://aihero.dev/skills-implement)는 GitHub이나 로컬 markdown에서 완료될 때 티켓을 닫거나 체크하지 않으므로, 여러분이 직접 티켓의 상태를 업데이트합니다.
 
-## It's working if
+## 제대로 작동한다는 신호
 
-- Every ticket has an answer to "what can I demo when this is done?", and the answer is behaviour, not a layer.
-- The list comes back to you numbered, with a "Blocked by" line on each, before anything is published.
-- The ticket at the top has no blockers and can be started immediately.
-- Nothing in a ticket body is a file path or a line number, except a snippet a prototype produced.
-- Each ticket reads like something a fresh session could finish without you in the room.
-- Prefactoring, where it found any, is at the front of the order rather than mixed into feature tickets.
+- 모든 티켓이 "이것이 끝나면 무엇을 데모할 수 있나요?"에 대한 답을 가지고 있으며, 답은 레이어가 아니라 동작입니다.
+- 무엇이든 게시되기 전에 목록이 각각에 "Blocked by" 라인과 함께 번호가 매겨져 여러분에게 돌아옵니다.
+- 맨 위의 티켓은 차단자가 없으며 즉시 시작할 수 있습니다.
+- 프로토타입이 생성한 스니펫을 제외하고 티켓 본문의 어떤 것도 파일 경로나 줄 번호가 아닙니다.
+- 각 티켓은 새로운 세션이 방에 여러분 없이 완료할 수 있는 것처럼 읽힙니다.
+- Prefactoring은, 발견한 곳에서, 기능 티켓에 섞이지 않고 순서의 앞에 있습니다.
 
-## Where it fits
+## 어디에 적용되는지
 
-`to-tickets` is a step in the main build chain:
+`to-tickets`는 주 빌드 체인의 단계입니다:
 
 ```txt
 grill-with-docs → to-spec → to-tickets → implement → code-review → retro
 ```
 
-Upstream is [to-spec](https://aihero.dev/skills-to-spec), which hands it a settled spec to slice against. Keep both in one context window, with no clear between them. Downstream is [implement](https://aihero.dev/skills-implement), which builds one ticket per fresh session, driving [tdd](https://aihero.dev/skills-tdd) for the tests and closing with [code-review](https://aihero.dev/skills-code-review). [implement-spec](https://aihero.dev/skills-implement-spec) is the other way down. It reads the same blocking edges as a task graph and builds every ready ticket in parallel on one integration branch. When you're unsure which skill or flow fits, [ask-matt](https://aihero.dev/skills-ask-matt) routes you.
+업스트림은 [to-spec](https://aihero.dev/skills-to-spec)이며, 슬라이스할 정착된 스펙을 건넵니다. 둘 사이에 지우지 않고 하나의 컨텍스트 윈도우에 두 가지 모두 유지하세요. 다운스트림은 [implement](https://aihero.dev/skills-implement)이며, 새로운 세션당 한 티켓을 빌드하고, 테스트를 위해 [tdd](https://aihero.dev/skills-tdd)를 구동하며, [code-review](https://aihero.dev/skills-code-review)로 마무리합니다. [implement-spec](https://aihero.dev/skills-implement-spec)은 다른 방법입니다. 같은 차단 엣지를 작업 그래프로 읽고 하나의 통합 브랜치에서 준비된 모든 티켓을 병렬로 빌드합니다. 어떤 스킬이나 흐름이 맞는지 확실하지 않을 때, [ask-matt](https://aihero.dev/skills-ask-matt)가 안내합니다.

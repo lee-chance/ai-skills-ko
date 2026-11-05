@@ -1,81 +1,81 @@
-## What it does
+## 무엇을 하는지
 
-`retro` looks back over a coding [session](https://www.aihero.dev/ai-coding-dictionary/session) and suggests improvements to the agent's **[environment](https://www.aihero.dev/ai-coding-dictionary/environment)**, so the next run goes better. It reads the session's own record (the current one by default, or one you point it at in the session logs). It finds the moments where the agent struggled, and gives you a list of candidate fixes, most severe first.
+`retro`는 코딩 [세션](https://www.aihero.dev/ai-coding-dictionary/session)을 되돌아보고 에이전트의 **[환경](https://www.aihero.dev/ai-coding-dictionary/environment)**에 대한 개선을 제안하여 다음 실행이 더 잘 진행되도록 합니다. 세션 자체의 기록(기본적으로 현재 것 또는 세션 로그에서 가리키는 것)을 읽습니다. 에이전트가 고군분투한 순간을 찾고, 가장 심각한 것부터 후보 수정 목록을 제공합니다.
 
-It changes the environment, not the code. Take the bug the agent shipped, the file it needed twenty [tool calls](https://www.aihero.dev/ai-coding-dictionary/tool-call) to find, or the rule the reviewer missed. `retro` does not fix any of them directly. It asks what in the repo let them happen, and proposes the check, pointer, or standard that prevents them next time. It also only proposes. Nothing changes until you pick a candidate.
+코드가 아니라 환경을 변경합니다. 에이전트가 배송한 버그, 찾기 위해 20개의 [도구 호출](https://www.aihero.dev/ai-coding-dictionary/tool-call)이 필요했던 파일, 또는 리뷰어가 놓친 규칙을 가져오세요. `retro`는 이들 중 어느 것도 직접 수정하지 않습니다. 리포에서 무엇이 그것들을 허용했는지 묻고, 다음번에 그것들을 방지하는 체크, 포인터, 또는 표준을 제안합니다. 또한 제안만 합니다. 후보를 선택할 때까지 아무것도 변경되지 않습니다.
 
-## When to reach for it
+## 언제 사용하는지
 
-You invoke this by typing `/retro`, and the agent won't reach for it on its own.
+`/retro`를 입력하여 호출하며, 에이전트가 스스로 이것을 선택하지는 않습니다.
 
-Reach for it at the end of a session that was harder than it should have been. For example, the agent searched too long for something, made a mistake a tool could have caught, or needed information it could not get. A smooth session has little to teach, and the findings come from the difficult ones. If you want a verdict on the code the session produced, use [code-review](https://aihero.dev/skills-code-review) instead.
+원래보다 어려웠던 세션의 끝에 사용하세요. 예를 들어, 에이전트가 무언가를 너무 오래 검색했거나, 도구가 잡을 수 있었던 실수를 했거나, 얻을 수 없는 정보가 필요했습니다. 매끄러운 세션은 가르칠 것이 거의 없으며, 발견은 어려운 것에서 나옵니다. 세션이 생성한 코드에 대한 판결을 원하면 대신 [code-review](https://aihero.dev/skills-code-review)를 사용하세요.
 
-## Where the findings land
+## 발견이 어디에 놓이는지
 
-Each candidate belongs to one category, and the category decides where the fix goes:
+각 후보는 하나의 카테고리에 속하며, 카테고리가 수정이 어디로 가는지 결정합니다:
 
-| What went wrong in the session | Fix it with |
+| 세션에서 잘못된 것 | 수정할 것 |
 | --- | --- |
-| The agent took a long time to find a file or fact | A **navigation pointer** from a file it already reads |
-| It made a mistake a tool could have caught | An **[automated check](https://www.aihero.dev/ai-coding-dictionary/automated-check)**: lint rule, type, test, pre-commit hook, CI job |
-| The reviewer missed a judgement-call mistake | A rule in `CODING_STANDARDS.md` for the reviewer agent |
-| `AGENTS.md` or `CLAUDE.md` is large | Move its steering out, into standards or checks |
-| A tool call was expensive for what it returned | Streamline the tool, or replace it |
-| A steering file is full of lines that change nothing | Delete the **no-ops** |
-| The agent needed information it couldn't reach | Widen its access: tee the dev server log to a file, give read-only access to a service |
+| 에이전트가 파일이나 사실을 찾는 데 오랜 시간이 걸림 | 이미 읽는 파일의 **탐색 포인터** |
+| 도구가 잡을 수 있었던 실수를 했음 | **[자동 체크](https://www.aihero.dev/ai-coding-dictionary/automated-check)**: lint 규칙, 타입, 테스트, pre-commit 훅, CI 작업 |
+| 리뷰어가 판단 호출 실수를 놓침 | 리뷰어 에이전트를 위한 `CODING_STANDARDS.md`의 규칙 |
+| `AGENTS.md` 또는 `CLAUDE.md`가 큼 | 조정을 표준 또는 체크로 이동 |
+| 도구 호출이 반환한 것에 비해 비쌌음 | 도구를 간소화하거나 교체 |
+| 조정 파일이 아무것도 변경하지 않는 라인으로 가득 참 | **no-ops** 삭제 |
+| 에이전트가 도달할 수 없는 정보가 필요했음 | 액세스 확대: 개발 서버 로그를 파일로 tee, 서비스에 읽기 전용 액세스 제공 |
 
-The leading idea is that standards belong to the **reviewer**, not the implementer. The implementing agent has the most context pressure, because it explores, writes code, and debugs failures. The reviewing agent gets a diff and nothing else. So a new rule goes where there is room to apply it, which is review. It never goes in [AGENTS.md](https://www.aihero.dev/ai-coding-dictionary/agents-md), which loads into every session's [context window](https://www.aihero.dev/ai-coding-dictionary/context-window) whether it is relevant or not.
+주요 아이디어는 표준이 구현자가 아니라 **리뷰어**에게 속한다는 것입니다. 구현 에이전트는 탐색하고, 코드를 작성하고, 실패를 디버그하기 때문에 가장 많은 컨텍스트 압력을 받습니다. 리뷰 에이전트는 diff와 그 외에는 아무것도 받지 못합니다. 따라서 새 규칙은 적용할 공간이 있는 곳으로 가며, 이는 리뷰입니다. 관련이 있든 없든 모든 세션의 [컨텍스트 윈도우](https://www.aihero.dev/ai-coding-dictionary/context-window)에 로드되는 [AGENTS.md](https://www.aihero.dev/ai-coding-dictionary/agents-md)에는 절대 들어가지 않습니다.
 
-Before `retro` writes any rule, it classifies the violation. A **mechanical** violation (a banned API, an import shape, a file-location rule) gets a deterministic check, because a check can fail and a sentence in a standards file can't. Only real judgement calls, which no linter can enforce, become prose. If the repo has no guardrail at all (no pre-commit hook, and no CI job that runs lint, typecheck, and tests), `retro` reports that as a finding of its own.
+`retro`가 규칙을 작성하기 전에 위반을 분류합니다. **기계적** 위반(금지된 API, import 형태, 파일 위치 규칙)은 체크가 실패할 수 있고 표준 파일의 문장은 실패할 수 없기 때문에 결정론적 체크를 받습니다. 어떤 린터도 시행할 수 없는 실제 판단 호출만 산문이 됩니다. 리포에 전혀 가드레일이 없으면(pre-commit 훅 없음, lint, typecheck, 테스트를 실행하는 CI 작업 없음), `retro`는 이를 자체 발견으로 보고합니다.
 
-## Common questions
+## 일반적인 질문
 
-**Does it write the lint rule itself, or wait for a yes? Can I wire it to run after every session?**
+**lint 규칙을 스스로 작성하나요, 아니면 예스를 기다리나요? 모든 세션 후에 실행되도록 연결할 수 있나요?**
 
-It waits. `retro` only proposes. Nothing changes until you pick a candidate, so it edits nothing by hand and installs no hook automatically. This is deliberate. One user asked for exactly this after being "burned by auto-hooks that blocked good changes." It takes judgement to decide what deserves a permanent check, so the skill stays [human-in-the-loop](https://www.aihero.dev/ai-coding-dictionary/human-in-the-loop) and user-invoked. Some users do run it after every implementation run. But a smooth session has little to teach, so a run after every session mostly produces rules nobody needed. There is no dry-run mode. A proposed check is code like any other, so try it against the repo before you let it block merges.
+기다립니다. `retro`는 제안만 합니다. 후보를 선택할 때까지 아무것도 변경되지 않으므로 손으로 아무것도 편집하지 않고 자동으로 훅을 설치하지 않습니다. 이것은 의도적입니다. 한 사용자는 "좋은 변경을 차단한 자동 훅에 화상을 입은" 후 정확히 이것을 요청했습니다. 무엇이 영구적인 체크를 받을 자격이 있는지 결정하는 데 판단이 필요하므로 스킬은 [human-in-the-loop](https://www.aihero.dev/ai-coding-dictionary/human-in-the-loop)이고 사용자 호출로 유지됩니다. 일부 사용자는 모든 구현 실행 후에 실행합니다. 그러나 매끄러운 세션은 가르칠 것이 거의 없으므로 모든 세션 후의 실행은 대부분 아무도 필요로 하지 않는 규칙을 생성합니다. dry-run 모드는 없습니다. 제안된 체크는 다른 코드와 마찬가지이므로 병합을 차단하게 하기 전에 리포에 대해 시도하세요.
 
-**Won't this pile up lint rules forever? Does it ever suggest removing one?**
+**이것이 lint 규칙을 영원히 쌓아두지 않나요? 하나를 제거하도록 제안하나요?**
 
-Partly, and this is its weakest spot. It can remove prose: no-ops in steering files, and steering in `AGENTS.md` or `CLAUDE.md` that belongs in standards or a check. It flags these for deletion when the files are large. It judges them against the one session it reads, so treat each one as a candidate for the deletion test, not a verdict. It does not audit the lint rules, hooks, or CI jobs it proposed last month. It sees one session, so it cannot tell you that a rule now fires too often or that the bug behind it is gone. You must still prune checks yourself. A rule that fires constantly on good code is the sign to remove it.
+부분적으로, 그리고 이것이 가장 약한 지점입니다. 산문을 제거할 수 있습니다: 조정 파일의 no-ops, 그리고 표준 또는 체크에 속하는 `AGENTS.md` 또는 `CLAUDE.md`의 조정. 파일이 클 때 삭제를 위해 플래그를 지정합니다. 읽는 하나의 세션에 대해 판단하므로 각각을 판결이 아니라 삭제 테스트의 후보로 취급하세요. 지난달에 제안한 lint 규칙, 훅, 또는 CI 작업을 감사하지 않습니다. 하나의 세션을 보므로 규칙이 이제 너무 자주 실행되거나 그 뒤의 버그가 사라졌다고 말할 수 없습니다. 여전히 스스로 체크를 정리해야 합니다. 좋은 코드에서 지속적으로 실행되는 규칙은 이를 제거할 신호입니다.
 
-**Won't it just invent generic advice to fill its categories?**
+**카테고리를 채우기 위해 일반적인 조언을 발명하지 않나요?**
 
-This is the strongest criticism of it. One user found that "once the job is finished, the AI tends to forget the struggles from the middle of the session and invents generic advice to satisfy the retro categories." Every candidate must come from the session's own record, so the advice is specific to that session. This has a cost as well as a benefit. It rarely invents something irrelevant, but it can give too much weight to whatever this one session was about. Discard any candidate you can't trace to a specific moment. Treat the severity order as a first draft too, because a quiet, expensive mistake can rank below a loud, cheap one.
+이것이 가장 강력한 비판입니다. 한 사용자는 "작업이 완료되면 AI가 세션 중간의 고군분투를 잊어버리고 retro 카테고리를 만족시키기 위해 일반적인 조언을 발명하는 경향이 있다"고 발견했습니다. 모든 후보는 세션 자체의 기록에서 와야 하므로 조언은 해당 세션에 특정합니다. 이것은 이익뿐만 아니라 비용도 있습니다. 관련 없는 것을 발명하는 경우는 드물지만, 이 한 세션이 무엇에 관한 것이었든 너무 많은 가중치를 줄 수 있습니다. 특정 순간으로 추적할 수 없는 후보는 버리세요. 조용하고 비싼 실수가 시끄럽고 저렴한 것 아래에 순위를 매길 수 있기 때문에 심각도 순서도 초안으로 취급하세요.
 
-**My session is long. Run it now, or start fresh?**
+**세션이 깁니다. 지금 실행하나요, 아니면 새로 시작하나요?**
 
-By default it reviews the current session. That is the best case, because the struggles are still in the context window. If the session has already moved out of the [smart zone](https://www.aihero.dev/ai-coding-dictionary/smart-zone), [clear](https://www.aihero.dev/ai-coding-dictionary/clearing) it, and point a fresh `/retro` at the previous session in the session logs.
+기본적으로 현재 세션을 리뷰합니다. 고군분투가 여전히 컨텍스트 윈도우에 있기 때문에 이것이 최선의 경우입니다. 세션이 이미 [smart zone](https://www.aihero.dev/ai-coding-dictionary/smart-zone)에서 벗어났으면 [clear](https://www.aihero.dev/ai-coding-dictionary/clearing)하고, 세션 로그의 이전 세션에 새로운 `/retro`를 가리킵니다.
 
-**The agent keeps making the same mistake. Should I add a line to `CLAUDE.md`?**
+**에이전트가 같은 실수를 계속합니다. `CLAUDE.md`에 라인을 추가해야 하나요?**
 
-Usually not, and `retro` pushes back on this more than anything else. A line in `CLAUDE.md` loads into every session, gives less weight to everything else in the file, and goes out of date as the code changes. If the mistake is mechanical, the fix is a check that fails. If it is a judgement call, it goes in the coding standards the reviewer reads. `AGENTS.md` and `CLAUDE.md` are for navigation pointers and little else. For the same reason, `retro` is not a [memory system](https://www.aihero.dev/ai-coding-dictionary/memory-system). It does not store what happened. It changes the environment so the mistake cannot happen again.
+보통 아니며, `retro`는 이것에 대해 다른 무엇보다 더 반발합니다. `CLAUDE.md`의 라인은 모든 세션에 로드되고, 파일의 다른 모든 것에 덜 가중치를 주며, 코드가 변경됨에 따라 오래됩니다. 실수가 기계적이면 수정은 실패하는 체크입니다. 판단 호출이면 리뷰어가 읽는 코딩 표준에 들어갑니다. `AGENTS.md`와 `CLAUDE.md`는 탐색 포인터와 그 외 거의 없는 것을 위한 것입니다. 같은 이유로 `retro`는 [메모리 시스템](https://www.aihero.dev/ai-coding-dictionary/memory-system)이 아닙니다. 일어난 일을 저장하지 않습니다. 실수가 다시 일어날 수 없도록 환경을 변경합니다.
 
-**My setup mentions `CODING_STANDARDS.md` and I don't have one. Where does it come from?**
+**설정에 `CODING_STANDARDS.md`가 언급되어 있지만 없습니다. 어디서 오나요?**
 
-No skill ships the file. The first time a session finds a judgement-call rule for the reviewer, `retro` proposes to create it. After you accept, [code-review](https://aihero.dev/skills-code-review) reads it. Any other standards doc you already keep, such as `CONTRIBUTING.md`, works the same way.
+어떤 스킬도 파일을 제공하지 않습니다. 세션이 리뷰어를 위한 판단 호출 규칙을 처음 찾으면 `retro`는 이를 생성할 것을 제안합니다. 수락한 후 [code-review](https://aihero.dev/skills-code-review)가 이를 읽습니다. `CONTRIBUTING.md`와 같이 이미 보관하는 다른 표준 문서도 동일한 방식으로 작동합니다.
 
-**How is it different from `improve-codebase-architecture`?**
+**`improve-codebase-architecture`와 어떻게 다른가요?**
 
-The input is different. [improve-codebase-architecture](https://aihero.dev/skills-improve-codebase-architecture) needs only the code, and looks for structural improvements to it. `retro` needs a session history, and improves the environment the agent works in, not the code. You use both; neither replaces the other.
+입력이 다릅니다. [improve-codebase-architecture](https://aihero.dev/skills-improve-codebase-architecture)는 코드만 필요하고, 이에 대한 구조적 개선을 찾습니다. `retro`는 세션 히스토리가 필요하고, 코드가 아니라 에이전트가 작업하는 환경을 개선합니다. 둘 다 사용합니다; 어느 것도 다른 것을 대체하지 않습니다.
 
-## It's working if
+## 제대로 작동하고 있다면
 
-- Every candidate points back to a specific moment in the session, not a generic best practice.
-- Repeat mistakes turn into failing checks, and your `AGENTS.md` gets shorter over time, not longer.
-- If a check already existed but was not connected, the finding is to connect it, not a proposal to build a new one.
-- The next session on the same kind of task finds what it needs faster.
+- 모든 후보가 일반적인 모범 사례가 아니라 세션의 특정 순간을 다시 가리킵니다.
+- 반복 실수가 실패하는 체크로 전환되고, `AGENTS.md`가 시간이 지남에 따라 더 길어지지 않고 더 짧아집니다.
+- 체크가 이미 존재했지만 연결되지 않았으면 발견은 이를 연결하는 것이지 새로운 것을 빌드하는 제안이 아닙니다.
+- 동일한 종류의 작업에 대한 다음 세션이 필요한 것을 더 빨리 찾습니다.
 
-## Where it fits
+## 어디에 적합한지
 
-`retro` is the last step of the main chain, where you review how the chain went:
+`retro`는 체인이 어떻게 진행되었는지 리뷰하는 메인 체인의 마지막 단계입니다:
 
 ```txt
 grill-with-docs → to-spec → to-tickets → implement → code-review → retro
 ```
 
-Run it after a build worth learning from, in the same session or pointed at that session's log. You can skip it after a smooth build.
+배울 가치가 있는 빌드 후에, 동일한 세션에서 또는 해당 세션의 로그를 가리키며 실행합니다. 매끄러운 빌드 후에는 건너뛸 수 있습니다.
 
-- [code-review](https://aihero.dev/skills-code-review) is the reviewer agent that `retro` most often tunes. New coding standards go where its Standards axis reads them.
-- [writing-for-agents](https://aihero.dev/skills-writing-for-agents) sets the writing style for every steering file and skill that `retro` proposes, and `retro` loads it before it starts.
+- [code-review](https://aihero.dev/skills-code-review)는 `retro`가 가장 자주 조정하는 리뷰어 에이전트입니다. 새 코딩 표준은 Standards 축이 읽는 곳으로 갑니다.
+- [writing-for-agents](https://aihero.dev/skills-writing-for-agents)는 `retro`가 제안하는 모든 조정 파일과 스킬의 작성 스타일을 설정하며, `retro`는 시작하기 전에 이를 로드합니다.
 
-[ask-matt](https://aihero.dev/skills-ask-matt) routes across the whole set when you are unsure which skill the situation needs.
+어떤 스킬이 상황에 필요한지 확실하지 않을 때 [ask-matt](https://aihero.dev/skills-ask-matt)가 전체 세트를 라우팅합니다.

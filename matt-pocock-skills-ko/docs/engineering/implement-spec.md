@@ -1,86 +1,86 @@
-## What it does
+## 무엇을 하나요
 
-`implement-spec` takes a [spec](https://www.aihero.dev/ai-coding-dictionary/spec) and its [tickets](https://www.aihero.dev/ai-coding-dictionary/ticket) and lands the whole thing in one run. The orchestrating [agent](https://www.aihero.dev/ai-coding-dictionary/agent) hands each ticket to an implementer [subagent](https://www.aihero.dev/ai-coding-dictionary/subagent) working in its own git worktree, merges each finished branch into a single **integration branch**, runs [code-review](https://aihero.dev/skills-code-review) over the result, and resolves the tickets.
+`implement-spec`은 [spec](https://www.aihero.dev/ai-coding-dictionary/spec)과 그 [티켓](https://www.aihero.dev/ai-coding-dictionary/ticket)을 가져와 한 번의 실행으로 전체를 착륙시킵니다. 오케스트레이션하는 [에이전트](https://www.aihero.dev/ai-coding-dictionary/agent)는 각 티켓을 자체 git worktree에서 작업하는 구현자 [서브에이전트](https://www.aihero.dev/ai-coding-dictionary/subagent)에 전달하고, 완성된 각 브랜치를 단일 **통합 브랜치**로 병합하고, 결과에 대해 [code-review](https://aihero.dev/skills-code-review)를 실행하고, 티켓을 해결합니다.
 
-It reads the tickets as a **task graph**, not a list. Blocking edges decide what can start, so at any moment there is a **frontier** of tickets whose blockers have all landed, and every ticket on the frontier runs at once. That is the difference from working the tickets one by one. The graph's shape sets the pace, not the tickets' order on the tracker.
+티켓을 목록이 아니라 **작업 그래프**로 읽습니다. 차단 엣지가 무엇이 시작할 수 있는지 결정하므로, 어느 순간에는 차단자가 모두 착륙한 티켓의 **프론티어**가 있으며, 프론티어의 모든 티켓이 한 번에 실행됩니다. 그것이 티켓을 하나씩 작업하는 것과의 차이입니다. 그래프의 형태가 속도를 설정하며, 트래커의 티켓 순서가 아닙니다.
 
-## When to reach for it
+## 언제 사용하나요
 
-You invoke this by typing `/implement-spec`, and the agent won't reach for it on its own.
+`/implement-spec`을 입력하여 호출하며, 에이전트는 스스로 이를 찾지 않습니다.
 
-| Your situation | Reach for |
+| 여러분의 상황 | 찾아야 할 것 |
 | --- | --- |
-| A spec, split into tickets with blocking edges, that you want landed in one run | `/implement-spec` |
-| One ticket at a time, in your own [context window](https://www.aihero.dev/ai-coding-dictionary/context-window), [clearing](https://www.aihero.dev/ai-coding-dictionary/clearing) between tickets | [implement](https://aihero.dev/skills-implement) |
-| A spec that isn't split into tickets yet | [to-tickets](https://aihero.dev/skills-to-tickets) first |
-| A small piece of work with no real graph to it | [implement](https://aihero.dev/skills-implement) directly |
+| 차단 엣지가 있는 티켓으로 분할된 spec, 한 번의 실행으로 착륙시키고 싶습니다 | `/implement-spec` |
+| 자신의 [컨텍스트 창](https://www.aihero.dev/ai-coding-dictionary/context-window)에서 한 번에 하나의 티켓, 티켓 사이에 [지우기](https://www.aihero.dev/ai-coding-dictionary/clearing) | [implement](https://aihero.dev/skills-implement) |
+| 아직 티켓으로 분할되지 않은 spec | 먼저 [to-tickets](https://aihero.dev/skills-to-tickets) |
+| 실제 그래프가 없는 작은 작업 조각 | 직접 [implement](https://aihero.dev/skills-implement) |
 
-## Prerequisites
+## 전제 조건
 
-- **An issue tracker.** The skill reads the tickets from, and resolves them on, the tracker [setup-matt-pocock-skills](https://aihero.dev/skills-setup-matt-pocock-skills) configured. If none has been configured, it stops and tells you to run that first rather than guessing.
-- **Tickets with blocking edges**, as [to-tickets](https://aihero.dev/skills-to-tickets) writes them. Without edges the graph is flat and every ticket starts at once.
-- **A [harness](https://www.aihero.dev/ai-coding-dictionary/harness) that runs subagents in the background and gives each one a git worktree.** The skill exists to run tickets at the same time, so on a harness that runs subagents one at a time, it is only a slower `implement`.
+- **이슈 트래커.** 스킬은 [setup-matt-pocock-skills](https://aihero.dev/skills-setup-matt-pocock-skills)가 구성한 트래커에서 티켓을 읽고 해결합니다. 구성된 것이 없으면 중지하고 추측하는 대신 먼저 실행하라고 알려줍니다.
+- **차단 엣지가 있는 티켓**, [to-tickets](https://aihero.dev/skills-to-tickets)가 작성하는 대로. 엣지 없이 그래프는 평평하고 모든 티켓이 한 번에 시작됩니다.
+- **백그라운드에서 서브에이전트를 실행하고 각각에 git worktree를 제공하는 [하네스](https://www.aihero.dev/ai-coding-dictionary/harness).** 스킬은 동시에 티켓을 실행하기 위해 존재하므로 한 번에 하나씩 서브에이전트를 실행하는 하네스에서는 더 느린 `implement`일 뿐입니다.
 
-## The integration branch
+## 통합 브랜치
 
-Everything lands on one branch. Each implementer:
+모든 것이 하나의 브랜치에 착륙합니다. 각 구현자는:
 
-1. confirms its worktree is based on the integration branch before it starts,
-2. builds its ticket with [tdd](https://aihero.dev/skills-tdd), red-green one slice at a time,
-3. merges the integration branch tip into its own branch before reporting done, so landing it is a fast-forward.
+1. 시작하기 전에 worktree가 통합 브랜치를 기반으로 하는지 확인합니다,
+2. [tdd](https://aihero.dev/skills-tdd)로 티켓을 빌드하고, 한 번에 하나의 슬라이스씩 red-green합니다,
+3. 완료를 보고하기 전에 통합 브랜치 팁을 자체 브랜치에 병합하므로 착륙은 fast-forward입니다.
 
-The tracker decides whether a pull request exists at all. If your tracker closes work through PRs, or you ask for one, the skill opens a draft PR after the first merge and marks it ready at the end. Otherwise the run stops on the integration branch with every ticket resolved the way your tracker closes work, which works fully offline against a local markdown tracker.
+트래커가 풀 리퀘스트가 전혀 존재하는지 결정합니다. 트래커가 PR을 통해 작업을 닫거나 하나를 요청하면 스킬은 첫 번째 병합 후 드래프트 PR을 열고 끝에 준비 완료로 표시합니다. 그렇지 않으면 실행은 트래커가 작업을 닫는 방식으로 모든 티켓이 해결된 통합 브랜치에서 중지되며, 로컬 markdown 트래커에 대해 완전히 오프라인으로 작동합니다.
 
-Implementers talk to the orchestrator through [context pointers](https://www.aihero.dev/ai-coding-dictionary/context-pointer) (the spec, the ticket, shared exploration notes, earlier commits) rather than pasted summaries. This keeps each subagent's prompt small and leaves room in the orchestrator's window for the graph.
+구현자는 붙여넣은 요약이 아니라 [컨텍스트 포인터](https://www.aihero.dev/ai-coding-dictionary/context-pointer)(spec, 티켓, 공유 탐색 노트, 이전 커밋)를 통해 오케스트레이터와 대화합니다. 이것은 각 서브에이전트의 프롬프트를 작게 유지하고 오케스트레이터의 창에 그래프를 위한 공간을 남깁니다.
 
-## Common questions
+## 자주 묻는 질문
 
-**How is this different from running `/implement` on each ticket myself?**
+**각 티켓에 `/implement`를 직접 실행하는 것과 어떻게 다른가요?**
 
-This is the question the skill exists to answer. Before it shipped, people kept building their own versions, and one user described the need: they wanted "subagents implement the tickets" instead of having "to individually create new session and tell them to implement a ticket one by one, when a spec may contain over 5 tickets." With `implement` you are the dispatcher: one [session](https://www.aihero.dev/ai-coding-dictionary/session) per ticket, clearing in between, and keeping track yourself of which tickets are unblocked. `implement-spec` hands that job to one orchestrating session. The price is that you no longer read each ticket's work as it lands; you review the integration branch at the end. To start a run, clear the context and type `/implement-spec` with a pointer to the spec (an issue number or a file path). For a small change with no real graph, skip it and use `implement` directly.
+이것은 스킬이 답하기 위해 존재하는 질문입니다. 출시되기 전에 사람들은 자신의 버전을 계속 빌드했고, 한 사용자가 필요성을 설명했습니다: "spec에 5개 이상의 티켓이 포함될 수 있을 때 새 세션을 개별적으로 생성하고 티켓을 하나씩 구현하도록 지시해야 하는" 대신 "서브에이전트가 티켓을 구현"하기를 원했습니다. `implement`를 사용하면 여러분이 디스패처입니다: 티켓당 하나의 [세션](https://www.aihero.dev/ai-coding-dictionary/session), 사이에 지우기, 차단 해제된 티켓을 스스로 추적. `implement-spec`은 해당 작업을 하나의 오케스트레이션 세션에 전달합니다. 대가는 각 티켓의 작업이 착륙할 때 더 이상 읽지 않는 것입니다. 끝에 통합 브랜치를 검토합니다. 실행을 시작하려면 컨텍스트를 지우고 spec에 대한 포인터(이슈 번호 또는 파일 경로)와 함께 `/implement-spec`을 입력하세요. 실제 그래프가 없는 작은 변경의 경우 건너뛰고 `implement`를 직접 사용하세요.
 
-**Does it need GitHub? I want it to stop at the branch.**
+**GitHub가 필요한가요? 브랜치에서 멈추기를 원합니다.**
 
-No, not any more. One user who liked the in-progress version had exactly this complaint: "it creates a PR at the end, which requires an online repository like GitHub. I wish it could do the same work offline and stop at the branch where all the work is merged." The run now ends on the integration branch. A PR opens only when the configured tracker closes work through PRs or you ask for one, so on a local markdown tracker the run ends with every ticket resolved and the work merged on the branch.
+아니요, 더 이상 아닙니다. 진행 중인 버전을 좋아했던 한 사용자가 정확히 이 불만을 가졌습니다: "끝에 PR을 생성하며, 이는 GitHub와 같은 온라인 저장소가 필요합니다. 동일한 작업을 오프라인으로 수행하고 모든 작업이 병합된 브랜치에서 멈출 수 있기를 바랍니다." 실행은 이제 통합 브랜치에서 끝납니다. PR은 구성된 트래커가 PR을 통해 작업을 닫거나 하나를 요청할 때만 열리므로 로컬 markdown 트래커에서 실행은 모든 티켓이 해결되고 작업이 브랜치에 병합되어 끝납니다.
 
-**Its review and fix loop ran for hours, or kept "fixing" tickets that hadn't been built yet.**
+**리뷰 및 수정 루프가 몇 시간 동안 실행되었거나 아직 빌드되지 않은 티켓을 계속 "수정"했습니다.**
 
-Both happen when `code-review` runs anywhere other than the one point the skill gives it. It compares the code against the whole spec, so it only makes sense once every ticket has landed. If it runs mid-run, every unbuilt ticket reads as a failure. The agent then builds that ticket, and that triggers another review. At the end, the skill runs `code-review` once and sends every finding to one fix subagent, but it doesn't yet say when to stop after that fix. One user reported a five-ticket feature where "the review and fix loop took roughly four hours". If you see a second broad review start, tell it to run focused checks for the fixed findings and stop. Expect that first review to find real problems. The run's output is a draft that the review completes, not something to ship on its own.
+둘 다 `code-review`가 스킬이 제공하는 한 지점 이외의 곳에서 실행될 때 발생합니다. 전체 spec에 대해 코드를 비교하므로 모든 티켓이 착륙한 후에만 의미가 있습니다. 실행 중에 실행되면 빌드되지 않은 모든 티켓이 실패로 읽힙니다. 그런 다음 에이전트는 해당 티켓을 빌드하고 다른 리뷰를 트리거합니다. 끝에 스킬은 `code-review`를 한 번 실행하고 모든 발견 사항을 하나의 수정 서브에이전트에 보내지만, 해당 수정 후 언제 중지할지 아직 말하지 않습니다. 한 사용자는 "리뷰 및 수정 루프가 대략 4시간 걸렸던" 5개 티켓 기능을 보고했습니다. 두 번째 광범위한 리뷰가 시작되는 것을 보면 수정된 발견 사항에 대한 집중 검사를 실행하고 중지하라고 지시하세요. 첫 번째 리뷰가 실제 문제를 찾을 것으로 예상하세요. 실행의 출력은 리뷰가 완료하는 드래프트이며, 자체적으로 배송할 것이 아닙니다.
 
-**Does it drive tdd like implement does?**
+**implement처럼 tdd를 구동하나요?**
 
-It does now, though it didn't at first. Users running the in-progress version noticed that "the implementer subagents don't inherit the /tdd directive", so red-green stopped as soon as they scaled up from one ticket to a whole spec. Each implementer now builds its ticket with `tdd`. There is still no step where you agree seams interactively, as there is in an `implement` session, so name the seams in the spec or the tickets if you want them pinned.
+지금은 그렇지만 처음에는 그렇지 않았습니다. 진행 중인 버전을 실행하는 사용자는 "구현자 서브에이전트가 /tdd 지시를 상속하지 않는다"는 것을 알아챘으므로 하나의 티켓에서 전체 spec으로 확장하자마자 red-green이 중지되었습니다. 각 구현자는 이제 `tdd`로 티켓을 빌드합니다. `implement` 세션에서와 같이 대화식으로 심에 동의하는 단계는 여전히 없으므로 고정하고 싶다면 spec 또는 티켓에 심을 지목하세요.
 
-**Two implementers running in parallel collided on the same file, or picked different names for the same thing.**
+**병렬로 실행되는 두 구현자가 동일한 파일에서 충돌했거나 동일한 것에 대해 다른 이름을 선택했습니다.**
 
-Worktrees don't remove collisions; they postpone them to merge time. A blocking edge written from ticket text is a guess about which files each ticket will touch, and two tickets on "different parts of the codebase" still share a message catalogue, a config registry, or a type. Each implementer sees only its own ticket and the shared notes, never the other's work in progress, so one user's web and mobile tickets added the same string as `blockedSince` and `blockedOn`. When two frontier tickets touch one shared file, either add a blocking edge between them so they run one after the other, or have the exploration notes fix the exact names each ticket adds.
+Worktree는 충돌을 제거하지 않습니다. 병합 시간으로 연기합니다. 티켓 텍스트에서 작성된 차단 엣지는 각 티켓이 터치할 파일에 대한 추측이며, "코드베이스의 다른 부분"에 있는 두 티켓은 여전히 메시지 카탈로그, 구성 레지스트리 또는 타입을 공유합니다. 각 구현자는 자체 티켓과 공유 노트만 보며 다른 것의 진행 중인 작업은 절대 보지 못하므로 한 사용자의 웹 및 모바일 티켓은 `blockedSince` 및 `blockedOn`으로 동일한 문자열을 추가했습니다. 두 개의 프론티어 티켓이 하나의 공유 파일을 터치할 때, 하나씩 실행되도록 그들 사이에 차단 엣지를 추가하거나 탐색 노트가 각 티켓이 추가하는 정확한 이름을 수정하도록 합니다.
 
-**Blocked tickets never start, even after their blocker has merged.**
+**차단된 티켓이 차단자가 병합된 후에도 시작되지 않습니다.**
 
-This is a known problem on GitHub. The tracker's blocked-by count only drops when a blocker *closes*, and tickets typically close when the PR merges, which is the end of the run. The tracker is the right source for the starting graph but a stale one mid-run. Tell the orchestrator to track which tickets have merged into the integration branch itself and compute the frontier from that.
+이것은 GitHub의 알려진 문제입니다. 트래커의 차단된 수는 차단자가 *닫힐* 때만 떨어지고, 티켓은 일반적으로 PR이 병합될 때 닫히며, 이는 실행의 끝입니다. 트래커는 시작 그래프에 대한 올바른 소스이지만 실행 중에는 오래된 것입니다. 오케스트레이터에게 통합 브랜치 자체에 병합된 티켓을 추적하고 그로부터 프론티어를 계산하도록 지시하세요.
 
-**Does this replace Sandcastle or an AFK script?**
+**이것이 Sandcastle 또는 AFK 스크립트를 대체하나요?**
 
-No. People ask because the skills now reach into implementation: "is Sandcastle still relevant? Your skills now seem to be able to handle implementation as well." `implement-spec` puts an agent in charge of orchestration inside one harness session, which needs no infrastructure and lets you watch and steer. For work that is truly [AFK](https://www.aihero.dev/ai-coding-dictionary/afk), a deterministic loop ([Sandcastle](https://github.com/mattpocock/sandcastle), a shell script, a CI job) is faster, cheaper, and more reliable, because no agent makes the orchestration decisions.
+아니요. 사람들은 스킬이 이제 구현에 도달하기 때문에 묻습니다: "Sandcastle은 여전히 관련이 있나요? 여러분의 스킬은 이제 구현도 처리할 수 있는 것 같습니다." `implement-spec`은 하나의 하네스 세션 내에서 오케스트레이션을 담당하는 에이전트를 배치하며, 인프라가 필요 없고 시청하고 조종할 수 있습니다. 진정으로 [AFK](https://www.aihero.dev/ai-coding-dictionary/afk)인 작업의 경우, 결정론적 루프([Sandcastle](https://github.com/mattpocock/sandcastle), 쉘 스크립트, CI 작업)가 더 빠르고 저렴하며 신뢰할 수 있습니다. 에이전트가 오케스트레이션 결정을 내리지 않기 때문입니다.
 
-**A ticket's key test was skipped inside its worktree, and it reported green.**
+**티켓의 주요 테스트가 worktree 내에서 건너뛰어졌고 녹색으로 보고되었습니다.**
 
-A worktree holds only what git tracks. Tests that read gitignored fixtures, local databases, or credentials can silently skip there. For a ticket whose verification depends on untracked material, tell the orchestrator to run it in the main checkout instead.
+Worktree는 git이 추적하는 것만 보유합니다. gitignored 픽스처, 로컬 데이터베이스 또는 자격 증명을 읽는 테스트는 거기서 조용히 건너뛸 수 있습니다. 검증이 추적되지 않은 자료에 의존하는 티켓의 경우 오케스트레이터에게 대신 메인 체크아웃에서 실행하도록 지시하세요.
 
-## It's working if
+## 제대로 작동하는지 확인하는 방법
 
-- Several implementers are running at once whenever the graph allows, not one after another.
-- A ticket starts as soon as its last blocker lands on the integration branch, not when the whole run ends.
-- Every ticket's trace shows `tdd` running, with a failing test before the code.
-- Merges into the integration branch are fast-forwards, not conflict resolutions.
-- The run ends on one branch with every ticket resolved, and a PR only if your tracker wanted one.
+- 그래프가 허용할 때마다 하나씩이 아니라 여러 구현자가 동시에 실행됩니다.
+- 티켓은 전체 실행이 끝날 때가 아니라 마지막 차단자가 통합 브랜치에 착륙하자마자 시작됩니다.
+- 모든 티켓의 추적은 코드 전에 실패하는 테스트와 함께 `tdd` 실행을 보여줍니다.
+- 통합 브랜치로의 병합은 충돌 해결이 아니라 fast-forward입니다.
+- 실행은 모든 티켓이 해결된 하나의 브랜치에서 끝나고, 트래커가 원할 경우에만 PR입니다.
 
-## Where it fits
+## 어디에 적합한가요
 
-`implement-spec` is the build step of the main chain, as the parallel alternative to running [implement](https://aihero.dev/skills-implement) once per ticket:
+`implement-spec`은 티켓당 한 번 [implement](https://aihero.dev/skills-implement)를 실행하는 것에 대한 병렬 대안으로 메인 체인의 빌드 단계입니다:
 
 ```txt
 grill-with-docs → to-spec → to-tickets → implement-spec → retro
 ```
 
-Its neighbours are [to-tickets](https://aihero.dev/skills-to-tickets), which declares the blocking edges it reads as a task graph, and [code-review](https://aihero.dev/skills-code-review), which it runs over the integration branch before closing out. [ask-matt](https://aihero.dev/skills-ask-matt) is the router over the whole set when you are not sure which flow you are in.
+이웃은 작업 그래프로 읽는 차단 엣지를 선언하는 [to-tickets](https://aihero.dev/skills-to-tickets)와 종료하기 전에 통합 브랜치에 대해 실행하는 [code-review](https://aihero.dev/skills-code-review)입니다. 어느 플로우에 있는지 확실하지 않을 때 [ask-matt](https://aihero.dev/skills-ask-matt)가 전체 세트에 대한 라우터입니다.

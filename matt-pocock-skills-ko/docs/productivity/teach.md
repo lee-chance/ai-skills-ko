@@ -1,97 +1,97 @@
-## What it does
+## 무엇을 하는지
 
-`teach` turns the directory you run it in into a standing teaching workspace and teaches you one topic across many [sessions](https://www.aihero.dev/ai-coding-dictionary/session), in short self-contained HTML lessons.
+`teach`는 실행한 디렉터리를 상시 교육 워크스페이스로 전환하고 짧고 자체 포함된 HTML 레슨으로 많은 [세션](https://www.aihero.dev/ai-coding-dictionary/session)에 걸쳐 하나의 주제를 가르칩니다.
 
-It does not teach from what the [model](https://www.aihero.dev/ai-coding-dictionary/model) already knows. It treats [parametric knowledge](https://www.aihero.dev/ai-coding-dictionary/parametric-knowledge) as untrusted. Before it teaches, it finds high-trust resources, records them in `RESOURCES.md`, and cites them inside every lesson. It is also [stateful](https://www.aihero.dev/ai-coding-dictionary/stateful). The mission, the resources, the lessons and the record of what you have learned all live as files in the directory, so the next session continues from those files, not from what is left of the last conversation.
+[모델](https://www.aihero.dev/ai-coding-dictionary/model)이 이미 알고 있는 것으로부터 가르치지 않습니다. [parametric knowledge](https://www.aihero.dev/ai-coding-dictionary/parametric-knowledge)를 신뢰할 수 없는 것으로 취급합니다. 가르치기 전에 높은 신뢰 자원을 찾고, `RESOURCES.md`에 기록하며, 모든 레슨 내부에 인용합니다. 또한 [stateful](https://www.aihero.dev/ai-coding-dictionary/stateful)입니다. 미션, 자원, 레슨 및 배운 것의 기록은 모두 디렉터리의 파일로 존재하므로 다음 세션은 마지막 대화의 남은 것이 아니라 해당 파일에서 계속됩니다.
 
-## When to reach for it
+## 언제 사용하는지
 
-You invoke this by typing `/teach`; the [agent](https://www.aihero.dev/ai-coding-dictionary/agent) won't reach for it on its own.
+`/teach`를 입력하여 호출합니다; [에이전트](https://www.aihero.dev/ai-coding-dictionary/agent)가 스스로 이것을 선택하지는 않습니다.
 
-Reach for it when the learning is the project: a language, a framework, a codebase you have just joined, yoga, shaders, a certification. It is not the tool for one explanation in passing.
+학습이 프로젝트일 때 사용하세요: 언어, 프레임워크, 방금 합류한 코드베이스, 요가, 셰이더, 자격증. 지나가는 하나의 설명을 위한 도구가 아닙니다.
 
-| What you want | What to reach for |
+| 원하는 것 | 사용할 것 |
 | --- | --- |
-| To learn a topic over weeks, with sessions that accumulate | `teach` |
-| One idea explained inside the session you are already in | Just ask, in that session |
-| The agent's last message re-pitched because it didn't land | [wait-what](https://aihero.dev/skills-wait-what) |
-| To sharpen thinking you already have, rather than acquire new material | [grill-me](https://aihero.dev/skills-grill-me) |
-| A background agent to read [primary sources](https://www.aihero.dev/ai-coding-dictionary/primary-source) and leave you a cited document | [research](https://aihero.dev/skills-research) |
-| To learn something that came up mid-grilling, without derailing the [grilling](https://www.aihero.dev/ai-coding-dictionary/grilling) | [handoff](https://aihero.dev/skills-handoff) out to a teaching workspace, then `teach` there |
+| 세션이 축적되면서 몇 주에 걸쳐 주제 학습 | `teach` |
+| 이미 있는 세션 내부에서 설명된 하나의 아이디어 | 해당 세션에서 그냥 물어보세요 |
+| 에이전트의 마지막 메시지가 도착하지 않아서 다시 피칭됨 | [wait-what](https://aihero.dev/skills-wait-what) |
+| 새로운 자료를 습득하는 것이 아니라 이미 가지고 있는 사고를 날카롭게 하기 위해 | [grill-me](https://aihero.dev/skills-grill-me) |
+| [일차 자료](https://www.aihero.dev/ai-coding-dictionary/primary-source)를 읽고 인용된 문서를 남기는 백그라운드 에이전트 | [research](https://aihero.dev/skills-research) |
+| [grilling](https://www.aihero.dev/ai-coding-dictionary/grilling)을 탈선시키지 않고 grilling 중간에 나온 것을 배우기 위해 | 교육 워크스페이스로 [handoff](https://aihero.dev/skills-handoff), 그 다음 거기서 `teach` |
 
-## Prerequisites
+## 전제 조건
 
-`teach` builds a directory rather than producing a file, and the skill assumes one mission per workspace, so run it somewhere you are happy to give over to a single topic. Keep it out of the project you are working in. A separate repo is the best home, better than a global `~/.learnings/` folder or the working project itself. A dedicated repo also lets you commit the lessons, which is how teams have shared them.
+`teach`는 파일을 생성하는 대신 디렉터리를 빌드하며, 스킬은 워크스페이스당 하나의 미션을 가정하므로 단일 주제에 기꺼이 제공할 곳에서 실행하세요. 작업 중인 프로젝트 밖에 보관하세요. 별도의 리포가 최고의 홈이며, 글로벌 `~/.learnings/` 폴더나 작업 프로젝트 자체보다 낫습니다. 전용 리포는 레슨을 커밋할 수 있게 하며, 이것이 팀이 공유한 방식입니다.
 
-What accumulates in that directory:
+해당 디렉터리에 축적되는 것:
 
-| Path | What it holds |
+| 경로 | 보유하는 것 |
 | --- | --- |
-| `MISSION.md` | Why you are learning this. Every other file depends on it. If it is missing, the first thing `teach` does is interview you until it isn't |
-| `RESOURCES.md` | The vetted sources it teaches from, split into Knowledge and Wisdom (communities) |
-| `lessons/*.html` | The numbered lessons: the primary unit of teaching |
-| `reference/*.html` | Compressed cheat-sheets, algorithms, glossaries: the documents you return to |
-| `learning-records/*.md` | ADR-style notes on what you have demonstrably learned, used to decide what to teach next |
-| `assets/*` | Reusable components, starting with a shared stylesheet, so the lessons look like one course |
-| `NOTES.md` | Your stated teaching preferences |
+| `MISSION.md` | 왜 이것을 배우고 있는지. 다른 모든 파일이 의존합니다. 누락되면 `teach`가 하는 첫 번째 일은 그렇지 않을 때까지 인터뷰하는 것입니다 |
+| `RESOURCES.md` | 가르치는 검증된 소스, Knowledge와 Wisdom(커뮤니티)으로 분할됨 |
+| `lessons/*.html` | 번호가 매겨진 레슨: 교육의 주요 단위 |
+| `reference/*.html` | 압축된 치트 시트, 알고리즘, 용어집: 돌아가는 문서 |
+| `learning-records/*.md` | 입증 가능하게 배운 것에 대한 ADR 스타일 노트, 다음에 무엇을 가르칠지 결정하는 데 사용됨 |
+| `assets/*` | 재사용 가능한 컴포넌트, 공유 스타일시트로 시작하여 레슨이 하나의 코스처럼 보이게 함 |
+| `NOTES.md` | 명시된 교육 기본 설정 |
 
-Two notes on that list. A glossary suits most topics, but the skill ships a `GLOSSARY-FORMAT.md` that `SKILL.md` no longer links to, so you only get one if you ask ([issue #559](https://github.com/mattpocock/skills/issues/559)). All of it lands in the directory you ran `/teach` in.
+해당 목록에 대한 두 가지 노트. 용어집은 대부분의 주제에 적합하지만 스킬은 `SKILL.md`가 더 이상 링크하지 않는 `GLOSSARY-FORMAT.md`를 제공하므로 요청할 때만 받습니다([issue #559](https://github.com/mattpocock/skills/issues/559)). 모든 것은 `/teach`를 실행한 디렉터리에 놓입니다.
 
-## Storage strength, not fluency
+## 유창성이 아니라 저장 강도
 
-The word to think with is **storage strength**: long-term retention, as opposed to **fluency**, the in-the-moment recall that feels like mastery while you are reading and is gone a week later. `teach` builds the former through desirable difficulty: retrieval practice, spacing, interleaving. Knowledge comes first. At that stage difficulty works against you, because it uses up the working memory you need to understand. Then `teach` drills the skill through a tight feedback loop, and at that stage difficulty is the tool.
+생각할 단어는 **저장 강도**입니다: 읽는 동안 숙달처럼 느껴지다가 일주일 후에 사라지는 순간의 회상인 **유창성**과 대조되는 장기 보유. `teach`는 바람직한 어려움을 통해 전자를 빌드합니다: 검색 연습, 간격, 끼워넣기. 지식이 먼저 옵니다. 그 단계에서 어려움은 당신에게 불리하게 작동합니다. 이해하는 데 필요한 작업 메모리를 소비하기 때문입니다. 그런 다음 `teach`는 긴밀한 피드백 루프를 통해 스킬을 훈련하며, 그 단계에서 어려움이 도구입니다.
 
-Two things decide what you get taught. The **mission** (the concrete real-world reason you want this) is the basis of every lesson. Without it the lessons become abstract and nothing decides what comes next. From the mission and the learning records, `teach` picks the next lesson inside your **zone of proximal development**: hard enough to take effort, but not so far ahead that you cannot learn it.
+두 가지가 가르칠 것을 결정합니다. **미션**(이를 원하는 구체적인 실제 이유)은 모든 레슨의 기초입니다. 없으면 레슨이 추상적이 되고 다음에 무엇이 올지 결정하지 않습니다. 미션과 학습 기록에서 `teach`는 **근접 발달 영역** 내부의 다음 레슨을 선택합니다: 노력할 만큼 충분히 어렵지만 배울 수 없을 정도로 너무 앞서 있지 않습니다.
 
-Storage strength is also why the skill pushes back instead of agreeing. A question that needs **wisdom** (real-world judgement) gets an attempted answer and then a pointer to a community where you can test it. The skill does not let you skip a quiz. One user reported saying "thanks a lot" and being told the drill was not finished.
+저장 강도는 스킬이 동의하는 대신 반발하는 이유이기도 합니다. **지혜**(실제 판단)가 필요한 질문은 시도된 답변을 받은 다음 테스트할 수 있는 커뮤니티에 대한 포인터를 받습니다. 스킬은 퀴즈를 건너뛰게 하지 않습니다. 한 사용자는 "정말 고마워요"라고 말했지만 훈련이 끝나지 않았다고 들었다고 보고했습니다.
 
-## Lessons, references and components
+## 레슨, 참조 및 컴포넌트
 
-A **lesson** is one self-contained HTML file, short enough to finish in a sitting, tied to the mission, giving one tangible win. It cites its sources, recommends one primary source to go and read yourself, and links to sibling lessons and reference documents.
+**레슨**은 하나의 자체 포함 HTML 파일이며, 한 번에 끝낼 만큼 충분히 짧고, 미션에 연결되어 하나의 구체적인 승리를 제공합니다. 소스를 인용하고, 직접 읽을 하나의 일차 자료를 추천하며, 형제 레슨 및 참조 문서에 링크합니다.
 
-You rarely go back to a lesson, but you do go back to reference documents. So the short form of a lesson (the syntax table, the algorithm, the pose sequence, the glossary) belongs in `reference/`, not buried in the lesson that introduced it.
+레슨으로 거의 돌아가지 않지만 참조 문서로는 돌아갑니다. 따라서 레슨의 짧은 형식(구문 테이블, 알고리즘, 자세 시퀀스, 용어집)은 소개한 레슨에 묻혀 있는 것이 아니라 `reference/`에 속합니다.
 
-Lessons are built from **components** in `assets/`: stylesheets, quiz widgets, simulators, diagram helpers. Reuse is the default. The agent reads `assets/` before authoring a lesson and builds from what is there. It writes anything new that a second lesson could use as a component, not inline. The shared stylesheet is the first component in every workspace, and it makes the lessons look like one course instead of many unrelated pages.
+레슨은 `assets/`의 **컴포넌트**로 빌드됩니다: 스타일시트, 퀴즈 위젯, 시뮬레이터, 다이어그램 헬퍼. 재사용이 기본입니다. 에이전트는 레슨을 작성하기 전에 `assets/`를 읽고 거기에 있는 것으로 빌드합니다. 두 번째 레슨이 사용할 수 있는 새로운 것을 인라인이 아니라 컴포넌트로 작성합니다. 공유 스타일시트는 모든 워크스페이스의 첫 번째 컴포넌트이며, 레슨이 많은 관련 없는 페이지 대신 하나의 코스처럼 보이게 만듭니다.
 
-## Common questions
+## 자주 묻는 질문
 
-**Where does it put the files? Mine ended up in `~/.claude/skills`.**
-In the directory you ran `/teach` in ([#377](https://github.com/mattpocock/skills/issues/377)).
+**파일은 어디에 저장되나요? 제 경우 `~/.claude/skills`에 생성됐어요.**
+`/teach`를 실행한 디렉터리에 저장됩니다 ([#377](https://github.com/mattpocock/skills/issues/377)).
 
-**Do I stay in one session, or start a new one per lesson?**
-All three approaches work: staying in the same session, re-invoking `/teach` in a new session, or opening a new session in the same folder. Each lesson is its own invocation. The course state lives in the folder, not in the conversation. Common practice is to open a fresh session in the workspace and say `/teach next lesson for <topic>`.
+**한 세션에서 계속 진행해야 하나요, 아니면 레슨마다 새 세션을 시작해야 하나요?**
+세 가지 방식 모두 작동합니다: 같은 세션에서 계속하기, 새 세션에서 `/teach` 다시 호출하기, 같은 폴더에서 새 세션 열기. 각 레슨은 독립적인 호출입니다. 코스 상태는 대화가 아니라 폴더에 저장됩니다. 일반적인 방법은 작업 공간에서 새 세션을 열고 `/teach next lesson for <주제>`라고 말하는 것입니다.
 
-**How do I know it isn't teaching me something it made up?**
-You don't, on the skill's word alone. You read the primary sources. `teach` is not reliable enough to trust unchecked, and no skill built on an LLM is. The grounding (`RESOURCES.md`, citations in every lesson, one recommended primary source per lesson) makes it cheap to check a lesson. It does not remove the need to check. This failure has happened: one user learning a 2x2 Rubik's cube got made-up move sequences that don't solve it. In a case like that, check the model, the harness, the effort setting, and the source. Risk is highest in procedural domains with precise notation, and lowest where the output is immediately verifiable, like code you can run.
+**스킬이 지어낸 내용을 가르치고 있지 않은지 어떻게 알 수 있나요?**
+스킬 자체만으로는 알 수 없습니다. 일차 자료를 읽어야 합니다. `teach`는 검증 없이 신뢰하기에 충분히 신뢰할 수 없으며, LLM 기반 스킬 중 그런 것은 없습니다. 근거(`RESOURCES.md`, 모든 레슨의 인용, 레슨당 한 개의 권장 일차 자료)는 레슨을 확인하기 쉽게 만들어줍니다. 하지만 확인할 필요성을 없애주는 것은 아닙니다. 이런 실패가 실제로 있었습니다: 2x2 루빅스 큐브를 배우던 사용자가 실제로는 풀리지 않는 움직임 시퀀스를 받은 적이 있습니다. 그런 경우 모델, 하네스, 노력 설정, 소스를 확인하세요. 위험은 정확한 표기법이 있는 절차적 영역에서 가장 높고, 실행할 수 있는 코드처럼 즉시 검증 가능한 출력에서 가장 낮습니다.
 
-**The correct quiz answer is always the first option.**
-Several people have confirmed this on Sonnet, Opus and GLM, and it is still unfixed. `SKILL.md` now requires every answer to be the same number of words. That removes a different clue (the correct answer used to be the only fully-reasoned one), but says nothing about position. One contributor tested an instruction-level fix for position, and the correct answer still landed in slot A 33 times out of 33 across nine lessons ([#335](https://github.com/mattpocock/skills/issues/335)). So the real fix is a quiz component in `assets/` that shuffles the answers, not better wording. Until that ships, ignore answer position. Your `assets/` directory is yours to change, so you can ask for a component that shuffles at render time as a local fix.
+**정답 퀴즈 선택지가 항상 첫 번째 옵션이에요.**
+Sonnet, Opus, GLM에서 여러 사람이 이를 확인했으며, 아직 수정되지 않았습니다. `SKILL.md`는 이제 모든 답변이 같은 단어 수를 가지도록 요구합니다. 이는 다른 단서(정답이 완전히 추론된 유일한 답변이던 것)를 제거하지만, 위치에 대해서는 아무 말도 하지 않습니다. 한 기여자가 위치에 대한 지시문 수준 수정을 테스트했지만, 9개 레슨에 걸쳐 33번 중 33번 모두 정답이 슬롯 A에 있었습니다 ([#335](https://github.com/mattpocock/skills/issues/335)). 따라서 진짜 해결책은 더 나은 문구가 아니라 `assets/`의 퀴즈 컴포넌트에서 답변을 섞는 것입니다. 이것이 배포될 때까지는 답변 위치를 무시하세요. `assets/` 디렉터리는 여러분이 수정할 수 있으므로, 렌더 시 섞는 컴포넌트를 로컬 수정으로 요청할 수 있습니다.
 
-**It assumed I already knew things, and used terms it never defined.**
-This is the most common real complaint. There is no assessment step. `teach` infers your level from the mission and the learning records, and in session one there are no learning records. One user running it inside a wayfinder pipeline put it plainly: "It never did grilling to establish my starting point so it made lots of assumptions of what I already knew." Another reported lessons that used undefined jargon, and a lesson about their hardware that covered what the hardware could do but never said what it couldn't. Two things help: state your prior knowledge and your gaps in the first message, and correct the level out loud when a lesson misses, because the correction becomes a learning record and steers the next one. An explicit knowledge-assessment step is a standing feature request ([#725](https://github.com/mattpocock/skills/issues/725)), not shipped behaviour.
+**제가 이미 알고 있다고 가정하고, 정의하지 않은 용어를 사용했어요.**
+이것이 가장 흔한 실제 불만입니다. 평가 단계가 없습니다. `teach`는 미션과 학습 기록에서 여러분의 수준을 추론하는데, 첫 세션에는 학습 기록이 없습니다. wayfinder 파이프라인에서 이것을 실행한 한 사용자는 명확히 말했습니다: "제 시작점을 파악하기 위한 grilling을 전혀 하지 않아서 제가 이미 아는 것에 대해 많은 가정을 했어요." 다른 사용자는 정의되지 않은 전문 용어를 사용한 레슨과, 하드웨어가 할 수 있는 것은 다루지만 할 수 없는 것은 전혀 말하지 않은 하드웨어 레슨을 보고했습니다. 두 가지가 도움이 됩니다: 첫 메시지에서 여러분의 사전 지식과 부족한 부분을 명시하고, 레슨이 빗나갔을 때 수준을 소리 내어 수정하세요. 수정이 학습 기록이 되어 다음 레슨을 이끌기 때문입니다. 명시적인 지식 평가 단계는 계속 요청되는 기능이지만 ([#725](https://github.com/mattpocock/skills/issues/725)), 배포된 동작은 아닙니다.
 
-**Does it do spaced repetition, and does it know when to stop teaching?**
-No to the first, and not reliably to the second. The skill designs lessons around spacing and interleaving, but nothing schedules a review, and there is no Anki or calendar integration. Users ask for both often. A related gap is exit criteria. As one user put it, `teach` "is good at making the next lesson, but not as good at knowing when to stop and switch to review or real practice." If you want review or drilling instead of new material, ask for it; the skill will not propose the switch on its own.
+**간격 반복을 수행하나요? 언제 가르치는 것을 멈춰야 하는지 알까요?**
+첫 번째는 아니요, 두 번째는 신뢰할 수 없습니다. 스킬은 간격과 인터리빙을 중심으로 레슨을 설계하지만, 복습을 예약하는 것은 없으며 Anki나 캘린더 통합도 없습니다. 사용자들이 두 가지 모두 자주 요청합니다. 관련된 공백은 종료 기준입니다. 한 사용자가 말했듯이, `teach`는 "다음 레슨을 만드는 데는 능숙하지만, 언제 멈추고 복습이나 실제 연습으로 전환해야 하는지 아는 데는 능숙하지 못합니다." 새 자료 대신 복습이나 드릴을 원하면 요청하세요. 스킬은 스스로 전환을 제안하지 않습니다.
 
-**Is it only useful for code?**
-No. Most reported use is outside coding: Korean, Japanese formal register, piano, guitar, board game design, OpenSCAD, film plots, Azure and CCNA certifications, university exams, and children of eight and ten getting printable books on escape rooms and fire salamanders. Nothing in the skill is specific to programming. Mission, resources, zone of proximal development and drill work the same way in any domain. Within code, users report the most value from getting oriented in an unfamiliar codebase or a new team's stack, more than from learning a language from scratch.
+**코드에만 유용한가요?**
+아닙니다. 대부분의 보고된 사용은 코딩 외부입니다: 한국어, 일본어 격식체, 피아노, 기타, 보드게임 디자인, OpenSCAD, 영화 줄거리, Azure 및 CCNA 자격증, 대학 시험, 그리고 8세와 10세 어린이들이 방탈출과 도롱뇽에 관한 인쇄 가능한 책을 받았습니다. 스킬에서 프로그래밍에만 특화된 것은 없습니다. 미션, 자료, 근접 발달 영역, 드릴은 모든 영역에서 같은 방식으로 작동합니다. 코드 내에서 사용자들은 언어를 처음부터 배우는 것보다 낯선 코드베이스나 새 팀의 스택에 적응하는 데서 가장 큰 가치를 보고합니다.
 
-**Which model should I run it with?**
-There is no canonical answer, and the reported differences are large. Users report that higher [reasoning effort](https://www.aihero.dev/ai-coding-dictionary/effort) produces better lessons than the medium setting. One user ran the same skill through Copilot CLI with Codex and got a single 30-line HTML card where Claude Code produced a full lesson. It runs unmodified in Claude Cowork, if your organisation lets you add skills there. If the lessons come out thin, change model, [harness](https://www.aihero.dev/ai-coding-dictionary/harness) or effort before rewriting your prompt.
+**어떤 모델로 실행해야 하나요?**
+정답은 없으며, 보고된 차이는 큽니다. 사용자들은 더 높은 [추론 노력](https://www.aihero.dev/ai-coding-dictionary/effort)이 중간 설정보다 더 나은 레슨을 생성한다고 보고합니다. 한 사용자는 Copilot CLI에서 Codex로 같은 스킬을 실행했을 때 Claude Code가 전체 레슨을 생성한 반면 30줄짜리 HTML 카드 하나만 받았습니다. 조직에서 스킬 추가를 허용한다면 Claude Cowork에서 수정 없이 실행됩니다. 레슨이 빈약하게 나온다면, 프롬프트를 다시 작성하기 전에 모델, [하네스](https://www.aihero.dev/ai-coding-dictionary/harness), 노력 설정을 변경하세요.
 
-## It's working if
+## 제대로 작동한다는 신호
 
-- The first thing it does in an empty directory is interview you about why you want this, rather than produce a lesson.
-- `RESOURCES.md` fills up before the lessons do, and each lesson names one primary source worth reading yourself.
-- Claims in a lesson carry links out. A lesson with no citations is the skill teaching from memory.
-- A lesson takes one sitting and leaves you able to do one thing you couldn't before.
-- Opening a fresh session in the folder and saying "next lesson" continues the course instead of restarting it.
-- `learning-records/` grows, and lessons stop re-teaching what you have already demonstrated.
-- The lessons look like one course: they link the stylesheet in `assets/` rather than each carrying its own.
-- A question that needs judgement gets you pointed at a forum, subreddit or class, not just an answer.
+- 빈 디렉터리에서 가장 먼저 하는 것이 레슨을 생성하는 것이 아니라, 왜 이것을 원하는지 인터뷰하는 것입니다.
+- `RESOURCES.md`가 레슨보다 먼저 채워지고, 각 레슨이 직접 읽을 가치가 있는 일차 자료 하나를 명시합니다.
+- 레슨의 주장에 링크가 포함되어 있습니다. 인용이 없는 레슨은 스킬이 기억에서 가르치는 것입니다.
+- 한 레슨이 한 번에 끝나고, 이전에는 할 수 없던 한 가지를 할 수 있게 만들어 줍니다.
+- 폴더에서 새 세션을 열고 "next lesson"이라고 말하면 코스를 다시 시작하는 대신 계속합니다.
+- `learning-records/`가 증가하고, 레슨이 이미 입증한 내용을 다시 가르치지 않습니다.
+- 레슨들이 하나의 코스처럼 보입니다: 각각이 자체 스타일시트를 갖는 것이 아니라 `assets/`의 스타일시트를 링크합니다.
+- 판단이 필요한 질문에 단순히 답변이 아니라 포럼, 서브레딧, 수업을 안내받습니다.
 
-## Where it fits
+## 어디에 적용되는지
 
-`teach` is a **reach-for-it-anytime standalone**. It is not a step in a build chain and shares no artifacts with the engineering flow; it works in its own directory for as long as you study the topic.
+`teach`는 **언제든 사용할 수 있는 독립형** 도구입니다. 빌드 체인의 단계가 아니며 엔지니어링 흐름과 아티팩트를 공유하지 않습니다. 주제를 공부하는 동안 자체 디렉터리에서 작동합니다.
 
-Its one real neighbour is [handoff](https://aihero.dev/skills-handoff). Together they answer "what do I do if I'm being grilled about something I don't understand?" Don't stop the grilling to learn. `/handoff` to a teaching workspace, learn the topic there with `/teach`, then go back and continue where you left off. The nearby alternative is [research](https://aihero.dev/skills-research), for when what you want is a cited document rather than lessons and retention. When you are not sure which skill or flow fits, [ask-matt](https://aihero.dev/skills-ask-matt) routes you over the whole set.
+진짜 이웃은 [handoff](https://aihero.dev/skills-handoff)입니다. 둘이 함께 "이해하지 못하는 것에 대해 grilling 받고 있다면 어떻게 해야 하나요?"라는 질문에 답합니다. 배우기 위해 grilling을 멈추지 마세요. teaching 작업 공간으로 `/handoff`하고, 거기서 `/teach`로 주제를 배운 다음, 돌아가서 중단한 곳부터 계속하세요. 가까운 대안은 [research](https://aihero.dev/skills-research)로, 레슨과 유지보다 인용된 문서를 원할 때 사용합니다. 어떤 스킬이나 흐름이 맞는지 확실하지 않을 때는 [ask-matt](https://aihero.dev/skills-ask-matt)가 전체 세트를 안내합니다.

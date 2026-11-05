@@ -1,94 +1,94 @@
-## What it does
+## 무엇을 하나요
 
-`diagnosing-bugs` runs a six-phase diagnosis on a hard bug or a performance regression: build a repro, minimise it, rank hypotheses, instrument, fix with a regression test, clean up.
+`diagnosing-bugs`는 어려운 버그 또는 성능 회귀에 대해 6단계 진단을 실행합니다: 재현 빌드, 최소화, 가설 순위 지정, 계측, 회귀 테스트로 수정, 정리.
 
-It will not let the agent form a theory until a **tight** feedback loop exists: one named command, already run once, that goes red on *this* bug and green when it is fixed. Given a bug report, a coding agent by default reads code and guesses. This skill blocks that. If no red-capable command exists, there is no Phase 2. That single gate is what the skill is for. Once the loop exists, everything after it (bisection, hypothesis-testing, instrumentation) is mechanical.
+**타이트한** 피드백 루프가 존재할 때까지 에이전트가 이론을 형성하도록 허용하지 않습니다: 이미 한 번 실행된 명명된 명령, *이* 버그에서 빨간색으로 가고 수정되면 녹색으로 가는 것. 버그 리포트가 주어지면 코딩 에이전트는 기본적으로 코드를 읽고 추측합니다. 이 스킬은 그것을 차단합니다. 빨간색 가능 명령이 존재하지 않으면 2단계가 없습니다. 그 단일 게이트가 스킬의 목적입니다. 루프가 존재하면 그 후의 모든 것(이분법, 가설 테스트, 계측)은 기계적입니다.
 
-## When to reach for it
+## 언제 사용하나요
 
-Type `/diagnosing-bugs`, or the agent reaches for it on its own when a task fits. It is model-invoked, and fires on "diagnose" or "debug this", or on a report that something is broken, throwing, failing, or slow.
+`/diagnosing-bugs`를 입력하거나, 작업이 적합할 때 에이전트가 스스로 이를 찾습니다. 모델 호출이며, "진단" 또는 "이것을 디버그"에서 실행되거나 무언가가 깨졌거나, 던지거나, 실패하거나, 느리다는 보고서에서 실행됩니다.
 
-Reach for it on the hard ones: a bug you can't solve at first look, an intermittent flake, a regression introduced between two known-good states. It is slow and thorough on purpose, so it is the wrong tool for a question you want answered in one message.
+어려운 것에 사용하세요: 처음 보고 해결할 수 없는 버그, 간헐적 플레이크, 두 알려진 좋은 상태 사이에 도입된 회귀. 의도적으로 느리고 철저하므로 한 메시지에서 답변을 원하는 질문에는 잘못된 도구입니다.
 
-| Your situation | Where to go |
+| 여러분의 상황 | 갈 곳 |
 | --- | --- |
-| A specific defect you can describe as a symptom | This skill |
-| A slow endpoint or a timing regression with a known before-and-after | This skill. It has a performance branch (measure a baseline, then bisect) |
-| "Where are the bottlenecks in this codebase?", no specific symptom | Not this skill. It diagnoses one known failure, it does not audit |
-| A raw bug report from someone else, not yet confirmed or written up | [triage](https://aihero.dev/skills-triage) first |
-| Throwaway code to answer a design question, not chase a defect | [prototype](https://aihero.dev/skills-prototype) |
-| Building a planned behaviour test-first | [tdd](https://aihero.dev/skills-tdd) |
-| Asking what would have prevented the bug, once it is fixed | [retro](https://aihero.dev/skills-retro), run in the same session |
-| No good seam exists to lock the bug down | [improve-codebase-architecture](https://aihero.dev/skills-improve-codebase-architecture), which you start yourself |
+| 증상으로 설명할 수 있는 특정 결함 | 이 스킬 |
+| 느린 엔드포인트 또는 알려진 전후가 있는 타이밍 회귀 | 이 스킬. 성능 분기가 있습니다 (베이스라인 측정, 그런 다음 이분법) |
+| "이 코드베이스의 병목 현상은 어디인가요?", 특정 증상 없음 | 이 스킬이 아닙니다. 알려진 하나의 실패를 진단하며 감사하지 않습니다 |
+| 다른 사람의 원시 버그 리포트, 아직 확인되거나 작성되지 않음 | 먼저 [triage](https://aihero.dev/skills-triage) |
+| 결함을 쫓는 것이 아니라 설계 질문에 답하기 위한 일회용 코드 | [prototype](https://aihero.dev/skills-prototype) |
+| 계획된 동작을 테스트 우선으로 빌드 | [tdd](https://aihero.dev/skills-tdd) |
+| 버그가 수정되면 무엇이 버그를 방지했을지 묻기 | [retro](https://aihero.dev/skills-retro), 동일한 세션에서 실행 |
+| 버그를 잠그기 위한 좋은 심이 존재하지 않음 | 여러분이 직접 시작하는 [improve-codebase-architecture](https://aihero.dev/skills-improve-codebase-architecture) |
 
-## The tight loop is the skill
+## 타이트한 루프가 스킬입니다
 
-Phase 1 gets the most effort because it is the only hard phase. The skill lists ways to build the loop, roughly in order of preference:
+1단계는 유일한 어려운 단계이기 때문에 가장 많은 노력을 받습니다. 스킬은 루프를 빌드하는 방법을 대략 선호도 순서대로 나열합니다:
 
-1. A failing test at whatever seam reaches the bug.
-2. A curl or HTTP script against a running dev server.
-3. A CLI invocation with a fixture input, diffed against a known-good snapshot.
-4. A headless browser script asserting on DOM, console, or network.
-5. A replayed capture: a saved request, payload, or event log, run through the code path in isolation.
-6. A throwaway harness: a minimal subset of the system, one function call.
-7. A property or fuzz loop, for "sometimes wrong output".
-8. A bisection harness you can hand to `git bisect run`.
-9. A differential loop: same input, old version against new.
-10. A [human-in-the-loop](https://www.aihero.dev/ai-coding-dictionary/human-in-the-loop) bash script, last resort. The skill ships `scripts/hitl-loop.template.sh` for this: the agent runs the script, you follow prompts in your terminal, and your answers come back as parseable output.
+1. 버그에 도달하는 어떤 심에서든 실패하는 테스트.
+2. 실행 중인 개발 서버에 대한 curl 또는 HTTP 스크립트.
+3. 알려진 좋은 스냅샷과 diff된 픽스처 입력이 있는 CLI 호출.
+4. DOM, 콘솔 또는 네트워크에 어서트하는 헤드리스 브라우저 스크립트.
+5. 재생된 캡처: 저장된 요청, 페이로드 또는 이벤트 로그, 격리된 코드 경로를 통해 실행.
+6. 일회용 하네스: 시스템의 최소 부분 집합, 하나의 함수 호출.
+7. "때때로 잘못된 출력"을 위한 속성 또는 퍼즈 루프.
+8. `git bisect run`에 전달할 수 있는 이분법 하네스.
+9. 차등 루프: 동일한 입력, 이전 버전 대 새 버전.
+10. [human-in-the-loop](https://www.aihero.dev/ai-coding-dictionary/human-in-the-loop) bash 스크립트, 최후의 수단. 스킬은 이를 위해 `scripts/hitl-loop.template.sh`를 제공합니다: 에이전트가 스크립트를 실행하고, 여러분은 터미널에서 프롬프트를 따르고, 답변은 파싱 가능한 출력으로 돌아옵니다.
 
-*A* loop is not the goal. **Tight** is: fast (seconds), deterministic (same verdict every run), sharp (asserts your exact symptom, not "didn't crash"), and runnable by the agent without you. A 30-second flaky loop is barely better than none. For a bug that only shows up sometimes, the target is not a clean repro but a **higher reproduction rate**: loop the trigger, parallelise, add stress, inject sleeps, until the flake rate is high enough to debug against.
+*하나의* 루프가 목표가 아닙니다. **타이트**가 목표입니다: 빠름(초 단위), 결정론적(매번 동일한 판정), 날카로움(충돌하지 않음이 아니라 정확한 증상을 어서트), 여러분 없이 에이전트가 실행 가능. 30초의 플레이키 루프는 없는 것보다 거의 나을 뿐입니다. 때때로만 나타나는 버그의 경우, 목표는 깨끗한 재현이 아니라 **더 높은 재현율**입니다: 트리거를 반복하고, 병렬화하고, 스트레스를 추가하고, sleep을 주입하여 플레이크 비율이 디버그하기에 충분히 높아질 때까지.
 
-When the agent cannot build one, the skill tells it to stop and say so, list what it tried, and ask you for [environment](https://www.aihero.dev/ai-coding-dictionary/environment) access, a captured artifact, or permission to add temporary instrumentation. It must not go on to form hypotheses anyway.
+에이전트가 하나를 빌드할 수 없을 때, 스킬은 중지하고 그렇게 말하고, 시도한 것을 나열하고, [환경](https://www.aihero.dev/ai-coding-dictionary/environment) 액세스, 캡처된 아티팩트 또는 임시 계측을 추가할 권한을 요청하도록 지시합니다. 어쨌든 가설을 형성하러 가서는 안 됩니다.
 
-## The gates between phases
+## 단계 간 게이트
 
-The phases are gates, not a checklist. The agent cannot enter a phase until a specific condition is true.
+단계는 게이트이지 체크리스트가 아닙니다. 에이전트는 특정 조건이 참일 때까지 단계에 들어갈 수 없습니다.
 
-| Gate | What has to be true |
+| 게이트 | 참이어야 하는 것 |
 | --- | --- |
-| Into Phase 2 | A named command, already run and pasted with its output, that can go red on this bug |
-| Into Phase 3 | The repro is reproduced *and* minimised: every remaining element is needed to reproduce the bug |
-| Into Phase 4 | 3–5 ranked, falsifiable hypotheses exist, each stating its prediction, shown to you before any is tested |
-| Into Phase 5 | Probes map to a specific prediction, one variable at a time, every debug log has a tag like `[DEBUG-a4f2]`, so one grep finds them all for cleanup |
-| Done | The original repro no longer reproduces, the instrumentation is gone, and the commit message names the hypothesis that turned out correct |
+| 2단계로 | 이미 실행되고 출력과 함께 붙여넣어진 명명된 명령, 이 버그에서 빨간색으로 갈 수 있음 |
+| 3단계로 | 재현이 재현되고 *그리고* 최소화됨: 버그를 재현하는 데 모든 나머지 요소가 필요함 |
+| 4단계로 | 3-5개의 순위가 지정된 반증 가능한 가설이 존재하며, 각각은 예측을 명시하고 테스트되기 전에 여러분에게 보여줌 |
+| 5단계로 | 프로브가 특정 예측에 매핑되고, 한 번에 하나의 변수, 모든 디버그 로그에는 `[DEBUG-a4f2]`와 같은 태그가 있어 하나의 grep이 정리를 위해 모두 찾음 |
+| 완료 | 원래 재현이 더 이상 재현되지 않고, 계측이 사라졌으며, 커밋 메시지가 올바른 것으로 밝혀진 가설을 지목함 |
 
-Phase 5 has one exception. The agent writes the regression test before the fix, but only if a **correct seam** exists for it: one where the test exercises the real bug pattern as it occurs at the call site. Where the only available seam is too shallow, the skill tells the agent to say so instead of writing a test that gives false confidence. The missing seam is itself a finding, and the agent records it instead of hiding it.
+5단계에는 한 가지 예외가 있습니다. 에이전트는 수정 전에 회귀 테스트를 작성하지만, 그것을 위한 **올바른 심**이 존재하는 경우에만: 테스트가 호출 사이트에서 발생하는 실제 버그 패턴을 행사하는 곳. 유일하게 사용 가능한 심이 너무 얕은 경우, 스킬은 잘못된 신뢰를 주는 테스트를 작성하는 대신 그렇게 말하도록 에이전트에게 지시합니다. 누락된 심은 그 자체로 발견 사항이며 에이전트는 그것을 숨기는 대신 기록합니다.
 
-## Common questions
+## 자주 묻는 질문
 
-**It fires on quick questions where I just wanted a direct answer.**
-This is the most-reported problem with the skill. On GPT-5.6-Sol especially, users report it triggering on a plain description of a problem: "the model triggers the rather formal diagnosing-bugs skill instead. It then goes on to construct a reproduction scenario (often building a mock scenario with limited value) before giving me a response or suggestion. This results in considerable reply delays." Four separate people reported the same problem on [issue #578](https://github.com/mattpocock/skills/issues/578). The accepted fix is to start with a lighter approach and move to the full diagnosis only when the problem needs it, but that change has not shipped. The skill is tuned for Claude Code's invocation behaviour, and a [model](https://www.aihero.dev/ai-coding-dictionary/model) with a lower activation threshold fires it too often. Until the fix ships, the workaround is to say what you want ("just answer this, don't diagnose") or to disable model invocation for it in your [harness](https://www.aihero.dev/ai-coding-dictionary/harness).
+**직접적인 답변만 원했던 빠른 질문에서 실행됩니다.**
+이것은 스킬에 대해 가장 많이 보고된 문제입니다. 특히 GPT-5.6-Sol에서 사용자는 문제에 대한 평범한 설명에서 트리거된다고 보고합니다: "모델이 대신 다소 공식적인 diagnosing-bugs 스킬을 트리거합니다. 그런 다음 응답이나 제안을 제공하기 전에 재현 시나리오를 구성합니다(종종 제한된 가치로 모의 시나리오를 빌드). 이로 인해 상당한 응답 지연이 발생합니다." 네 명의 별도 사람이 [이슈 #578](https://github.com/mattpocock/skills/issues/578)에서 동일한 문제를 보고했습니다. 수락된 수정은 더 가벼운 접근 방식으로 시작하고 문제가 필요로 할 때만 전체 진단으로 이동하는 것이지만, 해당 변경 사항은 아직 출시되지 않았습니다. 스킬은 Claude Code의 호출 동작에 맞춰져 있으며, 낮은 활성화 임계값을 가진 [모델](https://www.aihero.dev/ai-coding-dictionary/model)은 너무 자주 실행합니다. 수정이 출시될 때까지 해결 방법은 원하는 것을 말하는 것("그냥 답해주세요, 진단하지 마세요") 또는 [하네스](https://www.aihero.dev/ai-coding-dictionary/harness)에서 모델 호출을 비활성화하는 것입니다.
 
-**Can I point it at a codebase and ask where the performance problems are?**
-No. It diagnoses one failure you can already name. Its performance branch is for a regression with a symptom (establish a baseline measurement, then bisect, measure first and fix second), not for a proactive sweep. A skill for the proactive version was [proposed and closed](https://github.com/mattpocock/skills/issues/431); no skill does it now.
+**코드베이스를 가리키고 성능 문제가 어디 있는지 물을 수 있나요?**
+아니요. 이미 지목할 수 있는 하나의 실패를 진단합니다. 성능 분기는 증상이 있는 회귀를 위한 것입니다(베이스라인 측정을 설정한 다음 이분법, 먼저 측정하고 두 번째로 수정). 사전 스윕을 위한 것이 아닙니다. 사전 버전을 위한 스킬은 [제안되고 닫혔습니다](https://github.com/mattpocock/skills/issues/431). 지금은 어떤 스킬도 그것을 하지 않습니다.
 
-**Does it stop and ask me before it writes the fix?**
-No. Only Phase 3 has a human checkpoint: the ranked hypothesis list is shown to you before any is tested, and the agent continues with its own ranking if you are away. There is no gate between instrumentation and the fix, so the agent can start writing code before you have agreed with its root cause. [Issue #124](https://github.com/mattpocock/skills/issues/124) asks for that gate and is still open. If you want it, say so when you invoke the skill.
+**수정을 작성하기 전에 멈추고 묻나요?**
+아니요. 3단계만 사람 체크포인트가 있습니다: 순위가 지정된 가설 목록이 테스트되기 전에 여러분에게 보여지고, 여러분이 자리를 비우면 에이전트는 자체 순위로 계속합니다. 계측과 수정 사이에는 게이트가 없으므로 에이전트는 근본 원인에 동의하기 전에 코드를 작성하기 시작할 수 있습니다. [이슈 #124](https://github.com/mattpocock/skills/issues/124)는 해당 게이트를 요청하며 여전히 열려 있습니다. 원하면 스킬을 호출할 때 말하세요.
 
-**I already ran `/triage` on this bug report. Is this the same work again?**
-Partly, and neither skill says so. As one reader put it: "Triage's step 3 is essentially a shallow, bounded instance of diagnosing-bugs Phase 1–2, but neither file mentions the other." Triage does a bounded "is this actually a bug, and what is the surface" pass; this skill does the thorough version. Running triage first is not wasted, because its verification often gives you most of Phase 1's raw material. But expect this skill to redo that work in full, and expect no cross-reference to tell you so.
+**이 버그 리포트에 이미 `/triage`를 실행했습니다. 이것은 같은 작업인가요?**
+부분적으로 그렇고, 어느 스킬도 그렇게 말하지 않습니다. 한 독자가 말했듯이: "Triage의 3단계는 본질적으로 diagnosing-bugs 1-2단계의 얕고 경계가 있는 인스턴스이지만, 어느 파일도 다른 것을 언급하지 않습니다." Triage는 경계가 있는 "이것이 실제로 버그이고, 표면은 무엇인가" 통과를 수행합니다. 이 스킬은 철저한 버전을 수행합니다. 먼저 triage를 실행하는 것은 낭비가 아닙니다. 검증이 종종 1단계의 원료 대부분을 제공하기 때문입니다. 그러나 이 스킬이 해당 작업을 완전히 다시 수행할 것으로 예상하고, 그렇게 말할 교차 참조가 없을 것으로 예상하세요.
 
-**Will the repro output it pastes leak secrets?**
-It might. The skill asks the agent to paste the invocation and its output, and to request artifacts like HAR files, log dumps, and core dumps. No instruction tells the agent to sanitise them. [Issue #674](https://github.com/mattpocock/skills/issues/674) raises exactly this (credentials, tokens, cookies, and personal data copied into a chat, an issue, or a PR) and proposes a redaction guardrail. It is open and unimplemented. Treat redaction as your job for now, particularly before the output goes anywhere public.
+**붙여넣는 재현 출력이 비밀을 누출하나요?**
+할 수 있습니다. 스킬은 에이전트에게 호출과 그 출력을 붙여넣고, HAR 파일, 로그 덤프 및 코어 덤프와 같은 아티팩트를 요청하도록 요청합니다. 어떤 지시도 에이전트에게 그것들을 살균하도록 지시하지 않습니다. [이슈 #674](https://github.com/mattpocock/skills/issues/674)는 정확히 이것(채팅, 이슈 또는 PR로 복사된 자격 증명, 토큰, 쿠키 및 개인 데이터)을 제기하고 리댁션 가드레일을 제안합니다. 열려 있고 구현되지 않았습니다. 지금은 리댁션을 여러분의 일로 취급하세요. 특히 출력이 공개적으로 갈 곳 전에.
 
-**My security scanner flagged this skill as high risk.**
-Snyk flags it, and the flag is a false positive. It is the only skill in the set that ships an executable shell script (`hitl-loop.template.sh`) alongside instructions to run it and to curl a dev server. A shipped `.sh` file, instructions to run it, and outbound HTTP together are enough to trigger a static scanner. The script itself is about 30 lines of `read -r -p` prompts that pause for human input. The scanner rates what the skill could do, not a proven exploit.
+**보안 스캐너가 이 스킬을 고위험으로 플래그했습니다.**
+Snyk가 플래그하며, 플래그는 거짓 양성입니다. 실행 가능한 쉘 스크립트(`hitl-loop.template.sh`)를 실행하고 개발 서버를 curl하는 지침과 함께 제공하는 세트의 유일한 스킬입니다. 제공된 `.sh` 파일, 실행 지침 및 아웃바운드 HTTP가 함께 정적 스캐너를 트리거하기에 충분합니다. 스크립트 자체는 사람의 입력을 위해 일시 정지하는 약 30줄의 `read -r -p` 프롬프트입니다. 스캐너는 입증된 익스플로잇이 아니라 스킬이 할 수 있는 것을 평가합니다.
 
-**What happened to `/diagnose`?**
-v1.0.0 renamed it to `/diagnosing-bugs`. The old name no longer exists. Anything of yours that chains `/diagnose` (a wrapper skill, a saved prompt) needs updating.
+**/diagnose에 무슨 일이 일어났나요?**
+v1.0.0이 `/diagnosing-bugs`로 이름을 바꿨습니다. 이전 이름은 더 이상 존재하지 않습니다. `/diagnose`를 연결하는 여러분의 것(래퍼 스킬, 저장된 프롬프트)은 업데이트가 필요합니다.
 
-## It's working if
+## 제대로 작동하는지 확인하는 방법
 
-- It shows you a command and its red output before it offers a single theory. If theory arrives first, the skill is not running.
-- The failure it reproduces is the one you reported, not a nearby one it found on the way.
-- It shrinks the repro before it starts guessing, and can tell you why it needs each remaining piece.
-- It shows you a ranked list of 3–5 hypotheses, each with a prediction you could falsify, before it tests any of them.
-- Every debug log it adds carries a tag like `[DEBUG-a4f2]`, and a grep for that tag comes back empty when it declares done.
-- The commit or PR message names which hypothesis was right.
-- When it cannot lock the bug down with a test, it says so instead of writing a shallow one.
+- 단일 이론을 제공하기 전에 명령과 빨간색 출력을 보여줍니다. 이론이 먼저 도착하면 스킬이 실행되지 않습니다.
+- 재현하는 실패는 여러분이 보고한 것이며, 도중에 찾은 근처의 것이 아닙니다.
+- 추측하기 전에 재현을 축소하고, 남은 각 조각이 필요한 이유를 말할 수 있습니다.
+- 테스트하기 전에 반증할 수 있는 예측이 있는 3-5개의 가설의 순위 목록을 보여줍니다.
+- 추가하는 모든 디버그 로그는 `[DEBUG-a4f2]`와 같은 태그를 가지며, 완료를 선언할 때 해당 태그에 대한 grep이 빈 것으로 돌아옵니다.
+- 커밋 또는 PR 메시지가 어떤 가설이 옳았는지 지목합니다.
+- 테스트로 버그를 잠글 수 없을 때, 얕은 것을 작성하는 대신 그렇게 말합니다.
 
-## Where it fits
+## 어디에 적합한가요
 
-`diagnosing-bugs` is a reach-for-it-anytime standalone. You start it when something is broken, and it ends when the fix and its regression test are in. It keeps no state and needs no prior setup. [ask-matt](https://aihero.dev/skills-ask-matt) routes "Something's broken" here.
+`diagnosing-bugs`는 언제든지 사용 가능한 스탠드얼론입니다. 무언가가 깨졌을 때 시작하고 수정과 회귀 테스트가 들어갈 때 끝납니다. 상태를 유지하지 않으며 사전 설정이 필요하지 않습니다. [ask-matt](https://aihero.dev/skills-ask-matt)는 "무언가가 깨졌습니다"를 여기로 라우팅합니다.
 
-Two neighbours matter. [retro](https://aihero.dev/skills-retro) comes after it: once the fix is in, run it in the same session to ask what would have prevented the bug, while the session has more information than it had at the start. `diagnosing-bugs` never invokes `retro` itself, because `retro` is user-invoked. [triage](https://aihero.dev/skills-triage) comes before it for bugs that arrive as raw reports from other people, and does a shallower version of the same first two phases.
+두 이웃이 중요합니다. [retro](https://aihero.dev/skills-retro)는 그 후에 나옵니다: 수정이 들어가면 세션이 시작할 때보다 더 많은 정보를 가지고 있는 동안 무엇이 버그를 방지했을지 묻기 위해 동일한 세션에서 실행합니다. `diagnosing-bugs`는 `retro`를 스스로 호출하지 않습니다. `retro`는 사용자 호출이기 때문입니다. [triage](https://aihero.dev/skills-triage)는 다른 사람들로부터 원시 리포트로 도착하는 버그의 경우 그 전에 나오며 동일한 처음 두 단계의 더 얕은 버전을 수행합니다.

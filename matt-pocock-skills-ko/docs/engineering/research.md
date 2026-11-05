@@ -1,73 +1,73 @@
-## What it does
+## 무엇을 하는지
 
-`research` answers a question by reading the sources that own the answer, then leaves a cited Markdown file in the repo. It works only from **[primary sources](https://www.aihero.dev/ai-coding-dictionary/primary-source)**: official docs, source code, specs, first-party APIs. It follows every claim back to the source that owns it, so it will not repeat a blog post's account of an API when the API's own docs are reachable.
+`research`는 답변을 소유한 소스를 읽어 질문에 답하고, 그런 다음 리포에 인용된 Markdown 파일을 남깁니다. **[일차 자료](https://www.aihero.dev/ai-coding-dictionary/primary-source)**에서만 작동합니다: 공식 문서, 소스 코드, spec, 퍼스트 파티 API. 모든 주장을 소유한 소스로 다시 따라가므로 API 자체의 문서에 도달할 수 있을 때 블로그 게시물의 API 설명을 반복하지 않습니다.
 
-It does not answer you in the conversation. The output is a file, written where the repo already keeps such notes, with a link on each claim. You get a document you can react to, hand to another agent, or throw away, rather than an answer that is gone when the [session](https://www.aihero.dev/ai-coding-dictionary/session) ends.
+대화에서 답하지 않습니다. 출력은 리포가 이미 그러한 노트를 보관하는 곳에 작성된 파일이며, 각 주장에 링크가 있습니다. [세션](https://www.aihero.dev/ai-coding-dictionary/session)이 끝날 때 사라지는 답변이 아니라 반응하거나, 다른 에이전트에게 전달하거나, 버릴 수 있는 문서를 받습니다.
 
-## When to reach for it
+## 언제 사용하는지
 
-Type `/research`, or the [agent](https://www.aihero.dev/ai-coding-dictionary/agent) reaches for it automatically when a task turns into reading legwork.
+`/research`를 입력하거나, 작업이 읽기 작업으로 전환될 때 [에이전트](https://www.aihero.dev/ai-coding-dictionary/agent)가 자동으로 이것을 선택합니다.
 
-Reach for it when the next step is *finding something out* from outside the working directory (how a third-party API behaves, what a spec says, whether a version claim holds), and you'd rather not stall your own thread doing the reading. What you need decides which skill:
+다음 단계가 작업 디렉터리 외부에서 *무언가를 알아내는 것*일 때(서드파티 API가 어떻게 작동하는지, spec이 무엇을 말하는지, 버전 주장이 유지되는지) 사용하고, 읽기를 하면서 자신의 스레드를 멈추고 싶지 않을 때 사용하세요. 필요한 것이 어떤 스킬을 결정합니다:
 
-| What you need | Reach for |
+| 필요한 것 | 사용할 것 |
 | --- | --- |
-| An external fact a decision is waiting on | `research` |
-| A decision made *with* you, by interview | [grilling](https://aihero.dev/skills-grilling) |
-| A durable architecture decision, written into `GLOSSARY.md` and ADRs | [grill-with-docs](https://aihero.dev/skills-grill-with-docs) |
-| To find out whether an approach works in your codebase | [prototype](https://aihero.dev/skills-prototype) |
-| A plan too big to hold in one session | [wayfinder](https://aihero.dev/skills-wayfinder) |
+| 결정이 기다리는 외부 사실 | `research` |
+| 인터뷰를 통해 *함께* 내린 결정 | [grilling](https://aihero.dev/skills-grilling) |
+| `GLOSSARY.md`와 ADR에 작성된 지속적인 아키텍처 결정 | [grill-with-docs](https://aihero.dev/skills-grill-with-docs) |
+| 코드베이스에서 접근 방식이 작동하는지 알아내기 위해 | [prototype](https://aihero.dev/skills-prototype) |
+| 한 세션에 담기에 너무 큰 계획 | [wayfinder](https://aihero.dev/skills-wayfinder) |
 
-The line between `research` and `grill-with-docs` is the **shelf life of what comes back**. Research produces short-lived facts, such as what this library's auth mechanism does as of this week. An ADR records a decision you keep. If what you are producing is a decision rather than a fact, you are [grilling](https://www.aihero.dev/ai-coding-dictionary/grilling), not researching.
+`research`와 `grill-with-docs` 사이의 경계는 **돌아오는 것의 유효 기간**입니다. Research는 이번 주 현재 이 라이브러리의 인증 메커니즘이 무엇을 하는지와 같은 단기적인 사실을 생성합니다. ADR은 보관하는 결정을 기록합니다. 생성하는 것이 사실이 아니라 결정이면 연구가 아니라 [grilling](https://www.aihero.dev/ai-coding-dictionary/grilling)하고 있는 것입니다.
 
-## Delegated legwork
+## 위임된 작업
 
-The reading runs as a **background agent**. You keep working while it follows each claim to its primary source, writes one Markdown file, and reports back. Research is legwork you delegate, not thinking you outsource. You get a document to grill, plan, or design against, and you still make the decision.
+읽기는 **백그라운드 에이전트**로 실행됩니다. 각 주장을 일차 자료로 따라가고, 하나의 Markdown 파일을 작성하고, 보고하는 동안 계속 작업합니다. Research는 위임하는 작업이지 아웃소싱하는 사고가 아닙니다. grill하거나, 계획하거나, 설계할 문서를 받으며, 여전히 결정을 내립니다.
 
-Nothing stops the background agent from spawning another background agent of its own. This is the skill's best-documented problem.
+백그라운드 에이전트가 자체적으로 또 다른 백그라운드 에이전트를 생성하는 것을 막을 수 없습니다. 이것이 스킬의 가장 잘 문서화된 문제입니다.
 
-The repo decides where the file goes, not the skill. It follows whatever convention already exists for notes. If there is none, it picks a sensible place and tells you where. It writes one file per run.
+리포가 파일이 어디로 가는지 결정하며, 스킬이 아닙니다. 노트에 대해 이미 존재하는 규칙을 따릅니다. 없으면 합리적인 곳을 선택하고 어디인지 알려줍니다. 실행당 하나의 파일을 씁니다.
 
-## Common questions
+## 일반적인 질문
 
-**It spawned a second research agent. Is that meant to happen?**
+**두 번째 research 에이전트를 생성했습니다. 그렇게 되어야 하나요?**
 
-No. This is an open bug, [issue #530](https://github.com/mattpocock/skills/issues/530). The skill tells its caller to spin up a background agent but does not restrict the agent type. So the caller spawns a `general-purpose` agent, which has the `Agent` tool and the same instructions, and follows them again. One reporter measured a single research task costing roughly 450k [tokens](https://www.aihero.dev/ai-coding-dictionary/token) across three overlapping runs, and the duplicate finished half an hour later where the user could not see it. It also happens outside Claude Code. Users confirmed the same nesting in Codex with GPT-5.6-sol. There is no shipped fix. Users have patched their own installed copy with a line telling an agent that is already a [subagent](https://www.aihero.dev/ai-coding-dictionary/subagent) to do the work itself, That helps, but it is only an instruction, not a structural fix. After you invoke the skill, watch your background task list and stop the duplicate.
+아니요. 이것은 열린 버그입니다, [issue #530](https://github.com/mattpocock/skills/issues/530). 스킬은 호출자에게 백그라운드 에이전트를 시작하라고 말하지만 에이전트 유형을 제한하지 않습니다. 따라서 호출자는 `Agent` 도구와 동일한 지침을 가진 `general-purpose` 에이전트를 생성하고, 다시 따릅니다. 한 보고자는 세 번의 겹치는 실행에서 대략 450k [토큰](https://www.aihero.dev/ai-coding-dictionary/token)이 소요되는 단일 research 작업을 측정했으며, 중복은 사용자가 볼 수 없는 곳에서 30분 후에 완료되었습니다. Claude Code 외부에서도 발생합니다. 사용자는 Codex에서 GPT-5.6-sol로 동일한 중첩을 확인했습니다. 배송된 수정 사항은 없습니다. 사용자는 이미 [서브에이전트](https://www.aihero.dev/ai-coding-dictionary/subagent)인 에이전트에게 작업을 스스로 수행하라고 말하는 라인으로 자체 설치된 사본을 패치했습니다. 도움이 되지만 구조적 수정이 아니라 지침일 뿐입니다. 스킬을 호출한 후 백그라운드 작업 목록을 보고 중복을 중지하세요.
 
-The opposite failure also happens. If your own global instructions forbid an agent from re-delegating work, the background agent declines the task, and the skill does nothing without telling you.
+반대 실패도 발생합니다. 자체 글로벌 지침이 에이전트가 작업을 재위임하는 것을 금지하면 백그라운드 에이전트가 작업을 거부하고, 스킬은 알려주지 않고 아무것도 하지 않습니다.
 
-**Where should the file live, and should I commit it?**
+**파일이 어디에 있어야 하며, 커밋해야 하나요?**
 
-The skill puts the file where the repo already keeps notes and has no further opinion. The community view is mostly settled: keep ADRs, not research files. One Discord thread on this question put it most clearly: "ADRs yes. Everything else archive or delete after done. It otherwise becomes cruft of work and can poison future repo reads if you've drifted away from the spec/research." A research file records what was true on the day it was written, so a stale one is worse than none. On balance, these files don't belong in git, and there is no standard home for them. People use Obsidian, a separate knowledge repo, or the issue tracker instead.
+스킬은 리포가 이미 노트를 보관하는 곳에 파일을 넣으며 더 이상의 의견이 없습니다. 커뮤니티 뷰는 대부분 확정되었습니다: research 파일이 아니라 ADR을 보관하세요. 이 질문에 대한 한 Discord 스레드가 가장 명확하게 말했습니다: "ADR은 예. 다른 모든 것은 완료 후 아카이브하거나 삭제. 그렇지 않으면 작업의 잡동사니가 되고 spec/research에서 벗어났다면 향후 리포 읽기를 오염시킬 수 있습니다." research 파일은 작성된 날 사실이었던 것을 기록하므로, 오래된 것은 없는 것보다 나쁩니다. 전체적으로 이러한 파일은 git에 속하지 않으며, 표준 홈이 없습니다. 사람들은 대신 Obsidian, 별도의 지식 리포, 또는 이슈 트래커를 사용합니다.
 
-**What counts as a "high-trust" primary source, and who decides?**
+**"높은 신뢰" 일차 자료로 간주되는 것은 무엇이며, 누가 결정하나요?**
 
-The [model](https://www.aihero.dev/ai-coding-dictionary/model) does. The skill names the *kinds* of source that qualify (official docs, source code, specs, first-party APIs), and there is no allowlist, no domain gate, and no verification pass. This was the loudest objection when the skill was first proposed, and nobody has answered it publicly: "Five research subagents pointed at junk just gives you five confident wrong answers faster. How are you gating what counts as high-trust sources?" Your only protection is the citation on each claim. Follow two or three of them. If they land on a summary of the thing rather than the thing, the run failed.
+[모델](https://www.aihero.dev/ai-coding-dictionary/model)이 합니다. 스킬은 자격이 있는 소스의 *종류*(공식 문서, 소스 코드, spec, 퍼스트 파티 API)를 명명하며, 허용 목록, 도메인 게이트, 검증 패스가 없습니다. 이것은 스킬이 처음 제안되었을 때 가장 큰 반대였으며, 아무도 공개적으로 답하지 않았습니다: "쓰레기를 가리키는 다섯 개의 research 서브에이전트는 단지 다섯 개의 자신 있는 잘못된 답변을 더 빠르게 제공할 뿐입니다. 높은 신뢰 소스로 간주되는 것을 어떻게 게이트하나요?" 유일한 보호는 각 주장에 대한 인용입니다. 두세 개를 따라가세요. 그것이 아니라 그것의 요약에 도착하면 실행이 실패한 것입니다.
 
-**Does a later session reuse what an earlier run found?**
+**이후 세션이 이전 실행에서 찾은 것을 재사용하나요?**
 
-No. Nothing loads a past research file automatically. The file stays in the repo until a human or a skill points at it. This was the strongest early challenge to the design: "the value's the markdown becoming context the agent re-reads later, not the fetch itself. A write-once dead file is just a fancy search." The shipped skill does not solve it. In practice, the file is useful only when you feed it into the next step yourself: attach it to a spec, quote it into a grilling session, point a [ticket](https://www.aihero.dev/ai-coding-dictionary/ticket) at it.
+아니요. 과거 research 파일을 자동으로 로드하는 것은 없습니다. 파일은 사람이나 스킬이 가리킬 때까지 리포에 남아 있습니다. 이것이 디자인에 대한 가장 강력한 초기 도전이었습니다: "가치는 fetch 자체가 아니라 마크다운이 에이전트가 나중에 다시 읽는 컨텍스트가 되는 것입니다. 한 번 작성된 죽은 파일은 단지 멋진 검색일 뿐입니다." 배송된 스킬은 이를 해결하지 않습니다. 실제로 파일은 다음 단계로 직접 공급할 때만 유용합니다: spec에 첨부하고, grilling 세션에 인용하고, [티켓](https://www.aihero.dev/ai-coding-dictionary/ticket)이 가리키게 합니다.
 
-**Why not just ask the agent to go read the docs?**
+**에이전트에게 문서를 읽으라고 요청하지 않는 이유는?**
 
-You can, and a two-line prompt saying exactly that was the practice this skill replaced. The skill gives you two things the prompt does not. It runs in the background, so your session's [context](https://www.aihero.dev/ai-coding-dictionary/context) stays clean. And the primary-source constraint and the cited-file output are the same every time, rather than depending on how you phrased the prompt. Compared with a [harness](https://www.aihero.dev/ai-coding-dictionary/harness)'s own deep-research mode, the difference is the file and the primary-source rule, not the search. If a two-line prompt gets you what you need on a small question, use the two-line prompt.
+할 수 있으며, 정확히 그렇게 말하는 두 줄 프롬프트가 이 스킬이 대체한 관행이었습니다. 스킬은 프롬프트가 제공하지 않는 두 가지를 제공합니다. 백그라운드에서 실행되므로 세션의 [컨텍스트](https://www.aihero.dev/ai-coding-dictionary/context)가 깨끗하게 유지됩니다. 그리고 일차 자료 제약과 인용된 파일 출력은 프롬프트를 어떻게 표현했는지에 따라 달라지지 않고 매번 동일합니다. [harness](https://www.aihero.dev/ai-coding-dictionary/harness) 자체의 deep-research 모드와 비교할 때 차이는 검색이 아니라 파일과 일차 자료 규칙입니다. 두 줄 프롬프트가 작은 질문에 필요한 것을 얻으면 두 줄 프롬프트를 사용하세요.
 
-**When does it stop reading?**
+**언제 읽기를 멈추나요?**
 
-The skill has no stopping criterion. This shows up as two complaints that look opposite but have the same cause: agents that go far too deep, and agents that cover a topic broadly but miss the one detail that mattered. One practitioner put it as "deep-research skills are a bit too deep sometimes. And telling an agent to research usually results in missing crucial details." You have to set the scope. A narrow, answerable question (one API, one behaviour, one version claim) comes back far better than "research X".
+스킬에는 중지 기준이 없습니다. 이것은 반대로 보이지만 동일한 원인을 가진 두 가지 불만으로 나타납니다: 너무 깊이 들어가는 에이전트, 그리고 주제를 광범위하게 다루지만 중요한 세부 사항을 놓치는 에이전트. 한 실무자는 "deep-research 스킬은 때때로 너무 깊습니다. 그리고 에이전트에게 연구하라고 말하면 일반적으로 중요한 세부 사항이 누락됩니다."라고 표현했습니다. 범위를 설정해야 합니다. 좁고 답할 수 있는 질문(하나의 API, 하나의 동작, 하나의 버전 주장)이 "X 연구"보다 훨씬 더 잘 돌아옵니다.
 
-**`/wayfinder` created research tickets. Do I resolve those myself?**
+**`/wayfinder`가 research 티켓을 만들었습니다. 스스로 해결해야 하나요?**
 
-No, it now fires them for you. In the unreleased changes since v1.1, a charting session spawns one `/research` subagent per research ticket and runs them in parallel. Each one records its findings on a throwaway `research/<name>` branch, with a [context pointer](https://www.aihero.dev/ai-coding-dictionary/context-pointer) from the ticket. Research tickets are the one exception to wayfinder's one-ticket-per-session rule, because they are [AFK](https://www.aihero.dev/ai-coding-dictionary/afk): nothing waits on you. One known problem: deleting the branch later breaks the context pointers in the tickets.
+아니요, 이제 당신을 위해 실행합니다. v1.1 이후 릴리스되지 않은 변경 사항에서 charting 세션은 research 티켓당 하나의 `/research` 서브에이전트를 생성하고 병렬로 실행합니다. 각각은 티켓의 [컨텍스트 포인터](https://www.aihero.dev/ai-coding-dictionary/context-pointer)와 함께 버릴 `research/<name>` 브랜치에 발견을 기록합니다. Research 티켓은 [AFK](https://www.aihero.dev/ai-coding-dictionary/afk)이기 때문에 wayfinder의 세션당 하나의 티켓 규칙에 대한 유일한 예외입니다: 아무것도 당신을 기다리지 않습니다. 알려진 문제 하나: 나중에 브랜치를 삭제하면 티켓의 컨텍스트 포인터가 깨집니다.
 
-## It's working if
+## 제대로 작동하고 있다면
 
-- Your own session keeps going. If you are sitting watching it read, the delegation didn't happen.
-- Exactly one new background task appears. A second one with a near-identical name is the nesting bug.
-- One new Markdown file shows up, in the folder the repo already uses for notes, and the agent tells you the path.
-- Every claim in it carries a link, and following two at random lands you on an official doc, a spec, or the source file itself, not on someone's write-up of it.
-- You can make the decision you were stuck on from the file alone, without going back to the sources yourself.
+- 자신의 세션이 계속됩니다. 앉아서 읽는 것을 보고 있다면 위임이 발생하지 않은 것입니다.
+- 정확히 하나의 새 백그라운드 작업이 나타납니다. 거의 동일한 이름을 가진 두 번째 작업은 중첩 버그입니다.
+- 리포가 이미 노트에 사용하는 폴더에 하나의 새 Markdown 파일이 나타나고, 에이전트가 경로를 알려줍니다.
+- 그 안의 모든 주장은 링크를 포함하며, 무작위로 두 개를 따라가면 누군가의 작성이 아니라 공식 문서, spec, 또는 소스 파일 자체에 도착합니다.
+- 소스로 직접 돌아가지 않고 파일만으로 막혔던 결정을 내릴 수 있습니다.
 
-## Where it fits
+## 어디에 적합한지
 
-`research` is a reach-for-it-anytime standalone. It feeds the thinking skills and is not a step in the build chain. You take its file *into* the flow. [grilling](https://aihero.dev/skills-grilling) and [grill-with-docs](https://aihero.dev/skills-grill-with-docs) ask sharper questions when they already have the facts, and [to-spec](https://aihero.dev/skills-to-spec) can synthesise against it. [wayfinder](https://aihero.dev/skills-wayfinder) is the one skill that invokes it directly. It resolves each research ticket on its map with a `/research` subagent. For the whole map, see [ask-matt](https://aihero.dev/skills-ask-matt).
+`research`는 언제든지 사용할 수 있는 독립형입니다. 사고 스킬을 공급하며 빌드 체인의 단계가 아닙니다. 파일을 흐름 *속으로* 가져갑니다. [grilling](https://aihero.dev/skills-grilling)과 [grill-with-docs](https://aihero.dev/skills-grill-with-docs)는 이미 사실을 가지고 있을 때 더 날카로운 질문을 하며, [to-spec](https://aihero.dev/skills-to-spec)은 그것에 대해 합성할 수 있습니다. [wayfinder](https://aihero.dev/skills-wayfinder)는 직접 호출하는 유일한 스킬입니다. 맵의 각 research 티켓을 `/research` 서브에이전트로 해결합니다. 전체 맵은 [ask-matt](https://aihero.dev/skills-ask-matt)를 참조하세요.

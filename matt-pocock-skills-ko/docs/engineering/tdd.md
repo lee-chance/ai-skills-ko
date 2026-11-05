@@ -1,94 +1,94 @@
-## What it does
+## 무엇을 하는가
 
-`tdd` builds a feature or fixes a bug test-first: one failing test, then just enough code to pass it, then the next behaviour. It carries the standards that make that loop produce tests worth keeping: what a good test is, where tests go, what mocks are for, and the three anti-patterns that make a suite worthless.
+`tdd`는 테스트 우선으로 기능을 빌드하거나 버그를 수정합니다: 하나의 실패하는 테스트, 그것을 통과할 만큼의 코드, 그 다음 동작. 그 루프가 보관할 가치가 있는 테스트를 생성하도록 만드는 표준을 전달합니다: 좋은 테스트가 무엇인지, 테스트가 어디로 가는지, 목(mock)이 무엇을 위한 것인지, 그리고 스위트를 쓸모없게 만드는 세 가지 안티패턴.
 
-It writes no test at a seam you have not agreed to first. Before any test exists, it names the public boundaries it intends to test at and stops for your confirmation. Testing effort is finite, and this step spends it on the critical paths instead of on every edge case. `tdd` is also a **reference**, not a driver. It contains the rules of the loop, and something else (you, or [implement](https://aihero.dev/skills-implement)) runs the [session](https://www.aihero.dev/ai-coding-dictionary/session) that applies them.
+먼저 동의하지 않은 심(seam)에서는 테스트를 작성하지 않습니다. 어떤 테스트가 존재하기 전에, 테스트하려는 공개 경계를 명시하고 여러분의 확인을 위해 멈춥니다. 테스트 노력은 유한하며, 이 단계는 모든 엣지 케이스가 아니라 중요한 경로에 그것을 사용합니다. `tdd`는 또한 드라이버가 아니라 **참조**입니다. 루프의 규칙을 포함하고, 다른 것(여러분 또는 [implement](https://aihero.dev/skills-implement))이 그것을 적용하는 [세션](https://www.aihero.dev/ai-coding-dictionary/session)을 실행합니다.
 
-## When to reach for it
+## 언제 사용하는가
 
-Type `/tdd`, or the [agent](https://www.aihero.dev/ai-coding-dictionary/agent) reaches for it automatically when a task fits: building a feature or fixing a bug test-first, or when you say "red-green-refactor".
+`/tdd`를 입력하거나, 작업이 맞을 때 [에이전트](https://www.aihero.dev/ai-coding-dictionary/agent)가 자동으로 사용합니다: 테스트 우선으로 기능을 빌드하거나 버그를 수정하거나, "red-green-refactor"라고 말할 때.
 
-Reach for it when there is a concrete behaviour to build, with an input and an observable output, and you want tests that survive a refactor.
+빌드할 구체적인 동작이 있고, 입력과 관찰 가능한 출력이 있으며, 리팩터를 견디는 테스트를 원할 때 사용하세요.
 
-| Your situation | Where to go |
+| 여러분의 상황 | 어디로 가는가 |
 | --- | --- |
-| A behaviour with defined inputs and outputs (business logic, a request/response contract, a transformation, validation) | `tdd` |
-| The behaviour isn't pinned down yet | [to-spec](https://aihero.dev/skills-to-spec), which also agrees the test seams before any code is written |
-| The question is really the shape of the interface, not the tests | [codebase-design](https://aihero.dev/skills-codebase-design) |
-| You have a [spec](https://www.aihero.dev/ai-coding-dictionary/spec) or [tickets](https://www.aihero.dev/ai-coding-dictionary/ticket) and want the whole build run for you | [implement](https://aihero.dev/skills-implement), which drives `tdd` per ticket |
-| Config, wiring, glue, type annotations, straight CRUD delegation | Nothing here fits well; see the open gap below |
+| 정의된 입력과 출력이 있는 동작 (비즈니스 로직, 요청/응답 계약, 변환, 검증) | `tdd` |
+| 동작이 아직 고정되지 않음 | [to-spec](https://aihero.dev/skills-to-spec), 어떤 코드가 작성되기 전에 테스트 심도 동의합니다 |
+| 질문이 정말 테스트가 아니라 인터페이스의 형태인 경우 | [codebase-design](https://aihero.dev/skills-codebase-design) |
+| [스펙](https://www.aihero.dev/ai-coding-dictionary/spec)이나 [티켓](https://www.aihero.dev/ai-coding-dictionary/ticket)이 있고 전체 빌드 실행을 원함 | [implement](https://aihero.dev/skills-implement), 티켓당 `tdd`를 구동합니다 |
+| 설정, 배선, 글루, 타입 어노테이션, 단순 CRUD 위임 | 여기서는 잘 맞는 것이 없습니다. 아래의 열린 공백 참조 |
 
-That last row is a real gap. The skill decides *where* the seams go, but nothing in it decides *whether* a change is worth the loop at all. If you run it on a change with no independent source of truth to assert against, you get a test that restates the implementation. That is the tautological anti-pattern the skill warns about, reached from the other direction. It is [issue #746](https://github.com/mattpocock/skills/issues/746), and it is open. Until it closes, you make that call yourself, or write the rule into your `CLAUDE.md`.
+마지막 행은 실제 공백입니다. 스킬은 심이 *어디로* 가는지 결정하지만, 변경이 루프를 수행할 가치가 있는지 *여부*를 결정하는 것은 없습니다. 주장할 독립적인 진실의 출처가 없는 변경에 이것을 실행하면, 구현을 다시 진술하는 테스트를 얻습니다. 그것이 스킬이 경고하는 동어반복 안티패턴이며, 다른 방향에서 도달합니다. [이슈 #746](https://github.com/mattpocock/skills/issues/746)이며 열려 있습니다. 닫힐 때까지 여러분이 직접 그 판단을 하거나, `CLAUDE.md`에 규칙을 작성하세요.
 
-## Prerequisites
+## 전제 조건
 
-[codebase-design](https://aihero.dev/skills-codebase-design) needs to be installed. `tdd` used to carry its own deep-module and interface-design notes; v1.0 deleted them in favour of the shared skill, and `tdd` now uses its interface-design vocabulary. Nothing else; the skill is [stateless](https://www.aihero.dev/ai-coding-dictionary/stateless) and writes no files of its own.
+[codebase-design](https://aihero.dev/skills-codebase-design)이 설치되어 있어야 합니다. `tdd`는 자체 deep-module 및 interface-design 노트를 전달했었습니다. v1.0은 공유 스킬을 위해 그것들을 삭제했으며, `tdd`는 이제 interface-design 어휘를 사용합니다. 그 외는 없습니다. 스킬은 [상태가 없으며](https://www.aihero.dev/ai-coding-dictionary/stateless) 자체 파일을 작성하지 않습니다.
 
-## The loop, and the seam it runs at
+## 루프와 그것이 실행되는 심
 
-The skill rests on three terms.
+스킬은 세 가지 용어에 기반합니다.
 
-**Red-green.** Write the failing test, then only enough code to pass it. Do not write code for the test after next. There is no refactor phase. The skill dropped it in June 2026 because agents almost never performed it, and because review and implementation work better as separate sessions. Refactoring belongs to [code-review](https://aihero.dev/skills-code-review).
+**Red-green.** 실패하는 테스트를 작성하고, 그것을 통과할 만큼의 코드만 작성하세요. 다음 다음 테스트를 위한 코드를 작성하지 마세요. refactor 단계는 없습니다. 스킬은 에이전트가 거의 수행하지 않고 검토와 구현이 별도 세션으로 더 잘 작동하기 때문에 2026년 6월에 그것을 삭제했습니다. 리팩터링은 [code-review](https://aihero.dev/skills-code-review)에 속합니다.
 
-**Vertical slice.** Write one test at one seam, then the minimal implementation, then repeat. The first cycle is a **tracer bullet** that proves a single path end to end. The opposite is horizontal slicing: all the tests first, then all the code. Tests written in bulk verify *imagined* behaviour. They check the shape of things rather than what a user does, and they commit you to a test structure before you understand the implementation.
+**수직 슬라이스.** 하나의 심에서 하나의 테스트를 작성하고, 최소한의 구현을 작성하고, 반복하세요. 첫 사이클은 끝에서 끝까지 단일 경로를 증명하는 **추적탄**입니다. 반대는 수평 슬라이싱입니다: 모든 테스트를 먼저 작성하고 모든 코드를 작성. 대량으로 작성된 테스트는 *상상된* 동작을 검증합니다. 사용자가 하는 것이 아니라 사물의 형태를 확인하며, 구현을 이해하기 전에 테스트 구조에 커밋하게 만듭니다.
 
-**Pre-agreed seam.** A seam is the public boundary you observe behaviour at without reaching inside. The rule has no exceptions. No test goes at an unconfirmed seam. In the full chain the seams are agreed earlier, during [to-spec](https://aihero.dev/skills-to-spec): "`/tdd` is told to only work at pre-agreed test seams, `/code-review` checks that only agreed-upon test seams were used." Invoked on its own, `tdd` asks you directly.
+**사전 합의된 심.** 심은 내부에 도달하지 않고 동작을 관찰하는 공개 경계입니다. 규칙에는 예외가 없습니다. 확인되지 않은 심에는 테스트가 가지 않습니다. 전체 체인에서 심은 [to-spec](https://aihero.dev/skills-to-spec) 중에 더 일찍 합의됩니다: "`/tdd`는 사전 합의된 테스트 심에서만 작동하도록 지시받고, `/code-review`는 합의된 테스트 심만 사용되었는지 확인합니다." 단독으로 호출되면 `tdd`가 직접 묻습니다.
 
-The three anti-patterns it is written to prevent:
+방지하기 위해 작성된 세 가지 안티패턴:
 
-| Anti-pattern | The tell |
+| 안티패턴 | 징후 |
 | --- | --- |
-| Implementation-coupled | The test breaks when you rename an internal function, though behaviour did not change. Mocked internal collaborators, asserted call counts, database queries used to verify instead of the interface. |
-| Tautological | The expected value is computed the way the code computes it, so the test passes by construction. Expected values have to come from somewhere else: a known-good literal, a worked example, the spec. |
-| Horizontal slicing | A batch of tests landed before any implementation. |
+| 구현 결합 | 동작은 변경되지 않았지만 내부 함수 이름을 바꾸면 테스트가 깨집니다. 목 처리된 내부 협력자, 주장된 호출 횟수, 인터페이스 대신 검증에 사용된 데이터베이스 쿼리. |
+| 동어반복 | 기대값이 코드가 계산하는 방식으로 계산되므로, 테스트가 구성상 통과합니다. 기대값은 다른 곳에서 와야 합니다: 알려진 좋은 리터럴, 작업 예제, 스펙. |
+| 수평 슬라이싱 | 어떤 구현보다 먼저 테스트 배치가 도착합니다. |
 
-Mocks are for system boundaries only: external APIs, time, randomness, sometimes the filesystem or the database. Never mock your own modules.
+목은 시스템 경계에만 사용됩니다: 외부 API, 시간, 무작위성, 때로는 파일시스템이나 데이터베이스. 절대 여러분 자신의 모듈을 목 처리하지 마세요.
 
-## Common questions
+## 자주 묻는 질문
 
-**Why doesn't it refactor? The description says "red-green-refactor".**
+**왜 리팩터하지 않나요? 설명에는 "red-green-refactor"라고 되어 있는데요.**
 
-Because the refactor step was removed and the description was not. The removal was deliberate. Agents almost never did the step, and keeping implementation and review in separate sessions works better. Whether the result still counts as TDD by the book matters less than whether the loop produces better code. The mismatch between the trigger phrase and the body is filed as [issue #589](https://github.com/mattpocock/skills/issues/589) and is still open, so "red-green-refactor" continues to work as a phrase that fires the skill. What you get is red-green, with refactoring in [code-review](https://aihero.dev/skills-code-review).
+refactor 단계가 제거되었고 설명은 제거되지 않았기 때문입니다. 제거는 의도적이었습니다. 에이전트는 거의 그 단계를 수행하지 않았고, 구현과 검토를 별도 세션으로 유지하는 것이 더 잘 작동합니다. 결과가 여전히 책에 나온 TDD로 계산되는지 여부는 루프가 더 나은 코드를 생성하는지 여부보다 덜 중요합니다. 트리거 구문과 본문 사이의 불일치는 [이슈 #589](https://github.com/mattpocock/skills/issues/589)로 제출되었고 아직 열려 있으므로, "red-green-refactor"는 스킬을 실행하는 구문으로 계속 작동합니다. 얻는 것은 red-green이며, 리팩터링은 [code-review](https://aihero.dev/skills-code-review)에 있습니다.
 
-**It asked me to choose a test seam and I had no idea which to pick.**
+**테스트 심을 선택하라고 했는데 어떤 것을 선택해야 할지 전혀 몰랐어요.**
 
-This is the most-reported friction with the skill ([issue #607](https://github.com/mattpocock/skills/issues/607)). The prompt lists candidate seams by name only, with nothing about what each one catches or misses, so you are choosing between labels. There is no fix shipped yet. The practical workaround is to ask the agent for the trade-offs before answering: what does the component-level seam miss that the integration seam catches, and how much slower is it. It is also why the chain agrees seams up front in `to-spec`, where you have the whole feature in view rather than one prompt.
+이것이 스킬과 가장 많이 보고된 마찰입니다 ([이슈 #607](https://github.com/mattpocock/skills/issues/607)). 프롬프트는 후보 심을 이름으로만 나열하며, 각각이 무엇을 잡고 놓치는지에 대한 것은 없으므로, 레이블 사이에서 선택하는 것입니다. 아직 배포된 수정은 없습니다. 실용적인 우회책은 답하기 전에 에이전트에게 트레이드오프를 요청하는 것입니다: 컴포넌트 수준 심이 통합 심이 잡는 것 중 무엇을 놓치는지, 그리고 얼마나 느린지. 이것이 또한 체인이 `to-spec`에서 미리 심을 합의하는 이유이며, 거기서는 하나의 프롬프트가 아니라 전체 기능을 볼 수 있습니다.
 
-**It wrote the implementation before the test, even though the skill says red first.**
+**스킬이 red가 먼저라고 했는데도 테스트보다 먼저 구현을 작성했어요.**
 
-It happens. One user pushed the [model](https://www.aihero.dev/ai-coding-dictionary/model) on it and got an unusually honest answer: "I knew the skill said 'one test at a time, watch it fail for the right reason'. I read it. I just defaulted to my normal habit." The skill accepts this. No instruction makes an agent comply 100% of the time, and stricter wording restricts the agent's creativity for little gain. The loop is worth running even when the agent does not follow it strictly, because the results are still better overall. If strict adherence matters for a particular slice, watch the run rather than trusting the skill to enforce it.
+일어납니다. 한 사용자가 [모델](https://www.aihero.dev/ai-coding-dictionary/model)을 밀어붙여 비정상적으로 솔직한 답변을 얻었습니다: "스킬이 '한 번에 하나의 테스트, 올바른 이유로 실패하는지 지켜보세요'라고 말한 것을 알았어요. 읽었어요. 그냥 제 정상적인 습관으로 돌아갔어요." 스킬은 이것을 받아들입니다. 어떤 지시도 에이전트가 100% 준수하게 만들지 못하며, 더 엄격한 표현은 얻는 것은 적으면서 에이전트의 창의성을 제한합니다. 에이전트가 엄격히 따르지 않더라도 루프는 실행할 가치가 있습니다. 결과가 전체적으로 여전히 더 낫기 때문입니다. 특정 슬라이스에 엄격한 준수가 중요하다면, 스킬이 강제할 것을 신뢰하기보다 실행을 지켜보세요.
 
-**Should it write browser or end-to-end tests first?**
+**브라우저나 end-to-end 테스트를 먼저 작성해야 하나요?**
 
-Usually not, and the skill will not stop it. A user reported the agent writing a Playwright test first, then spending a long loop re-running it and concluding the *test* was broken for a feature that did not exist yet. Browser tests are slow enough that the red-green feedback loop stops paying for itself. State in your repo's `CLAUDE.md` that browser tests come after the behaviour works.
+보통 아니며, 스킬은 그것을 막지 않습니다. 한 사용자가 에이전트가 Playwright 테스트를 먼저 작성하고, 긴 루프로 그것을 다시 실행하면서 아직 존재하지 않는 기능에 대해 *테스트*가 깨졌다고 결론 내렸다고 보고했습니다. 브라우저 테스트는 red-green 피드백 루프가 스스로 비용을 정당화하지 못할 만큼 느립니다. 리포의 `CLAUDE.md`에 브라우저 테스트가 동작이 작동한 후에 온다고 명시하세요.
 
-**Does `/tdd` replace `/implement`, or the course's `/do-work`?**
+**`/tdd`가 `/implement`나 코스의 `/do-work`를 대체하나요?**
 
-No. `/tdd` documents the methodology; `/implement` is a simple work→feedback→commit loop and is the direct stand-in for `/do-work`. The course's single `/do-work` step is now split across `/implement`, `/tdd` and `/code-review`. If you are asking which one to run against a ticket, the answer is almost always `/implement`.
+아니요. `/tdd`는 방법론을 문서화합니다. `/implement`는 간단한 작업→피드백→커밋 루프이며 `/do-work`의 직접적인 대체입니다. 코스의 단일 `/do-work` 단계는 이제 `/implement`, `/tdd`, `/code-review`로 나뉩니다. 티켓에 대해 어떤 것을 실행할지 묻는다면, 답은 거의 항상 `/implement`입니다.
 
-**Where did the deep-modules and interface-design guidance go?**
+**deep-modules와 interface-design 가이드는 어디로 갔나요?**
 
-Into [codebase-design](https://aihero.dev/skills-codebase-design) in v1.0, generalised so several skills share one vocabulary. `refactoring.md` left at the same time; refactoring is now [code-review](https://aihero.dev/skills-code-review)'s job, and that skill carries the Fowler smell baseline.
+v1.0에서 [codebase-design](https://aihero.dev/skills-codebase-design)으로 들어갔으며, 여러 스킬이 하나의 어휘를 공유하도록 일반화되었습니다. `refactoring.md`는 같은 시기에 떠났습니다. 리팩터링은 이제 [code-review](https://aihero.dev/skills-code-review)의 일이며, 그 스킬은 Fowler smell 기준을 전달합니다.
 
-**Does it know about my other tickets?**
+**다른 티켓에 대해 알고 있나요?**
 
-No. Run against one ticket, it can propose work that belongs to a sibling ticket, because it has no view of the rest of the issue graph ([issue #129](https://github.com/mattpocock/skills/issues/129)). This is not `tdd`'s job. Passing the spec alongside the ticket helps; right-sizing the tickets in the first place helps more.
+아니요. 하나의 티켓에 대해 실행되면, 이슈 그래프의 나머지를 볼 수 없기 때문에 형제 티켓에 속하는 작업을 제안할 수 있습니다 ([이슈 #129](https://github.com/mattpocock/skills/issues/129)). 이것은 `tdd`의 일이 아닙니다. 티켓과 함께 스펙을 전달하는 것이 도움이 됩니다. 애초에 티켓을 올바른 크기로 만드는 것이 더 도움이 됩니다.
 
-## It's working if
+## 제대로 작동한다는 신호
 
-- It stops and names the seams it intends to test at, and waits, before any test file exists.
-- One test appears, goes red, gets just enough code to pass, and only then does the next test appear, not a batch of tests followed by a batch of code.
-- Test names read as capabilities ("user can checkout with valid cart"), not as internals ("checkout calls paymentService.process").
-- Expected values in assertions are literals you can trace to the spec, not values recomputed the way the code computes them.
-- Renaming an internal function breaks nothing in the suite.
-- Mocks appear only at external boundaries (the payment API, the clock) and never around your own modules.
+- 어떤 테스트 파일이 존재하기 전에 멈추고 테스트하려는 심을 명시하고 기다립니다.
+- 하나의 테스트가 나타나고, red가 되고, 통과할 만큼의 코드를 얻고, 그 다음에야 다음 테스트가 나타납니다. 테스트 배치 뒤에 코드 배치가 오는 것이 아닙니다.
+- 테스트 이름이 내부("checkout calls paymentService.process")가 아니라 기능("user can checkout with valid cart")으로 읽힙니다.
+- 단언의 기대값이 코드가 계산하는 방식으로 재계산된 값이 아니라 스펙으로 추적할 수 있는 리터럴입니다.
+- 내부 함수 이름을 바꿔도 스위트에서 아무것도 깨지지 않습니다.
+- 목은 외부 경계(결제 API, 시계)에만 나타나고 절대 여러분 자신의 모듈 주위에 나타나지 않습니다.
 
-## Where it fits
+## 어디에 적용되는지
 
-`tdd` runs inside the build step of the main chain; it is not a step of its own:
+`tdd`는 주 체인의 빌드 단계 내에서 실행됩니다. 자체 단계가 아닙니다:
 
 ```txt
 grill-with-docs → to-spec → to-tickets → implement → code-review → retro
 ```
 
-[to-spec](https://aihero.dev/skills-to-spec) agrees the test seams up front, [implement](https://aihero.dev/skills-implement) drives `tdd` per ticket, and [code-review](https://aihero.dev/skills-code-review) checks afterwards that only the agreed seams were used, and owns the refactoring `tdd` no longer does. Its other neighbour is [codebase-design](https://aihero.dev/skills-codebase-design), the shared source of the seam and deep-module vocabulary that `tdd` uses. You can also reach for it on its own, whenever there is a concrete behaviour to build and no full spec in play. When you are unsure which skill fits your situation, [ask-matt](https://aihero.dev/skills-ask-matt) routes you.
+[to-spec](https://aihero.dev/skills-to-spec)은 테스트 심을 미리 합의하고, [implement](https://aihero.dev/skills-implement)는 티켓당 `tdd`를 구동하며, [code-review](https://aihero.dev/skills-code-review)는 이후에 합의된 심만 사용되었는지 확인하고, `tdd`가 더 이상 하지 않는 리팩터링을 소유합니다. 다른 이웃은 [codebase-design](https://aihero.dev/skills-codebase-design)이며, `tdd`가 사용하는 심과 deep-module 어휘의 공유 출처입니다. 빌드할 구체적인 동작이 있고 전체 스펙이 작동하지 않을 때마다 단독으로도 사용할 수 있습니다. 어떤 스킬이 여러분의 상황에 맞는지 확실하지 않을 때, [ask-matt](https://aihero.dev/skills-ask-matt)가 안내합니다.

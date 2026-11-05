@@ -1,67 +1,67 @@
-## What it does
+## 무엇을 하는지
 
-`prototype` writes **throwaway code that answers a question**: does this state model feel right, or what should this screen look like. The question comes first and decides what you build. A prototype that answers the wrong question is wasted, however good it looks.
+`prototype`는 **질문에 답하는 버릴 코드**를 작성합니다: 이 상태 모델이 적절하게 느껴지는가, 또는 이 화면이 어떻게 보여야 하는가. 질문이 먼저 오고 무엇을 빌드할지 결정합니다. 잘못된 질문에 답하는 프로토타입은 아무리 잘 보여도 낭비입니다.
 
-Throwaway is a constraint on how the code is *written*, not a promise to destroy it. No tests, no error handling beyond what makes it run, no abstractions, no persistence, because none of that helps you learn the one thing you're trying to learn. Two things survive. The answer goes into the real code, and the prototype goes onto a branch out of main as evidence for the answer.
+Throwaway는 코드가 *작성되는* 방식에 대한 제약이지, 파괴하겠다는 약속이 아닙니다. 테스트 없음, 실행되게 만드는 것 이상의 오류 처리 없음, 추상화 없음, 영속성 없음, 이 중 어느 것도 배우려는 한 가지를 배우는 데 도움이 되지 않기 때문입니다. 두 가지가 살아남습니다. 답변은 실제 코드로 들어가고, 프로토타입은 답변에 대한 증거로 main에서 브랜치로 갑니다.
 
-## When to reach for it
+## 언제 사용하는지
 
-Type `/prototype`, or the [agent](https://www.aihero.dev/ai-coding-dictionary/agent) reaches for it automatically when a task fits.
+`/prototype`를 입력하거나, 작업이 적합할 때 [에이전트](https://www.aihero.dev/ai-coding-dictionary/agent)가 자동으로 이것을 선택합니다.
 
-Reach for it the moment you hit a question you can't settle by talking: a state machine whose edge cases you can't hold in your head, a screen you can't picture until you see three versions side by side. [Grilling](https://www.aihero.dev/ai-coding-dictionary/grilling) sessions grow long on these questions. The agent rephrases, you guess, and the scope grows. Stop grilling, build the throwaway version, look at it, then answer in one line. If instead something already built is misbehaving and you want to know why, use [diagnosing-bugs](https://aihero.dev/skills-diagnosing-bugs); prototyping explores what to build, not why the built thing is broken.
+말로 해결할 수 없는 질문에 부딪히는 순간 사용하세요: 머릿속에 담을 수 없는 에지 케이스가 있는 상태 머신, 세 가지 버전을 나란히 볼 때까지 그림을 그릴 수 없는 화면. [Grilling](https://www.aihero.dev/ai-coding-dictionary/grilling) 세션은 이러한 질문에서 길어집니다. 에이전트는 다시 말하고, 당신은 추측하며, 범위가 커집니다. grilling을 멈추고, 버릴 버전을 빌드하고, 보고, 그 다음 한 줄로 답하세요. 대신 이미 빌드된 무언가가 오작동하고 있고 이유를 알고 싶다면 [diagnosing-bugs](https://aihero.dev/skills-diagnosing-bugs)를 사용하세요; 프로토타이핑은 무엇을 빌드할지 탐색하는 것이지, 빌드된 것이 왜 망가졌는지가 아닙니다.
 
-You will also arrive here without choosing to. [wayfinder](https://aihero.dev/skills-wayfinder) files `prototype` decision [tickets](https://www.aihero.dev/ai-coding-dictionary/ticket) on its map, and you work one with this skill.
+선택하지 않아도 여기에 도착할 것입니다. [wayfinder](https://aihero.dev/skills-wayfinder)는 맵에 `prototype` 결정 [티켓](https://www.aihero.dev/ai-coding-dictionary/ticket)을 제출하며, 이 스킬로 하나를 작업합니다.
 
-## Two branches
+## 두 가지 브랜치
 
-The question picks the branch, and the branches produce different artifacts:
+질문이 브랜치를 선택하고, 브랜치는 다른 아티팩트를 생성합니다:
 
-- **"Does this logic / state model feel right?"**: a **single shareable HTML file**. One self-contained page, no build and no server, that someone opens by double-clicking. It carries a labelled state panel that re-renders after every click, free-play buttons for poking at the model in any order, and tabbed **guided walkthroughs** (one scenario per tab, each with the ordered buttons to press underneath it). Everything is labelled in domain language, so you can hand it to a designer, a PM or a domain expert and let them try the model themselves. The logic behind the page is a small pure module (a reducer, a machine, a set of functions) with no DOM code in it, so you can move the validated version straight into the real code.
-- **"What should this look like?"**: several **radically different** UI variations on one route, switchable from a floating bottom bar and a `?variant=` URL param. Variants must disagree about structure, not colour; three card grids with small tweaks answer nothing. They render inside a real page wherever possible, against real data and real density, because a variant judged on an empty page always looks fine.
+- **"이 로직 / 상태 모델이 적절하게 느껴지나?"**: **하나의 공유 가능한 HTML 파일**. 더블 클릭으로 여는 빌드 없고 서버 없는 하나의 자체 포함 페이지. 모든 클릭 후 다시 렌더링되는 레이블이 지정된 상태 패널, 모델을 어떤 순서로든 찌를 수 있는 자유 플레이 버튼, 그리고 탭으로 구분된 **안내 워크스루**(탭당 하나의 시나리오, 각각 아래에 누를 순서가 지정된 버튼)를 포함합니다. 모든 것이 도메인 언어로 레이블이 지정되어 있으므로 디자이너, PM 또는 도메인 전문가에게 전달하여 그들이 직접 모델을 시도하게 할 수 있습니다. 페이지 뒤의 로직은 DOM 코드가 없는 작은 순수 모듈(reducer, 머신, 함수 세트)이므로 검증된 버전을 실제 코드로 바로 이동할 수 있습니다.
+- **"이것이 어떻게 보여야 하나?"**: 하나의 경로에서 **근본적으로 다른** 여러 UI 변형, 떠 있는 하단 바와 `?variant=` URL 매개변수에서 전환 가능. 변형은 색상이 아니라 구조에 대해 동의하지 않아야 합니다; 작은 조정이 있는 세 개의 카드 그리드는 아무것도 답하지 않습니다. 빈 페이지에서 판단한 변형은 항상 괜찮아 보이기 때문에 가능한 한 실제 데이터와 실제 밀도에 대해 실제 페이지 내에서 렌더링합니다.
 
-Both keep state in memory, start with no setup, and show you the full state after every step. The moment you find yourself hardening one (adding a test, wiring the real database, generalising for a case you might want later), you have stopped prototyping.
+둘 다 메모리에 상태를 유지하고, 설정 없이 시작하며, 모든 단계 후 전체 상태를 보여줍니다. 하나를 강화하는 자신을 발견하는 순간(테스트 추가, 실제 데이터베이스 연결, 나중에 원할 수 있는 케이스에 대한 일반화), 프로토타이핑을 멈춘 것입니다.
 
-## The prototype is a primary source
+## 프로토타입은 일차 자료입니다
 
-A finished prototype leaves two things, and they go to different places.
+완성된 프로토타입은 두 가지를 남기며, 서로 다른 곳으로 갑니다.
 
-You record the **answer** (the verdict plus the question it settled) somewhere permanent: a commit message, an ADR, the implementation issue. Main keeps the answer, in the real code.
+**답변**(판결과 해결한 질문)을 영구적인 곳에 기록합니다: 커밋 메시지, ADR, 구현 이슈. Main은 실제 코드에 답변을 보관합니다.
 
-The **prototype** is the runnable evidence the answer came from, and you do not delete it. It doesn't belong in main either, because nobody maintains it and it goes stale fast. So you commit it to a throwaway `prototype/<name>` branch out of main, never merge it, and leave a [context pointer](https://www.aihero.dev/ai-coding-dictionary/context-pointer) to that branch on the implementation issue. Main stays clean, and whoever picks the work up next can find and re-run the prototype.
+**프로토타입**은 답변이 나온 실행 가능한 증거이며, 삭제하지 않습니다. Main에도 속하지 않습니다. 아무도 유지하지 않고 빠르게 오래되기 때문입니다. 따라서 main에서 버릴 `prototype/<name>` 브랜치로 커밋하고, 절대 병합하지 않으며, 구현 이슈에 해당 브랜치에 대한 [컨텍스트 포인터](https://www.aihero.dev/ai-coding-dictionary/context-pointer)를 남깁니다. Main은 깨끗하게 유지되고, 다음에 작업을 선택하는 사람은 프로토타입을 찾아서 다시 실행할 수 있습니다.
 
-## Common questions
+## 일반적인 질문
 
-**Wait, isn't the prototype supposed to be deleted?**
-Not any more. It used to be: build it, keep the answer, bin the code. The strongest objection to that was not about speed. It was *who picks up the work next [session](https://www.aihero.dev/ai-coding-dictionary/session), and what do they have to work from?* A prose summary of a prototype loses the thing that made it convincing. So the skill now treats the prototype as a [primary source](https://www.aihero.dev/ai-coding-dictionary/primary-source). It lands on a `prototype/<name>` branch out of main and the implementation issue points at it. What changed is where the code lives, not the discipline; it still never merges into main.
+**잠깐, 프로토타입은 삭제되어야 하지 않나요?**
+더 이상 그렇지 않습니다. 예전에는 그랬습니다: 빌드하고, 답변을 보관하고, 코드를 버립니다. 그에 대한 가장 강력한 반대는 속도에 관한 것이 아니었습니다. *다음 [세션](https://www.aihero.dev/ai-coding-dictionary/session)에서 누가 작업을 선택하고, 무엇으로부터 작업해야 하는가?*였습니다. 프로토타입의 산문 요약은 설득력 있게 만든 것을 잃습니다. 따라서 스킬은 이제 프로토타입을 [일차 자료](https://www.aihero.dev/ai-coding-dictionary/primary-source)로 취급합니다. main에서 `prototype/<name>` 브랜치에 착륙하고 구현 이슈가 이를 가리킵니다. 변경된 것은 코드가 사는 곳이지 규율이 아닙니다; 여전히 main으로 병합되지 않습니다.
 
-**It used to build a terminal app. Where did that go?**
-The logic branch now emits a single shareable HTML file instead. A terminal app can only be driven by someone with the repo cloned and a runtime installed, which rules out the people whose opinion the prototype needs: the designer, the PM, the domain expert who knows what the state model is supposed to mean. One self-contained file that opens by double-click and still works after being emailed can be driven by anyone. The pure logic module underneath is unchanged, and is still the part you move into the real code.
+**터미널 앱을 빌드했었는데. 어디로 갔나요?**
+로직 브랜치는 이제 대신 하나의 공유 가능한 HTML 파일을 방출합니다. 터미널 앱은 리포를 클론하고 런타임을 설치한 사람만 구동할 수 있으며, 이는 프로토타입이 필요로 하는 의견을 가진 사람들을 배제합니다: 디자이너, PM, 상태 모델이 무엇을 의미해야 하는지 아는 도메인 전문가. 더블 클릭으로 열리고 이메일로 보내진 후에도 여전히 작동하는 하나의 자체 포함 파일은 누구나 구동할 수 있습니다. 아래의 순수 로직 모듈은 변경되지 않았으며, 여전히 실제 코드로 이동하는 부분입니다.
 
-**An agent told me to `/prototype` when I should have been implementing.**
-This is a known naming problem. An agent that does not know the flow reads `prototype`, a generic and appealing word, as "the obvious next step" once tickets exist. So agents recommend it by name even where the design was settled in conversation. If you already know what to build, the next step is `/implement`, per ticket. Reach for a prototype only when a specific design question is unresolved and talking won't resolve it.
+**에이전트가 구현해야 할 때 `/prototype`를 하라고 말했습니다.**
+이것은 알려진 명명 문제입니다. 흐름을 모르는 에이전트는 `prototype`, 일반적이고 매력적인 단어를 티켓이 존재하면 "다음의 명백한 단계"로 읽습니다. 따라서 에이전트는 대화에서 디자인이 해결된 곳에서도 이름으로 추천합니다. 무엇을 빌드할지 이미 알고 있다면 다음 단계는 티켓당 `/implement`입니다. 특정 디자인 질문이 해결되지 않았고 말로는 해결하지 못할 때만 프로토타입을 사용하세요.
 
-**Should I prototype the whole application before building any of its production features (say, to demo it to prospects)?**
-That is a different artifact that happens to share this skill's name. A prototype here is scoped to one question, and "what is the whole app?" isn't one. A full-app prototype has no natural stopping point, so it drifts into being the production app: the cleanup pass never happens, and code written under prototype rules (no tests, no error handling) ends up in front of users. If you need a sales demo, build it as a demo on purpose and be explicit that none of it is production. If you need to settle a design question, cut it down to that question.
+**프로덕션 기능을 빌드하기 전에 전체 애플리케이션을 프로토타입해야 하나요(예: 전망 고객에게 데모하기 위해)?**
+그것은 이 스킬의 이름을 공유하는 다른 아티팩트입니다. 여기서 프로토타입은 하나의 질문에 범위가 지정되며, "전체 앱은 무엇인가?"는 하나가 아닙니다. 전체 앱 프로토타입은 자연스러운 중단 지점이 없으므로 프로덕션 앱이 되는 것으로 표류합니다: 정리 패스는 절대 발생하지 않으며, 프로토타입 규칙(테스트 없음, 오류 처리 없음)으로 작성된 코드가 사용자 앞에 놓이게 됩니다. 판매 데모가 필요하면 의도적으로 데모로 빌드하고 그 어느 것도 프로덕션이 아니라고 명시하세요. 디자인 질문을 해결해야 한다면 해당 질문으로 줄이세요.
 
-**How do I run it in its own session?**
-A prototype lives in its own directory and generates a lot of [context](https://www.aihero.dev/ai-coding-dictionary/context) you don't want in the thread that asked the question, so run it somewhere else and bring back only the answer. Use [handoff](https://aihero.dev/skills-handoff) to move the work into that session and to bring the answer back.
+**자체 세션에서 어떻게 실행하나요?**
+프로토타입은 자체 디렉터리에 살고 질문을 한 스레드에 원하지 않는 많은 [컨텍스트](https://www.aihero.dev/ai-coding-dictionary/context)를 생성하므로 다른 곳에서 실행하고 답변만 가져오세요. [handoff](https://aihero.dev/skills-handoff)를 사용하여 작업을 해당 세션으로 이동하고 답변을 가져오세요.
 
-**Isn't this the fastest possible way to burn tokens?**
-It can be, if you prototype questions you could have answered by talking, or let one prototype sprawl across a whole feature. The comparison that matters isn't tokens against zero; it's [tokens](https://www.aihero.dev/ai-coding-dictionary/token) against building the wrong state model and finding out after it has production callers. Keep the question narrow and the run short, and the spend stays proportionate.
+**이것이 토큰을 태우는 가장 빠른 방법이 아닌가요?**
+말로 답할 수 있었던 질문을 프로토타입하거나 하나의 프로토타입이 전체 기능에 걸쳐 퍼지게 하면 그럴 수 있습니다. 중요한 비교는 토큰 대 제로가 아닙니다; 잘못된 상태 모델을 빌드하고 프로덕션 호출자가 생긴 후에 알아내는 것에 대한 [토큰](https://www.aihero.dev/ai-coding-dictionary/token)입니다. 질문을 좁게 유지하고 실행을 짧게 유지하면 지출은 비례합니다.
 
-## It's working if
+## 제대로 작동하고 있다면
 
-- You can say in one sentence what question the prototype exists to answer, and it's written at the top of the demo, not just in your head.
-- Someone who doesn't read code can drive the logic demo. They open the file, press the buttons in a walkthrough tab, and describe what they see in their own words.
-- Someone says "wait, that shouldn't be possible" or "huh, I assumed X". That's a bug in the *idea*, which is what the prototype is for.
-- The UI variants disagree about layout and information hierarchy, not just colour and copy, and the feedback you get is "the header from B with the sidebar from C".
-- It is answered in one sitting. If you're still building it a day later, the question was too big; split it.
-- When it's over, main contains the decision and none of the prototype, and the implementation issue points at the branch that still holds it.
+- 프로토타입이 답하기 위해 존재하는 질문을 한 문장으로 말할 수 있으며, 머릿속이 아니라 데모 상단에 작성되어 있습니다.
+- 코드를 읽지 않는 사람이 로직 데모를 구동할 수 있습니다. 파일을 열고, 워크스루 탭에서 버튼을 누르고, 자신의 말로 보이는 것을 설명합니다.
+- 누군가가 "잠깐, 그건 가능하지 않아야 해" 또는 "응, X라고 가정했어"라고 말합니다. 그것은 *아이디어*의 버그이며, 프로토타입이 존재하는 이유입니다.
+- UI 변형은 색상과 카피가 아니라 레이아웃과 정보 계층 구조에 대해 동의하지 않으며, 받는 피드백은 "B의 헤더와 C의 사이드바"입니다.
+- 한 번의 앉음에 답합니다. 하루 후에도 여전히 빌드하고 있다면 질문이 너무 컸습니다; 분할하세요.
+- 끝났을 때 main은 결정을 포함하고 프로토타입은 포함하지 않으며, 구현 이슈는 여전히 이를 보유한 브랜치를 가리킵니다.
 
-## Where it fits
+## 어디에 적합한지
 
-`prototype` is a **reach-for-it-anytime standalone**: you use it to settle one design question, then go back to your work. Another skill also runs it.
+`prototype`는 **언제든지 사용할 수 있는 독립형**입니다: 하나의 디자인 질문을 해결하는 데 사용한 다음 작업으로 돌아갑니다. 다른 스킬도 이를 실행합니다.
 
-The skill that runs it most is [wayfinder](https://aihero.dev/skills-wayfinder). A wayfinder map is made of **decision tickets**, and `prototype` is one of the four types a ticket can be: the one used when the blocking question is "how should this look" or "how should it behave", which no amount of discussion resolves. When a discussion is vague, wayfinder makes something concrete to react to, and this skill builds that thing. The answer resolves a prototype ticket, and the map links to the prototype as an asset.
+가장 많이 실행하는 스킬은 [wayfinder](https://aihero.dev/skills-wayfinder)입니다. wayfinder 맵은 **결정 티켓**으로 구성되며, `prototype`는 티켓이 될 수 있는 네 가지 유형 중 하나입니다: 차단 질문이 "이것이 어떻게 보여야 하나" 또는 "어떻게 작동해야 하나"이고 아무리 논의해도 해결되지 않을 때 사용하는 것입니다. 논의가 모호할 때 wayfinder는 반응할 구체적인 것을 만들고, 이 스킬이 그것을 빌드합니다. 답변은 프로토타입 티켓을 해결하고, 맵은 프로토타입을 자산으로 링크합니다.
 
-The other neighbours are upstream and downstream of that. [grill-me](https://aihero.dev/skills-grill-me) and [grill-with-docs](https://aihero.dev/skills-grill-with-docs) answer grillable questions; the ungrillable ones come here instead, and the one-line answer goes back into the interview. Downstream, a validated state model or UI direction becomes settled input for [to-spec](https://aihero.dev/skills-to-spec), which can inline the decision-rich snippet the prototype produced rather than describing it in prose. For anything else, [ask-matt](https://aihero.dev/skills-ask-matt) routes you over the whole set.
+다른 이웃은 그것의 업스트림과 다운스트림입니다. [grill-me](https://aihero.dev/skills-grill-me)와 [grill-with-docs](https://aihero.dev/skills-grill-with-docs)는 grill할 수 있는 질문에 답합니다; grill할 수 없는 것은 대신 여기로 오며, 한 줄 답변은 인터뷰로 돌아갑니다. 다운스트림에서 검증된 상태 모델 또는 UI 방향은 [to-spec](https://aihero.dev/skills-to-spec)에 대한 확정된 입력이 되며, 산문으로 설명하는 대신 프로토타입이 생성한 결정이 풍부한 스니펫을 인라인할 수 있습니다. 다른 모든 것에 대해 [ask-matt](https://aihero.dev/skills-ask-matt)가 전체 세트를 라우팅합니다.

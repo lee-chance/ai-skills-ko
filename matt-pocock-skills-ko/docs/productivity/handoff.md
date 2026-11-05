@@ -1,76 +1,76 @@
-## What it does
+## 무엇을 하는지
 
-`handoff` compacts the conversation you are in into a **handoff document**: one markdown file, written to your OS's temporary directory rather than into the workspace, that a fresh [agent](https://www.aihero.dev/ai-coding-dictionary/agent) can read to pick the work up.
+`handoff`는 현재 대화를 **handoff 문서**로 압축합니다: 워크스페이스가 아니라 OS의 임시 디렉터리에 작성된 하나의 마크다운 파일이며, 새로운 [에이전트](https://www.aihero.dev/ai-coding-dictionary/agent)가 읽고 작업을 이어받을 수 있습니다.
 
-What it gives you is **portability**, not compression, so the skill is narrower than it sounds. You need a file only when the work has to *travel*: to a new [harness](https://www.aihero.dev/ai-coding-dictionary/harness), a new directory, a colleague, or a side task you want to fork off. If nothing is travelling, you do not need a handoff. Staying in the [session](https://www.aihero.dev/ai-coding-dictionary/session), `/clear`, a [subagent](https://www.aihero.dev/ai-coding-dictionary/subagent) and `/compact` cover the ordinary end-of-phase case, and `/compact` covers it more often than this skill does.
+제공하는 것은 압축이 아니라 **이식성**이므로 스킬은 들리는 것보다 좁습니다. 작업이 *이동*해야 할 때만 파일이 필요합니다: 새로운 [harness](https://www.aihero.dev/ai-coding-dictionary/harness), 새로운 디렉터리, 동료, 또는 분기하려는 사이드 작업. 아무것도 이동하지 않으면 handoff가 필요하지 않습니다. [세션](https://www.aihero.dev/ai-coding-dictionary/session)에 머물기, `/clear`, [서브에이전트](https://www.aihero.dev/ai-coding-dictionary/subagent) 및 `/compact`는 일반적인 단계 종료 경우를 다루며, `/compact`는 이 스킬보다 더 자주 이를 다룹니다.
 
-## When to reach for it
+## 언제 사용하는지
 
-You invoke this by typing `/handoff`; the agent won't reach for it on its own. Pass a note about what the next session is for, and the skill writes the document for that purpose.
+`/handoff`를 입력하여 호출합니다; 에이전트가 스스로 이것을 선택하지는 않습니다. 다음 세션이 무엇을 위한 것인지 노트를 전달하면 스킬이 해당 목적으로 문서를 작성합니다.
 
-There are four triggers, and only four:
+네 가지 트리거가 있으며, 오직 네 가지입니다:
 
-| Situation | Why a file |
+| 상황 | 파일이 필요한 이유 |
 | --- | --- |
-| Swapping harness (Claude → Codex) | The new harness cannot see the old [context](https://www.aihero.dev/ai-coding-dictionary/context) |
-| Moving to a different directory or repo | A prototype directory is the common case |
-| Sending the work to a colleague | They need something they can read |
-| Forking a side task found mid-phase | You keep working; a second agent takes the fork |
+| harness 교체 (Claude → Codex) | 새로운 harness가 이전 [컨텍스트](https://www.aihero.dev/ai-coding-dictionary/context)를 볼 수 없음 |
+| 다른 디렉터리 또는 리포로 이동 | 프로토타입 디렉터리가 일반적인 경우 |
+| 동료에게 작업 보내기 | 읽을 수 있는 것이 필요함 |
+| 단계 중간에 발견된 사이드 작업 분기 | 계속 작업하고; 두 번째 에이전트가 분기를 가져감 |
 
-For anything else (same harness, same directory, you are done [grilling](https://www.aihero.dev/ai-coding-dictionary/grilling) and moving to implementation), use `/compact`. [ask-matt](https://aihero.dev/skills-ask-matt) has the ordered tree over all five options at a phase boundary.
+다른 모든 것(동일한 harness, 동일한 디렉터리, [grilling](https://www.aihero.dev/ai-coding-dictionary/grilling)이 완료되고 구현으로 이동)의 경우 `/compact`를 사용하세요. [ask-matt](https://aihero.dev/skills-ask-matt)는 단계 경계에서 모든 다섯 가지 옵션에 대한 순서가 지정된 트리를 가지고 있습니다.
 
-## Branching is the use people skip
+## 사람들이 건너뛰는 사용법은 분기입니다
 
-The skill's description reads like session resumption: write a summary, end here, resume there. Read that way, it looks like a worse `/compact`, so people skip it. The fork case is the one worth knowing. You **stay in your session** and hand a copy of the accumulated context to a second agent working in parallel.
+스킬의 설명은 세션 재개처럼 읽힙니다: 요약을 작성하고, 여기서 끝내고, 저기서 재개합니다. 그렇게 읽으면 더 나쁜 `/compact`처럼 보이므로 사람들은 건너뜁니다. fork 경우가 알 가치가 있는 것입니다. **세션에 머물고** 축적된 컨텍스트의 사본을 병렬로 작업하는 두 번째 에이전트에게 전달합니다.
 
-That is what the detour through [prototype](https://aihero.dev/skills-prototype) uses. You are deep in a design conversation, you hit a question that only running code will settle, and you do not want to spend the thread you built on finding out. Hand off to a prototype session, get the answer, hand the answer back, and reference it from the original thread. The work crosses over twice, your original conversation stays live, and you re-explain nothing.
+이것이 [prototype](https://aihero.dev/skills-prototype)을 통한 우회가 사용하는 것입니다. 디자인 대화에 깊이 빠져 있고, 실행되는 코드만 해결할 질문에 부딪히며, 빌드한 스레드를 알아내는 데 쓰고 싶지 않습니다. 프로토타입 세션으로 handoff하고, 답변을 받고, 답변을 다시 handoff하고, 원래 스레드에서 참조합니다. 작업이 두 번 교차하고, 원래 대화는 살아 있으며, 아무것도 다시 설명하지 않습니다.
 
-Three of the five options at a phase boundary preserve different things: `/compact` preserves your intent, `/clear` preserves nothing, `/handoff` preserves the work's ability to move.
+단계 경계에서 다섯 가지 옵션 중 세 가지는 다른 것을 보존합니다: `/compact`는 의도를 보존하고, `/clear`는 아무것도 보존하지 않으며, `/handoff`는 작업의 이동 능력을 보존합니다.
 
-## What travels, and what doesn't
+## 무엇이 이동하고 무엇이 이동하지 않는지
 
-The document carries the live thread (what's in flight, why, and what's next) plus a **suggested skills** section naming what the next agent should reach for. The skill redacts secrets before it writes the file.
+문서는 진행 중인 스레드(무엇이 진행 중이고, 왜, 그리고 다음은 무엇인지)와 다음 에이전트가 사용해야 할 것을 명명하는 **suggested skills** 섹션을 포함합니다. 스킬은 파일을 쓰기 전에 비밀을 삭제합니다.
 
-It deliberately does not carry anything already written down. The document references specs, plans, ADRs, issues, commits and diffs by path or URL, and never copies them. That keeps the file small, and it keeps the settled detail in one place instead of two copies that drift apart.
+이미 작성된 것은 의도적으로 포함하지 않습니다. 문서는 spec, 계획, ADR, 이슈, 커밋 및 diff를 경로 또는 URL로 참조하며, 절대 복사하지 않습니다. 이는 파일을 작게 유지하고, 확정된 세부 사항을 분리되는 두 사본 대신 한 곳에 유지합니다.
 
-## Common questions
+## 일반적인 질문
 
-**Handoff or compact?**
-`/compact` unless something is travelling. Staying on the same task is a compact, not a handoff. When the harness and directory stay the same and you need to stay in the loop, the phase-boundary tree ends at `/compact` most days. `/handoff` does not summarise better. Its advantage is that the result is a file you can carry somewhere `/compact` can't reach.
+**Handoff 또는 compact?**
+무언가가 이동하지 않는 한 `/compact`입니다. 동일한 작업에 머무는 것은 handoff가 아니라 compact입니다. harness와 디렉터리가 동일하게 유지되고 루프에 머물러야 할 때 단계 경계 트리는 대부분의 날에 `/compact`에서 끝납니다. `/handoff`가 더 잘 요약하지 않습니다. 장점은 결과가 `/compact`가 도달할 수 없는 곳으로 가져갈 수 있는 파일이라는 것입니다.
 
-**So what's the actual difference between compact, clear and handoff?**
-Each one preserves something different. `/compact` compresses this context and continues in a fresh window, so your intent survives. `/clear` empties the window and starts from nothing. That is correct when everything behind you is disposable, and you cannot undo it if it isn't. `/handoff` writes a portable file, so the work survives the move to somewhere else. All three turn a **[primary source](https://www.aihero.dev/ai-coding-dictionary/primary-source)** (the conversation as it happened) into a **[secondary source](https://www.aihero.dev/ai-coding-dictionary/secondary-source)** (a summary of it). Continuing is the only option that doesn't, which is why you rule it out first.
+**그렇다면 compact, clear 및 handoff의 실제 차이점은 무엇인가요?**
+각각은 다른 것을 보존합니다. `/compact`는 이 컨텍스트를 압축하고 새로운 윈도우에서 계속하므로 의도가 살아남습니다. `/clear`는 윈도우를 비우고 아무것도 없는 상태에서 시작합니다. 뒤의 모든 것이 버릴 수 있을 때 올바르며, 그렇지 않으면 취소할 수 없습니다. `/handoff`는 이식 가능한 파일을 작성하므로 작업이 다른 곳으로 이동하는 것을 살아남습니다. 세 가지 모두 **[일차 자료](https://www.aihero.dev/ai-coding-dictionary/primary-source)**(일어난 대로의 대화)를 **[이차 자료](https://www.aihero.dev/ai-coding-dictionary/secondary-source)**(그것의 요약)로 전환합니다. 계속하는 것만 그렇지 않은 유일한 옵션이며, 이것이 먼저 배제하는 이유입니다.
 
-**Where did my handoff file go?**
-It goes to the temp directory, which is the most-reported problem with the skill. The skill resolves it as `$TMPDIR`, else `/tmp` (`%TEMP%` on Windows), but the paths are long. Ask for the path back and keep it before you move on. Temp is deliberate, because a handoff is a document in transit, not an artifact you maintain. Temp is also not durable, as the next question explains.
+**handoff 파일이 어디로 갔나요?**
+임시 디렉터리로 가며, 이것이 스킬에서 가장 많이 보고된 문제입니다. 스킬은 이를 `$TMPDIR`, 그렇지 않으면 `/tmp`(Windows에서는 `%TEMP%`)로 해결하지만 경로가 깁니다. 경로를 다시 요청하고 진행하기 전에 보관하세요. Temp는 의도적입니다. handoff는 전송 중인 문서이지 유지하는 아티팩트가 아니기 때문입니다. Temp도 지속적이지 않으며, 다음 질문이 설명합니다.
 
-**My handoff vanished between sessions.**
-Some environments clear temp between sessions (Codex is the reported case), and a reboot empties `/private/tmp`. If the next session isn't starting within the hour, or is starting under a different harness, copy the file somewhere durable yourself as soon as it's written. The same applies to anything the document *points at*: if a dispatch references other files in temp, the next agent can't follow it.
+**세션 사이에 handoff가 사라졌습니다.**
+일부 환경은 세션 사이에 temp를 지웁니다(Codex가 보고된 경우). 재부팅은 `/private/tmp`를 비웁니다. 다음 세션이 한 시간 이내에 시작하지 않거나 다른 harness에서 시작하는 경우 작성되자마자 파일을 지속적인 곳에 직접 복사하세요. 문서가 *가리키는* 모든 것에도 동일하게 적용됩니다: dispatch가 temp의 다른 파일을 참조하면 다음 에이전트가 따를 수 없습니다.
 
-**How do I actually hand it to the next agent?**
-Open the fresh session and point it at the path: read this file, then continue. Point at the file rather than pasting the summary into a shell command. The shell mangles a summary that contains backticks or `$(...)` when you interpolate it into `claude "<summary>"`. The usual result is silent truncation rather than an error, so the new agent starts with an incomplete brief and nothing tells you.
+**실제로 다음 에이전트에게 어떻게 전달하나요?**
+새 세션을 열고 경로를 가리킵니다: 이 파일을 읽고 계속하세요. 요약을 셸 명령에 붙여넣는 대신 파일을 가리키세요. 셸은 `claude "<summary>"`로 보간할 때 백틱이나 `$(...)`를 포함하는 요약을 손상시킵니다. 일반적인 결과는 오류가 아니라 조용한 잘림이므로 새 에이전트가 불완전한 브리핑으로 시작하고 아무것도 알려주지 않습니다.
 
-**Is this the same as `/branch`, `--fork-session`, or the built-in `/handoff`?**
-They are similar, not identical. `/branch` isn't a shipped skill here; `/handoff` is the canonical name. A fork inherits an exact copy of the context; this skill produces a *targeted* compression aimed at a stated next task, in a file. Where a fork will do (same machine, same harness, same directory), a fork is less work. The file is the better choice when the destination is somewhere the fork can't go.
+**이것은 `/branch`, `--fork-session`, 또는 내장 `/handoff`와 동일한가요?**
+비슷하지만 동일하지 않습니다. `/branch`는 여기서 배송된 스킬이 아닙니다; `/handoff`가 표준 이름입니다. fork는 컨텍스트의 정확한 사본을 상속합니다; 이 스킬은 파일에 명시된 다음 작업을 목표로 하는 *대상* 압축을 생성합니다. fork가 할 수 있는 곳(동일한 기계, 동일한 harness, 동일한 디렉터리)에서 fork가 작업이 적습니다. 목적지가 fork가 갈 수 없는 곳일 때 파일이 더 나은 선택입니다.
 
-**When does something belong in `CLAUDE.md` instead?**
-Ask whether it's true next month. `CLAUDE.md` is standing context about the project, loaded into every session whether it's relevant or not. A handoff is about one piece of work in flight and is useless once that work lands. If you keep re-explaining a fact, it belongs in `CLAUDE.md`. A half-finished task belongs in a handoff.
+**무언가가 대신 `CLAUDE.md`에 속하는 때는 언제인가요?**
+다음 달에 사실인지 묻습니다. `CLAUDE.md`는 관련이 있든 없든 모든 세션에 로드되는 프로젝트에 대한 상시 컨텍스트입니다. handoff는 진행 중인 한 작업 조각에 관한 것이며 해당 작업이 도착하면 쓸모없습니다. 사실을 계속 다시 설명하면 `CLAUDE.md`에 속합니다. 반쯤 완료된 작업은 handoff에 속합니다.
 
-**It captures the what, not the why.**
-This is a fair criticism, and people raise it often. Two things help. Pass the argument (tell it what the next session is for), so the skill keeps the reasoning that bears on *that* rather than flattening it. And watch for confident claims the session never verified, such as "X isn't built" or "Y is done". The next agent trusts the document and does not re-check it, so a belief written as a fact becomes a false premise for everything that follows. Read the document before you hand it over, and downgrade anything you only assumed.
+**무엇을 캡처하지만 왜를 캡처하지 않습니다.**
+이것은 공정한 비판이며 사람들은 자주 제기합니다. 두 가지가 도움이 됩니다. 인수를 전달하여(다음 세션이 무엇을 위한 것인지 말하여) 스킬이 평평하게 하는 대신 *그것*에 적용되는 추론을 유지합니다. 그리고 세션이 검증하지 않은 자신 있는 주장을 주시하세요. 예: "X는 빌드되지 않았습니다" 또는 "Y는 완료되었습니다". 다음 에이전트는 문서를 신뢰하고 다시 확인하지 않으므로 사실로 작성된 믿음은 뒤따르는 모든 것에 대한 거짓 전제가 됩니다. 전달하기 전에 문서를 읽고 단지 가정한 것은 다운그레이드하세요.
 
-**Why is it a skill rather than a slash command?**
-Both work; they suit different situations. As a skill, it ships and updates through the same install path as everything else here, which makes it shareable. Its frontmatter, not the mechanism, is what stops the agent from firing it on its own.
+**왜 slash 명령이 아니라 스킬인가요?**
+둘 다 작동합니다; 다른 상황에 적합합니다. 스킬로서 여기의 다른 모든 것과 동일한 설치 경로를 통해 배송되고 업데이트되므로 공유 가능합니다. 에이전트가 스스로 실행하는 것을 멈추는 것은 메커니즘이 아니라 frontmatter입니다.
 
-## It's working if
+## 제대로 작동하고 있다면
 
-- The document is a small fraction of the conversation, and the specs, issues and diffs appear in it as paths and URLs rather than as copied text.
-- You can read it cold, without the original session open, and know what to do next.
-- The fresh agent starts working instead of asking you to re-explain the setup.
-- In the fork case, your original session is unchanged when you come back to it.
-- The suggested-skills section names the skill you'd have reached for yourself.
-- Nothing in it is a key, a token, or a password.
+- 문서가 대화의 작은 부분이고, spec, 이슈 및 diff가 복사된 텍스트가 아니라 경로와 URL로 나타납니다.
+- 원래 세션을 열지 않고 차갑게 읽을 수 있으며, 다음에 무엇을 할지 알 수 있습니다.
+- 새로운 에이전트가 설정을 다시 설명하라고 요청하는 대신 작업을 시작합니다.
+- fork 경우 돌아올 때 원래 세션이 변경되지 않습니다.
+- suggested-skills 섹션이 스스로 선택했을 스킬을 명명합니다.
+- 그 안에 키, 토큰, 또는 비밀번호가 없습니다.
 
-## Where it fits
+## 어디에 적합한지
 
-`handoff` is a **reach-for-it-anytime standalone**. It works between sessions rather than inside a build chain. It is a narrow one, and you'll use it less often than the other four options at a phase boundary. Its closest neighbour is [prototype](https://aihero.dev/skills-prototype), because a prototype lives in its own directory and the round trip out and back is the move this skill is for. When you're at a boundary and unsure whether to continue, clear, hand off, delegate or compact, [ask-matt](https://aihero.dev/skills-ask-matt) has the tree that orders those five, and routes you across the rest of the set.
+`handoff`는 **언제든지 사용할 수 있는 독립형**입니다. 빌드 체인 내부가 아니라 세션 사이에서 작동합니다. 좁은 것이며, 단계 경계에서 다른 네 가지 옵션보다 덜 자주 사용할 것입니다. 가장 가까운 이웃은 [prototype](https://aihero.dev/skills-prototype)입니다. 프로토타입이 자체 디렉터리에 살고 왕복 이동이 이 스킬이 위한 이동이기 때문입니다. 경계에 있고 계속할지, 지울지, handoff할지, 위임할지, compact할지 확실하지 않을 때 [ask-matt](https://aihero.dev/skills-ask-matt)는 이 다섯 가지를 순서대로 정렬하는 트리를 가지고 있으며, 나머지 세트를 라우팅합니다.

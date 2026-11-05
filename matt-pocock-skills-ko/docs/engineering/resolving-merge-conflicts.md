@@ -1,53 +1,53 @@
-> **Archived.** This skill was removed from the plugin in v1.3.0 and is no longer maintained. Nothing replaces it: the agent works through a merge or rebase conflict without a dedicated skill. The page stays up for reference.
+> **아카이브됨.** 이 스킬은 v1.3.0에서 플러그인에서 제거되었으며 더 이상 유지되지 않습니다. 대체하는 것은 없습니다: 에이전트는 전용 스킬 없이 병합 또는 rebase 충돌을 작업합니다. 페이지는 참조를 위해 유지됩니다.
 
-## What it does
+## 무엇을 하는지
 
-`resolving-merge-conflicts` works through an in-progress git merge or rebase, hunk by hunk, then runs the project's own checks and finishes the operation with a commit.
+`resolving-merge-conflicts`는 진행 중인 git 병합 또는 rebase를 hunk별로 작업한 다음 프로젝트 자체의 체크를 실행하고 커밋으로 작업을 완료합니다.
 
-It refuses to treat a conflict as a text problem. Before touching a hunk it traces each side back to its **[primary source](https://www.aihero.dev/ai-coding-dictionary/primary-source)** (the commit message, the PR, the original issue), so it is choosing between two intents rather than between two blocks of text, and it preserves both wherever they are compatible. Where they are not, it picks the side matching the merge's stated goal and names the trade-off. It invents no new behaviour to hide a clash, and it never uses `--abort`. It always takes the merge to a finished commit.
+충돌을 텍스트 문제로 취급하는 것을 거부합니다. hunk를 건드리기 전에 각 측면을 **[일차 자료](https://www.aihero.dev/ai-coding-dictionary/primary-source)**(커밋 메시지, PR, 원본 이슈)로 다시 추적하므로 두 텍스트 블록 사이가 아니라 두 의도 사이에서 선택하며, 호환되는 곳마다 둘 다 보존합니다. 그렇지 않은 경우 병합의 명시된 목표와 일치하는 측면을 선택하고 트레이드오프를 명명합니다. 충돌을 숨기기 위해 새로운 동작을 발명하지 않으며, `--abort`를 사용하지 않습니다. 항상 병합을 완료된 커밋으로 가져갑니다.
 
-## When to reach for it
+## 언제 사용하는지
 
-Type `/resolving-merge-conflicts`, or the [agent](https://www.aihero.dev/ai-coding-dictionary/agent) reaches for it automatically when a task fits.
+`/resolving-merge-conflicts`를 입력하거나, 작업이 적합할 때 [에이전트](https://www.aihero.dev/ai-coding-dictionary/agent)가 자동으로 이것을 선택합니다.
 
-Reach for it when git has already stopped on conflicts it could not resolve itself. It is scoped to the conflict in front of you, not to anything either side of it:
+git이 이미 스스로 해결할 수 없는 충돌에서 멈췄을 때 사용하세요. 앞에 있는 충돌에 범위가 지정되며, 양쪽 어느 것에도 해당하지 않습니다:
 
-| Your situation | Skill |
+| 당신의 상황 | 스킬 |
 | --- | --- |
-| Mid-merge or mid-rebase, conflict markers in the tree | This one |
-| Merge finished, something now misbehaves for reasons you can't see | [diagnosing-bugs](https://aihero.dev/skills-diagnosing-bugs) |
-| Planning how to slice work so branches collide less | Neither: see the parallel-work question below |
+| 병합 중 또는 rebase 중, 트리에 충돌 마커 있음 | 이것 |
+| 병합 완료, 이제 무언가가 볼 수 없는 이유로 오작동 | [diagnosing-bugs](https://aihero.dev/skills-diagnosing-bugs) |
+| 브랜치가 덜 충돌하도록 작업을 분할하는 방법 계획 | 둘 다 아님: 아래의 병렬 작업 질문 참조 |
 
-## Primary sources over `ours` and `theirs`
+## `ours`와 `theirs`보다 일차 자료
 
-The skill exists to prevent resolving by flag: `--ours`, `--theirs`, or hand-deleting whichever block looks less important, so the markers go away and the build compiles. That resolution can be syntactically perfect and still silently drop a change somebody made on purpose.
+스킬은 플래그로 해결하는 것을 방지하기 위해 존재합니다: `--ours`, `--theirs`, 또는 덜 중요해 보이는 블록을 손으로 삭제하여 마커가 사라지고 빌드가 컴파일되도록 하는 것. 해당 해결은 구문적으로 완벽할 수 있지만 여전히 누군가가 의도적으로 만든 변경을 조용히 삭제합니다.
 
-You cannot preserve an intent you have not read. So the work starts in the history (commits, PRs, [tickets](https://www.aihero.dev/ai-coding-dictionary/ticket)) and only then moves to the diff. The check step exists for the same reason. The skill finds the repo's own [automated checks](https://www.aihero.dev/ai-coding-dictionary/automated-check) and runs them before committing, because a merge is the easiest place in git to produce code that satisfies both branches and passes neither's tests.
+읽지 않은 의도는 보존할 수 없습니다. 따라서 작업은 히스토리(커밋, PR, [티켓](https://www.aihero.dev/ai-coding-dictionary/ticket))에서 시작하고 그 다음에만 diff로 이동합니다. 체크 단계도 같은 이유로 존재합니다. 스킬은 리포 자체의 [자동 체크](https://www.aihero.dev/ai-coding-dictionary/automated-check)를 찾아 커밋하기 전에 실행합니다. 병합은 git에서 두 브랜치를 만족하지만 둘 다의 테스트를 통과하지 못하는 코드를 생성하는 가장 쉬운 장소이기 때문입니다.
 
-## Common questions
+## 일반적인 질문
 
-**Claude Code already resolves conflicts pretty well on its own. Why does this need a skill?**
+**Claude Code는 이미 충돌을 스스로 꽤 잘 해결합니다. 왜 이것에 스킬이 필요한가요?**
 
-The added value is the "find the primary sources" and "run feedback loops" steps, which you otherwise have to prompt by hand every time. An unprompted agent will usually produce a plausible resolution from the diff alone and stop there. The skill's value is the two steps it will not let the agent skip: reading why each side exists, and running the checks afterwards. That is a small gain over a good [model](https://www.aihero.dev/ai-coding-dictionary/model), and that is intended. At least one reader has predicted this is a whole skill that becomes a no-op as models improve.
+추가된 가치는 "일차 자료 찾기"와 "피드백 루프 실행" 단계이며, 그렇지 않으면 매번 손으로 프롬프트해야 합니다. 프롬프트되지 않은 에이전트는 일반적으로 diff만으로 그럴듯한 해결을 생성하고 거기서 멈춥니다. 스킬의 가치는 에이전트가 건너뛰지 않게 하는 두 단계입니다: 각 측면이 존재하는 이유를 읽고, 나중에 체크를 실행하는 것. 이는 좋은 [모델](https://www.aihero.dev/ai-coding-dictionary/model)에 비해 작은 이득이며, 의도된 것입니다. 적어도 한 독자는 이것이 모델이 개선됨에 따라 no-op이 되는 전체 스킬이 될 것이라고 예측했습니다.
 
-**Should I keep parallel agents off the same files to avoid conflicts in the first place?**
+**충돌을 처음부터 피하기 위해 동일한 파일에서 병렬 에이전트를 피해야 하나요?**
 
-Mostly no. Zoning files off between parallel tasks costs more than it saves, because agents are good enough at merge conflicts that the tradeoff is not as harsh as it looks. The one piece of discipline worth keeping is to do large refactors first. A large rename landing after ten branches have forked off it is the case that stays expensive.
+대부분 아니요. 병렬 작업 사이에 파일을 구역화하는 것은 절약하는 것보다 더 많은 비용이 듭니다. 에이전트가 병합 충돌에 충분히 능숙하여 트레이드오프가 보이는 것만큼 가혹하지 않기 때문입니다. 유지할 가치가 있는 한 가지 규율은 큰 리팩터링을 먼저 수행하는 것입니다. 10개의 브랜치가 분기된 후 도착하는 대규모 이름 변경은 계속 비싼 경우입니다.
 
-One caveat from a user report on parallel worktrees: when sibling [sessions](https://www.aihero.dev/ai-coding-dictionary/session) each build a ticket in their own tree, the merge back is best done by the session that wrote the change, because it is the one that already knows the intent. If one agent resolves everybody's conflicts at the end, it loses the [context](https://www.aihero.dev/ai-coding-dictionary/context) that step 2 of this skill must then rebuild.
+병렬 워크트리에 대한 사용자 보고서의 한 가지 주의 사항: 형제 [세션](https://www.aihero.dev/ai-coding-dictionary/session)이 각각 자체 트리에서 티켓을 빌드할 때 병합은 변경을 작성한 세션이 가장 잘 수행합니다. 이미 의도를 알고 있는 세션이기 때문입니다. 하나의 에이전트가 끝에 모든 사람의 충돌을 해결하면 이 스킬의 2단계가 다시 빌드해야 하는 [컨텍스트](https://www.aihero.dev/ai-coding-dictionary/context)를 잃습니다.
 
-**Why never `--abort`?**
+**왜 `--abort`를 사용하지 않나요?**
 
-Aborting throws away the resolution work and returns you to the same conflict, unchanged, the next time you try. The skill is written for the case where the merge is going to happen. If you have decided it should not happen, that is a decision to make before invoking, not a branch inside the loop.
+중단은 해결 작업을 버리고 다음에 시도할 때 동일한 충돌로 변경되지 않고 돌아갑니다. 스킬은 병합이 발생할 경우에 대해 작성되었습니다. 발생하지 않아야 한다고 결정했다면 호출하기 전에 내릴 결정이지 루프 내부의 브랜치가 아닙니다.
 
-## It's working if
+## 제대로 작동하고 있다면
 
-- The agent quotes commit messages, PRs or issues at you while resolving, not just diff hunks.
-- Every hunk ends up with both sides' behaviour, or with an explicit note naming what was dropped and why.
-- Nothing appears in the result that was on neither branch.
-- The agent found typecheck, tests and format and ran them green *before* the commit, not after you noticed something broken.
-- You end on a clean tree with the operation completed, including every remaining commit in a multi-commit rebase.
+- 에이전트가 해결하는 동안 단지 diff hunk가 아니라 커밋 메시지, PR 또는 이슈를 인용합니다.
+- 모든 hunk가 양쪽의 동작으로 끝나거나, 무엇이 삭제되었고 왜인지 명명하는 명시적 노트로 끝납니다.
+- 결과에 어느 브랜치에도 없었던 것이 나타나지 않습니다.
+- 에이전트가 typecheck, 테스트 및 포맷을 찾아 커밋 *전에* 녹색으로 실행했으며, 무언가가 깨진 것을 알아챈 후가 아닙니다.
+- 멀티 커밋 rebase의 모든 남은 커밋을 포함하여 작업이 완료된 깨끗한 트리에서 끝납니다.
 
-## Where it fits
+## 어디에 적합한지
 
-A reach-for-it-anytime standalone with no dependencies on any other skill: it starts when git stalls and ends when the tree is clean and committed. Its only real neighbour is [diagnosing-bugs](https://aihero.dev/skills-diagnosing-bugs), which takes over at the point where a merge resolved cleanly but the merged code misbehaves: a diagnosis problem, not a conflict one. It is outside the main idea-to-ship flow, so [ask-matt](https://aihero.dev/skills-ask-matt) is the map for what runs before and after it.
+언제든지 사용할 수 있는 독립형으로 다른 스킬에 대한 의존성이 없습니다: git이 멈출 때 시작하고 트리가 깨끗하고 커밋될 때 끝납니다. 유일한 실제 이웃은 [diagnosing-bugs](https://aihero.dev/skills-diagnosing-bugs)이며, 병합이 깨끗하게 해결되었지만 병합된 코드가 오작동하는 지점에서 인계합니다: 충돌이 아니라 진단 문제. 메인 아이디어-배송 흐름 외부에 있으므로 [ask-matt](https://aihero.dev/skills-ask-matt)가 그 전후에 실행되는 것에 대한 맵입니다.

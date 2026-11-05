@@ -1,76 +1,76 @@
-## What it does
+## 무엇을 하는지
 
-`grill-me` takes a **loose idea** and interviews you until you can commit to it. You do not need a worked-out plan to start, because the [session](https://www.aihero.dev/ai-coding-dictionary/session) exists to produce one. It asks in **rounds**. Each round is the whole **frontier**, which is every question whose prerequisites you have already settled. So it never asks you something that depends on an answer it hasn't heard yet.
+`grill-me`는 **느슨한 아이디어**를 받아 커밋할 수 있을 때까지 인터뷰합니다. [세션](https://www.aihero.dev/ai-coding-dictionary/session)이 계획을 생성하기 위해 존재하므로 시작하기 위해 작성된 계획이 필요하지 않습니다. **라운드**로 묻습니다. 각 라운드는 전체 **프론티어**이며, 이는 이미 해결한 전제 조건이 있는 모든 질문입니다. 따라서 아직 듣지 못한 답변에 의존하는 것을 묻지 않습니다.
 
-It is **[stateless](https://www.aihero.dev/ai-coding-dictionary/stateless)**. It writes no files and leaves no workspace behind. The only result is a clearer version of the idea, in your own head.
+**[stateless](https://www.aihero.dev/ai-coding-dictionary/stateless)**입니다. 파일을 쓰지 않고 워크스페이스를 남기지 않습니다. 유일한 결과는 당신의 머리 속에 있는 아이디어의 더 명확한 버전입니다.
 
-## When to reach for it
+## 언제 사용하는지
 
-You invoke this by typing `/grill-me`; the [agent](https://www.aihero.dev/ai-coding-dictionary/agent) won't reach for it on its own. Start it in a **fresh conversation**, not on top of a plan you already had an agent write.
+`/grill-me`를 입력하여 호출합니다; [에이전트](https://www.aihero.dev/ai-coding-dictionary/agent)가 스스로 이것을 선택하지는 않습니다. 에이전트가 이미 작성한 계획 위가 아니라 **새 대화**에서 시작하세요.
 
-Reach for it as soon as you have an idea worth taking seriously (a feature, a product direction, a business call, a piece of writing), and long before you have worked out what it involves. Vagueness is not a reason to wait, because the session exists to remove it. If you can already specify the thing precisely, you don't need to grill it.
+진지하게 받아들일 가치가 있는 아이디어(기능, 제품 방향, 비즈니스 결정, 글 한 편)가 있자마자 그리고 무엇이 포함되는지 알아내기 훨씬 전에 사용하세요. 모호함은 기다릴 이유가 아닙니다. 세션이 이를 제거하기 위해 존재하기 때문입니다. 이미 정확하게 지정할 수 있다면 grill할 필요가 없습니다.
 
-Which of the three grilling skills you want depends on what is in front of you:
+세 가지 grilling 스킬 중 원하는 것은 앞에 무엇이 있는지에 따라 다릅니다:
 
-- **Anything, anywhere.** Use `grill-me`. It needs no repo and writes no files, and the subject doesn't have to be code.
-- **A codebase to align against.** Use [grill-with-docs](https://aihero.dev/skills-grill-with-docs). It is the same interview, but [stateful](https://www.aihero.dev/ai-coding-dictionary/stateful): it reads your code and keeps what it learns in `GLOSSARY.md` and ADRs.
-- **Too big for one session.** Use [wayfinder](https://aihero.dev/skills-wayfinder). It charts the effort as a map and runs grilling sessions inside it.
+- **무엇이든, 어디서든.** `grill-me`를 사용하세요. 리포가 필요하지 않고 파일을 쓰지 않으며, 주제가 코드일 필요가 없습니다.
+- **정렬할 코드베이스.** [grill-with-docs](https://aihero.dev/skills-grill-with-docs)를 사용하세요. 동일한 인터뷰이지만 [stateful](https://www.aihero.dev/ai-coding-dictionary/stateful)입니다: 코드를 읽고 배운 것을 `GLOSSARY.md`와 ADR에 보관합니다.
+- **한 세션에 너무 큽니다.** [wayfinder](https://aihero.dev/skills-wayfinder)를 사용하세요. 노력을 맵으로 차트하고 그 안에서 grilling 세션을 실행합니다.
 
-Leave [plan mode](https://www.aihero.dev/ai-coding-dictionary/agent-mode) off. Plan mode makes the agent hurry to produce a plan, when you want it to keep asking questions.
+[plan mode](https://www.aihero.dev/ai-coding-dictionary/agent-mode)를 꺼두세요. plan mode는 질문을 계속하기를 원할 때 에이전트가 서둘러 계획을 생성하게 만듭니다.
 
-## It's a conversation, not an interview
+## 인터뷰가 아니라 대화입니다
 
-The skill asks the questions, but **you** own the scope. People often miss this. It is the difference between a session that turns an idea into decisions and one that produces confident nonsense.
+스킬이 질문을 하지만 **당신**이 범위를 소유합니다. 사람들은 종종 이것을 놓칩니다. 이것이 아이디어를 결정으로 전환하는 세션과 자신 있는 넌센스를 생성하는 세션의 차이입니다.
 
-The failure mode is **passivity**: answering "agreed, agreed, agreed" for forty questions and coming out with a plan the agent wrote and you nodded at. It feels productive because it was long. But you decided nothing, and the result looks more certain than it is.
+실패 모드는 **수동성**입니다: 40개의 질문에 "동의, 동의, 동의"라고 답하고 에이전트가 작성하고 당신이 고개를 끄덕인 계획을 가지고 나오는 것입니다. 길었기 때문에 생산적으로 느껴집니다. 그러나 아무것도 결정하지 않았으며, 결과는 실제보다 더 확실해 보입니다.
 
-Being active means steering. Push back on a question that is less detailed than you need. Say when the scope is drifting. Answer "I don't know" and mean it. This skill helps an engineer and does not replace one. The quality of the result depends on the quality of your answers, not on the number of questions.
+능동적이라는 것은 조종한다는 의미입니다. 필요한 것보다 덜 상세한 질문에 반발하세요. 범위가 표류할 때 말하세요. "모르겠어요"라고 답하고 진심을 담으세요. 이 스킬은 엔지니어를 돕는 것이지 대체하는 것이 아닙니다. 결과의 품질은 질문의 수가 아니라 답변의 품질에 달려 있습니다.
 
-The opposite error is real but rarer: staying in the interview so long you never reach code.
+반대 오류도 실제로 있지만 더 드뭅니다: 인터뷰에 너무 오래 머물러 코드에 절대 도달하지 못하는 것입니다.
 
-## Grillable and ungrillable
+## Grill할 수 있는 것과 없는 것
 
-Some questions can be answered by talking. Others can't, and no amount of grilling will get you there.
+일부 질문은 말로 답할 수 있습니다. 다른 질문은 답할 수 없으며, 아무리 grill해도 그곳에 도달하지 못합니다.
 
-"One long form or three pages?" and "how should this interaction feel?" are **ungrillable**. You need something to react to before you can answer them. When you hit one, stop grilling. Build the throwaway version with [prototype](https://aihero.dev/skills-prototype), look at it, then come back and answer in one line.
+"하나의 긴 폼인가 세 페이지인가?"와 "이 상호작용이 어떻게 느껴져야 하나?"는 **grill할 수 없습니다**. 답하기 전에 반응할 무언가가 필요합니다. 이런 것을 만나면 grilling을 멈추세요. [prototype](https://aihero.dev/skills-prototype)으로 버릴 버전을 빌드하고, 보고, 그 다음 돌아와서 한 줄로 답하세요.
 
-Sessions grow too long when you try to talk through an ungrillable question. The agent keeps rephrasing, you keep guessing, and the scope grows with the uncertainty.
+grill할 수 없는 질문을 말로 풀려고 하면 세션이 너무 길어집니다. 에이전트는 계속 다시 말하고, 당신은 계속 추측하며, 범위는 불확실성과 함께 커집니다.
 
-## It's working if
+## 제대로 작동하고 있다면
 
-- You disagree with something. A session with no pushback from you is a session you didn't need.
-- Questions arrive in a few rounds, not one at a time for a long time, and later rounds clearly build on what you said earlier.
-- You end up somewhere you didn't expect, because a question showed you a decision you had been making without noticing.
-- At the end you could defend each choice to someone who wasn't there.
+- 무언가에 동의하지 않습니다. 당신으로부터 반발이 없는 세션은 필요하지 않았던 세션입니다.
+- 질문이 오랜 시간 동안 하나씩이 아니라 몇 라운드로 도착하며, 이후 라운드는 이전에 말한 것을 명확히 기반으로 합니다.
+- 질문이 알아채지 못한 채 내리고 있던 결정을 보여주었기 때문에 예상하지 못한 곳에 도달합니다.
+- 끝에 거기에 없었던 사람에게 각 선택을 방어할 수 있습니다.
 
-## Common questions
+## 일반적인 질문
 
-**How many questions should I expect, and how do I know when it ends?**
-Count rounds, not questions. Forty-six questions across four rounds is an ordinary session. It ends when the frontier is empty: it has visited every branch, and nothing is left as an unstated assumption.
+**몇 개의 질문을 예상해야 하며, 언제 끝나는지 어떻게 알 수 있나요?**
+질문이 아니라 라운드를 세세요. 네 라운드에 걸쳐 46개의 질문이 일반적인 세션입니다. 프론티어가 비었을 때 끝납니다: 모든 분기를 방문했고, 명시되지 않은 가정으로 남은 것이 없습니다.
 
-**It asked me two hundred questions. What went wrong?**
-Usually the scope was too large. Ask the agent to break the work into smaller pieces first, then grill each one. Very long sessions also drift into the **[dumb zone](https://www.aihero.dev/ai-coding-dictionary/smart-zone)**, where the [context window](https://www.aihero.dev/ai-coding-dictionary/context-window) is full enough that the questions get worse.
+**200개의 질문을 받았습니다. 무엇이 잘못되었나요?**
+보통 범위가 너무 컸습니다. 에이전트에게 먼저 작업을 더 작은 조각으로 나누도록 요청한 다음, 각각을 grill하세요. 매우 긴 세션도 **[dumb zone](https://www.aihero.dev/ai-coding-dictionary/smart-zone)**으로 표류합니다. 이곳에서는 [컨텍스트 윈도우](https://www.aihero.dev/ai-coding-dictionary/context-window)가 충분히 가득 차서 질문이 악화됩니다.
 
-**Can I go back to one question at a time?**
-Yes. Add this to your global `CLAUDE.md`:
+**한 번에 하나의 질문으로 돌아갈 수 있나요?**
+예. 글로벌 `CLAUDE.md`에 추가하세요:
 
 ```
 When grilling, ask one question at a time.
 ```
 
-**What if I genuinely don't know the answer?**
-Say so. "I don't know" is a real answer, and a question you can't answer is usually a sign to prototype rather than to guess.
+**정말로 답을 모르면 어떻게 하나요?**
+그렇게 말하세요. "모르겠어요"는 진짜 답변이며, 답할 수 없는 질문은 보통 추측하는 것이 아니라 프로토타입을 만들어야 한다는 신호입니다.
 
-**Do I start a fresh session before writing the spec?**
-No. The value of the session is the [context](https://www.aihero.dev/ai-coding-dictionary/context) you just built. Hand the same conversation straight to [to-spec](https://aihero.dev/skills-to-spec).
+**spec을 작성하기 전에 새 세션을 시작하나요?**
+아니요. 세션의 가치는 방금 빌드한 [컨텍스트](https://www.aihero.dev/ai-coding-dictionary/context)입니다. 동일한 대화를 [to-spec](https://aihero.dev/skills-to-spec)로 바로 전달하세요.
 
-**Does the model matter?**
-More than for most skills. Grilling depends on the [model](https://www.aihero.dev/ai-coding-dictionary/model)'s own knowledge of how systems break, so use your best one. Implementation mostly follows context, so a cheaper model is fine there.
+**모델이 중요한가요?**
+대부분의 스킬보다 더 중요합니다. Grilling은 시스템이 어떻게 망가지는지에 대한 [모델](https://www.aihero.dev/ai-coding-dictionary/model) 자체의 지식에 의존하므로 최고의 것을 사용하세요. 구현은 대부분 컨텍스트를 따르므로 더 저렴한 모델도 괜찮습니다.
 
-## Where it fits
+## 어디에 적합한지
 
-`grill-me` is a **standalone you can run anywhere, on anything**. Because it is stateless, it is portable. It needs no repo, workspace, or setup, and does not assume the idea is about software. People use it for business decisions, for writing, and for what to do next: anything they cannot think through clearly on their own.
+`grill-me`는 **무엇이든 어디서든 실행할 수 있는 독립형**입니다. stateless이기 때문에 이식 가능합니다. 리포, 워크스페이스, 설정이 필요하지 않으며, 아이디어가 소프트웨어에 관한 것이라고 가정하지 않습니다. 사람들은 비즈니스 결정, 글쓰기, 그리고 다음에 무엇을 할지에 사용합니다: 스스로 명확하게 생각할 수 없는 모든 것.
 
-Portability is the only difference from [grill-with-docs](https://aihero.dev/skills-grill-with-docs). That skill runs the same interview, but reads a codebase to align against and records what it learns as `GLOSSARY.md` and ADRs. Both use the [grilling](https://aihero.dev/skills-grilling) skill underneath. `grill-me` is the user-invoked entry point that keeps no state.
+이식성이 [grill-with-docs](https://aihero.dev/skills-grill-with-docs)와의 유일한 차이입니다. 해당 스킬은 동일한 인터뷰를 실행하지만, 정렬할 코드베이스를 읽고 배운 것을 `GLOSSARY.md`와 ADR로 기록합니다. 둘 다 아래에 [grilling](https://aihero.dev/skills-grilling) 스킬을 사용합니다. `grill-me`는 상태를 유지하지 않는 사용자 호출 진입점입니다.
 
-If what you grilled does turn out to be software, you can hand the same conversation to [to-spec](https://aihero.dev/skills-to-spec) and carry on into the build flow (an option, not the point of the skill). When you're unsure which flow fits, [ask-matt](https://aihero.dev/skills-ask-matt) routes you.
+grill한 것이 소프트웨어로 판명되면 동일한 대화를 [to-spec](https://aihero.dev/skills-to-spec)로 전달하고 빌드 흐름으로 계속 진행할 수 있습니다(스킬의 포인트가 아니라 옵션입니다). 어떤 흐름이 적합한지 확실하지 않을 때 [ask-matt](https://aihero.dev/skills-ask-matt)가 라우팅합니다.

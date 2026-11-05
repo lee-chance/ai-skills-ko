@@ -1,86 +1,86 @@
-## What it does
+## 무엇을 하나요
 
-`domain-modeling` builds and sharpens a project's **ubiquitous language** while you are designing. It challenges a term that conflicts with the glossary, asks for a precise word where you used a vague one, and tests a relationship against a concrete scenario until the boundaries are exact.
+`domain-modeling`은 설계하는 동안 프로젝트의 **유비쿼터스 언어**를 빌드하고 다듬습니다. 용어집과 충돌하는 용어에 도전하고, 모호한 것을 사용한 곳에 정확한 단어를 요청하며, 경계가 정확할 때까지 구체적인 시나리오에 대해 관계를 테스트합니다.
 
-It is the **active** discipline, not the passive one. Any skill can read `GLOSSARY.md` to borrow its vocabulary. This skill is for when you are *changing* the model, which is why it interrupts you. It writes a term into `GLOSSARY.md` at the moment you settle it, in the middle of the conversation, rather than producing a tidy glossary at the end. A glossary written at the end is a summary of a [session](https://www.aihero.dev/ai-coding-dictionary/session); the inline version is the session's output.
+이것은 **능동적** 규율이지 수동적 규율이 아닙니다. 모든 스킬은 `GLOSSARY.md`를 읽어 어휘를 빌려올 수 있습니다. 이 스킬은 *변경*하는 중일 때를 위한 것이며, 그래서 여러분을 방해합니다. 대화 중간, 정착하는 순간 `GLOSSARY.md`에 용어를 작성하며, 끝에 깔끔한 용어집을 생성하는 대신입니다. 끝에 작성된 용어집은 [세션](https://www.aihero.dev/ai-coding-dictionary/session)의 요약입니다. 인라인 버전은 세션의 출력입니다.
 
-## When to reach for it
+## 언제 사용하나요
 
-Type `/domain-modeling`, or the agent reaches for it automatically when a task fits. In practice, automatic invocation is the weakest part of the skill. When `grill-with-docs` or `wayfinder` say to load it, [models](https://www.aihero.dev/ai-coding-dictionary/model) often load `grilling` and skip this one. If a [grilling](https://www.aihero.dev/ai-coding-dictionary/grilling) session runs and `GLOSSARY.md` is unchanged at the end, that is what happened. Invoke it by name alongside the other skill.
+`/domain-modeling`을 입력하거나, 작업이 적합할 때 에이전트가 자동으로 이를 찾습니다. 실제로 자동 호출은 스킬의 가장 약한 부분입니다. `grill-with-docs` 또는 `wayfinder`가 로드하라고 말할 때, [모델](https://www.aihero.dev/ai-coding-dictionary/model)은 종종 `grilling`을 로드하고 이것을 건너뜁니다. [그릴링](https://www.aihero.dev/ai-coding-dictionary/grilling) 세션이 실행되고 끝에 `GLOSSARY.md`가 변경되지 않으면 그것이 일어난 것입니다. 다른 스킬과 함께 이름으로 호출하세요.
 
-Reach for it when the *words* are the problem:
+*단어*가 문제일 때 사용하세요:
 
-| The situation | The move |
+| 상황 | 행동 |
 | --- | --- |
-| Two people mean different things by "cancellation" | `domain-modeling`: pick the canonical term, list the other under `_Avoid_` |
-| "Account" is doing three jobs in three files | `domain-modeling`: split it into Customer and User |
-| You just made a hard-to-reverse architectural choice | `domain-modeling`: it offers an ADR, if the choice clears the bar |
-| The module's *shape* is the problem: where the seam goes, how deep the interface is | [codebase-design](https://aihero.dev/skills-codebase-design) |
-| You want the whole plan interrogated before you build | [grill-with-docs](https://aihero.dev/skills-grill-with-docs), which drives this skill underneath |
-| You want a term looked up, not changed | Nothing. Read `GLOSSARY.md`. It is a file. |
+| 두 사람이 "cancellation"으로 다른 것을 의미합니다 | `domain-modeling`: 표준 용어를 선택하고, 다른 것을 `_Avoid_` 아래에 나열 |
+| "Account"가 세 파일에서 세 가지 일을 하고 있습니다 | `domain-modeling`: Customer와 User로 분할 |
+| 방금 되돌리기 어려운 아키텍처 선택을 했습니다 | `domain-modeling`: 선택이 기준을 통과하면 ADR을 제공합니다 |
+| 모듈의 *형태*가 문제입니다: 심이 어디로 가는지, 인터페이스가 얼마나 깊은지 | [codebase-design](https://aihero.dev/skills-codebase-design) |
+| 빌드하기 전에 전체 계획을 심문하고 싶습니다 | [grill-with-docs](https://aihero.dev/skills-grill-with-docs), 아래에서 이 스킬을 구동합니다 |
+| 용어를 변경하는 것이 아니라 조회하고 싶습니다 | 아무것도 없습니다. `GLOSSARY.md`를 읽으세요. 파일입니다. |
 
-## Prerequisites
+## 전제 조건
 
-None up front. The skill writes into two places and creates both lazily:
+사전에 없습니다. 스킬은 두 곳에 작성하고 둘 다 지연 생성합니다:
 
-- **`GLOSSARY.md`** at the repo root. The skill creates it when you settle the first term. In a repo with a `GLOSSARY-MAP.md` at the root, terms go into the per-context `GLOSSARY.md` the map points at instead.
-- **`docs/adr/`**. The skill creates it with the first ADR that clears the bar.
+- 저장소 루트의 **`GLOSSARY.md`**. 스킬은 첫 번째 용어를 정착할 때 생성합니다. 루트에 `GLOSSARY-MAP.md`가 있는 저장소에서는 맵이 가리키는 컨텍스트별 `GLOSSARY.md`에 용어가 대신 들어갑니다.
+- **`docs/adr/`**. 스킬은 기준을 통과하는 첫 번째 ADR과 함께 생성합니다.
 
-Nothing needs to exist before you start, and the skill creates nothing in advance.
+시작하기 전에 존재해야 하는 것은 없으며, 스킬은 사전에 아무것도 생성하지 않습니다.
 
-## Two artifacts, two bars
+## 두 아티팩트, 두 기준
 
-The glossary and the ADR have different bars. Most of the trouble with this skill comes from mixing them up.
+용어집과 ADR은 다른 기준을 가지고 있습니다. 이 스킬의 대부분의 문제는 이를 혼동하는 데서 비롯됩니다.
 
 | | `GLOSSARY.md` | `docs/adr/NNNN-slug.md` |
 | --- | --- | --- |
-| Holds | Terms. What a thing **is**, in one or two sentences, with rejected synonyms under `_Avoid_` | One decision, in one to three sentences: context, choice, reason |
-| Bar to write | A vague term became canonical | **All three**: hard to reverse, surprising without context, the result of a real trade-off |
-| Written | Inline, the moment the term is settled | Offered, not assumed |
-| Never holds | Implementation details, a [spec](https://www.aihero.dev/ai-coding-dictionary/spec), a scratch pad, general programming concepts | A diary of every choice made this session |
+| 보유하는 것 | 용어. 사물이 **무엇인지**, 한두 문장으로, `_Avoid_` 아래에 거부된 동의어와 함께 | 한 결정, 한세 문장으로: 컨텍스트, 선택, 이유 |
+| 작성 기준 | 모호한 용어가 표준이 됨 | **세 가지 모두**: 되돌리기 어려움, 컨텍스트 없이 놀라움, 실제 트레이드오프의 결과 |
+| 작성 시기 | 인라인, 용어가 정착되는 순간 | 제공됨, 가정되지 않음 |
+| 절대 보유하지 않는 것 | 구현 세부 사항, [spec](https://www.aihero.dev/ai-coding-dictionary/spec), 스크래치 패드, 일반 프로그래밍 개념 | 이 세션에서 내린 모든 선택의 일기 |
 
-Miss any one of the ADR's three tests and there is no ADR. An easily-reversed decision will just get reversed; an unsurprising one is nobody's question; one with no real alternative records that you did the obvious thing.
+ADR의 세 가지 테스트 중 하나라도 놓치면 ADR이 없습니다. 쉽게 되돌릴 수 있는 결정은 그냥 되돌려질 것입니다. 놀랍지 않은 것은 아무도 묻지 않습니다. 실제 대안이 없는 것은 명백한 것을 했다고 기록합니다.
 
-The `GLOSSARY.md` rule matters most, because it is the one that breaks in practice. **It is a glossary and nothing else.** Left unchecked, models treat "write to `GLOSSARY.md`" as permission to persist every answer you give, and the file turns into a running spec. This is the most-reported problem with the skill, across several models.
+`GLOSSARY.md` 규칙이 가장 중요합니다. 실제로 깨지는 것이기 때문입니다. **용어집이며 그 외 아무것도 아닙니다.** 확인하지 않으면 모델은 "`GLOSSARY.md`에 작성"을 여러분이 제공하는 모든 답변을 지속하는 권한으로 취급하고, 파일은 실행 중인 spec으로 변합니다. 이것은 여러 모델에 걸쳐 스킬에 대해 가장 많이 보고된 문제입니다.
 
-## Cross-referencing, and where it stops
+## 교차 참조, 그리고 멈추는 곳
 
-When you state how something works, the skill checks the code and points out any contradiction. *"Your code cancels entire Orders, but you just said partial cancellation is possible, which is right?"* The skill makes the language and the code agree, out loud, before it changes either.
+무언가가 작동하는 방식을 진술하면 스킬은 코드를 확인하고 모순을 지적합니다. *"여러분의 코드는 전체 주문을 취소하지만, 방금 부분 취소가 가능하다고 말했습니다. 어느 것이 옳나요?"* 스킬은 변경하기 전에 언어와 코드가 소리 내어 동의하도록 만듭니다.
 
-It cross-references **code** and the committed `GLOSSARY.md` and ADRs, and nothing else. It does not search your issue tracker. If your team argued out a naming collision and settled it in a closed issue months ago, the skill raises it again as if it were new. There is [an open request](https://github.com/mattpocock/skills/issues/717) to fix this. Until then, the workaround is to put the instruction in your own `docs/agents/domain.md`, which the skills already read.
+**코드** 및 커밋된 `GLOSSARY.md`와 ADR을 교차 참조하며, 그 외 아무것도 없습니다. 이슈 트래커를 검색하지 않습니다. 팀이 몇 달 전에 닫힌 이슈에서 이름 충돌을 논의하고 정착했다면 스킬은 새로운 것처럼 다시 제기합니다. 이를 수정하기 위한 [열린 요청](https://github.com/mattpocock/skills/issues/717)이 있습니다. 그때까지 해결 방법은 스킬이 이미 읽는 자신의 `docs/agents/domain.md`에 지침을 넣는 것입니다.
 
-## Common questions
+## 자주 묻는 질문
 
-**My `GLOSSARY.md` is 500 lines. 1,000. 3,000. What do I do?**
-The size is a symptom. The cause is that the file has taken in implementation detail and decisions that never belonged in a glossary. The fix is a direct instruction: `/grill-with-docs make my GLOSSARY.md more concise and remove any implementation details from it`. Run it against a bloated file and most of it goes. Only split it with a `GLOSSARY-MAP.md` once the file is lean and still covers two domains that a reader would not want to hold at once. Splitting a bloated file gives you several bloated files. The skill's guidance here is not yet strong enough to prevent the growth in the first place, and the issue tracking that is still open.
+**내 `GLOSSARY.md`는 500줄입니다. 1,000. 3,000. 어떻게 해야 하나요?**
+크기는 증상입니다. 원인은 파일이 용어집에 속하지 않았던 구현 세부 사항과 결정을 받아들였다는 것입니다. 수정은 직접 지침입니다: `/grill-with-docs make my GLOSSARY.md more concise and remove any implementation details from it`. 부풀려진 파일에 대해 실행하면 대부분이 사라집니다. 파일이 마른 후에만 `GLOSSARY-MAP.md`로 분할하고 독자가 한 번에 보유하고 싶지 않은 두 도메인을 여전히 다룹니다. 부풀려진 파일을 분할하면 여러 부풀려진 파일이 생깁니다. 여기서 스킬의 지침은 처음에 성장을 방지할 만큼 충분히 강하지 않으며, 이슈 추적은 여전히 열려 있습니다.
 
-**Why is it `GLOSSARY.md` and not `CONTEXT.md`?**
-It was `CONTEXT.md` (and `CONTEXT-MAP.md`) until 1.3.0. The file is a glossary and nothing else, so `GLOSSARY.md` says so, and, as one reader put it, "with ai agents everything is [context](https://www.aihero.dev/ai-coding-dictionary/context)". If your repo still has a `CONTEXT.md`, re-run `/setup-matt-pocock-skills`: it offers to `git mv` the file and update `docs/agents/domain.md`. Every skill in the set looks for `GLOSSARY.md`, so keeping the old name means patching all of them.
+**왜 `GLOSSARY.md`이고 `CONTEXT.md`가 아닌가요?**
+1.3.0까지 `CONTEXT.md`(그리고 `CONTEXT-MAP.md`)였습니다. 파일은 용어집이며 그 외 아무것도 아니므로 `GLOSSARY.md`가 그렇게 말하며, 한 독자가 말했듯이 "ai 에이전트와 함께 모든 것이 [컨텍스트](https://www.aihero.dev/ai-coding-dictionary/context)입니다". 저장소에 여전히 `CONTEXT.md`가 있으면 `/setup-matt-pocock-skills`를 다시 실행하세요: 파일을 `git mv`하고 `docs/agents/domain.md`를 업데이트하도록 제공합니다. 세트의 모든 스킬은 `GLOSSARY.md`를 찾으므로 이전 이름을 유지하는 것은 모두를 패치해야 함을 의미합니다.
 
-**Where did `/ubiquitous-language` go?**
-It was removed, and it was not deprecated. Its job moved into `domain-modeling`, which maintains the whole model continuously rather than dumping a glossary out of one conversation. Vocabulary enforcement now matters more, not less. It runs underneath grilling, triage and mapping rather than as a separate pass you have to remember.
+**/ubiquitous-language는 어디로 갔나요?**
+제거되었으며 더 이상 사용되지 않습니다. 작업은 `domain-modeling`로 이동했으며, 하나의 대화에서 용어집을 덤프하는 대신 전체 모델을 지속적으로 유지합니다. 어휘 강제는 이제 덜 중요한 것이 아니라 더 중요합니다. 기억해야 하는 별도 통과가 아니라 그릴링, 트리아지 및 매핑 아래에서 실행됩니다.
 
-**How do I get a glossary for a codebase that has none?**
-Ask for it explicitly rather than waiting for it to accumulate. `/grill-with-docs help me scaffold my existing repo with a GLOSSARY.md` is the documented route. Expect a long interrogation. One user reported more than 50 questions before the file was in shape. Incidental use builds the glossary far too slowly on a brownfield repo.
+**용어집이 없는 코드베이스의 용어집을 얻는 방법은 무엇인가요?**
+누적되기를 기다리는 대신 명시적으로 요청하세요. `/grill-with-docs help me scaffold my existing repo with a GLOSSARY.md`가 문서화된 경로입니다. 긴 심문을 예상하세요. 한 사용자는 파일이 형태를 갖추기 전에 50개 이상의 질문을 보고했습니다. 부수적인 사용은 브라운필드 저장소에서 용어집을 너무 천천히 빌드합니다.
 
-**Can I keep the domain model and use my own ADR format?**
-Not cleanly today. The glossary half and the ADR half ship in one skill, so a team with an established ADR convention (different template, different location, different naming) gets instructions that conflict with its house style. The current options are to copy the skill locally and edit it, or to override the ADR conventions in your repo's own agent docs. Splitting the two apart is [an open request](https://github.com/mattpocock/skills/issues/557).
+**도메인 모델을 유지하고 자신의 ADR 형식을 사용할 수 있나요?**
+오늘날 깨끗하게는 아닙니다. 용어집 절반과 ADR 절반은 하나의 스킬로 제공되므로 확립된 ADR 규칙(다른 템플릿, 다른 위치, 다른 이름)을 가진 팀은 하우스 스타일과 충돌하는 지침을 받습니다. 현재 옵션은 로컬로 스킬을 복사하고 편집하거나 저장소 자체 에이전트 문서에서 ADR 규칙을 오버라이드하는 것입니다. 둘을 분리하는 것은 [열린 요청](https://github.com/mattpocock/skills/issues/557)입니다.
 
-**Does a glossary actually earn its keep? It is one more artifact to review, and it can go stale.**
-Sometimes it does not. DDD gets less useful the closer it gets to the implementation. The payoff is upstream, in naming and concept alignment, not in aggregates and layer ceremony. Synonym control matters at naming boundaries: module names, table names, status enums, issue titles, CLI commands. It matters much less in ordinary prose. There is also an objection that domain terms compress communication *between humans* who already share them, and that an agent responds the same way to the plain-English description. On that reading, the glossary's value is keeping you and your reviewers aligned with what the agent is doing, not making the agent better. On a one-day build, skip it. And an unreviewed, agent-authored glossary is worse than none: it fills with confident claims that later sessions treat as true.
+**용어집이 실제로 가치를 얻나요? 검토할 하나의 아티팩트이며 낡을 수 있습니다.**
+때때로 그렇지 않습니다. DDD는 구현에 가까워질수록 덜 유용해집니다. 보상은 업스트림, 명명 및 개념 정렬에 있으며, 집계 및 계층 의식에 있지 않습니다. 동의어 제어는 명명 경계에서 중요합니다: 모듈 이름, 테이블 이름, 상태 열거형, 이슈 제목, CLI 명령. 일반 산문에서는 훨씬 덜 중요합니다. 도메인 용어가 이미 공유하는 *사람들 사이의* 통신을 압축하고, 에이전트는 평범한 영어 설명에 동일한 방식으로 응답한다는 반대도 있습니다. 그 읽기에서 용어집의 가치는 에이전트를 더 나아지게 만드는 것이 아니라 여러분과 검토자를 에이전트가 하고 있는 것과 정렬하는 것입니다. 하루 빌드에서는 건너뛰세요. 그리고 검토되지 않고 에이전트가 작성한 용어집은 없는 것보다 나쁩니다: 나중 세션이 참으로 취급하는 자신 있는 주장으로 가득 찹니다.
 
-**Can it turn my vague prompts into domain language for me?**
-No, and there is no plan for a skill that does. A domain language you do not understand yourself is meaningless once written down. This skill enforces precision once you have the understanding; it does not invent vocabulary you do not have. The related trap is using domain words without doing the modelling. The right nouns on top of the wrong concepts produce output that reads as correct and is not.
+**모호한 프롬프트를 도메인 언어로 바꿀 수 있나요?**
+아니요, 그렇게 하는 스킬에 대한 계획도 없습니다. 스스로 이해하지 못하는 도메인 언어는 작성되면 의미가 없습니다. 이 스킬은 이해가 있으면 정확성을 강제합니다. 가지고 있지 않은 어휘를 발명하지 않습니다. 관련된 함정은 모델링을 하지 않고 도메인 단어를 사용하는 것입니다. 잘못된 개념 위의 올바른 명사는 올바른 것처럼 읽히는 출력을 생성하지만 그렇지 않습니다.
 
-## It's working if
+## 제대로 작동하는지 확인하는 방법
 
-- It stops you mid-sentence to ask which of two things you meant, instead of picking one and moving on.
-- `GLOSSARY.md` changes **during** the conversation, not in a burst at the end.
-- It refuses to write an ADR for something you could undo tomorrow, and says which of the three tests failed.
-- New entries define what a thing *is* in one or two sentences and name the words you are giving up under `_Avoid_`.
-- It quotes your code back at you when your code and your sentence disagree.
-- `GLOSSARY.md` gets shorter as often as it gets longer.
+- 하나를 선택하고 계속하는 대신 문장 중간에 여러분을 멈추고 두 가지 중 어느 것을 의미했는지 묻습니다.
+- `GLOSSARY.md`가 끝에 폭발적으로가 아니라 대화 **중에** 변경됩니다.
+- 내일 취소할 수 있는 것에 대해 ADR을 작성하는 것을 거부하고, 세 가지 테스트 중 어느 것이 실패했는지 말합니다.
+- 새 항목은 사물이 *무엇인지* 한두 문장으로 정의하고 `_Avoid_` 아래에 포기하는 단어를 지목합니다.
+- 코드와 문장이 일치하지 않을 때 코드를 여러분에게 인용합니다.
+- `GLOSSARY.md`는 길어지는 만큼 자주 짧아집니다.
 
-## Where it fits
+## 어디에 적합한가요
 
-`domain-modeling` is a **model-invoked reference** that runs *underneath* other skills more often than it runs on its own. [grill-with-docs](https://aihero.dev/skills-grill-with-docs) drives it through a grilling session, [wayfinder](https://aihero.dev/skills-wayfinder) loads it while charting a map, [triage](https://aihero.dev/skills-triage) uses it to keep [tickets](https://www.aihero.dev/ai-coding-dictionary/ticket) in the project's own words, and [improve-codebase-architecture](https://aihero.dev/skills-improve-codebase-architecture) calls it as decisions settle. Its closest sibling is [codebase-design](https://aihero.dev/skills-codebase-design). Together they are the vocabulary layer under everything else, this one for the *domain*, that one for the module's *shape*. It is also reachable directly, when you want the discipline without committing to the steps of whatever skill would normally load it. When you are unsure which skill fits, [ask-matt](https://aihero.dev/skills-ask-matt) routes you.
+`domain-modeling`은 자체적으로 실행되는 것보다 *아래*에서 다른 스킬을 실행하는 **모델 호출 참조**입니다. [grill-with-docs](https://aihero.dev/skills-grill-with-docs)는 그릴링 세션을 통해 구동하고, [wayfinder](https://aihero.dev/skills-wayfinder)는 맵을 차트하는 동안 로드하고, [triage](https://aihero.dev/skills-triage)는 프로젝트 자체 단어로 [티켓](https://www.aihero.dev/ai-coding-dictionary/ticket)을 유지하는 데 사용하고, [improve-codebase-architecture](https://aihero.dev/skills-improve-codebase-architecture)는 결정이 정착되면 호출합니다. 가장 가까운 형제는 [codebase-design](https://aihero.dev/skills-codebase-design)입니다. 함께 그들은 다른 모든 것 아래의 어휘 계층이며, 이것은 *도메인*을 위한 것이고, 저것은 모듈의 *형태*를 위한 것입니다. 일반적으로 로드할 스킬의 단계에 커밋하지 않고 규율을 원할 때 직접 도달할 수도 있습니다. 어느 스킬이 적합한지 확실하지 않으면 [ask-matt](https://aihero.dev/skills-ask-matt)가 라우팅합니다.
