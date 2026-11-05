@@ -1,43 +1,42 @@
 ---
 name: to-questionnaire
-description: Turn a decision you can't fully answer into a questionnaire for someone else to fill in.
+description: "완전히 답할 수 없는 결정을 다른 사람이 채울 설문지로 전환합니다."
 disable-model-invocation: true
 ---
 
-Turn something the user can't answer alone into a **questionnaire**: a Markdown document they hand to one person to fill in async, or fill out together over a meeting. The recipient holds knowledge the user lacks; the questionnaire pulls it out of them.
+사용자가 혼자 답할 수 없는 것을 **설문지**로 전환합니다: 그들이 한 사람에게 비동기로 채우도록 넘기거나, 회의를 통해 함께 채우는 Markdown 문서. 수신자는 사용자가 부족한 지식을 보유하고 있습니다. 설문지는 그것을 그들에게서 끌어냅니다.
 
-**Grill the send, not the subject.** Interview the user only about the _send_, which they can always answer: who it goes to, and what they need back. The questions in the document then target the **gap** between what the recipient knows and what the user needs.
+**주제가 아니라 전송을 grill하세요.** 사용자가 항상 답할 수 있는 _전송_에 대해서만 인터뷰하세요: 누구에게 가는지, 무엇을 돌려받아야 하는지. 문서의 질문은 수신자가 알고 사용자가 필요한 것 사이의 **간격**을 대상으로 합니다.
 
+1. **누구에게 가나요?** 한 번의 교환으로, 수신자의 역할, 전문성, 사용자와의 관계를 물어보세요. 이것은 설문지의 톤과 담아야 하는 컨텍스트의 양을 고정합니다. 수신자가 누구이고 사용자가 모르는 것을 알고 있는지 알 때 완료됩니다.
 
-1. **Who is it going to?** Ask, in one exchange, the recipient's role, expertise, and relationship to the user. This fixes the questionnaire's tone and how much context it must carry. Done when you know who the recipient is and what they know that the user doesn't.
+2. **무엇을 돌려받아야 하나요?** 한 번의 교환으로, 사용자가 혼자 해결할 수 없고 이 사람에게서 필요한 특정 결정이나 사실을 물어보세요. 사용자가 할 수 있거나 결정할 수 있어야 하는 것의 구체적 목록을 가질 때 완료됩니다.
 
-2. **What do you need back?** Ask, in one exchange, the specific decisions or facts the user can't resolve alone and needs from this person. Done when you have a concrete list of what the user must walk away able to do or decide.
+3. **설문지를 작성하세요.** 1-2단계의 간격을 겨냥한 질문을 초안하고, 아래 문서 구조를 따르세요. 현재 디렉토리에 `to-questionnaire-<slug>.md`로 작성하고(주제에서 슬러그) 경로를 보고하세요. 파일이 존재하고 2단계에서 사용자가 명명한 모든 항목이 질문으로 다루어질 때 완료됩니다.
 
-3. **Write the questionnaire.** Draft questions aimed at the gap from steps 1–2, following the Document structure below. Write it to `to-questionnaire-<slug>.md` in the current directory (slug from the topic) and report the path. Done when the file exists and every item the user named in step 2 is covered by a question.
+## 문서 구조
 
-## Document structure
-
-Frame the document as a **discovery questionnaire**: the user lacks context, the recipient holds it. Order questions most-important-first, since async means you may only get one pass, and group them under `##` headings by theme once there are more than a handful. Write it using the template below.
+문서를 **발견 설문지**로 프레임하세요: 사용자는 컨텍스트가 부족하고, 수신자는 그것을 보유합니다. 비동기는 한 번의 패스만 얻을 수 있으므로 가장 중요한 것 먼저 질문을 정렬하고, 몇 개 이상 있으면 테마별로 `##` 제목 아래 그룹화하세요. 아래 템플릿을 사용하여 작성하세요.
 
 <questionnaire-template>
 
 # <Questionnaire title>
 
-**Purpose:** why this questionnaire exists and the decision riding on it.
+**Purpose:** 이 설문지가 존재하는 이유와 그것에 타고 있는 결정.
 
 **From:** <the user>, **To:** <the recipient>, **How your answers will be used:** <where they go>
 
 ## Context
 
-One paragraph orienting a recipient who wasn't in the user's head. Enough to answer well, not a page.
+수신자가 사용자의 머리에 없었던 사람을 오리엔테이션하는 한 문단. 잘 답하기에 충분하며, 페이지가 아닙니다.
 
 ## How to answer
 
-Deadline and rough effort. Partial answers and "I don't know" are useful: flag anything you're unsure of rather than skipping it.
+마감일과 대략적인 노력. 부분 답변과 "모르겠습니다"는 유용합니다: 건너뛰는 대신 확신하지 못하는 것을 플래그하세요.
 
 ## <Theme heading>
 
-One `##` section per theme. Under each, its questions, most-important-first. Every question is one idea, never compound, with an answer stub directly beneath, and a one-line _why this matters_ only where the question could be misread or invite a throwaway answer.
+테마당 하나의 `##` 섹션. 각각 아래에, 가장 중요한 것 먼저 질문. 모든 질문은 하나의 아이디어이며, 절대 복합적이지 않고, 바로 아래에 답변 스텁이 있으며, 질문이 오해되거나 일회용 답변을 초대할 수 있는 곳에서만 한 줄 _이것이 중요한 이유_.
 
 <question-example>
 ### What load is the system expected to handle at launch?
@@ -49,6 +48,6 @@ _Why this matters: it decides whether we provision for burst traffic now or defe
 
 ## Anything else?
 
-A closing catch-all: anything we didn't ask that we should know?
+마무리 캐치올: 우리가 묻지 않았지만 알아야 하는 것이 있나요?
 
 </questionnaire-template>
