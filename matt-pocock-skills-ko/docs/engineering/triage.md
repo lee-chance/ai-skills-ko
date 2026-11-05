@@ -1,109 +1,109 @@
-## What it does
+## 무엇을 하는가
 
-`triage` works through the issues on your project's tracker. It moves each one through a small state machine of **triage roles** (a category role and a state role). Each issue ends as an agent-ready brief, a specific question for the reporter, or a closed issue with a recorded reason.
+`triage`는 프로젝트 트래커의 이슈들을 처리합니다. 각 이슈를 **triage 역할**의 작은 상태 머신(카테고리 역할과 상태 역할)을 통해 이동시킵니다. 각 이슈는 에이전트 준비 완료 브리프, 보고자에 대한 특정 질문, 또는 기록된 이유가 있는 닫힌 이슈로 끝납니다.
 
-It is only for issues **you didn't create**. That means raw bug reports, incoming feature requests, or an external pull request that arrived unannounced: work that came into the tracker from outside, in whatever shape the reporter left it. [Tickets](https://www.aihero.dev/ai-coding-dictionary/ticket) from [to-tickets](https://aihero.dev/skills-to-tickets) are already agent-ready, so if you run `triage` over them, you waste the work. The rule is simple: `/triage` is only for incoming issues, not for issues you created yourself.
+**여러분이 생성하지 않은** 이슈만을 위한 것입니다. 즉 원시 버그 보고서, 들어오는 기능 요청, 또는 예고 없이 도착한 외부 pull request: 보고자가 남긴 어떤 형태로든 외부에서 트래커로 들어온 작업. [to-tickets](https://aihero.dev/skills-to-tickets)의 [티켓](https://www.aihero.dev/ai-coding-dictionary/ticket)은 이미 에이전트 준비 완료이므로, 그것들에 `triage`를 실행하면 작업을 낭비합니다. 규칙은 간단합니다: `/triage`는 들어오는 이슈만을 위한 것이며, 여러분이 직접 생성한 이슈를 위한 것이 아닙니다.
 
-It also differs from labelling by hand because it recommends and then waits. It gives you its category and state call with reasoning, plus what it found in the codebase, and applies nothing until you tell it to.
+또한 수동 레이블링과 다릅니다. 권장하고 기다리기 때문입니다. 코드베이스에서 발견한 것과 함께 추론이 있는 카테고리와 상태 호출을 제공하고, 여러분이 말할 때까지 아무것도 적용하지 않습니다.
 
-## When to reach for it
+## 언제 사용하는가
 
-You invoke this by typing `/triage` and then describing what you want in plain language. The [agent](https://www.aihero.dev/ai-coding-dictionary/agent) won't reach for it on its own. Examples: "Show me anything that needs my attention", "let's look at #42", "move #42 to ready-for-agent".
+`/triage`를 입력한 다음 평범한 언어로 원하는 것을 설명하여 호출합니다. [에이전트](https://www.aihero.dev/ai-coding-dictionary/agent)는 스스로 사용하지 않습니다. 예: "내 주의가 필요한 모든 것을 보여주세요", "let's look at #42", "move #42 to ready-for-agent".
 
-| What you have | Where to go |
+| 가진 것 | 어디로 가는가 |
 | --- | --- |
-| A tracker full of raw reports from other people | `/triage` |
-| A rough idea of your own, nothing written down | [grill-with-docs](https://aihero.dev/skills-grill-with-docs) |
-| A settled conversation to turn into a [spec](https://www.aihero.dev/ai-coding-dictionary/spec) | [to-spec](https://aihero.dev/skills-to-spec) |
-| A spec to split into agent-ready tickets | [to-tickets](https://aihero.dev/skills-to-tickets) |
-| A confirmed bug that needs a root cause, not a label | [diagnosing-bugs](https://aihero.dev/skills-diagnosing-bugs) |
+| 다른 사람들의 원시 보고서로 가득 찬 트래커 | `/triage` |
+| 여러분 자신의 대략적인 아이디어, 아무것도 작성되지 않음 | [grill-with-docs](https://aihero.dev/skills-grill-with-docs) |
+| [스펙](https://www.aihero.dev/ai-coding-dictionary/spec)으로 바꿀 정착된 대화 | [to-spec](https://aihero.dev/skills-to-spec) |
+| 에이전트 준비 완료 티켓으로 나눌 스펙 | [to-tickets](https://aihero.dev/skills-to-tickets) |
+| 레이블이 아니라 근본 원인이 필요한 확인된 버그 | [diagnosing-bugs](https://aihero.dev/skills-diagnosing-bugs) |
 
-## Prerequisites
+## 전제 조건
 
-`triage` reads and writes your issue tracker, so [setup-matt-pocock-skills](https://aihero.dev/skills-setup-matt-pocock-skills) must first configure that tracker and its label vocabulary. The role names below are **canonical**. The label strings in your tracker may differ, and setup provides the mapping. If your tracker already uses the canonical names exactly, you have nothing to map and nothing to set up.
+`triage`는 이슈 트래커를 읽고 쓰므로, [setup-matt-pocock-skills](https://aihero.dev/skills-setup-matt-pocock-skills)가 먼저 그 트래커와 레이블 어휘를 구성해야 합니다. 아래의 역할 이름은 **정규**입니다. 트래커의 레이블 문자열은 다를 수 있으며, 설정이 매핑을 제공합니다. 트래커가 이미 정확히 정규 이름을 사용한다면, 매핑할 것도 설정할 것도 없습니다.
 
-The tracker config also decides whether external pull requests count as a request surface, and who counts as external. That flag is off by default, and setup no longer asks about it. To bring PRs into scope, turn it on in `docs/agents/issue-tracker.md`.
+트래커 구성은 또한 외부 pull request가 요청 표면으로 계산되는지, 누가 외부로 계산되는지 결정합니다. 그 플래그는 기본적으로 꺼져 있으며, 설정은 더 이상 그것에 대해 묻지 않습니다. PR을 범위에 포함시키려면, `docs/agents/issue-tracker.md`에서 그것을 켜세요.
 
-## The state machine
+## 상태 머신
 
-Every triaged item ends with exactly one category role and one state role. There are two categories: `bug` (something is broken) and `enhancement` (new feature or improvement). There are five states:
+모든 triage된 항목은 정확히 하나의 카테고리 역할과 하나의 상태 역할로 끝납니다. 두 가지 카테고리가 있습니다: `bug` (무언가가 깨짐)와 `enhancement` (새 기능 또는 개선). 다섯 가지 상태가 있습니다:
 
-| State | Means |
+| 상태 | 의미 |
 | --- | --- |
-| `needs-triage` | You need to evaluate it. An unlabelled issue normally lands here first. |
-| `needs-info` | Waiting on the reporter. Returns to `needs-triage` when they reply. |
-| `ready-for-agent` | Fully specified, with an agent brief attached. An [AFK](https://www.aihero.dev/ai-coding-dictionary/afk) agent can take it. |
-| `ready-for-human` | The same brief, plus why an agent can't do it: judgment, external access, manual testing. |
-| `wontfix` | Closed, with the reason recorded. |
+| `needs-triage` | 평가가 필요합니다. 레이블이 없는 이슈는 보통 여기에 먼저 도착합니다. |
+| `needs-info` | 보고자를 기다립니다. 그들이 답하면 `needs-triage`로 돌아갑니다. |
+| `ready-for-agent` | 에이전트 브리프가 첨부되어 완전히 지정됨. [AFK](https://www.aihero.dev/ai-coding-dictionary/afk) 에이전트가 가져갈 수 있습니다. |
+| `ready-for-human` | 같은 브리프, 그리고 에이전트가 할 수 없는 이유: 판단, 외부 접근, 수동 테스트. |
+| `wontfix` | 이유가 기록되어 닫힘. |
 
-That is the whole vocabulary. The rule of exactly one state role per item keeps the queries simple. The states are also the most-requested area of the [skill](https://www.aihero.dev/ai-coding-dictionary/skill). Users have asked for a state for work that is specified but blocked on another issue, a `deferred` state for work that waits on a future trigger, and a terminal `implemented` state. None of those has shipped. See the questions below.
+이것이 전체 어휘입니다. 항목당 정확히 하나의 상태 역할 규칙은 쿼리를 단순하게 유지합니다. 상태는 또한 [스킬](https://www.aihero.dev/ai-coding-dictionary/skill)의 가장 많이 요청된 영역입니다. 사용자들은 지정되었지만 다른 이슈에 차단된 작업을 위한 상태, 미래 트리거를 기다리는 작업을 위한 `deferred` 상태, 그리고 터미널 `implemented` 상태를 요청했습니다. 그 중 어떤 것도 배포되지 않았습니다. 아래 질문을 참조하세요.
 
-`wontfix` has three cases. The difference matters because only one of them writes to the knowledge base:
+`wontfix`에는 세 가지 경우가 있습니다. 그 중 하나만 지식 베이스에 쓰기 때문에 차이가 중요합니다:
 
-| Why you're closing it | What happens |
+| 닫는 이유 | 무슨 일이 일어나는가 |
 | --- | --- |
-| Already implemented | A comment that points to where the feature already lives. Nothing goes into `.out-of-scope/`, because it's a built feature, not a rejected one, and a file there would break the dedup checks. |
-| Rejected bug | Polite explanation, then close. |
-| Rejected enhancement | A file in `.out-of-scope/`, linked from the closing comment, then close. |
+| 이미 구현됨 | 기능이 이미 있는 곳을 가리키는 코멘트. 거부된 것이 아니라 빌드된 기능이고 거기 파일은 중복 제거 확인을 깨뜨릴 것이므로, `.out-of-scope/`에는 아무것도 들어가지 않습니다. |
+| 거부된 버그 | 정중한 설명, 그 다음 닫기. |
+| 거부된 개선 | `.out-of-scope/`의 파일, 닫는 코멘트에서 링크, 그 다음 닫기. |
 
-`.out-of-scope/` holds one markdown file per rejected **concept**, not per issue. Each file is a short design document, not a database row. It says what was rejected, why, and lists every issue that asked for it. `triage` reads the whole directory before it evaluates anything. It matches by concept, not keyword, so "night theme" matches `dark-mode.md`. When it finds a match, it shows you the old decision and asks if you still agree with it, instead of arguing the request again from the start.
+`.out-of-scope/`는 이슈당이 아니라 거부된 **개념**당 하나의 markdown 파일을 보유합니다. 각 파일은 데이터베이스 행이 아니라 짧은 설계 문서입니다. 무엇이 거부되었는지, 왜인지 말하고, 그것을 요청한 모든 이슈를 나열합니다. `triage`는 무엇이든 평가하기 전에 전체 디렉터리를 읽습니다. 키워드가 아니라 개념으로 매치하므로, "night theme"이 `dark-mode.md`와 매치됩니다. 매치를 발견하면, 처음부터 다시 요청을 논의하는 대신 오래된 결정을 보여주고 여전히 동의하는지 묻습니다.
 
-## Verify before you brief
+## 브리프하기 전에 검증
 
-Before any [grilling](https://www.aihero.dev/ai-coding-dictionary/grilling), `triage` checks that the claim holds. For a bug, it reproduces it from the reporter's steps. For a PR, it checks out the branch and runs the relevant tests. Then it reports one of three results:
+어떤 [grilling](https://www.aihero.dev/ai-coding-dictionary/grilling)보다 먼저, `triage`는 주장이 유지되는지 확인합니다. 버그의 경우 보고자의 단계에서 재현합니다. PR의 경우 브랜치를 체크아웃하고 관련 테스트를 실행합니다. 그런 다음 세 가지 결과 중 하나를 보고합니다:
 
-- Confirmed, with the code path.
-- Failed to reproduce.
-- Not enough detail to try. This is the strongest `needs-info` signal there is.
+- 코드 경로와 함께 확인됨.
+- 재현 실패.
+- 시도하기에 충분하지 않은 세부 사항. 이것이 가장 강력한 `needs-info` 신호입니다.
 
-In the same pass, it runs two more checks against the codebase. The **redundancy** check asks if the feature is already implemented, and searches by domain concept, not by the reporter's wording. The **prior rejection** check asks if `.out-of-scope/` already says no. Both checks are cheap, and a hit on either produces a `wontfix`.
+같은 패스에서 코드베이스에 대해 두 가지 확인을 더 실행합니다. **중복** 확인은 기능이 이미 구현되었는지 묻고, 보고자의 표현이 아니라 도메인 개념으로 검색합니다. **이전 거부** 확인은 `.out-of-scope/`이 이미 아니오라고 말하는지 묻습니다. 두 확인 모두 저렴하며, 둘 중 하나의 히트는 `wontfix`를 생성합니다.
 
-All of this work makes one artifact good: the **agent brief**. This is the structured comment that `triage` posts when an issue moves to `ready-for-agent`. After `triage` posts it, the brief is the contract and the original report is only context. Briefs are **durable** rather than precise, because an issue can sit in `ready-for-agent` for weeks while the code changes. So a brief names types, signatures and behavioural contracts, and never file paths or line numbers. A confirmed reproduction makes a much stronger brief than a guess.
+이 모든 작업이 하나의 아티팩트를 좋게 만듭니다: **에이전트 브리프**. 이것은 이슈가 `ready-for-agent`로 이동할 때 `triage`가 게시하는 구조화된 코멘트입니다. `triage`가 게시한 후, 브리프는 계약이며 원래 보고서는 컨텍스트일 뿐입니다. 이슈가 코드가 변경되는 동안 몇 주 동안 `ready-for-agent`에 있을 수 있기 때문에 브리프는 정밀하기보다 **내구성**이 있습니다. 따라서 브리프는 타입, 시그니처, 동작 계약을 명시하며, 파일 경로나 줄 번호는 절대 명시하지 않습니다. 확인된 재현은 추측보다 훨씬 강력한 브리프를 만듭니다.
 
-## A PR is an issue with attached code
+## PR은 코드가 첨부된 이슈입니다
 
-If the tracker treats external pull requests as a request surface, they go through the same machine, with the same categories, states and transitions. The states apply to the diff. `ready-for-agent` means a brief is attached and an agent should take the next step on the code. `ready-for-human` means a person can merge it. A brief on a PR describes what is left to do to the existing diff, not how to build the thing from nothing.
+트래커가 외부 pull request를 요청 표면으로 취급한다면, 그것들은 같은 카테고리, 상태, 전환과 함께 같은 머신을 통과합니다. 상태는 diff에 적용됩니다. `ready-for-agent`는 브리프가 첨부되어 있고 에이전트가 코드에 대한 다음 단계를 수행해야 한다는 것을 의미합니다. `ready-for-human`은 사람이 그것을 병합할 수 있다는 것을 의미합니다. PR의 브리프는 처음부터 것을 빌드하는 방법이 아니라 기존 diff에 남은 작업을 설명합니다.
 
-Discovery shows only *external* PRs, because a collaborator's in-progress branch is not triage work. That filter applies only to discovery. If you name a PR explicitly, `triage` handles it, whoever wrote it.
+발견은 *외부* PR만 보여줍니다. 협력자의 진행 중인 브랜치는 triage 작업이 아니기 때문입니다. 그 필터는 발견에만 적용됩니다. PR을 명시적으로 명시하면, `triage`는 누가 작성했든 그것을 처리합니다.
 
-## Common questions
+## 자주 묻는 질문
 
-**I ran `/to-spec` and `/to-tickets`, and now those tickets are sitting there untriaged. Do I run `/triage` over them?**
-No. They are already agent-ready. `to-tickets` applies the `ready-for-agent` label when it publishes them, so an AFK runner picks them up without another pass. The user who hit this had run the spec flow and seen `needs-triage` on the output, and their AFK runner ignored everything. `triage` is the on-ramp for work that arrives from outside. The spec flow is the lane for work you start yourself. The two meet at `ready-for-agent`, not before.
+**`/to-spec`과 `/to-tickets`를 실행했는데, 이제 그 티켓들이 triage되지 않은 채 거기 있어요. 그것들에 `/triage`를 실행하나요?**
+아니요. 이미 에이전트 준비 완료입니다. `to-tickets`는 게시할 때 `ready-for-agent` 레이블을 적용하므로, AFK 러너가 다른 패스 없이 그것들을 선택합니다. 이것을 경험한 사용자는 스펙 플로우를 실행하고 출력에서 `needs-triage`를 보았고, 그들의 AFK 러너는 모든 것을 무시했습니다. `triage`는 외부에서 도착하는 작업의 진입로입니다. 스펙 플로우는 여러분이 직접 시작하는 작업의 레인입니다. 둘은 그 전이 아니라 `ready-for-agent`에서 만납니다.
 
-**Is `triage` still relevant now that there's a `to-spec` → `to-tickets` → `implement` flow?**
-Only if you have inbound work. `triage` is older than that flow and does a different job: it handles reports other people filed. If everything in your tracker came from your own planning, you will rarely use it. If you maintain anything public, or your team files bugs to you, it is where that work starts. The main use is open-source repos that take issues from external contributors.
+**이제 `to-spec` → `to-tickets` → `implement` 플로우가 있는데 `triage`가 여전히 관련이 있나요?**
+인바운드 작업이 있는 경우에만입니다. `triage`는 그 플로우보다 오래되었으며 다른 일을 합니다: 다른 사람들이 제출한 보고서를 처리합니다. 트래커의 모든 것이 여러분 자신의 계획에서 나왔다면, 드물게 사용할 것입니다. 공개적인 무언가를 유지하거나, 팀이 버그를 여러분에게 제출한다면, 그것이 그 작업이 시작되는 곳입니다. 주된 사용은 외부 기여자로부터 이슈를 받는 오픈 소스 리포입니다.
 
-**The agent tried to apply `ready-for-agent` and `gh` said the label doesn't exist.**
-This is a known open bug ([#616](https://github.com/mattpocock/skills/issues/616)). `setup-matt-pocock-skills` writes the label vocabulary into `docs/agents/triage-labels.md`, but does not create the labels in your tracker. Create the five state labels and two category labels yourself, once, with `gh label create` or the tracker's UI, and the error stops. The issue links to a community fix branch that has not been merged.
+**에이전트가 `ready-for-agent`를 적용하려고 했는데 `gh`가 레이블이 존재하지 않는다고 말했어요.**
+이것은 알려진 열린 버그입니다 ([#616](https://github.com/mattpocock/skills/issues/616)). `setup-matt-pocock-skills`는 레이블 어휘를 `docs/agents/triage-labels.md`에 작성하지만, 트래커에 레이블을 생성하지는 않습니다. 다섯 개의 상태 레이블과 두 개의 카테고리 레이블을 `gh label create`나 트래커의 UI로 한 번 직접 생성하면 오류가 멈춥니다. 이슈는 병합되지 않은 커뮤니티 수정 브랜치에 링크합니다.
 
-**Five states aren't enough. What about blocked, or deferred, or implemented?**
-This is the most-filed gap on the skill. It comes in three forms:
+**다섯 개의 상태로는 충분하지 않아요. blocked, deferred, implemented는요?**
+이것이 스킬에서 가장 많이 제출된 공백입니다. 세 가지 형태로 나타납니다:
 
-- An issue that is fully specified but waits on another issue to close ([#139](https://github.com/mattpocock/skills/issues/139)). The reporter said `ready-for-agent` is "technically true" there but misleading, so an agent picks it up and gets stuck.
-- Future work that is intended but waits on a trigger, so it is not actionable yet ([#297](https://github.com/mattpocock/skills/issues/297)).
-- A terminal state for "implemented, awaiting verification". Without it, an AFK runner can queue finished tickets again.
+- 완전히 지정되었지만 다른 이슈가 닫히기를 기다리는 이슈 ([#139](https://github.com/mattpocock/skills/issues/139)). 보고자는 `ready-for-agent`가 거기서는 "기술적으로 참"이지만 오해의 소지가 있다고 말했으므로, 에이전트가 그것을 선택하고 막힙니다.
+- 의도되었지만 트리거를 기다리는 미래 작업이므로, 아직 실행 가능하지 않습니다 ([#297](https://github.com/mattpocock/skills/issues/297)).
+- "구현됨, 검증 대기" 터미널 상태. 그것 없이는 AFK 러너가 완료된 티켓을 다시 큐에 넣을 수 있습니다.
 
-The blocked case is accepted as real, but the name is undecided (`blocked` versus `paused`). None of it has shipped. As a workaround, people add a repo-local extra label next to the category. The state slot then holds an accurate value, but the skill does not know about the extra label. One community fork goes further and adds `needs-slicing`, `tracking` and effort labels. That works, but it belongs to that fork, not to the skill.
+차단된 경우는 실제로 받아들여지지만, 이름은 미정입니다 (`blocked` 대 `paused`). 그 중 어떤 것도 배포되지 않았습니다. 우회책으로, 사람들은 카테고리 옆에 리포 로컬 추가 레이블을 추가합니다. 상태 슬롯은 그러면 정확한 값을 보유하지만, 스킬은 추가 레이블에 대해 알지 못합니다. 한 커뮤니티 포크는 더 나아가 `needs-slicing`, `tracking`, 노력 레이블을 추가합니다. 그것은 작동하지만, 스킬이 아니라 그 포크에 속합니다.
 
-**How is this different from `/diagnosing-bugs`?**
-The verification step here is shallow on purpose. It answers "is this real, and roughly where does it live", and does not look for a root cause. If a bug does not reproduce from the reporter's steps in a few minutes, use `needs-info`, or use [diagnosing-bugs](https://aihero.dev/skills-diagnosing-bugs) if you want to investigate it now. Neither skill's text mentions the other yet. A user reported that gap, and it is still open.
+**이것이 `/diagnosing-bugs`와 어떻게 다른가요?**
+여기의 검증 단계는 의도적으로 얕습니다. "이것이 실제이고, 대략 어디에 있는가"에 답하며, 근본 원인을 찾지 않습니다. 버그가 몇 분 안에 보고자의 단계에서 재현되지 않으면, `needs-info`를 사용하거나, 지금 조사하고 싶다면 [diagnosing-bugs](https://aihero.dev/skills-diagnosing-bugs)를 사용하세요. 어느 스킬의 텍스트도 아직 다른 것을 언급하지 않습니다. 한 사용자가 그 공백을 보고했고, 아직 열려 있습니다.
 
-**Can I point it at my whole backlog and let it run?**
-You can ask, but watch what it reads. The "show what needs attention" pass is a cheap listing for *selection*. You pick one issue, and then `triage` gathers full [context](https://www.aihero.dev/ai-coding-dictionary/context) on that issue. If you run it across twenty issues at once, the agent can use that cheap listing as its only evidence without telling you. The listing returns issue bodies but not comments. One user hit exactly this. Three issues already had a comment that said "already fixed, recommend closing", and all three got new agent briefs instead. For a bulk pass, say explicitly that it must read the comments on each issue.
+**전체 백로그에 가리키고 실행하게 할 수 있나요?**
+요청할 수 있지만, 무엇을 읽는지 지켜보세요. "주의가 필요한 것 보여주기" 패스는 *선택*을 위한 저렴한 리스팅입니다. 하나의 이슈를 선택하면, `triage`는 그 이슈에 대한 전체 [컨텍스트](https://www.aihero.dev/ai-coding-dictionary/context)를 수집합니다. 한 번에 20개 이슈에 걸쳐 실행하면, 에이전트는 여러분에게 말하지 않고 그 저렴한 리스팅을 유일한 증거로 사용할 수 있습니다. 리스팅은 이슈 본문을 반환하지만 코멘트는 반환하지 않습니다. 한 사용자가 정확히 이것을 경험했습니다. 세 개의 이슈는 이미 "이미 수정됨, 닫기 권장"이라고 말하는 코멘트가 있었지만, 세 개 모두 대신 새 에이전트 브리프를 얻었습니다. 대량 패스의 경우, 각 이슈의 코멘트를 읽어야 한다고 명시적으로 말하세요.
 
-**Does it work with Linear, or anything other than GitHub Issues?**
-Yes. The tracker is config, not a hard-coded assumption. People run it against Linear (through the `linear` CLI), GitLab, and plain markdown files under `.scratch/`. A common split is Linear for issues and planning, and GitHub for code and PRs. Skills that say "issue tracker" then map to Linear, and skills that say "PR" map to GitHub. The local-markdown tracker has an open template bug: the generated file can contain the acceptance criteria twice, once at the top level and once inside the agent brief ([#200](https://github.com/mattpocock/skills/issues/200)).
+**Linear나 GitHub Issues 외의 다른 것과 작동하나요?**
+네. 트래커는 하드 코딩된 가정이 아니라 구성입니다. 사람들은 Linear(`linear` CLI를 통해), GitLab, 그리고 `.scratch/` 아래의 평범한 markdown 파일에 대해 실행합니다. 일반적인 분할은 이슈와 계획을 위한 Linear, 그리고 코드와 PR을 위한 GitHub입니다. "issue tracker"라고 말하는 스킬은 그러면 Linear에 매핑되고, "PR"이라고 말하는 스킬은 GitHub에 매핑됩니다. 로컬 markdown 트래커에는 열린 템플릿 버그가 있습니다: 생성된 파일은 승인 기준을 두 번, 한 번은 최상위 수준에, 한 번은 에이전트 브리프 내부에 포함할 수 있습니다 ([#200](https://github.com/mattpocock/skills/issues/200)).
 
-## It's working if
+## 제대로 작동한다는 신호
 
-- Every item it touches ends with exactly one category role and one state role, never zero, and never two conflicting states.
-- It gives you a recommendation with reasoning and stops. It does not relabel the issue and move on.
-- It reproduced the bug, or checked out and ran the PR, before anything reached `ready-for-agent`.
-- The briefs it writes name types and behaviours, and contain no file paths and no line numbers.
-- When a request you rejected six months ago comes back, it tells you and quotes the old reason instead of triaging it again.
-- Every comment it posts starts with `> *This was generated by AI during triage.*`
+- 접촉하는 모든 항목이 정확히 하나의 카테고리 역할과 하나의 상태 역할로 끝나며, 절대 0이 아니고, 절대 두 개의 충돌하는 상태가 아닙니다.
+- 추론과 함께 권장 사항을 주고 멈춥니다. 이슈를 다시 레이블하고 계속 진행하지 않습니다.
+- 무엇이든 `ready-for-agent`에 도달하기 전에 버그를 재현했거나, PR을 체크아웃하고 실행했습니다.
+- 작성하는 브리프는 타입과 동작을 명시하며, 파일 경로와 줄 번호를 포함하지 않습니다.
+- 6개월 전에 거부한 요청이 돌아오면, 다시 triage하는 대신 여러분에게 말하고 오래된 이유를 인용합니다.
+- 게시하는 모든 코멘트는 `> *This was generated by AI during triage.*`로 시작합니다.
 
-## Where it fits
+## 어디에 적용되는지
 
-`triage` is an **on-ramp**, not a step in the main chain. The main flow starts from an idea you had (grill, spec, tickets, implement, review). `triage` is the parallel lane for work that came from someone else. Both lanes end at the same place: an issue labelled `ready-for-agent` with a brief on it. [implement](https://aihero.dev/skills-implement) picks that up the same way it picks up a ticket from [to-tickets](https://aihero.dev/skills-to-tickets). When a request needs more detail before `triage` can brief it, `triage` runs [grilling](https://aihero.dev/skills-grilling) and [domain-modeling](https://aihero.dev/skills-domain-modeling) together, one round of questions at a time, so it records decisions in `GLOSSARY.md` and the ADRs as you make them. When you're not sure which lane you are in, [ask-matt](https://aihero.dev/skills-ask-matt) routes you.
+`triage`는 주 체인의 단계가 아니라 **진입로**입니다. 주 플로우는 여러분이 가진 아이디어에서 시작됩니다 (grill, spec, tickets, implement, review). `triage`는 다른 사람에게서 온 작업의 병렬 레인입니다. 두 레인은 같은 곳에서 끝납니다: 브리프가 있는 `ready-for-agent` 레이블이 붙은 이슈. [implement](https://aihero.dev/skills-implement)는 [to-tickets](https://aihero.dev/skills-to-tickets)에서 티켓을 선택하는 것과 같은 방식으로 그것을 선택합니다. 요청이 `triage`가 브리프하기 전에 더 많은 세부 사항이 필요할 때, `triage`는 [grilling](https://aihero.dev/skills-grilling)과 [domain-modeling](https://aihero.dev/skills-domain-modeling)을 함께 실행하며, 한 번에 한 라운드의 질문으로, 여러분이 내리는 대로 결정을 `GLOSSARY.md`와 ADR에 기록합니다. 어떤 레인에 있는지 확실하지 않을 때, [ask-matt](https://aihero.dev/skills-ask-matt)가 안내합니다.
