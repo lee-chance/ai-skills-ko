@@ -1,44 +1,44 @@
 ---
 name: wizard
-description: Generate an interactive bash wizard that walks a human through steps only they can perform. Use when provisioning infrastructure, setting up credentials or CI secrets, walking an unfamiliar third-party dashboard, or running a one-off migration or cutover. Don't invoke this for steps the agent can perform itself.
+description: "인간만 수행할 수 있는 단계를 인간에게 안내하는 대화형 bash 마법사를 생성합니다. 인프라 프로비저닝, 자격 증명 또는 CI 시크릿 설정, 익숙하지 않은 타사 대시보드 탐색, 일회성 마이그레이션 또는 전환 실행에 사용하세요. 에이전트가 직접 수행할 수 있는 단계를 위해 호출하지 마세요."
 ---
 
 # Wizard
 
-A **wizard** is a bash script that walks a human, step by step, through a manual procedure that's tedious to do by hand and tedious to re-explain to an AI every time. It opens each URL, says exactly what to click and copy, captures the values, writes them where they belong (`.env`, GitHub secrets), confirms at every stage, and shows how many stages are left. It might configure third-party services, run a one-off migration, or move the project from one state to another.
+**마법사**는 손으로 하기 지루하고 매번 AI에게 다시 설명하기 지루한 수동 절차를 단계별로 인간에게 안내하는 bash 스크립트입니다. 각 URL을 열고, 정확히 무엇을 클릭하고 복사할지 말하고, 값을 캡처하고, 속한 곳(`.env`, GitHub 시크릿)에 작성하고, 모든 단계에서 확인하고, 남은 단계 수를 보여줍니다. 타사 서비스를 구성하거나, 일회성 마이그레이션을 실행하거나, 프로젝트를 한 상태에서 다른 상태로 이동할 수 있습니다.
 
-The delightful UX is already solved by [template.sh](template.sh): stage-by-stage progress, confirmation gates, cross-platform URL opening (including WSL), hidden secret entry, idempotent `.env` upserts, `gh secret`/`gh variable` writes, and a closing summary. **Your job is only to scope the procedure and author its stages.** The library above the `STAGES` marker is identical in every wizard; that consistency is the point: never hand-edit it.
+기분 좋은 UX는 이미 [template.sh](template.sh)로 해결되었습니다: 단계별 진행, 확인 게이트, 크로스 플랫폼 URL 열기(WSL 포함), 숨겨진 시크릿 입력, 멱등성 `.env` upsert, `gh secret`/`gh variable` 쓰기, 마무리 요약. **여러분의 일은 절차를 범위 지정하고 단계를 작성하는 것뿐입니다.** `STAGES` 마커 위의 라이브러리는 모든 마법사에서 동일합니다. 일관성이 포인트입니다: 절대 손으로 편집하지 마세요.
 
-A wizard is ephemeral by default: built for one run, saved to a scratch or `scripts/` path, deleted when the job's done. Commit it only when the user wants a repeatable setup path that should live in the repo.
+마법사는 기본적으로 임시입니다: 한 번 실행을 위해 빌드되고, 스크래치 또는 `scripts/` 경로에 저장되고, 작업이 완료되면 삭제됩니다. 사용자가 저장소에 있어야 하는 반복 가능한 설정 경로를 원할 때만 커밋하세요.
 
-## Process
+## 프로세스
 
-### 1. Scope the procedure
+### 1. 절차 범위 지정
 
-Work out every manual step the human must take and every value that gets captured along the way. Read the repo first, don't ask cold:
+인간이 취해야 하는 모든 수동 단계와 그 과정에서 캡처되는 모든 값을 작업하세요. 먼저 저장소를 읽고, 차갑게 묻지 마세요:
 
-- For setup: `.env`, `.env.example`, `.env.*`, `README`, `docker-compose*`, framework config, and `.github/workflows/*` (every `secrets.*` / `vars.*` reference is a value the wizard must produce).
-- For a migration or transition: the current state, the target state, and the irreversible actions between them.
+- 설정의 경우: `.env`, `.env.example`, `.env.*`, `README`, `docker-compose*`, 프레임워크 구성, `.github/workflows/*` (모든 `secrets.*` / `vars.*` 참조는 마법사가 생성해야 하는 값입니다).
+- 마이그레이션 또는 전환의 경우: 현재 상태, 대상 상태, 그것들 사이의 되돌릴 수 없는 행동.
 
-Then show the user the ordered list of stages and the values each produces, and confirm: they may add, drop, or reorder.
+그런 다음 사용자에게 단계의 순서가 지정된 목록과 각각이 생성하는 값을 보여주고, 확인하세요: 그들은 추가하거나, 삭제하거나, 재정렬할 수 있습니다.
 
-**Done when:** every stage is named in order, and for each captured value you know (a) where the human gets it, (b) where it's written (`.env`, a GitHub secret, both, or nowhere; some stages are pure actions), and (c) whether it's secret (hidden entry) or public.
+**완료 시기:** 모든 단계가 순서대로 명명되고, 각 캡처된 값에 대해 (a) 인간이 어디서 얻는지, (b) 어디에 작성되는지(`.env`, GitHub 시크릿, 둘 다, 또는 어디도; 일부 단계는 순수 행동), (c) 시크릿인지(숨겨진 입력) 또는 공개인지 알고 있습니다.
 
-### 2. Map each stage's journey
+### 2. 각 단계의 여정 맵
 
-For each stage, write the precise path a human follows: which URL to open, what to do there, where a value is shown, which variable it fills: e.g. "Dashboard → Developers → API keys → Reveal test key → copy". Where you don't actually know the current UI or the exact command, say so and ask the user or check the docs: never invent steps that may not exist.
+각 단계에 대해, 인간이 따르는 정확한 경로를 작성하세요: 어떤 URL을 열지, 거기서 무엇을 할지, 값이 어디에 표시되는지, 어떤 변수를 채우는지: 예: "Dashboard → Developers → API keys → Reveal test key → copy". 현재 UI나 정확한 명령을 실제로 모르는 곳에서, 말하고 사용자에게 물어보거나 문서를 확인하세요: 존재하지 않을 수 있는 단계를 절대 발명하지 마세요.
 
-**Done when:** every stage traces to concrete instructions a stranger could follow.
+**완료 시기:** 모든 단계가 낯선 사람이 따를 수 있는 구체적인 지시로 추적됩니다.
 
-### 3. Author the wizard
+### 3. 마법사 작성
 
-Copy `template.sh` to the target path. Replace the example stage with one `stage` per step, in dependency order. Use the library helpers: `stage`, `say`/`step`, `open_url`, `ask`/`ask_secret`, `write_env`, `set_secret`/`set_var`, `pause`/`confirm`. Set `TOTAL_STAGES` to the number of stages you wrote.
+`template.sh`를 대상 경로에 복사하세요. 예제 단계를 단계당 하나의 `stage`로 교체하세요. 의존성 순서로. 라이브러리 헬퍼를 사용하세요: `stage`, `say`/`step`, `open_url`, `ask`/`ask_secret`, `write_env`, `set_secret`/`set_var`, `pause`/`confirm`. `TOTAL_STAGES`를 작성한 단계 수로 설정하세요.
 
-Hold the bar the template sets: open the URL before asking for its value, use `ask_secret` for anything secret, `write_env` every persisted value, `set_secret` only the values CI actually needs, and `confirm` before any irreversible action. Each `stage` clears the screen so only the current step is visible: keep a stage to one focused task so nothing the human needs scrolls away. Don't touch the library above the marker.
+템플릿이 설정하는 바를 유지하세요: 값을 물어보기 전에 URL을 열고, 시크릿인 것에 `ask_secret`을 사용하고, 모든 지속된 값을 `write_env`하고, CI가 실제로 필요한 값만 `set_secret`하고, 되돌릴 수 없는 행동 전에 `confirm`하세요. 각 `stage`는 화면을 지워 현재 단계만 보이도록 합니다: 인간이 필요한 것이 스크롤되지 않도록 하나의 집중된 작업에 단계를 유지하세요. 마커 위의 라이브러리를 건드리지 마세요.
 
-### 4. Verify and hand off
+### 4. 검증 및 넘김
 
-- `bash -n <script>`; run `shellcheck` if available.
+- `bash -n <script>`; 사용 가능하면 `shellcheck` 실행.
 - `chmod +x <script>`.
-- Don't run it end-to-end yourself: it opens browsers and blocks on human input. Trace it statically instead: every value from step 1 is captured and lands where step 1 said, and every `set_secret` name exactly matches a `secrets.*` reference in CI.
-- Tell the user how to run it. If it's a repeatable setup path, commit it and link it from the README so the next person runs the script instead of asking an AI.
+- 직접 끝에서 끝까지 실행하지 마세요: 브라우저를 열고 인간 입력에 차단합니다. 대신 정적으로 추적하세요: 1단계의 모든 값이 캡처되고 1단계가 말한 곳에 착륙하고, 모든 `set_secret` 이름이 CI의 `secrets.*` 참조와 정확히 일치합니다.
+- 사용자에게 실행 방법을 말하세요. 반복 가능한 설정 경로이면, 커밋하고 README에서 링크하여 다음 사람이 AI에게 묻는 대신 스크립트를 실행하도록 하세요.
