@@ -1,10 +1,10 @@
-# Explicit `/setup-matt-pocock-skills` pointer only for hard dependencies
+# 하드 의존성에만 명시적 `/setup-matt-pocock-skills` 포인터
 
-Engineering skills depend on per-repo config (issue tracker, triage label vocabulary, domain doc layout) seeded by `/setup-matt-pocock-skills`. Some skills cannot meaningfully function without that config: they have to publish to a specific issue tracker or apply a specific label string. Others only use it to sharpen output (vocabulary, ADR awareness) and degrade gracefully without it.
+엔지니어링 스킬은 `/setup-matt-pocock-skills`에 의해 시드된 저장소별 설정(이슈 트래커, 트리아지 라벨 어휘, 도메인 문서 레이아웃)에 의존합니다. 일부 스킬은 해당 설정 없이는 의미 있게 작동할 수 없습니다: 특정 이슈 트래커에 게시하거나 특정 라벨 문자열을 적용해야 합니다. 다른 스킬들은 출력을 다듬는 데만 사용하며(어휘, ADR 인식) 없어도 우아하게 저하됩니다.
 
-We split these into **hard-dependency** and **soft-dependency** skills:
+이것들을 **하드 의존성**과 **소프트 의존성** 스킬로 나눕니다:
 
-- **Hard dependency** (`to-tickets`, `to-spec`, `triage`): include an explicit one-liner: _"… should have been provided to you; run `/setup-matt-pocock-skills` if not."_ Without the mapping, output is wrong, not just fuzzy.
-- **Soft dependency** (`diagnose`, `tdd`, `improve-codebase-architecture`): reference "the project's domain glossary" and "ADRs in the area you're touching" in vague prose only. If the docs aren't there, the skill still works; output is just less sharp.
+- **하드 의존성** (`to-tickets`, `to-spec`, `triage`): 명시적인 한 줄을 포함합니다: _"... 여러분에게 제공되었어야 합니다. 그렇지 않으면 `/setup-matt-pocock-skills`를 실행하세요."_ 매핑 없이는 출력이 틀립니다. 단지 흐릿한 것이 아닙니다.
+- **소프트 의존성** (`diagnose`, `tdd`, `improve-codebase-architecture`): "프로젝트의 도메인 용어집"과 "여러분이 건드리는 영역의 ADR"을 모호한 산문으로만 참조합니다. 문서가 없으면 스킬은 여전히 작동합니다. 출력이 단지 덜 날카로울 뿐입니다.
 
-The split keeps soft-dependency skills token-light and avoids cargo-culting the setup pointer into places where it isn't load-bearing.
+분할은 소프트 의존성 스킬을 토큰 가볍게 유지하고 부하를 지지 않는 곳에 설정 포인터를 화물 숭배하는 것을 피합니다.
