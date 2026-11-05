@@ -1,76 +1,76 @@
-# Annotations, guides and connecting lines
+# 주석, 가이드, 연결선
 
-An annotation explains one relationship: what a chart point means, how big a selection is, where an event went, which object a note belongs to. The product stays visible. A line earns its place by removing ambiguity; it is not a reason to add a spotlight, another frame or a caption to every object.
+주석은 관계 하나를 설명합니다. 차트 점이 무엇을 의미하는지, 선택이 얼마나 큰지, 이벤트가 어디로 갔는지, 노트가 어느 객체에 속하는지입니다. 제품은 보이게 둡니다. 선은 모호함을 없앨 때 자리를 얻습니다. 스포트라이트, 또 다른 프레임, 모든 객체에 캡션을 더할 이유가 아닙니다.
 
-Design the product before its annotations. A line that attaches perfectly cannot rescue faint text, weak hierarchy or generic nested cards. Give the table, invoice or record believable anatomy, readable type and one clear action, and save the stronger color for the relationship the line explains.
+주석보다 먼저 제품을 설계하세요. 완벽하게 붙는 선도 흐린 텍스트, 약한 계층, 평범한 중첩 카드를 구하지 못합니다. 표, 송장, 기록에 믿을 수 있는 구조, 읽히는 타입, 분명한 액션 하나를 주고, 더 강한 색은 선이 설명하는 관계에 아끼세요.
 
-See `examples/annotations/`. Its picker mounts one of eight studies, so only the chosen story runs. The scenes use a native canvas width down to 288px instead of shrinking their labels, and each has a reduced-motion result.
+`examples/annotations/`를 보세요. 선택기가 여덟 연구 중 하나를 마운트하므로, 고른 스토리만 실행됩니다. 장면은 레이블을 줄이는 대신 288px까지 네이티브 캔버스 너비를 쓰고, 각각 모션 감소 결과가 있습니다.
 
-| Study | Cause and result | Geometry owner |
+| 연구 | 원인과 결과 | 지오메트리 소유자 |
 |---|---|---|
-| Usage into an invoice | Three usage sources connect, deliver their first combined result, then the feeds stay open. | Each source is measured; one white-rimmed junction joins the inputs before the solid delivery. |
-| A payout and its detail | Select a payout; its linked settlement opens; a leader explains its arrival; clearing closes the detail. | A dotted record link and a separate solid leader meet measured surface edges. |
-| A chart point | Select a point; its explanation appears; click away to clear it. | Point and label are measured with `rect()`; their edges go to `Connector`. |
-| Selection and dimensions | Select a card, resize it by its handle, drag back, deselect. | Card, ring and guides share one changing box, which shows its real dimensions. |
-| A request and its reply | Send an event; the request draws; the acknowledgement returns after delivery; the trace clears. | Measured source and destination edges. Solid outbound arrow, dashed return. |
-| Following a layer | Select a photograph; Arrange moves and resizes it; Reset returns it; click away to clear. | `Follow` owns the object and its note together. |
-| A shared processing graph | Store an asset, fan out to three jobs, then clear the completed result. | One measured trunk and one shared spine; each branch starts at its own junction. |
-| An ongoing event stream | Connect a checkout source; events keep arriving in its activity table. | A static measured route under moving dots; the path never moves. |
+| 사용량이 송장으로 | 세 사용량 출처가 연결되고, 첫 합산 결과를 전달한 뒤 피드가 열린 채 남습니다. | 각 출처를 측정합니다. 흰 테두리 접합부 하나가 실선 전달 전에 입력을 잇습니다. |
+| 지급과 그 상세 | 지급을 선택하면 연결된 정산이 열리고, 리더가 도착을 설명하며, 지우면 상세가 닫힙니다. | 점선 기록 링크와 별도의 실선 리더가 측정된 표면 가장자리에서 만납니다. |
+| 차트 점 | 점을 선택하면 설명이 나타나고, 바깥을 클릭하면 지워집니다. | 점과 레이블은 `rect()`로 측정하고, 가장자리는 `Connector`로 갑니다. |
+| 선택과 치수 | 카드를 선택하고, 핸들로 크기를 바꾸고, 다시 드래그한 뒤 선택을 해제합니다. | 카드, 링, 가이드가 바뀌는 상자 하나를 공유하고, 그 상자가 실제 치수를 보여 줍니다. |
+| 요청과 응답 | 이벤트를 보내면 요청이 그려지고, 전달 뒤 확인이 돌아오며, 트레이스가 지워집니다. | 측정된 출발과 도착 가장자리입니다. 나가는 화살은 실선, 돌아오는 화살은 점선입니다. |
+| 레이어 따라가기 | 사진을 선택하면 Arrange가 이동하고 크기를 바꾸며, Reset이 되돌리고, 바깥 클릭으로 지웁니다. | `Follow`가 객체와 노트를 함께 소유합니다. |
+| 공유 처리 그래프 | 에셋을 저장하고, 세 작업으로 갈라진 뒤, 완료된 결과를 지웁니다. | 측정된 줄기 하나와 공유 척추 하나. 각 가지는 자기 접합부에서 시작합니다. |
+| 진행 중인 이벤트 스트림 | 체크아웃 출처를 연결하면 이벤트가 활동 표에 계속 도착합니다. | 움직이는 점 아래의 정적인 측정 경로입니다. 경로는 움직이지 않습니다. |
 
-## Choose a line for a relationship
+## 관계에 맞는 선을 고르세요
 
-Start with the product question, then choose the line. If the layout already makes the relationship obvious, leave the line out. More connections do not make a fuller explanation.
+제품 질문에서 시작한 다음 선을 고르세요. 레이아웃이 이미 관계를 분명하게 하면 선을 빼세요. 연결이 더 많다고 설명이 더 충실해지지는 않습니다.
 
-Give related surfaces different jobs and different weight: the invoice leads and a smaller usage table sits in front of its empty upper corner; the selected ledger row stays readable beside a smaller settlement detail. Overlap can tie a composition together, but it never covers record text or forces a line through useful content. At narrow widths, stack the relationship rather than shrinking its type.
+관련된 표면에 다른 일과 다른 무게를 주세요. 송장이 이끌고 더 작은 사용량 표가 빈 위 모서리 앞에 앉습니다. 선택된 원장 행은 더 작은 정산 상세 옆에서 읽힌 채로 있습니다. 겹침은 구성을 묶을 수 있지만, 기록 텍스트를 가리거나 쓸모 있는 콘텐츠를 뚫고 선을 지나게 하지는 않습니다. 좁은 너비에서는 타입을 줄이는 대신 관계를 쌓으세요.
 
-- **A leader explains a visible object or value.** One selected point joined to one short note, usually with no arrow and no continuing motion. Keep the note out of useful content and remove it with the selection.
-- **A leader is a fine line with two clear ends.** 1px (1.5px at hero scale) in a quiet ink, never a bar. It leaves the note's edge and lands 4 to 6px short of the object it explains, ending in a 4px dot or at the object's edge with a gap, never butting into or crossing a rounded border. It runs straight or with one bend; it does not pass behind or through another surface (`examples/annotations`).
-- **A record link joins two views of the same thing.** One row opens its settlement, and a fine dotted link makes that explicit. The quieter solid leader below explains arrival. Different jobs, different weights.
-- **A collection joins several inputs to one result.** Three meter rows gather into one invoice. One blue runs through the incoming paths, their junction and the shared output, because they are one relationship; the small junction is the aggregation. Draw each incoming route once, and start the delivery only after every input has arrived. Never add a junction to fill space.
-- **Direction shows transfer.** A request, an acknowledgement or a posted result needs an unambiguous origin and destination. A request and its response start from different ends, so the return arrow starts at the recipient; a decorative two-headed line cannot say that. Reveal the route before confirming arrival, and change the status after the transfer, not before the line has landed. A stationary arrow can stay afterwards.
-- **A moving phase shows ongoing work.** Dots move only while data is flowing: fine, slow enough to follow, on a fixed route with only the phase animated. Never on a finished one-off request. Stop or freeze them when the connection closes, pause them offscreen and with the host, and keep a static directional poster under reduced motion. A finished invoice update can sit beside an ongoing feed: its first values have landed while new usage still travels the retained routes.
+- **리더는 보이는 객체나 값을 설명합니다.** 선택된 점 하나가 짧은 노트 하나에 이어지고, 보통 화살도 계속되는 모션도 없습니다. 노트를 쓸모 있는 콘텐츠 밖에 두고, 선택과 함께 제거하세요.
+- **리더는 끝이 분명한 가는 선입니다.** 조용한 잉크의 1px(히어로 스케일에서는 1.5px)이며, 막대가 아닙니다. 노트의 가장자리를 떠나 설명하는 객체보다 4~6px 앞에서 멈추고, 4px 점이나 간격이 있는 객체 가장자리에서 끝납니다. 둥근 테두리에 맞닿거나 가로지르지 않습니다. 곧게 가거나 꺾임이 하나이며, 다른 표면 뒤나 안을 지나지 않습니다 (`examples/annotations`).
+- **기록 링크는 같은 것의 두 뷰를 잇습니다.** 한 행이 정산을 열고, 가는 점선 링크가 그것을 명시합니다. 아래의 더 조용한 실선 리더가 도착을 설명합니다. 일이 다르면 무게도 다릅니다.
+- **모음은 여러 입력을 하나의 결과에 잇습니다.** 미터 행 세 개가 송장 하나로 모입니다. 들어오는 경로, 접합부, 공유 출력에 파랑 하나가 흐릅니다. 하나의 관계이기 때문입니다. 작은 접합부가 집계입니다. 들어오는 경로를 각각 한 번만 그리고, 모든 입력이 도착한 뒤에만 전달을 시작하세요. 공간을 채우려고 접합부를 더하지 마세요.
+- **방향은 전달을 보여 줍니다.** 요청, 확인, 게시된 결과에는 모호하지 않은 출발과 도착이 필요합니다. 요청과 응답은 다른 끝에서 시작하므로, 돌아오는 화살은 수신자에서 시작합니다. 장식용 양방향 선은 그것을 말할 수 없습니다. 도착을 확인하기 전에 경로를 드러내고, 선이 도착하기 전이 아니라 전달 뒤에 상태를 바꾸세요. 정지한 화살은 그 뒤에 남을 수 있습니다.
+- **움직이는 위상은 진행 중인 일을 보여 줍니다.** 점은 데이터가 흐르는 동안에만 움직입니다. 가늘고, 따라갈 수 있을 만큼 느리며, 고정된 경로에서 위상만 애니메이션됩니다. 끝난 일회성 요청 위에는 절대 두지 마세요. 연결이 닫히면 멈추거나 얼리고, 화면 밖과 호스트와 함께 일시정지하며, 모션 감소에서는 정적인 방향 포스터를 유지하세요. 끝난 송장 업데이트는 진행 중인 피드 옆에 있을 수 있습니다. 첫 값은 도착했고, 새 사용량은 유지된 경로를 아직 이동합니다.
 
-A small white pill with a fine rim and a tight shadow makes a job or service read as a node. In the processing graph each pill holds the job name and, where there is room, its arriving check; the narrow layout keeps the text alone and marks completion through the pill's ink and rim instead of squeezing in an icon. The source stays a file row with its filename, metadata and action. A node is part of the system being explained; annotation text is the explanation attached to it. Don't turn every label and endpoint into the same pill, and measure the pill's visible edge when connecting to it.
+가느다란 테두리와 촘촘한 그림자가 있는 작은 흰 알약은 작업이나 서비스를 노드로 읽히게 합니다. 처리 그래프에서 각 알약은 작업 이름과, 공간이 있으면 도착하는 체크를 담습니다. 좁은 레이아웃은 텍스트만 남기고, 아이콘을 억지로 넣지 않은 채 알약의 잉크와 테두리로 완료를 표시합니다. 출처는 파일 이름, 메타데이터, 액션이 있는 파일 행으로 남습니다. 노드는 설명되는 시스템의 일부이고, 주석 텍스트는 그것에 붙은 설명입니다. 모든 레이블과 끝점을 같은 알약으로 만들지 말고, 연결할 때는 알약의 보이는 가장자리를 측정하세요.
 
-Center the pill's visible content as one group. A hidden status icon reserves neither width nor gap: the name alone is centered before the result, then the slot and gap open while the label moves with them, so the group stays centered throughout. Reverse that on removal.
+알약의 보이는 콘텐츠를 하나의 그룹으로 중앙에 두세요. 숨은 상태 아이콘은 너비도 간격도 예약하지 않습니다. 결과 전에는 이름만 중앙에 있고, 그다음 슬롯과 간격이 열리면서 레이블이 함께 움직여 그룹이 내내 중앙에 있습니다. 제거할 때는 그것을 뒤집으세요.
 
-A short inline badge can name the line itself: `POST`, `200 OK`, a protocol, a step. A slightly heavier label and a small shadow keep it legible over the stroke. It arrives with the completed line and keeps its footprint small; it is neither an endpoint nor a product surface.
+짧은 인라인 배지가 선 자체를 이름 지을 수 있습니다. `POST`, `200 OK`, 프로토콜, 단계입니다. 조금 더 무거운 레이블과 작은 그림자가 획 위에서도 읽히게 합니다. 완성된 선과 함께 도착하고 풋프린트는 작게 유지합니다. 끝점도 제품 표면도 아닙니다.
 
-A saturated blue dotted line is a deliberate, legible treatment; purple or teal can suit another study. One relationship, one color, rather than a hue per joined input. Color need not be pale to be restrained. The kit's default endpoint is a small colored center matching the route, a white rim and a subtle shadow, which marks a port or junction against a crossing line. Size it to the stroke and the display scale, treat it as a specific node rather than a decoration for every endpoint, and let it appear on arrival with its center on the route. A plain cap, a small arrow or no marker may be clearer elsewhere.
+채도 높은 파란 점선은 의도적이고 읽히는 처리입니다. 다른 연구에는 보라나 청록이 맞을 수 있습니다. 이어진 입력마다 색조가 아니라, 관계 하나에 색 하나입니다. 절제되려면 색이 옅을 필요는 없습니다. 키트의 기본 끝점은 경로와 맞는 작은 색 중심, 흰 테두리, 은은한 그림자로, 교차하는 선에 대해 포트나 접합부를 표시합니다. 획과 표시 스케일에 맞게 크기를 정하고, 모든 끝점의 장식이 아니라 특정 노드로 다루며, 도착 시 중심이 경로 위에 있게 나타나게 하세요. 평범한 캡, 작은 화살, 마커 없음이 다른 곳에서는 더 분명할 수 있습니다.
 
-Keep four things separate: the route's geometry, the stroke pattern, the reveal along the route, and any continuing phase. A reveal mask lets a dotted line draw progressively without stretching its dots, and the phase never moves the route or the attached content.
+네 가지를 분리하세요. 경로의 지오메트리, 획 패턴, 경로를 따른 드러남, 계속되는 위상입니다. 드러남 마스크는 점선이 점을 늘리지 않고 점진적으로 그려지게 하고, 위상은 경로나 붙은 콘텐츠를 움직이지 않습니다.
 
-## Attach to what is drawn
+## 그려진 것에 붙이세요
 
-`Connector` takes points in stage pixels. Derive them from named targets, never from positions guessed off a screenshot. Attach to the edge that faces the relationship, with room for the line and its label, and keep the label out of the main content and other connectors. Horizontal and vertical compositions may need different endpoints.
+`Connector`는 스테이지 픽셀의 점을 받습니다. 스크린샷에서 짐작한 위치가 아니라 이름 있는 타겟에서 유도하세요. 관계를 향한 가장자리에 붙이고, 선과 레이블의 공간을 남기며, 레이블을 주요 콘텐츠와 다른 커넥터 밖에 두세요. 가로와 세로 구성은 다른 끝점이 필요할 수 있습니다.
 
-Check the direction of the final segment, not just where it ends. A line meeting a label's bottom edge approaches vertically; one meeting its side approaches horizontally. An endpoint on the right border is still wrong if the segment before it runs along that border, underlines the label or crosses its interior. In the chart study, `route="h"` travels across first, then rises to the measured bottom center.
+끝나는 곳만이 아니라 마지막 구간의 방향을 확인하세요. 레이블의 아래 가장자리와 만나는 선은 수직으로 접근하고, 옆과 만나는 선은 수평으로 접근합니다. 그 앞 구간이 테두리를 따라가거나 레이블에 밑줄을 긋거나 내부를 가로지르면, 오른쪽 테두리의 끝점도 여전히 잘못입니다. 차트 연구에서 `route="h"`는 먼저 가로로 간 다음 측정된 아래 중심으로 올라갑니다.
 
-`rect()` refreshes after state commits and when a CSS transition finishes; it does not track CSS motion every frame. When something moves continuously, either update the scene's state each frame or put the object and its annotation in the same moving coordinate space. The following-layer study does the latter: its leader, note and outline are children of the same `Follow` wrapper as the object. A separate line aimed at Follow's destination would jump ahead of the visible layer.
+`rect()`는 상태가 커밋된 뒤와 CSS 전환이 끝난 뒤에 갱신됩니다. 매 프레임 CSS 모션을 추적하지는 않습니다. 무언가가 계속 움직이면, 매 프레임 장면 상태를 갱신하거나 객체와 주석을 같은 움직이는 좌표 공간에 두세요. 레이어 따라가기 연구는 후자입니다. 리더, 노트, 윤곽이 객체와 같은 `Follow` 래퍼의 자식입니다. Follow의 목적지를 겨냥한 별도 선은 보이는 레이어보다 앞서 점프합니다.
 
-`Follow` suits a selection ring retargeting between objects: it keeps its velocity while the target rect changes. Don't give the label its own spring if it must stay attached. For a drag, keep the grip offset and use `a.drag`'s per-frame point to size or move the object; read the displayed dimension from that same geometry, not from a number chosen in advance.
+`Follow`는 객체 사이를 다시 겨냥하는 선택 링에 맞습니다. 타겟 rect가 바뀌는 동안 속도를 유지합니다. 붙어 있어야 하는 레이블에 자체 스프링을 주지 마세요. 드래그에서는 그립 오프셋을 유지하고 `a.drag`의 프레임별 점으로 객체의 크기나 이동을 정하세요. 표시되는 치수는 미리 고른 숫자가 아니라 그 같은 지오메트리에서 읽으세요.
 
-## Show the cause, then hold the explanation
+## 원인을 보여 준 다음 설명을 유지하세요
 
-Start the line when selection or delivery begins. `Connector` draws on and fades off intact; its arrow and label arrive with the line. A callout can fade in without moving its measured anchor. Hold the result long enough to read, and clear it with an on-screen action.
+선택이나 전달이 시작될 때 선을 시작하세요. `Connector`는 온전히 그려지고 온전히 페이드 아웃됩니다. 화살과 레이블은 선과 함께 도착합니다. 콜아웃은 측정된 앵커를 움직이지 않고 페이드 인할 수 있습니다. 결과를 읽을 만큼 유지하고, 화면의 액션으로 지우세요.
 
-Endpoint markers wait for the visible route to reach them; `Connector` ties them to the reveal. A branching graph propagates from its incoming junction outward, starting each branch as its junction is reached, and a sender confirms delivery after the acknowledgement returns. Crossfade discrete statuses in stable `States` slots, start-aligned beside their status dots; a measured dimension tracks its box directly, in tabular numerals.
+끝점 마커는 보이는 경로가 도달할 때까지 기다립니다. `Connector`가 그것들을 드러남에 묶습니다. 분기 그래프는 들어오는 접합부에서 바깥으로 전파되고, 접합부에 도달할 때 각 가지를 시작하며, 송신자는 확인이 돌아온 뒤에 전달을 확인합니다. 이산 상태는 안정된 `States` 슬롯에서 크로스페이드하고, 상태 점 옆에 시작 정렬합니다. 측정된 치수는 표 숫자로 상자를 직접 따라갑니다.
 
-Line styles mean different things: a solid request and a dashed acknowledgement separate direction and role. A shared trunk means one input fans out, so draw the shared segment once, or the overlapping paths darken and knot.
+선 스타일은 다른 것을 의미합니다. 실선 요청과 점선 확인은 방향과 역할을 분리합니다. 공유 줄기는 입력 하나가 갈라진다는 뜻이므로, 공유 구간을 한 번만 그리세요. 겹치는 경로는 어두워지고 엉킵니다.
 
-## Frame the whole relationship
+## 관계 전체를 프레임하세요
 
-Leave room for the guide, arrowhead and label outside the target, clear of the product frame's clip. On a narrow host, stack the surfaces and move the labels with their lines, at their normal size. Chart marks may compress horizontally; their label stays readable. An annotation is not permission to cover the result it explains.
+가이드, 화살촉, 레이블이 타겟 밖에, 제품 프레임의 클립에서 떨어진 공간을 남기세요. 좁은 호스트에서는 표면을 쌓고 레이블을 선과 함께, 보통 크기로 옮기세요. 차트 마크는 가로로 압축될 수 있습니다. 레이블은 읽히게 둡니다. 주석은 설명하는 결과를 가릴 허가가 아닙니다.
 
-If a detail really needs a camera, use `Camera` with a focus from `a.rect(name, { layout: true })`, keep the annotation in the same coordinate space as its target, and never feed an already transformed rect back into the focus. These studies read without one.
+상세에 정말 카메라가 필요하면 `a.rect(name, { layout: true })`의 초점으로 `Camera`를 쓰고, 주석을 타겟과 같은 좌표 공간에 두며, 이미 변환된 rect를 초점에 다시 넣지 마세요. 이 연구들은 카메라 없이도 읽힙니다.
 
-## Check attachment in motion
+## 모션 속 부착을 확인하세요
 
-Film `?capture=annotations`, choosing a study with `annotation=collect`, `detail`, `chart`, `measure`, `flow`, `follow`, `branch` or `stream`:
+`annotation=collect`, `detail`, `chart`, `measure`, `flow`, `follow`, `branch`, `stream`으로 연구를 골라 `?capture=annotations`를 촬영하세요.
 
 ```sh
 node scripts/film.mjs '<url>/?capture=annotations&annotation=follow' --out shots/annotation-follow.png
 node scripts/layout.mjs '<url>/?capture=annotations&annotation=measure' --select body
 ```
 
-Watch the entry, the held result, the exit and the return. During a resize, compare the guide ends with the card's edges on every sampled frame; during a follow, compare the leader's end with the object's edge, since a clean start and end can hide separation between them. Check the narrow width, and the picker, focus and Replay too. A contact sheet cannot prove continuous attachment or steady text: the gaps between samples are unchecked.
+진입, 유지된 결과, 퇴장, 복귀를 보세요. 크기 조정 중에는 샘플된 모든 프레임에서 가이드 끝과 카드 가장자리를 비교하세요. 따라가기 중에는 리더 끝과 객체 가장자리를 비교하세요. 깨끗한 시작과 끝도 그 사이의 분리를 숨길 수 있습니다. 좁은 너비, 선택기, 초점, Replay도 확인하세요. 콘택트 시트는 연속 부착이나 안정된 텍스트를 증명할 수 없습니다. 샘플 사이의 간격은 검사되지 않습니다.

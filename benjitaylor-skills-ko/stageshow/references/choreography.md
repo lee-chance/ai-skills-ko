@@ -1,32 +1,32 @@
-# Choreography
+# 안무
 
-Start with a readable still and a short account of the change. Name the frame that holds still, the state that starts things, the responses that depend on it, the destination and the hold. Pick timing only once those relationships are clear. A quiet frame gives the moving parts something to move against; moving every layer at once takes that away.
+읽히는 스틸과 변화에 대한 짧은 설명에서 시작하세요. 가만히 있는 프레임, 일을 시작하는 상태, 그것에 의존하는 반응, 목적지, 홀드를 이름 지으세요. 그 관계가 분명해진 뒤에만 타이밍을 고르세요. 조용한 프레임은 움직이는 부분이 기대어 움직일 무언가를 줍니다. 모든 레이어를 한 번에 움직이면 그것이 사라집니다.
 
-## A change passing through an interface
+## 인터페이스를 통과하는 변화
 
-Keep the header, outer surface and action positions steady while the variable content changes inside them. A setting can lead its dependent amount, payment method and form. Start the dependent movements before the previous ones finish, with offsets that make the order legible. Keep the old and new content in tracks rather than replacing the whole screen.
+가변 콘텐츠가 안에서 바뀌는 동안 헤더, 바깥 표면, 액션 위치는 흔들리지 않게 두세요. 설정이 의존하는 금액, 결제 수단, 양식을 이끌 수 있습니다. 이전 움직임이 끝나기 전에 의존 움직임을 시작하고, 순서가 읽히게 하는 오프셋을 두세요. 화면 전체를 바꾸는 대신 트랙 안에 이전 콘텐츠와 새 콘텐츠를 유지하세요.
 
-Use a fixed, local soft mask where a track enters and leaves. Its settled text sits wholly inside the opaque part, and the control's border stays outside the mask. Don't soften the whole interface, blur every transition or use a mask to hide bad resting geometry. A row changing height needs something else: fade its content while its space opens or closes, so the moving edge never slices readable ink.
+트랙이 들어오고 나가는 곳에는 고정된 로컬 소프트 마스크를 쓰세요. 정착한 텍스트는 불투명한 부분 안에 온전히 있고, 컨트롤의 테두리는 마스크 밖에 있습니다. 인터페이스 전체를 부드럽게 하거나, 모든 전환을 흐리거나, 나쁜 정지 지오메트리를 숨기려고 마스크를 쓰지 마세요. 높이가 바뀌는 행에는 다른 것이 필요합니다. 공간이 열리거나 닫히는 동안 콘텐츠를 페이드해서, 움직이는 가장자리가 읽히는 잉크를 자르지 않게 하세요.
 
-`examples/choreography/` shows a cursorless checkout changing market. Its frame and product stay put while the currency, price, method and address respond. The comparison beside it uses the same layout and movement with every start at once, so timing is the only variable. Read it as one possible sequence, not a required checkout style or timing preset.
+`examples/choreography/`는 커서가 없는 체크아웃이 시장을 바꾸는 것을 보여 줍니다. 통화, 가격, 수단, 주소가 반응하는 동안 프레임과 제품은 제자리에 있습니다. 옆의 비교는 같은 레이아웃과 움직임에 모든 시작을 한 번에 두어, 타이밍만 변수가 됩니다. 필수 체크아웃 스타일이나 타이밍 프리셋이 아니라 가능한 시퀀스 하나로 읽으세요.
 
-## Timing has different jobs
+## 타이밍은 일이 다릅니다
 
-| Job | Decision |
+| 일 | 결정 |
 | --- | --- |
-| Direct feedback | Start on the input; a presentation delay feels unresponsive. |
-| Travel between stable positions | A departure, a stretch of clear travel and a soft arrival. Length alone does not make it fluid. |
-| Related data updates | Recognition, transfer and the accumulated result can each take a different time. The result still follows its cause. |
-| Introducing a composition | A small front-loaded movement can settle for longer than its busy part. Don't scale readable text much. |
-| Replacing content | Keep the container, alignment and reading interval; mask only the moving slot. |
-| Holding a result | Stop. A useful still needs no new pulse or repeated count. |
+| 직접 피드백 | 입력과 함께 시작하세요. 연출 지연은 반응이 없는 것처럼 느껴집니다. |
+| 안정된 위치 사이의 이동 | 출발, 분명한 이동의 구간, 부드러운 도착입니다. 길이만으로 유체가 되지는 않습니다. |
+| 관련 데이터 업데이트 | 인식, 전달, 누적된 결과는 서로 다른 시간을 가질 수 있습니다. 결과는 여전히 원인을 따릅니다. |
+| 구성의 도입 | 작은 앞선 움직임이 바쁜 부분보다 오래 정착할 수 있습니다. 읽히는 텍스트를 많이 스케일하지 마세요. |
+| 콘텐츠 교체 | 컨테이너, 정렬, 읽는 간격을 유지하세요. 움직이는 슬롯만 마스크하세요. |
+| 결과 유지 | 멈추세요. 쓸모 있는 스틸에 새 펄스나 반복 카운트는 필요 없습니다. |
 
-## Choose the curve for the movement
+## 움직임에 맞는 곡선을 고르세요
 
-A slow departure, concentrated travel and soft arrival make a retained content track readable. A direct press needs quicker feedback. A number accumulating after a transfer may take longer than the transfer itself. Choose these together: one duration or easing applied everywhere flattens the hierarchy.
+느린 출발, 집중된 이동, 부드러운 도착은 유지된 콘텐츠 트랙을 읽히게 합니다. 직접 누르기에는 더 빠른 피드백이 필요합니다. 전달 뒤에 누적되는 숫자는 전달 자체보다 오래 걸릴 수 있습니다. 이것을 함께 고르세요. 모든 곳에 하나의 지속 시간이나 이징을 적용하면 계층이 평평해집니다.
 
-A small expressive icon may overshoot while its card and text settle without bounce; keep that accent local. Keep useful content through a form change, and give the final state time to read. In a code demo, use real syntax-highlighted code with sans-serif labels and copy: monospace belongs to the code, not the whole scene.
+작은 표현적인 아이콘은 오버슈트해도 되지만, 카드와 텍스트는 바운스 없이 정착하게 하세요. 그 액센트는 로컬로 두세요. 양식 변화 동안 쓸모 있는 콘텐츠를 유지하고, 최종 상태에 읽을 시간을 주세요. 코드 데모에서는 실제 구문 강조 코드와 산세리프 레이블 및 카피를 쓰세요. 모노스페이스는 코드의 것이지, 장면 전체의 것이 아닙니다.
 
-## Review the full change
+## 변화 전체를 리뷰하세요
 
-Watch at normal speed, then step through the onset, the overlap, the masks, the final cleanup and the hold. Check text pixels as well as geometry: a stable rectangle can still hide glyph shimmer. Check the narrow host, reduced motion, pause, step, replay and the return from offscreen. A paused new scene must finish its first measurements without advancing the story. If pacing looks uneven, compare independent RAF samples with elapsed time; a smooth virtual-clock export says nothing about live playback.
+보통 속도로 본 다음, 시작, 겹침, 마스크, 마지막 정리, 홀드를 단계별로 보세요. 지오메트리뿐 아니라 텍스트 픽셀도 확인하세요. 안정된 직사각형도 글리프 깜빡임을 숨길 수 있습니다. 좁은 호스트, 모션 감소, 일시정지, 스텝, 다시 재생, 화면 밖에서의 복귀를 확인하세요. 일시정지된 새 장면은 스토리를 진행하지 않고 첫 측정을 끝내야 합니다. 페이스가 고르지 않아 보이면, 경과 시간과 독립적인 RAF 샘플을 비교하세요. 부드러운 가상 시계 내보내기는 라이브 재생에 대해 아무것도 말하지 않습니다.
