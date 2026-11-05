@@ -1,96 +1,96 @@
-## What it does
+## 무엇을 하는가
 
-`wizard` generates an interactive bash script that walks a human, step by step, through a manual procedure: wiring up third-party services, running a one-off migration, moving a project from state A to state B. It opens each URL, says what to click and copy, captures what comes back, and writes it into `.env` files and GitHub Actions secrets.
+`wizard`는 수동 절차를 통해 인간을 단계별로 안내하는 대화형 bash 스크립트를 생성합니다: 타사 서비스 연결, 일회성 마이그레이션 실행, 상태 A에서 상태 B로 프로젝트 이동. 각 URL을 열고, 무엇을 클릭하고 복사할지 말하고, 돌아온 것을 캡처하고, `.env` 파일과 GitHub Actions 시크릿에 작성합니다.
 
-The [agent](https://www.aihero.dev/ai-coding-dictionary/agent) writes the script; it never runs it. You do, on your own machine. A wizard is a program, not a list of instructions. The script runs each step in order and keeps the values you enter. Your part is to click, paste, and press Enter.
+[에이전트](https://www.aihero.dev/ai-coding-dictionary/agent)가 스크립트를 작성합니다. 절대 실행하지 않습니다. 여러분이 자신의 머신에서 실행합니다. wizard는 지시 목록이 아니라 프로그램입니다. 스크립트는 각 단계를 순서대로 실행하고 여러분이 입력한 값을 유지합니다. 여러분의 역할은 클릭하고, 붙여넣고, Enter를 누르는 것입니다.
 
-## When to reach for it
+## 언제 사용하는가
 
-You can type `/wizard`, and the agent can also reach for it on its own. When it hits a step you have to take (a key it can't mint, a dashboard it can't click), it builds you a wizard instead of writing the instructions into the chat, where they scroll away.
+`/wizard`를 입력할 수 있으며, 에이전트도 스스로 사용할 수 있습니다. 여러분이 수행해야 하는 단계(발행할 수 없는 키, 클릭할 수 없는 대시보드)에 도달하면, 스크롤되는 채팅에 지시를 작성하는 대신 wizard를 빌드합니다.
 
-Reach for it when the next thing blocking you is a trip through a dashboard:
+다음으로 여러분을 차단하는 것이 대시보드를 통한 여행일 때 사용하세요:
 
-| Situation | What the wizard does |
+| 상황 | wizard가 하는 일 |
 | --- | --- |
-| A new dev needs six services configured before the app boots | Opens each dashboard in order, captures the keys, writes them to `.env` and CI |
-| A one-off migration needs switches flipped in a specific order | Sequences the irreversible steps behind confirmation gates |
-| A project has to move from state A to state B once | Walks the transition and reports what it could not do |
-| You are about to write those steps into a README | Writes an executable version instead, which fails visibly when a step goes stale |
+| 새 개발자가 앱이 부팅되기 전에 여섯 개의 서비스를 구성해야 함 | 각 대시보드를 순서대로 열고, 키를 캡처하고, `.env`와 CI에 작성 |
+| 일회성 마이그레이션이 특정 순서로 스위치를 뒤집어야 함 | 확인 게이트 뒤에서 되돌릴 수 없는 단계를 시퀀스 |
+| 프로젝트가 상태 A에서 상태 B로 한 번 이동해야 함 | 전환을 안내하고 할 수 없었던 것을 보고 |
+| README에 그 단계들을 작성하려고 함 | 단계가 오래되면 눈에 띄게 실패하는 실행 가능한 버전을 작성 |
 
-Don't reach for it to *decide* what to build; for that, [grill-with-docs](https://aihero.dev/skills-grill-with-docs) and [to-spec](https://aihero.dev/skills-to-spec) are the tools.
+무엇을 빌드할지 *결정*하기 위해 사용하지 마세요. 그것은 [grill-with-docs](https://aihero.dev/skills-grill-with-docs)와 [to-spec](https://aihero.dev/skills-to-spec)이 도구입니다.
 
-## Prerequisites
+## 전제 조건
 
-None to generate one. The wizard it writes runs on bash, and uses `gh` when a stage sets a GitHub secret or variable. If `gh` is missing or not authenticated, the run does not fail. That stage shows a warning, and the closing summary tells you what to set by hand.
+하나를 생성하는 데는 없습니다. 작성하는 wizard는 bash에서 실행되며, 스테이지가 GitHub secret 또는 variable을 설정할 때 `gh`를 사용합니다. `gh`가 없거나 인증되지 않으면 실행이 실패하지 않습니다. 그 스테이지는 경고를 표시하고, 닫는 요약은 수동으로 설정할 것을 알려줍니다.
 
-## Stages
+## 스테이지
 
-A **stage** is one focused task on one screen. The script clears the terminal between stages, so a stage that overflows the screen loses the part that scrolled away. You author stages in dependency order and set `TOTAL_STAGES`, which drives the progress display.
+**스테이지**는 한 화면에서 하나의 집중된 작업입니다. 스크립트는 스테이지 사이에 터미널을 지우므로, 화면을 넘치는 스테이지는 스크롤된 부분을 잃습니다. 종속성 순서로 스테이지를 작성하고 진행 표시를 구동하는 `TOTAL_STAGES`를 설정합니다.
 
-The [skill](https://www.aihero.dev/ai-coding-dictionary/skill) scopes the procedure before it writes any script. It reads the repo instead of asking cold: `.env*`, `docker-compose*`, framework config, and every `secrets.*` / `vars.*` reference in `.github/workflows/`. Each of those references is a value the wizard has to produce. It then shows you the ordered stage list to confirm. Only after you confirm does it map each stage to the exact path a human follows ("Dashboard → Developers → API keys → Reveal test key → copy"). Where it doesn't know the current UI, it asks you or checks the docs rather than inventing clicks.
+[스킬](https://www.aihero.dev/ai-coding-dictionary/skill)은 스크립트를 작성하기 전에 절차의 범위를 정합니다. 차갑게 묻는 대신 리포를 읽습니다: `.env*`, `docker-compose*`, 프레임워크 구성, 그리고 `.github/workflows/`의 모든 `secrets.*` / `vars.*` 참조. 그 참조 각각은 wizard가 생성해야 하는 값입니다. 그런 다음 확인할 정렬된 스테이지 목록을 보여줍니다. 여러분이 확인한 후에만 각 스테이지를 인간이 따르는 정확한 경로("Dashboard → Developers → API keys → Reveal test key → copy")로 매핑합니다. 현재 UI를 모르는 곳에서는 클릭을 발명하는 대신 여러분에게 묻거나 문서를 확인합니다.
 
-For each captured value, scoping decides where it goes:
+각 캡처된 값에 대해 범위 지정은 어디로 가는지 결정합니다:
 
-| Destination | When |
+| 목적지 | 언제 |
 | --- | --- |
-| `.env` only | Local dev needs it, CI doesn't |
-| GitHub secret | CI reads it, and it's sensitive |
-| GitHub variable | CI reads it, and it's public |
-| Both `.env` and a secret | Local dev and CI both need it |
-| Nowhere | The stage is a pure action: a switch flipped, a plan upgraded |
+| `.env`만 | 로컬 개발이 필요하고, CI는 필요하지 않음 |
+| GitHub secret | CI가 읽고, 민감함 |
+| GitHub variable | CI가 읽고, 공개 |
+| `.env`와 secret 모두 | 로컬 개발과 CI 모두 필요함 |
+| 아무데도 없음 | 스테이지는 순수 액션: 스위치 뒤집기, 플랜 업그레이드 |
 
-## The template already solves the UX
+## 템플릿이 이미 UX를 해결합니다
 
-The [template](https://github.com/mattpocock/skills/blob/main/skills/engineering/wizard/template.sh) ships the whole experience: progress with time remaining, confirmation gates, cross-platform URL opening including WSL, hidden entry for secrets, idempotent `.env` upserts, `gh secret` / `gh variable` writes, and a closing summary of everything it had to skip. Everything above the `STAGES` marker is a fixed library, identical in every wizard and never hand-edited. Because the library never changes, every wizard behaves the same way. The only work per wizard is to scope the procedure and author its stages.
+[템플릿](https://github.com/mattpocock/skills/blob/main/skills/engineering/wizard/template.sh)은 전체 경험을 제공합니다: 남은 시간이 있는 진행, 확인 게이트, WSL 포함 크로스 플랫폼 URL 열기, 시크릿을 위한 숨겨진 입력, 멱등 `.env` upsert, `gh secret` / `gh variable` 작성, 그리고 건너뛰어야 했던 모든 것의 닫는 요약. `STAGES` 마커 위의 모든 것은 모든 wizard에서 동일하고 절대 수동으로 편집되지 않는 고정된 라이브러리입니다. 라이브러리가 절대 변경되지 않기 때문에, 모든 wizard는 같은 방식으로 동작합니다. wizard당 유일한 작업은 절차의 범위를 정하고 스테이지를 작성하는 것입니다.
 
-The agent that writes a wizard never runs it end to end, because the script opens browsers and waits for human input. The agent checks it statically instead: `bash -n`, `shellcheck` where available, and a trace that every value lands where scoping said it would, with every `set_secret` name matching a real `secrets.*` reference in CI. So the first run is yours, and that run is the test.
+wizard를 작성하는 에이전트는 스크립트가 브라우저를 열고 인간 입력을 기다리기 때문에 끝까지 실행하지 않습니다. 에이전트는 대신 정적으로 확인합니다: `bash -n`, 사용 가능한 곳에서 `shellcheck`, 그리고 모든 값이 범위 지정이 말한 곳에 도착하고, 모든 `set_secret` 이름이 CI의 실제 `secrets.*` 참조와 일치하는 추적. 따라서 첫 실행은 여러분 것이며, 그 실행이 테스트입니다.
 
-## Ephemeral by default
+## 기본적으로 임시
 
-| What you have | What to do with the script |
+| 가진 것 | 스크립트로 무엇을 하는가 |
 | --- | --- |
-| A one-off migration, a personal setup, a transition you'll never repeat | Save it to a scratch or `scripts/` path, run it, delete it |
-| A setup path the next person on the repo will also need | Commit it and link it from the README, so they run the script instead of re-asking an agent |
+| 일회성 마이그레이션, 개인 설정, 절대 반복하지 않을 전환 | scratch 또는 `scripts/` 경로에 저장하고, 실행하고, 삭제 |
+| 리포의 다음 사람도 필요할 설정 경로 | 커밋하고 README에서 링크하여, 에이전트에게 다시 묻는 대신 스크립트를 실행하도록 |
 
-## Common questions
+## 자주 묻는 질문
 
-**Do my API keys end up in the model's context?**
+**제 API 키가 모델의 컨텍스트에 들어가나요?**
 
-No. The agent writes a script; it doesn't run it. You run the script yourself, and it captures the key with hidden terminal entry and writes it straight to `.env` or `gh secret`. The wizard is a CLI, and the model is not connected to it. This holds only for values the wizard captures at runtime. If you paste a key into the chat while scoping the procedure, it's in the [context](https://www.aihero.dev/ai-coding-dictionary/context) like any other pasted text.
+아니요. 에이전트는 스크립트를 작성합니다. 실행하지 않습니다. 여러분이 직접 스크립트를 실행하고, 숨겨진 터미널 입력으로 키를 캡처하고 `.env`나 `gh secret`에 직접 작성합니다. wizard는 CLI이며, 모델은 그것에 연결되지 않습니다. 이것은 wizard가 런타임에 캡처하는 값에만 적용됩니다. 절차의 범위를 정하는 동안 채팅에 키를 붙여넣으면, 다른 붙여넣은 텍스트처럼 [컨텍스트](https://www.aihero.dev/ai-coding-dictionary/context)에 있습니다.
 
-**Can I go back and fix a value I mistyped?**
+**잘못 입력한 값을 되돌아가서 수정할 수 있나요?**
 
-Not mid-run. There is no back button. The stages run forward, and a wrong answer on stage 3 means Ctrl-C and re-run. Re-running is cheap, because any value already written to `.env` is offered back as a default, so you press Enter through the stages you got right and retype only the wrong one. Users asked for this in launch week, and it is still open: "loved it! One thing though, is there a way to go back and correct what you've entered?"
+실행 중에는 아니요. 뒤로 버튼이 없습니다. 스테이지는 앞으로 실행되며, 스테이지 3의 잘못된 답변은 Ctrl-C와 재실행을 의미합니다. 재실행은 저렴합니다. 이미 `.env`에 작성된 모든 값은 기본값으로 다시 제공되므로, 올바른 스테이지를 통해 Enter를 누르고 잘못된 것만 다시 입력하면 됩니다. 사용자들은 출시 주에 이것을 요청했으며, 아직 열려 있습니다: "loved it! One thing though, is there a way to go back and correct what you've entered?"
 
-**Does it know what I've already set up?**
+**이미 설정한 것을 알고 있나요?**
 
-Partly, and less than the launch reactions assumed. It reads the repo before it asks (your `.env` files, `docker-compose`, framework config, the `secrets.*` references in CI), so it scopes to values that are missing rather than starting from zero the way a README does. What it doesn't do is check the third-party service. If a key exists in your `.env` the wizard offers it back and Enter keeps it; if you already created the Stripe account but never saved the key, the wizard still sends you to the dashboard for it.
+부분적으로, 그리고 출시 반응이 가정한 것보다 적습니다. 묻기 전에 리포를 읽으므로 (`.env` 파일, `docker-compose`, 프레임워크 구성, CI의 `secrets.*` 참조), README가 하는 방식처럼 0에서 시작하는 것이 아니라 누락된 값으로 범위를 정합니다. 하지 않는 것은 타사 서비스를 확인하는 것입니다. `.env`에 키가 존재하면 wizard가 다시 제공하고 Enter가 유지합니다. Stripe 계정을 이미 생성했지만 키를 저장하지 않았다면, wizard는 여전히 그것을 위해 대시보드로 보냅니다.
 
-**Where does it sit in the workflow, after grilling and the spec?**
+**grilling과 스펙 후 워크플로우에서 어디에 있나요?**
 
-Nowhere in particular. It's a standalone, not a chain step. The common guess is `/grill-with-docs → /to-spec → /wizard`, and that sequence is fine, but the trigger is a manual procedure showing up, which can happen at any point: before you start, mid-build, or long after ship. It also works as a discovery tool. Scoping finds the hidden prerequisites of a task, like the three API keys you hadn't thought about, before you commit to the work.
+특별히 어디에도 없습니다. 체인 단계가 아니라 독립형입니다. 일반적인 추측은 `/grill-with-docs → /to-spec → /wizard`이며, 그 시퀀스는 괜찮지만, 트리거는 수동 절차가 나타나는 것이며, 이것은 어느 시점에서든 발생할 수 있습니다: 시작하기 전, 빌드 중간, 또는 배포 후 오랜 후. 발견 도구로도 작동합니다. 범위 지정은 작업에 커밋하기 전에 생각하지 못했던 세 개의 API 키 같은 작업의 숨겨진 전제 조건을 찾습니다.
 
-**Does it work outside Claude Code?**
+**Claude Code 외부에서 작동하나요?**
 
-The script does. It's plain bash, and it runs the same whatever [harness](https://www.aihero.dev/ai-coding-dictionary/harness) generated it. The skill itself is model-invoked, so it's listed everywhere: type `/wizard` in Claude Code or `$wizard` in Codex, or just describe the setup you're stuck on. Being model-invoked also keeps it clear of [#693](https://github.com/mattpocock/skills/issues/693), where Claude's desktop and web apps drop *user-invoked* skills from the [model](https://www.aihero.dev/ai-coding-dictionary/model)'s listing and report them as not installed.
+스크립트는 작동합니다. 평범한 bash이며, 어떤 [하네스](https://www.aihero.dev/ai-coding-dictionary/harness)가 생성했든 똑같이 실행됩니다. 스킬 자체는 모델이 호출하므로, 어디에나 나열됩니다: Claude Code에서 `/wizard`를 입력하거나 Codex에서 `$wizard`를 입력하거나, 막힌 설정을 설명하기만 하면 됩니다. 모델이 호출되는 것은 또한 Claude의 데스크톱 및 웹 앱이 [모델](https://www.aihero.dev/ai-coding-dictionary/model)의 리스팅에서 *사용자 호출* 스킬을 제거하고 설치되지 않았다고 보고하는 [#693](https://github.com/mattpocock/skills/issues/693)을 명확히 유지합니다.
 
-**Didn't this used to be user-invoked?**
+**이것이 사용자 호출이었지 않나요?**
 
-It did. It's now model-invoked, so the agent reaches for it unprompted when it hits a step you have to take. Nothing you could do before stopped working. Model invocation lets the agent call the skill as well as you, so `/wizard` behaves as it did. The change fixes one failure. Before, an agent that hit a credentials wall mid-build dumped six numbered steps into the chat for you to follow by hand. Now it writes a wizard.
+그랬습니다. 이제 모델이 호출하므로, 에이전트가 여러분이 수행해야 하는 단계에 도달하면 프롬프트 없이 사용합니다. 이전에 할 수 있었던 것은 작동을 멈추지 않았습니다. 모델 호출은 에이전트가 여러분처럼 스킬을 호출하게 하므로, `/wizard`는 이전처럼 동작합니다. 변경은 하나의 실패를 수정합니다. 이전에는 빌드 중간에 자격 증명 벽에 도달한 에이전트가 여러분이 수동으로 따를 여섯 개의 번호 매긴 단계를 채팅에 덤프했습니다. 이제 wizard를 작성합니다.
 
-**It used to be in `in-progress/`. Where is it now?**
+**`in-progress/`에 있었는데 이제 어디 있나요?**
 
-`engineering/`, as of v1.2. It graduated out of the beta bucket and now ships in the plugin, so it arrives with the rest of the promoted set rather than needing an individual install. Its behaviour didn't change on graduation.
+v1.2부터 `engineering/`입니다. 베타 버킷에서 졸업했고 이제 플러그인에 배포되므로, 개별 설치가 필요한 것이 아니라 승격된 세트의 나머지와 함께 도착합니다. 동작은 졸업 시 변경되지 않았습니다.
 
-## It's working if
+## 제대로 작동한다는 신호
 
-- You're shown an ordered list of stages, and the values each one produces, and asked to confirm, before any script exists.
-- Every URL is opened before the value from that page is asked for. You're never asked to paste something you haven't been sent to fetch.
-- Secrets are typed blind. Nothing sensitive echoes into your scrollback.
-- Each stage fits one screen. Nothing you still need has scrolled away.
-- Ctrl-C and re-run picks up where you left off, offering the values already saved as defaults.
-- The final screen lists what it wrote, and separately lists what it couldn't do and you have to finish by hand.
+- 스크립트가 존재하기 전에 정렬된 스테이지 목록과 각각이 생성하는 값을 보여주고, 확인을 요청합니다.
+- 그 페이지의 값을 요청하기 전에 모든 URL이 열립니다. 가져오도록 보내지지 않은 것을 붙여넣으라고 절대 요청받지 않습니다.
+- 시크릿은 맹목적으로 입력됩니다. 민감한 것은 스크롤백에 에코되지 않습니다.
+- 각 스테이지는 한 화면에 맞습니다. 여전히 필요한 것은 스크롤되지 않았습니다.
+- Ctrl-C와 재실행은 중단한 곳을 선택하여, 이미 저장된 값을 기본값으로 제공합니다.
+- 최종 화면은 작성한 것을 나열하고, 할 수 없었고 여러분이 수동으로 마무리해야 하는 것을 별도로 나열합니다.
 
-## Where it fits
+## 어디에 적용되는지
 
-`wizard` is a reach-for-it-anytime standalone, sitting at the line where automation stops and a human has to click. Its nearest neighbour is [setup-matt-pocock-skills](https://aihero.dev/skills-setup-matt-pocock-skills), because both exist to get a repo into a working state. That one configures this skill set, and `wizard` generates a setup path for everything else. It also pairs with [implement](https://aihero.dev/skills-implement): when a build lands a feature that needs credentials or a manual cutover, a wizard covers the steps only a human can do. When you're unsure which skill fits the moment, [ask-matt](https://aihero.dev/skills-ask-matt) routes you.
+`wizard`는 자동화가 멈추고 인간이 클릭해야 하는 선에 앉아 있는 언제든 사용할 수 있는 독립형입니다. 가장 가까운 이웃은 [setup-matt-pocock-skills](https://aihero.dev/skills-setup-matt-pocock-skills)입니다. 둘 다 리포를 작동 상태로 만들기 위해 존재하기 때문입니다. 그것은 이 스킬 세트를 구성하고, `wizard`는 다른 모든 것을 위한 설정 경로를 생성합니다. 또한 [implement](https://aihero.dev/skills-implement)와 쌍을 이룹니다: 빌드가 자격 증명이나 수동 전환이 필요한 기능을 도착시킬 때, wizard는 인간만 할 수 있는 단계를 다룹니다. 어떤 스킬이 이 순간에 맞는지 확실하지 않을 때, [ask-matt](https://aihero.dev/skills-ask-matt)가 안내합니다.
