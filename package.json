@@ -1,0 +1,15 @@
+{
+  "name": "ai-skills-ko",
+  "version": "1.0.0",
+  "description": "AI 스킬 모음의 원본과 한국어 번역",
+  "scripts": {
+    "sync": "node scripts/sync.js sync",
+    "sync:check": "node scripts/sync.js check"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lee-chance/ai-skills-ko.git"
+  },
+  "license": "MIT",
+  "private": true
+}

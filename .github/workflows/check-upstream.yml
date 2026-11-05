@@ -1,0 +1,191 @@
+name: Check Upstream Updates
+
+on:
+  schedule:
+    # 매주 월요일 오전 9시 (UTC)
+    - cron: '0 9 * * 1'
+  workflow_dispatch:  # 수동 실행 가능
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check-upstream:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      
+      - name: Check for upstream changes
+        id: check
+        run: |
+          echo "Checking upstream sources..."
+          
+          # sync.js를 check 모드로 실행
+          # 변경사항이 있으면 exit code 1을 반환하도록 설계됨
+          if node scripts/sync.js check > check-output.txt 2>&1; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+            echo "No changes detected"
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+            echo "Changes detected!"
+          fi
+          
+          # 출력 저장
+          cat check-output.txt
+          echo "EOF" >> $GITHUB_ENV
+          echo "CHECK_OUTPUT<<EOF" >> $GITHUB_ENV
+          cat check-output.txt >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+        continue-on-error: true
+      
+      - name: Extract JSON output
+        if: steps.check.outputs.has_changes == 'true'
+        id: extract
+        run: |
+          # JSON 출력 추출 (--- JSON 출력 (GitHub Actions용) --- 이후)
+          sed -n '/--- JSON 출력/,$ p' check-output.txt | \
+            grep -A 9999 '{' > changes.json || echo '{}' > changes.json
+          
+          # 파일이 비어있지 않은지 확인
+          if [ -s changes.json ] && jq empty changes.json 2>/dev/null; then
+            echo "JSON extracted successfully"
+          else
+            echo '{"changedSources": []}' > changes.json
+          fi
+          
+          cat changes.json
+      
+      - name: Create or update issue
+        if: steps.check.outputs.has_changes == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            
+            let changesData;
+            try {
+              changesData = JSON.parse(fs.readFileSync('changes.json', 'utf8'));
+            } catch (error) {
+              console.error('Failed to parse changes.json:', error);
+              changesData = { changedSources: [] };
+            }
+            
+            const { changedSources = [] } = changesData;
+            const timestamp = changesData.timestamp || new Date().toISOString();
+            
+            // Issue 본문 생성
+            let issueBody = `# 🔄 업스트림 업데이트 감지\n\n`;
+            issueBody += `**감지 시각**: ${timestamp}\n\n`;
+            issueBody += `다음 소스들이 업스트림에서 업데이트되었습니다:\n\n`;
+            
+            for (const source of changedSources) {
+              issueBody += `## ${source.name} (\`${source.id}\`)\n\n`;
+              issueBody += `- **현재 SHA**: \`${source.currentSHA.substring(0, 7)}\`\n`;
+              issueBody += `- **최신 SHA**: \`${source.latestSHA.substring(0, 7)}\`\n\n`;
+              
+              const { added = [], modified = [], deleted = [] } = source.changes || {};
+              const total = added.length + modified.length + deleted.length;
+              
+              issueBody += `**변경사항**: ${total}개 (추가 ${added.length}, 수정 ${modified.length}, 삭제 ${deleted.length})\n\n`;
+              
+              if (added.length > 0) {
+                issueBody += `### 추가된 파일\n\n`;
+                added.slice(0, 20).forEach(file => {
+                  issueBody += `- ➕ \`${file}\`\n`;
+                });
+                if (added.length > 20) {
+                  issueBody += `- ... 외 ${added.length - 20}개\n`;
+                }
+                issueBody += '\n';
+              }
+              
+              if (modified.length > 0) {
+                issueBody += `### 수정된 파일\n\n`;
+                modified.slice(0, 20).forEach(file => {
+                  issueBody += `- 📝 \`${file}\`\n`;
+                });
+                if (modified.length > 20) {
+                  issueBody += `- ... 외 ${modified.length - 20}개\n`;
+                }
+                issueBody += '\n';
+              }
+              
+              if (deleted.length > 0) {
+                issueBody += `### 삭제된 파일\n\n`;
+                deleted.slice(0, 20).forEach(file => {
+                  issueBody += `- ❌ \`${file}\`\n`;
+                });
+                if (deleted.length > 20) {
+                  issueBody += `- ... 외 ${deleted.length - 20}개\n`;
+                }
+                issueBody += '\n';
+              }
+            }
+            
+            issueBody += `---\n\n`;
+            issueBody += `## 다음 단계\n\n`;
+            issueBody += `1. 로컬에서 동기화 실행:\n`;
+            issueBody += `   \`\`\`bash\n`;
+            issueBody += `   npm run sync\n`;
+            issueBody += `   \`\`\`\n\n`;
+            issueBody += `2. 변경된 파일들을 한국어로 번역:\n`;
+            issueBody += `   - [TRANSLATION_GUIDE.md](../blob/main/TRANSLATION_GUIDE.md) 참조\n`;
+            issueBody += `   - [AGENTS.md](../blob/main/AGENTS.md)의 "번역 업데이트" 섹션 참조\n\n`;
+            issueBody += `3. 커밋 및 PR 생성\n\n`;
+            issueBody += `4. 이 Issue 닫기\n\n`;
+            issueBody += `---\n\n`;
+            issueBody += `*이 Issue는 [check-upstream.yml](../blob/main/.github/workflows/check-upstream.yml) 워크플로우에 의해 자동 생성되었습니다.*\n`;
+            
+            // 기존 upstream-sync Issue 찾기
+            const existingIssues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: 'upstream-sync',
+              state: 'open'
+            });
+            
+            if (existingIssues.data.length > 0) {
+              // 기존 Issue 업데이트
+              const issueNumber = existingIssues.data[0].number;
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: issueBody
+              });
+              
+              // 코멘트 추가
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issueNumber,
+                body: `🔄 업스트림 체크 완료 (${timestamp}): 새로운 변경사항이 감지되어 Issue를 업데이트했습니다.`
+              });
+              
+              console.log(`Updated existing issue #${issueNumber}`);
+            } else {
+              // 새 Issue 생성
+              const newIssue = await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: `🔄 업스트림 업데이트 필요 (${new Date().toISOString().split('T')[0]})`,
+                body: issueBody,
+                labels: ['upstream-sync']
+              });
+              
+              console.log(`Created new issue #${newIssue.data.number}`);
+            }
+      
+      - name: No changes
+        if: steps.check.outputs.has_changes == 'false'
+        run: |
+          echo "✅ 모든 소스가 최신 상태입니다."
+          echo "새로운 Issue를 생성하지 않습니다."

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "pstack",
+  "version": "0.15.36",
+  "description": "빠르게 가고 싶다면, 먼저 깊게 파고들어야 합니다. pstack은 더 적지만 더 높은 품질의 코드를 작성하도록 도와줍니다. 자신감 있게 병렬화할 수 있는 엄격한 에이전트 워크플로우.",
+  "author": {
+    "name": "Lauren Tan"
+  },
+  "homepage": "https://github.com/cursor/plugins/tree/main/pstack",
+  "repository": "https://github.com/cursor/plugins",
+  "license": "MIT",
+  "keywords": [
+    "pstack",
+    "poteto-mode",
+    "workflow",
+    "principles",
+    "agent-style",
+    "subagents",
+    "unslop"
+  ]
+}
