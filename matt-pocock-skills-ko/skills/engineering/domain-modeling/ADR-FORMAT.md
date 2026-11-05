@@ -1,47 +1,47 @@
 # ADR Format
 
-ADRs live in `docs/adr/` and use sequential numbering: `0001-slug.md`, `0002-slug.md`, etc.
+ADR은 `docs/adr/`에 있고 순차 번호를 사용합니다: `0001-slug.md`, `0002-slug.md` 등.
 
-Create the `docs/adr/` directory lazily: only when the first ADR is needed.
+`docs/adr/` 디렉터리는 지연 생성합니다: 첫 번째 ADR이 필요할 때만.
 
-## Template
+## 템플릿
 
 ```md
-# {Short title of the decision}
+# {결정의 짧은 제목}
 
-{1-3 sentences: what's the context, what did we decide, and why.}
+{1~3문장: 컨텍스트가 무엇이고, 무엇을 결정했고, 왜 그런지.}
 ```
 
-That's it. An ADR can be a single paragraph. The value is in recording *that* a decision was made and *why*, not in filling out sections.
+이게 전부입니다. ADR은 단일 단락일 수 있습니다. 가치는 *결정이 이루어졌다는 것*과 *이유*를 기록하는 데 있으며, 섹션을 채우는 데 있지 않습니다.
 
-## Optional sections
+## 선택적 섹션
 
-Only include these when they add genuine value. Most ADRs won't need them.
+진정한 가치를 추가할 때만 포함하세요. 대부분의 ADR은 이것들이 필요하지 않습니다.
 
-- **Status** frontmatter (`proposed | accepted | deprecated | superseded by ADR-NNNN`): useful when decisions are revisited
-- **Considered Options**: only when the rejected alternatives are worth remembering
-- **Consequences**: only when non-obvious downstream effects need to be called out
+- **Status** frontmatter (`proposed | accepted | deprecated | superseded by ADR-NNNN`): 결정이 재검토될 때 유용
+- **Considered Options**: 거부된 대안이 기억할 가치가 있을 때만
+- **Consequences**: 자명하지 않은 다운스트림 효과를 호출해야 할 때만
 
-## Numbering
+## 번호 매기기
 
-Scan `docs/adr/` for the highest existing number and increment by one.
+`docs/adr/`를 스캔하여 가장 높은 기존 번호를 찾고 1씩 증가시키세요.
 
-## When to offer an ADR
+## ADR을 제안해야 하는 경우
 
-All three of these must be true:
+다음 세 가지가 모두 참이어야 합니다:
 
-1. **Hard to reverse**: the cost of changing your mind later is meaningful
-2. **Surprising without context**: a future reader will look at the code and wonder "why on earth did they do it this way?"
-3. **The result of a real trade-off**: there were genuine alternatives and you picked one for specific reasons
+1. **되돌리기 어려움**: 나중에 마음을 바꾸는 비용이 의미 있음
+2. **컨텍스트 없이 놀라움**: 미래의 독자가 코드를 보고 "도대체 왜 이렇게 했을까?"라고 궁금해할 것
+3. **실제 트레이드오프의 결과**: 진정한 대안이 있었고 특정 이유로 하나를 선택함
 
-If a decision is easy to reverse, skip it: you'll just reverse it. If it's not surprising, nobody will wonder why. If there was no real alternative, there's nothing to record beyond "we did the obvious thing."
+결정을 되돌리기 쉽다면, 건너뛰세요: 그냥 되돌릴 것입니다. 놀랍지 않다면, 아무도 왜 그런지 궁금해하지 않을 것입니다. 진정한 대안이 없었다면, "우리는 명백한 것을 했다"는 것 외에 기록할 것이 없습니다.
 
-### What qualifies
+### 자격이 있는 것
 
-- **Architectural shape.** "We're using a monorepo." "The write model is event-sourced, the read model is projected into Postgres."
-- **Integration patterns between contexts.** "Ordering and Billing communicate via domain events, not synchronous HTTP."
-- **Technology choices that carry lock-in.** Database, message bus, auth provider, deployment target. Not every library: just the ones that would take a quarter to swap out.
-- **Boundary and scope decisions.** "Customer data is owned by the Customer context; other contexts reference it by ID only." The explicit no-s are as valuable as the yes-s.
-- **Deliberate deviations from the obvious path.** "We're using manual SQL instead of an ORM because X." Anything where a reasonable reader would assume the opposite. These stop the next engineer from "fixing" something that was deliberate.
-- **Constraints not visible in the code.** "We can't use AWS because of compliance requirements." "Response times must be under 200ms because of the partner API contract."
-- **Rejected alternatives when the rejection is non-obvious.** If you considered GraphQL and picked REST for subtle reasons, record it; otherwise someone will suggest GraphQL again in six months.
+- **아키텍처 형태.** "우리는 monorepo를 사용하고 있습니다." "쓰기 모델은 이벤트 소싱되고, 읽기 모델은 Postgres로 프로젝션됩니다."
+- **컨텍스트 간 통합 패턴.** "Ordering과 Billing은 동기 HTTP가 아니라 도메인 이벤트를 통해 통신합니다."
+- **잠금을 수반하는 기술 선택.** 데이터베이스, 메시지 버스, 인증 제공자, 배포 대상. 모든 라이브러리가 아닙니다: 교체하는 데 분기가 걸릴 것들만.
+- **경계 및 범위 결정.** "고객 데이터는 Customer 컨텍스트가 소유합니다; 다른 컨텍스트는 ID로만 참조합니다." 명시적인 no가 yes만큼 가치 있습니다.
+- **명백한 경로에서의 의도적인 이탈.** "우리는 X 때문에 ORM 대신 수동 SQL을 사용하고 있습니다." 합리적인 독자가 반대를 가정할 모든 것. 이것들은 다음 엔지니어가 의도적이었던 것을 "수정"하는 것을 막습니다.
+- **코드에서 보이지 않는 제약 조건.** "규정 준수 요구 사항 때문에 AWS를 사용할 수 없습니다." "파트너 API 계약 때문에 응답 시간이 200ms 미만이어야 합니다."
+- **거부가 자명하지 않을 때 거부된 대안.** GraphQL을 고려하고 미묘한 이유로 REST를 선택했다면, 기록하세요; 그렇지 않으면 누군가 6개월 후에 GraphQL을 다시 제안할 것입니다.
