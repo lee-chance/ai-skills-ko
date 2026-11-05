@@ -1,31 +1,31 @@
-# MISSION.md Format
+# MISSION.md 형식
 
-`MISSION.md` lives at the workspace root. It captures the _reason_ the user is learning this topic. Every teaching decision (what to teach next, which resources to surface, which exercises to design) should trace back to this document.
+`MISSION.md`는 워크스페이스 루트에 살고 있습니다. 사용자가 이 주제를 배우는 _이유_를 캡처합니다. 모든 교육 결정(다음에 가르칠 것, 표면에 드러낼 자원, 설계할 연습)은 이 문서로 추적되어야 합니다.
 
-## Template
+## 템플릿
 
 ```md
-# Mission: {Topic}
+# Mission: {주제}
 
 ## Why
-{1-3 sentences. The concrete real-world goal the user is chasing. What changes in their life or work when they have this skill? Avoid abstract framings like "to understand X"; push for the underlying outcome.}
+{1-3 문장. 사용자가 추구하는 구체적인 실제 세계 목표. 이 기술을 가지면 그들의 삶이나 일에서 무엇이 변경되는가? "X를 이해하기 위해"와 같은 추상적인 프레이밍을 피하세요. 기본 결과를 밀어붙이세요.}
 
 ## Success looks like
-- {A specific, observable thing the user will be able to do}
-- {Another specific thing}
+- {사용자가 할 수 있는 구체적이고 관찰 가능한 것}
+- {또 다른 구체적인 것}
 - {…}
 
 ## Constraints
-- {Time, budget, prior commitments, learning preferences, anything that bounds the approach}
+- {시간, 예산, 이전 약속, 학습 선호도, 접근 방식을 제한하는 모든 것}
 
 ## Out of scope
-- {Adjacent topics the user explicitly does not want to chase right now, protecting the zone of proximal development}
+- {사용자가 지금 명시적으로 추구하고 싶지 않은 인접 주제, 근접 발달 영역 보호}
 ```
 
-## Rules
+## 규칙
 
-- **One mission per workspace.** If the user wants to learn two unrelated things, that is two workspaces.
-- **Concrete over abstract.** "Run a half marathon by October" beats "get fitter." "Ship a Rust CLI to my team" beats "learn Rust."
-- **Push back on vagueness.** If the user cannot articulate why, interview them before writing anything. A bad mission is worse than no mission.
-- **Revise when reality shifts.** Missions change. When the user's goal moves, update this file: don't leave a stale mission steering future sessions.
-- **Keep it short.** If `MISSION.md` runs past a screen, it has stopped being a compass and started being a plan.
+- **워크스페이스당 하나의 미션.** 사용자가 관련 없는 두 가지를 배우고 싶다면, 그것은 두 개의 워크스페이스입니다.
+- **추상보다 구체적.** "10월까지 하프 마라톤 달리기"가 "더 건강해지기"보다 낫습니다. "팀에 Rust CLI 출시"가 "Rust 학습"보다 낫습니다.
+- **모호함을 반박하세요.** 사용자가 이유를 명확히 표현할 수 없다면, 무엇이든 쓰기 전에 인터뷰하세요. 나쁜 미션은 미션이 없는 것보다 나쁩니다.
+- **현실이 이동하면 수정하세요.** 미션은 변경됩니다. 사용자의 목표가 이동할 때, 이 파일을 업데이트하세요: 구식 미션이 미래 세션을 이끌도록 남기지 마세요.
+- **짧게 유지하세요.** `MISSION.md`가 화면을 지나가면, 나침반이 되는 것을 멈추고 계획이 되기 시작했습니다.

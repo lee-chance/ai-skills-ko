@@ -1,84 +1,84 @@
 # Git hosts
 
-> Surveyed 2026-10, and not guaranteed to be up to date. Use it to get oriented, then research the current options yourself: products, prices, limits and betas change fast.
+> 2026-10에 조사되었으며, 최신 상태가 보장되지 않습니다. 이를 사용하여 방향을 잡은 다음, 현재 옵션을 직접 조사하세요: 제품, 가격, 제한, 베타는 빠르게 변경됩니다.
 
-## The types
+## 타입
 
-### All-in-one platforms
+### 올인원 플랫폼
 
-The git host bundled with a ticket tracker, a CI system that serves as orchestrator, and hosted runners, all sharing one event stream and one permission model. One product fills git host, ticket tracker, orchestrator and runner, and its CI run pages often cover the observability platform too. Every PR, review, label and check event is both a webhook and a native trigger, so this type has the richest trigger catalogue.
+티켓 트래커, orchestrator 역할을 하는 CI 시스템, 호스팅된 러너와 함께 번들로 제공되는 git host로, 모두 하나의 이벤트 스트림과 하나의 권한 모델을 공유합니다. 하나의 제품이 git host, 티켓 트래커, orchestrator, 러너를 채우며, CI 실행 페이지가 observability platform도 종종 커버합니다. 모든 PR, 리뷰, 라벨, 체크 이벤트는 웹훅이자 네이티브 트리거이므로, 이 타입은 가장 풍부한 트리거 카탈로그를 가집니다.
 
-**Pick it when** the factory starts small, the code already lives there, or the user wants one bill and one login. This is the "All on GitHub" design in [SKILL.md](SKILL.md). The vendors also ship their own agents, which either compete with the user's runs or slot in as one of them.
+**선택 조건**: 팩토리가 작게 시작하거나, 코드가 이미 그곳에 있거나, 사용자가 하나의 청구서와 하나의 로그인을 원할 때. 이것은 [SKILL.md](SKILL.md)의 "All on GitHub" 설계입니다. 벤더는 사용자의 실행과 경쟁하거나 그 중 하나로 슬롯되는 자체 에이전트도 제공합니다.
 
-- [GitHub](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api): the default; Issues, Actions, Apps and the largest integration ecosystem.
-- [GitLab](https://about.gitlab.com/pricing/): issues, merge requests, CI/CD and runners in one product, SaaS or self-managed.
+- [GitHub](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api): 기본값; Issues, Actions, Apps 및 가장 큰 통합 생태계.
+- [GitLab](https://about.gitlab.com/pricing/): 이슈, 머지 리퀘스트, CI/CD 및 러너가 하나의 제품에, SaaS 또는 자체 관리.
 
-### Suite git hosts
+### 스위트 git hosts
 
-A git host sold as one module of a wider suite, where the ticket tracker is a sibling product (Jira, Azure Boards) joined by links and webhooks. Tracker events arrive on a second stream, so the orchestrator joins two event sources.
+더 넓은 스위트의 한 모듈로 판매되는 git host로, 티켓 트래커가 링크와 웹훅으로 연결된 형제 제품(Jira, Azure Boards)입니다. 트래커 이벤트는 두 번째 스트림에 도착하므로, orchestrator는 두 이벤트 소스를 연결합니다.
 
-**Pick it when** the organisation already runs the suite and its humans live in Jira or Azure Boards. The factory inherits that tracker as its human interface.
+**선택 조건**: 조직이 이미 스위트를 실행하고 있고 그 사람들이 Jira나 Azure Boards에서 살 때. 팩토리는 해당 트래커를 인간 인터페이스로 상속받습니다.
 
-- [Bitbucket Cloud](https://support.atlassian.com/bitbucket-cloud/docs/api-request-limits/): Atlassian's git host, paired with Jira and Bitbucket Pipelines.
-- [Azure DevOps (Azure Repos)](https://learn.microsoft.com/en-us/azure/devops/integrate/concepts/rate-limits): Repos, Boards, Pipelines and Entra identities in one organisation, so it fills all four slots.
-- [AWS CodeCommit](https://aws.amazon.com/blogs/devops/aws-codecommit-returns-to-general-availability/): a bare git host with IAM identities; pair it with an external tracker and CI.
+- [Bitbucket Cloud](https://support.atlassian.com/bitbucket-cloud/docs/api-request-limits/): Atlassian의 git host, Jira 및 Bitbucket Pipelines와 쌍을 이룸.
+- [Azure DevOps (Azure Repos)](https://learn.microsoft.com/en-us/azure/devops/integrate/concepts/rate-limits): Repos, Boards, Pipelines 및 Entra 아이덴티티가 하나의 조직에 있어, 네 슬롯을 모두 채움.
+- [AWS CodeCommit](https://aws.amazon.com/blogs/devops/aws-codecommit-returns-to-general-availability/): IAM 아이덴티티를 가진 베어 git host; 외부 트래커 및 CI와 쌍을 이루세요.
 
-### Self-hosted git hosts
+### 자체 호스팅 git hosts
 
-A git host the user runs on their own infrastructure, often beside the orchestrator and runners on the same network. The operator sets the rate limits, so the ceiling is the hardware. The user owns upgrades, backups and uptime for every slot it fills.
+사용자가 자체 인프라에서 실행하는 git host로, 종종 같은 네트워크의 orchestrator 및 러너 옆에 있습니다. 운영자가 속도 제한을 설정하므로, 상한은 하드웨어입니다. 사용자는 채우는 모든 슬롯에 대한 업그레이드, 백업, 가동 시간을 소유합니다.
 
-**Pick it when** code must stay on-premises or air-gapped, the user wants zero per-seat cost, or a SaaS API budget throttles a busy factory. Forgejo and Gitea suit small teams and bundle issues plus GitHub-Actions-compatible CI; GitLab self-managed and GitHub Enterprise Server suit organisations and keep their Apps and service accounts.
+**선택 조건**: 코드가 온프레미스나 에어갭 상태로 유지되어야 하거나, 사용자가 좌석당 비용 제로를 원하거나, SaaS API 예산이 바쁜 팩토리를 조절할 때. Forgejo와 Gitea는 소규모 팀에 적합하며 이슈와 GitHub-Actions 호환 CI를 번들로 제공합니다. GitLab 자체 관리 및 GitHub Enterprise Server는 조직에 적합하며 앱과 서비스 계정을 유지합니다.
 
-- [Forgejo](https://forgejo.org/2026-10-release-v17-0/): community-governed, lightweight, with Forgejo Actions.
-- [Gitea](https://about.gitea.com/): lightweight with Gitea Actions; also sold managed.
-- [GitLab self-managed](https://about.gitlab.com/install/) and [GitHub Enterprise Server](https://docs.github.com/en/enterprise-server@latest): the full platforms on the user's own infrastructure.
+- [Forgejo](https://forgejo.org/2026-10-release-v17-0/): 커뮤니티 관리, 경량, Forgejo Actions 포함.
+- [Gitea](https://about.gitea.com/): Gitea Actions를 가진 경량; 관리형으로도 판매됨.
+- [GitLab self-managed](https://about.gitlab.com/install/) 및 [GitHub Enterprise Server](https://docs.github.com/en/enterprise-server@latest): 사용자 자체 인프라의 전체 플랫폼.
 
-### Review-first and decentralised git hosts
+### 리뷰 우선 및 탈중앙화 git hosts
 
-Git hosts whose review model departs from the branch-and-PR shape: per-commit patchsets with voted labels, or repositories federated across user-run nodes. Most factory tooling assumes PRs, so expect to build more of the glue. In Gerrit, an automated check run votes `Verified` from a bot account and a human votes `Code-Review`.
+리뷰 모델이 브랜치-앤-PR 형태에서 벗어난 git hosts: 투표된 라벨이 있는 커밋당 패치셋, 또는 사용자 실행 노드 간에 연합된 저장소. 대부분의 팩토리 도구는 PR을 가정하므로, 더 많은 접착제를 빌드할 것으로 예상하세요. Gerrit에서, 자동화된 체크 실행은 봇 계정에서 `Verified`에 투표하고 사람은 `Code-Review`에 투표합니다.
 
-**Pick it when** the user's team already reviews this way, or values federation over ecosystem.
+**선택 조건**: 사용자의 팀이 이미 이런 식으로 리뷰하거나, 생태계보다 연합을 가치 있게 여길 때.
 
-- [Gerrit](https://www.gerritcodereview.com/): patchset review with label votes; the Android and Chromium model.
-- [Tangled](https://blog.tangled.org/ci/): git hosting on the AT Protocol with stacked PRs and its own CI runner.
+- [Gerrit](https://www.gerritcodereview.com/): 라벨 투표가 있는 패치셋 리뷰; Android 및 Chromium 모델.
+- [Tangled](https://blog.tangled.org/ci/): AT Protocol의 git 호스팅, 스택된 PR 및 자체 CI 러너.
 
-### Agent-native git hosts
+### 에이전트 네이티브 git hosts
 
-New git hosts built around agents as the main authors: high commit throughput, server-side reads in place of clones, and per-agent attribution. The whole type is early (as of 2026-10), so gates and rate limits may be unpublished: ask the vendor.
+에이전트를 주요 작성자로 하여 구축된 새로운 git hosts: 높은 커밋 처리량, 클론 대신 서버 측 읽기, 에이전트별 귀속. 전체 타입이 초기(2026-10 기준)이므로, 게이트와 속도 제한이 공개되지 않을 수 있습니다: 벤더에게 문의하세요.
 
-**Pick it when** the factory runs many concurrent runs against one large repository and clone time or API limits dominate. Pilot one on a mirror of a single repository, keeping GitHub as the fallback.
+**선택 조건**: 팩토리가 하나의 큰 저장소에 대해 많은 동시 실행을 실행하고 클론 시간이나 API 제한이 지배적일 때. GitHub을 폴백으로 유지하면서 단일 저장소의 미러에서 파일럿을 시도하세요.
 
-- [Cursor Origin](https://cursor.com/origin): from the Graphite team, with GitHub sync and signed PR, review and push webhooks.
-- [GitLab next-gen SCM](https://about.gitlab.com/blog/gitlab-next-gen-scm/): rebuilt GitLab backend with clone-free agent APIs.
+- [Cursor Origin](https://cursor.com/origin): Graphite 팀 출신, GitHub 동기화 및 서명된 PR, 리뷰 및 푸시 웹훅.
+- [GitLab next-gen SCM](https://about.gitlab.com/blog/gitlab-next-gen-scm/): 클론 없는 에이전트 API로 재구축된 GitLab 백엔드.
 
-### Git storage for runs
+### 실행을 위한 Git 스토리지
 
-Headless, API-first git repositories created by the thousand: branches, commits and diffs, with no PRs, reviews or gates. They fill half the slot, with short-lived per-repository tokens minted per run.
+수천 개로 생성되는 헤드리스, API 우선 git 저장소: 브랜치, 커밋 및 diff, PR, 리뷰 또는 게이트 없음. 실행당 민트되는 단기 저장소별 토큰으로 슬롯의 절반을 채웁니다.
 
-**Pick it when** runs need cheap per-run scratch repositories or forks (a fork per ticket, an agent's working state) and the PR still lands on a full git host from the types above.
+**선택 조건**: 실행이 저렴한 실행당 스크래치 저장소나 포크(티켓당 포크, 에이전트의 작업 상태)가 필요하고 PR은 여전히 위 타입의 전체 git host에 착륙할 때.
 
-- [Cloudflare Artifacts](https://www.cloudflare.com/product/artifacts/): git-compatible storage on Workers; fork a baseline per task.
-- [Pierre code.storage](https://code.storage/docs): white-label git API with ephemeral branches.
+- [Cloudflare Artifacts](https://www.cloudflare.com/product/artifacts/): Workers의 git 호환 스토리지; 작업당 베이스라인 포크.
+- [Pierre code.storage](https://code.storage/docs): 임시 브랜치가 있는 화이트 라벨 git API.
 
-## Researching further
+## 추가 조사
 
-Check each candidate against these questions:
+각 후보를 이러한 질문에 대해 확인하세요:
 
-1. **Triggers**: which events (PR opened, push, review submitted, label added, check finished) reach the orchestrator as webhooks, and are deliveries signed?
-2. **Identity**: can a run act as a dedicated bot or app identity? That keeps runs attributable, lets an automated review run approve a PR another identity authored, and decides whether a run's own pushes trigger the next run.
-3. **Gates**: are required checks, required approvals and branch protection available on the user's plan and repository visibility, and can a bot sit on a bypass list?
-4. **Rate limits**: what API budget does every run on every runner share, per what unit (installation, token, user, workspace), and how does it scale?
-5. **Slots filled**: which of ticket tracker, orchestrator, runner and observability platform does the same product cover?
+1. **Triggers**: 어떤 이벤트(PR 열림, 푸시, 리뷰 제출, 라벨 추가, 체크 완료)가 웹훅으로 orchestrator에 도달하며, 전달이 서명되는가?
+2. **Identity**: 실행이 전용 봇이나 앱 아이덴티티로 행동할 수 있는가? 그것은 실행을 귀속 가능하게 유지하고, 자동화된 리뷰 실행이 다른 아이덴티티가 작성한 PR을 승인하도록 하며, 실행 자체의 푸시가 다음 실행을 트리거하는지 결정합니다.
+3. **Gates**: 필수 체크, 필수 승인 및 브랜치 보호가 사용자의 플랜 및 저장소 가시성에서 사용 가능하며, 봇이 우회 목록에 있을 수 있는가?
+4. **Rate limits**: 모든 러너의 모든 실행이 공유하는 API 예산은 무엇이며, 어떤 단위(설치, 토큰, 사용자, 워크스페이스)당이며, 어떻게 확장되는가?
+5. **Slots filled**: 티켓 트래커, orchestrator, 러너 및 observability platform 중 어떤 것을 같은 제품이 커버하는가?
 
-Find the answers in primary sources: the REST API and webhook reference, the rate-limit page, the pricing and plan comparison page, the access-token or app docs, and the changelog or release notes.
+주요 소스에서 답을 찾으세요: REST API 및 웹훅 참조, 속도 제한 페이지, 가격 및 플랜 비교 페이지, 액세스 토큰 또는 앱 문서, 변경 로그 또는 릴리스 노트.
 
-The fastest to go stale: beta and preview status (the whole agent-native and git-storage types), rate-limit numbers, which plan unlocks gates, and availability after acquisitions, shutdowns and reopenings. As of 2026-10, for example, AWS CodeCommit had reopened to new customers and Bitbucket Data Center was sold only as a hybrid licence with Cloud.
+가장 빨리 구식이 되는 것: 베타 및 프리뷰 상태(전체 에이전트 네이티브 및 git 스토리지 타입), 속도 제한 숫자, 어떤 플랜이 게이트를 잠금 해제하는지, 인수, 종료 및 재개장 후의 가용성. 예를 들어, 2026-10 기준으로 AWS CodeCommit는 새 고객에게 재개장했고 Bitbucket Data Center는 Cloud와의 하이브리드 라이선스로만 판매되었습니다.
 
-## Durable gotchas
+## 지속적인 함정
 
-Verify each still holds before the design relies on it.
+설계가 이에 의존하기 전에 각각이 여전히 유지되는지 확인하세요.
 
-- **GitHub `GITHUB_TOKEN` ends chains.** Events caused by the built-in Actions token start no new workflow runs (except `workflow_dispatch` and `repository_dispatch`), so a run pushing with it silently stops the next run. Give runs a GitHub App identity from day one.
-- **Gates often sit behind a paid plan.** As of 2026-10, GitHub rulesets on private repositories need Pro, Team or Enterprise, GitLab approval rules need Premium, and enforced Bitbucket merge checks need Premium.
-- **Rate limits are per identity, and the bot's type changes them.** As of 2026-10, a GitHub App installation gets 5,000 requests/hour against 1,000 for `GITHUB_TOKEN`; Bitbucket user tokens stay at the base rate while access tokens scale; Azure DevOps raises a bot's budget with its access level.
-- **Suite trackers mean two event streams.** The orchestrator joins git host and ticket tracker events itself.
+- **GitHub `GITHUB_TOKEN`은 체인을 끝냅니다.** 내장 Actions 토큰으로 인한 이벤트는 새로운 워크플로우 실행을 시작하지 않습니다(`workflow_dispatch` 및 `repository_dispatch` 제외). 따라서 그것으로 푸시하는 실행은 조용히 다음 실행을 중지시킵니다. 첫날부터 실행에 GitHub App 아이덴티티를 부여하세요.
+- **Gates는 종종 유료 플랜 뒤에 있습니다.** 2026-10 기준, 개인 저장소의 GitHub 룰셋은 Pro, Team 또는 Enterprise가 필요하고, GitLab 승인 규칙은 Premium이 필요하며, 강제된 Bitbucket 병합 체크는 Premium이 필요합니다.
+- **Rate limits는 아이덴티티별이며, 봇의 타입이 이를 변경합니다.** 2026-10 기준, GitHub App 설치는 시간당 5,000 요청을 받는 반면 `GITHUB_TOKEN`은 1,000입니다. Bitbucket 사용자 토큰은 기본 속도에 머물지만 액세스 토큰은 확장됩니다. Azure DevOps는 액세스 레벨에 따라 봇의 예산을 올립니다.
+- **스위트 트래커는 두 개의 이벤트 스트림을 의미합니다.** orchestrator는 git host 및 티켓 트래커 이벤트를 자체적으로 연결합니다.

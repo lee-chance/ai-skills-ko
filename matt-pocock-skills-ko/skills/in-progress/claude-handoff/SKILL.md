@@ -1,18 +1,18 @@
 ---
 name: claude-handoff
-description: Hand the current conversation off to a fresh background agent that picks up the work immediately.
+description: "현재 대화를 즉시 작업을 이어받는 새로운 백그라운드 에이전트에게 전달하세요."
 argument-hint: "What will the next session be used for?"
 disable-model-invocation: true
 ---
 
-Write a handoff summary of the current conversation so a fresh agent can continue the work. Save it to the temporary directory of the user's OS, then launch a background agent seeded with it as its prompt: `claude --bg --name "<descriptive name>" -- "$(cat <summary file>)"`. Passing the file keeps the shell from running backticks or expanding `$` in the summary. It starts in the current working directory and returns immediately; the user manages it with `claude agents`.
+현재 대화의 핸드오프 요약을 작성하여 새로운 에이전트가 작업을 계속할 수 있도록 하세요. 이를 사용자 OS의 임시 디렉토리에 저장한 다음, 이를 프롬프트로 사용하는 백그라운드 에이전트를 시작하세요: `claude --bg --name "<descriptive name>" -- "$(cat <summary file>)"`. 파일을 전달하면 쉘이 요약에서 백틱을 실행하거나 `$`를 확장하지 않습니다. 현재 작업 디렉토리에서 시작하고 즉시 반환됩니다. 사용자는 `claude agents`로 관리합니다.
 
-Always pass `-n`/`--name` with a descriptive name (e.g. `--name "Fix login bug"`); it sets the display name shown in the job list, session picker, and terminal title.
+항상 `-n`/`--name`을 설명적인 이름과 함께 전달하세요(예: `--name "Fix login bug"`). 이는 작업 목록, 세션 선택기, 터미널 제목에 표시되는 이름을 설정합니다.
 
-Include a "suggested skills" section in the summary, naming which skills the next agent should call the Skill tool for.
+요약에 "suggested skills" 섹션을 포함하여, 다음 에이전트가 Skill 도구를 호출해야 하는 스킬을 명명하세요.
 
-Do not duplicate content already captured in other artifacts (specs, plans, ADRs, issues, commits, diffs). Reference them by path or URL instead.
+이미 다른 아티팩트(스펙, 계획, ADR, 이슈, 커밋, diff)에 캡처된 콘텐츠를 중복하지 마세요. 대신 경로나 URL로 참조하세요.
 
-Redact any sensitive information, such as API keys, passwords, or personally identifiable information, since the summary becomes the agent's prompt.
+요약이 에이전트의 프롬프트가 되므로, API 키, 비밀번호 또는 개인 식별 정보와 같은 민감한 정보는 제거하세요.
 
-If the user passed arguments, treat them as a description of what the next session will focus on and tailor the summary accordingly.
+사용자가 인수를 전달한 경우, 이를 다음 세션이 집중할 내용에 대한 설명으로 처리하고 그에 따라 요약을 맞추세요.
