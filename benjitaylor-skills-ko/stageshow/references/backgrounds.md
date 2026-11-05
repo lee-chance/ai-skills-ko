@@ -1,30 +1,30 @@
-# Backgrounds and the whole picture
+# 배경과 그림 전체
 
-The supplied looks are examples, not a menu of allowed styles. Start with the product and the feeling you want. A neutral interface, a saturated poster, a dark technical surface, a tactile control and an image-led composition can all work. Typography, content, layout, imagery, material and motion should all support the same idea; changing the accent color alone does not make a new identity.
+제공된 룩은 허용된 스타일 메뉴가 아니라 예시입니다. 제품과 원하는 느낌에서 시작하세요. 중립적인 인터페이스, 채도 높은 포스터, 어두운 기술 표면, 촉각적인 컨트롤, 이미지가 이끄는 구성 모두 될 수 있습니다. 타이포그래피, 콘텐츠, 레이아웃, 이미지, 재질, 모션이 같은 아이디어를 받쳐야 합니다. 액센트 색만 바꾸는 것으로 새 정체성이 되지는 않습니다.
 
-## Choose the ground for what it does
+## 하는 일에 맞게 그라운드를 고르세요
 
-- **Quiet solid or tint:** gives dense UI room to read. Separate the foreground with a clear step in value before adding a shadow.
-- **Color field or graphic pattern:** makes a sparse picture distinctive. Keep a calm area behind useful text, and let the pattern give direction or scale. Crisp bands show what a glass surface blurs; a glow everywhere cannot.
-- **Colorful gradient:** choose its direction and color relationships on purpose. A diagonal transition, a broad radial light, blended fields and a multicolor sweep are different compositions. Keep strong color behind an opaque surface, or give glass enough density to keep its text readable. A vivid ground does not also need vivid controls, a colored shadow and a glow.
-- **Material:** paper, glass, metal and sculpted plastic need different edges, highlights and shadows. Use those cues consistently. Texture supports a material; it does not sit over text or stand in for hierarchy.
-- **Photography or artwork:** use a suitable licensed local asset, keep its subject and credit it where required. A graphic illustration may be abstract, but never present a CSS landscape as a photograph. The graphic album sleeve in `examples/hero-grid/` is artwork on purpose.
-- **Dark:** choose text, borders and raised surfaces together. Black behind a white mockup and a coherent dark product are different compositions; both can be intentional.
+- **조용한 단색 또는 틴트:** 빽빽한 UI가 읽힐 공간을 줍니다. 그림자를 더하기 전에 명도의 분명한 단차로 전경을 분리하세요.
+- **색 면 또는 그래픽 패턴:** 성긴 그림을 특색 있게 만듭니다. 쓸모 있는 텍스트 뒤에는 차분한 영역을 두고, 패턴이 방향이나 스케일을 주게 하세요. 또렷한 띠는 유리 표면이 무엇을 흐리게 하는지 보여 줍니다. 사방의 글로우는 그럴 수 없습니다.
+- **다채로운 그라데이션:** 방향과 색 관계를 의도적으로 고르세요. 대각 전환, 넓은 방사형 빛, 섞인 면, 여러 색의 스윕은 서로 다른 구성입니다. 강한 색은 불투명 표면 뒤에 두거나, 유리가 텍스트를 읽을 수 있을 만큼 밀도를 갖게 하세요. 선명한 그라운드에 선명한 컨트롤, 색 그림자, 글로우까지 필요하지는 않습니다.
+- **재질:** 종이, 유리, 금속, 조각된 플라스틱은 서로 다른 가장자리, 하이라이트, 그림자가 필요합니다. 그 단서를 일관되게 쓰세요. 텍스처는 재질을 받칩니다. 텍스트 위에 얹히거나 계층을 대신하지 않습니다.
+- **사진 또는 아트워크:** 적합한 라이선스의 로컬 에셋을 쓰고, 피사체를 지키며, 필요할 때 크레딧을 남기세요. 그래픽 일러스트는 추상적일 수 있지만, CSS 풍경을 사진인 것처럼 내놓지 마세요. `examples/hero-grid/`의 그래픽 앨범 슬리브는 의도된 아트워크입니다.
+- **다크:** 텍스트, 테두리, 올라온 표면을 함께 고르세요. 흰 목업 뒤의 검정과 일관된 다크 제품은 다른 구성입니다. 둘 다 의도적일 수 있습니다.
 
-`examples/backgrounds/` holds the same small interface across twenty grounds, so you can compare tint, fields, light, linework, material, six vivid gradients and six textures (dot grid, halftone, blueprint, grain, conic sweep, fine stripes). The gradients vary their direction, value and material rather than repeating one glow in different colors. They are examples of relationships, not a preset selector.
+`examples/backgrounds/`는 같은 작은 인터페이스를 스무 가지 그라운드 위에 두어, 틴트, 면, 빛, 선, 재질, 선명한 그라데이션 여섯 가지, 텍스처 여섯 가지(도트 그리드, 하프톤, 청사진, 그레인, 원뿔 스윕, 가는 줄)를 비교할 수 있습니다. 그라데이션은 색만 바꾼 같은 글로우를 반복하지 않고 방향, 명도, 재질을 바꿉니다. 관계의 예시이지, 프리셋 선택기가 아닙니다.
 
-Give banded grounds a hierarchy: a dominant field, a supporting color and an optional narrow highlight. Let glass show their tint while its text and controls stay readable. Band width and color area deserve the same composition judgment as the foreground.
+띠가 있는 그라운드에는 계층을 주세요. 지배적인 면, 받치는 색, 선택적인 좁은 하이라이트입니다. 유리가 틴트를 보여 주게 하되, 텍스트와 컨트롤은 읽히게 두세요. 띠 너비와 색 면적은 전경과 같은 구성 판단을 받을 자격이 있습니다.
 
-## Compose the set before the tiles
+## 타일보다 먼저 세트를 구성하세요
 
-The rules of the set (one hero, contrasting neighbors, grounds composed together, copy outside the picture) are `bento.md` rules 2, 4, 6 and 10. `examples/hero-grid/` shows them with several grounds: a drafting sheet, orange keycaps, violet-to-peach bands under glass, a neutral icon collection and a dark music player, held by shared 8px gaps and 12px corners. Orange returns in the artwork and violet links the glass to the dark sleeve: borrow the relationships, not the colors. Judge adjacent colors as a pair and the grid as a silhouette. An image-led hero can skip tile headlines when the pictures carry the idea.
+세트의 규칙(히어로 하나, 대비되는 이웃, 함께 구성된 그라운드, 그림 밖의 카피)은 `bento.md` 규칙 2, 4, 6, 10입니다. `examples/hero-grid/`는 여러 그라운드로 이를 보여 줍니다. 제도 시트, 주황 키캡, 유리 아래의 보라에서 복숭아로 이어지는 띠, 중립적인 아이콘 모음, 어두운 음악 플레이어가 8px 간격과 12px 모서리로 묶입니다. 주황은 아트워크에서 돌아오고 보라는 유리를 어두운 슬리브에 잇습니다. 색이 아니라 관계를 빌리세요. 인접한 색은 쌍으로, 그리드는 실루엣으로 판단하세요. 그림이 아이디어를 실으면 이미지 주도 히어로는 타일 헤드라인을 생략할 수 있습니다.
 
-## Objects and drawings as tiles
+## 타일로서의 사물과 그림
 
-The tiles that stop a grid being five windows are rarely UI: a payment card lit from one side, a folded corner of paper, a chip, a keycap, a line drawing of a stack or a graph. Give an object one light source, a real material (a matte card has a soft falloff, a glass pane has a rim) and a shadow that agrees with the tiles around it. A line drawing uses one stroke weight and the grid's own ink, and holds still. Neither needs a label inside the picture; the tile copy does that.
+그리드가 창 다섯 개로 멈추지 않게 하는 타일은 UI인 경우가 드뭅니다. 한쪽에서 비춘 결제 카드, 접힌 종이 모서리, 칩, 키캡, 스택이나 그래프의 선 그림입니다. 사물에는 광원 하나, 실제 재질(무광 카드는 부드러운 감쇠, 유리판은 림), 주변 타일과 맞는 그림자를 주세요. 선 그림은 획 두께 하나와 그리드 자신의 잉크를 쓰고, 가만히 있습니다. 둘 다 그림 안의 레이블이 필요 없습니다. 타일 카피가 그 일을 합니다.
 
-A stack of objects is one object. Center the whole silhouette (every card in the fan, not the front one) with the same air on each side of the tile, and keep the back ones clear of the copy; a stack drifting up under the words reads as spilt. A payment card keeps its real anatomy at any size: the chip about an eighth of the card's width, a third of the way down, with the contactless arcs beside it at about half the chip's height; the name and number along the bottom edge, the network mark in the bottom-right corner. A chip the size of an icon on a card the size of a tile is the first thing that gives a drawn card away.
+사물의 스택은 하나의 사물입니다. 실루엣 전체(앞장이 아니라 부채의 모든 카드)를 타일 양쪽에 같은 공기로 중앙에 두고, 뒤의 것들은 카피에서 떨어뜨리세요. 단어 아래로 떠오르는 스택은 쏟아진 것처럼 읽힙니다. 결제 카드는 어떤 크기에서도 실제 구조를 유지합니다. 칩은 카드 너비의 약 1/8, 위에서 약 1/3 지점, 옆에 칩 높이의 약 절반인 비접촉 호입니다. 이름과 번호는 아래 가장자리를 따라, 네트워크 마크는 오른쪽 아래 모서리입니다. 타일만 한 카드 위의 아이콘만 한 칩은 그린 카드를 들키게 하는 첫 번째 것입니다.
 
-## Recompose for the host
+## 호스트에 맞게 다시 구성하세요
 
-Recomposition and motion follow `bento.md` rules 11, 12 and 13. In `examples/hero-grid/` the controls get a native compact layout, the glass and player go full width, the two small object collections share a row, and only the drafting tile has a story. A crop can take a blank keycap edge, album artwork or window margin, never the label or result the viewer needs.
+재구성과 모션은 `bento.md` 규칙 11, 12, 13을 따릅니다. `examples/hero-grid/`에서 컨트롤은 네이티브 컴팩트 레이아웃을 얻고, 유리와 플레이어는 전체 너비가 되며, 작은 사물 모음 둘은 한 행을 나누고, 스토리가 있는 것은 제도 타일뿐입니다. 크롭은 빈 키캡 가장자리, 앨범 아트워크, 창 여백을 가져갈 수 있습니다. 보는 사람에게 필요한 레이블이나 결과는 가져가면 안 됩니다.
