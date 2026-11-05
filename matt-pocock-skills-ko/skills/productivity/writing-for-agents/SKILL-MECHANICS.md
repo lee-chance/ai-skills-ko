@@ -1,22 +1,22 @@
-# Skill mechanics
+# 스킬 메커니즘
 
-The skill-specific branch of [`writing-for-agents`](SKILL.md): what changes when the document is a skill (frontmatter, the invocation choice, and router skills). Everything else about writing it is the universal reference in `SKILL.md`.
+[`writing-for-agents`](SKILL.md)의 스킬별 브랜치: 문서가 스킬일 때 변경되는 것(frontmatter, 호출 선택, 라우터 스킬). 그것을 작성하는 것에 대한 다른 모든 것은 `SKILL.md`의 범용 참조입니다.
 
-## Invocation
+## 호출
 
-Two choices, trading the two loads:
+두 가지 선택, 두 부하를 거래:
 
-- A **model-invoked** skill keeps a `description`, so the agent can fire it autonomously, and other skills can reach it. You can still type its name: model-invocation always _includes_ user reach; a description only ever adds agent discovery, never removes the human's. The description is the skill's top-level context pointer, forced to stay loaded at all times: permanent context load in exchange for discoverability. A model-invoked skill whose content is all reference is also one home for shared reference: another skill can invoke it, so reference needed by several skills lives in one place. Mechanics: omit `disable-model-invocation`, and write a model-facing description carrying the trigger branches (the pointer-writing rules in `SKILL.md` apply in full).
-- A **user-invoked** skill strips the description from the agent's reach: only the human typing its name can invoke it, and no other skill can. Zero context load, but it spends cognitive load: you are the index that must remember it exists. Mechanics: set `disable-model-invocation: true`; the `description` becomes human-facing: a one-line summary, trigger lists stripped.
+- **모델 호출** 스킬은 `description`을 유지하므로, 에이전트가 자율적으로 발화할 수 있으며, 다른 스킬이 도달할 수 있습니다. 여전히 이름을 입력할 수 있습니다: 모델 호출은 항상 사용자 도달을 _포함_합니다. 설명은 에이전트 발견만 추가하고, 인간의 것을 절대 제거하지 않습니다. 설명은 스킬의 최상위 컨텍스트 포인터로, 항상 로드된 상태로 유지되도록 강제됩니다: 발견 가능성과 교환하여 영구 컨텍스트 로드. 콘텐츠가 모두 참조인 모델 호출 스킬은 공유 참조의 또 다른 홈이기도 합니다: 다른 스킬이 호출할 수 있으므로, 여러 스킬이 필요로 하는 참조는 한 곳에 살 수 있습니다. 메커니즘: `disable-model-invocation`을 생략하고, 트리거 브랜치를 운반하는 모델 대면 설명을 작성하세요(`SKILL.md`의 포인터 작성 규칙이 전체적으로 적용됩니다).
+- **사용자 호출** 스킬은 에이전트의 도달에서 설명을 제거합니다: 이름을 입력하는 인간만 호출할 수 있으며, 다른 스킬은 할 수 없습니다. 컨텍스트 로드 제로이지만, 인지 부하를 소비합니다: 그것이 존재한다는 것을 기억해야 하는 인덱스입니다. 메커니즘: `disable-model-invocation: true`를 설정하세요. `description`은 인간 대면이 됩니다: 한 줄 요약, 트리거 목록 제거됨.
 
-Pick model-invocation only when the agent must reach the skill on its own, or another skill must. If it only ever fires by hand, make it user-invoked and pay no context load.
+에이전트가 자체적으로 스킬에 도달해야 하거나 다른 스킬이 도달해야 할 때만 모델 호출을 선택하세요. 손으로만 발화되는 경우, 사용자 호출로 만들고 컨텍스트 로드를 지불하지 마세요.
 
-Shared reference that two user-invoked skills both need can live in neither: with no descriptions, neither can fire the other. Push it to a plain file outside the skill system: external reference any skill can point at.
+두 사용자 호출 스킬이 모두 필요로 하는 공유 참조는 어느 쪽에도 살 수 없습니다: 설명이 없으면, 어느 쪽도 다른 쪽을 발화할 수 없습니다. 스킬 시스템 외부의 일반 파일로 밀어붙이세요: 모든 스킬이 가리킬 수 있는 외부 참조.
 
-## Splitting by invocation
+## 호출별 분할
 
-The invocation cut of splitting (the sequence cut lives in `SKILL.md`): split off a model-invoked skill when you have a distinct leading word that should trigger it on its own (a trigger word you actually use in your prompts), or another skill must reach it. You pay context load for the new always-loaded description, so that independent reach has to be worth it.
+분할의 호출 컷(시퀀스 컷은 `SKILL.md`에 있음): 자체적으로 트리거해야 하는 별개의 선도 단어가 있거나(프롬프트에서 실제로 사용하는 트리거 단어) 다른 스킬이 도달해야 할 때 모델 호출 스킬을 분리하세요. 새로운 항상 로드된 설명에 대한 컨텍스트 로드를 지불하므로, 그 독립적인 도달은 가치가 있어야 합니다.
 
-## Router skills
+## 라우터 스킬
 
-When user-invoked skills multiply past what you can remember, that piled-up cognitive load is cured by a **router skill**: one user-invoked skill that names the others and when to reach for each, so the human has one skill to remember instead of many. It can only hint, never fire them: user-invoked skills have no description, so nothing but the human can reach them.
+사용자 호출 스킬이 기억할 수 있는 것을 넘어서면, 그 쌓인 인지 부하는 **라우터 스킬**로 치유됩니다: 다른 것들을 명명하고 각각에 도달해야 할 때를 명명하는 하나의 사용자 호출 스킬로, 인간이 많은 것 대신 하나의 스킬을 기억할 수 있도록 합니다. 힌트만 줄 수 있으며, 절대 발화할 수 없습니다: 사용자 호출 스킬은 설명이 없으므로, 인간 외에는 도달할 수 없습니다.
