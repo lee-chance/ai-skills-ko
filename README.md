@@ -27,11 +27,18 @@ pstack-ko의 한국어 번역은 이 저장소에서 유지합니다.
 - **커밋**: `299140fafd08df55a9c234e610c3f64af3f45531`
 - **설명**: Benji Taylor의 디자인·모션 스킬 모음. Stageshow로 실제 제품처럼 보이는 가짜 제품 UI를 만듭니다.
 
+### 4. agent-skills
+- **원본**: `agent-skills/`
+- **한국어**: `agent-skills-ko/`
+- **출처**: [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills)
+- **커밋**: `301b02b12bff98e4688e6984af6556802322bbde`
+- **설명**: Addy Osmani의 프로덕션급 엔지니어링 스킬 모음. 스펙, 구현, 테스트, 리뷰, 출시까지 개발 라이프사이클을 다루는 25개 스킬과 슬래시 커맨드를 포함합니다.
+
 ## 🚀 사용 방법
 
 ### 한국어 버전 사용하기
 
-한국어로 번역된 스킬을 사용하려면 번역 폴더(`pstack-ko/`, `matt-pocock-skills-ko/`, `benjitaylor-skills-ko/`)를 여러분의 AI 에이전트 환경에 설치하세요.
+한국어로 번역된 스킬을 사용하려면 번역 폴더(`pstack-ko/`, `matt-pocock-skills-ko/`, `benjitaylor-skills-ko/`, `agent-skills-ko/`)를 여러분의 AI 에이전트 환경에 설치하세요.
 
 #### Cursor (Claude Code)
 ```bash
@@ -43,6 +50,9 @@ claude plugin install matt-pocock-skills-ko --local /path/to/this/repo/matt-poco
 
 # benjitaylor-skills-ko의 Stageshow 설치
 npx skills add /path/to/this/repo/benjitaylor-skills-ko --skill stageshow
+
+# agent-skills-ko 설치 (25개 스킬)
+npx skills add /path/to/this/repo/agent-skills-ko
 ```
 
 #### 수동 설치
@@ -51,11 +61,12 @@ npx skills add /path/to/this/repo/benjitaylor-skills-ko --skill stageshow
 cp -r pstack-ko ~/.claude/skills/pstack-ko
 cp -r matt-pocock-skills-ko ~/.agents/skills/matt-pocock-skills-ko
 cp -r benjitaylor-skills-ko/stageshow ~/.agents/skills/stageshow
+cp -r agent-skills-ko/skills/* ~/.agents/skills/
 ```
 
 ### 원본과 비교하기
 
-원본 폴더(`pstack/`, `matt-pocock-skills/`, `benjitaylor-skills/`)를 참조하여 번역과 비교할 수 있습니다. 원본은 업스트림 파일에 출처를 적는 `SOURCE.md`를 더한 상태로 유지됩니다.
+원본 폴더(`pstack/`, `matt-pocock-skills/`, `benjitaylor-skills/`, `agent-skills/`)를 참조하여 번역과 비교할 수 있습니다. 원본은 업스트림 파일에 출처를 적는 `SOURCE.md`를 더한 상태로 유지됩니다.
 
 ## 🔄 업스트림 동기화
 
@@ -145,6 +156,11 @@ ai-skills-ko/
 │   ├── SOURCE.md             # 출처 정보
 │   └── ...
 │
+├── agent-skills/             # 원본 (변경 금지)
+├── agent-skills-ko/          # 한국어 번역
+│   ├── SOURCE.md             # 출처 정보
+│   └── ...
+│
 ├── TRANSLATION_GUIDE.md      # 번역 가이드
 ├── AGENTS.md                 # 유지보수 가이드
 └── README.md                 # 이 파일
@@ -160,12 +176,24 @@ ai-skills-ko/
 4. 일관된 스타일로 번역하세요
 5. 풀 리퀘스트를 제출하세요
 
+## 📊 번역 상태
+
+한국어 산문은 각 `-ko` 폴더에서 유지합니다. 코드, 명령, 경로, URL, YAML `name`, 슬래시 커맨드, 라이선스 원문은 번역하지 않습니다.
+
+| 소스 | 한국어 | 산문 번역 |
+|------|--------|-----------|
+| pstack | `pstack-ko/` | 이 저장소에서 유지 |
+| matt-pocock-skills | `matt-pocock-skills-ko/` | 이 저장소에서 유지 |
+| benjitaylor-skills | `benjitaylor-skills-ko/` | 이 저장소에서 유지 |
+| agent-skills | `agent-skills-ko/` | 산문 마크다운 번역. changelog 파일은 업스트림에 없음. `LICENSE`와 코드·설정은 원문 |
+
 ## ⚖️ 라이선스
 
 - **이 저장소**: MIT License
 - **pstack**: MIT License (Cursor)
 - **matt-pocock-skills**: MIT License (Matt Pocock)
 - **benjitaylor-skills**: MIT License (Benji Taylor, `stageshow/LICENSE`)
+- **agent-skills**: MIT License (Addy Osmani, `LICENSE`)
 
 각 원본 폴더에 해당 라이선스 파일이 포함되어 있습니다.
 
@@ -175,6 +203,7 @@ ai-skills-ko/
   - [cursor/plugins](https://github.com/cursor/plugins) - pstack
   - [mattpocock/skills](https://github.com/mattpocock/skills) - Matt Pocock Skills
   - [benjitaylor/skills](https://github.com/benjitaylor/skills) - Benji Taylor Skills
+  - [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) - Addy Osmani Agent Skills
 - **관련 문서**:
   - [Cursor Documentation](https://docs.cursor.com/)
   - [Matt Pocock's Newsletter](https://www.aihero.dev/s/skills-newsletter)
