@@ -1,79 +1,79 @@
-## What it does
+## 무엇을 하는지
 
-`pr` defines the shape of a pull request body: a **Summary** that shows the change, **Evidence** that it works, and a **Merge Danger** call on how risky it is to land. It is a format reference, not a workflow. It does not push a branch, open the PR, or decide what goes into it. It tells the [agent](https://www.aihero.dev/ai-coding-dictionary/agent) what the body should look like when it writes one.
+`pr`은 풀 리퀘스트 본문의 형태를 정의합니다: 변경을 보여주는 **Summary**, 작동한다는 **Evidence**, 그리고 얼마나 위험한지에 대한 **Merge Danger** 판단. 워크플로우가 아니라 형식 참조입니다. 브랜치를 푸시하거나, PR을 열거나, 무엇이 들어가는지 결정하지 않습니다. [에이전트](https://www.aihero.dev/ai-coding-dictionary/agent)가 작성할 때 본문이 어떻게 보여야 하는지 알려줍니다.
 
-The summary is a visual, not a paragraph. A default PR body describes the diff in prose. This one picks the **smallest view** that makes the key point clear (pseudocode, a call tree, a component tree, a file tree, a Mermaid diagram, or a shaped diff) and keeps the words around it brief. The reviewer already has the diff open, so the body shows them its shape before they read it.
+요약은 단락이 아니라 시각적입니다. 기본 PR 본문은 diff를 산문으로 설명합니다. 이것은 핵심 포인트를 명확하게 만드는 **가장 작은 뷰**(의사 코드, 호출 트리, 컴포넌트 트리, 파일 트리, Mermaid 다이어그램, 또는 형태화된 diff)를 선택하고 주변의 단어를 간결하게 유지합니다. 리뷰어는 이미 diff를 열어놨으므로, 본문은 읽기 전에 그 형태를 보여줍니다.
 
-## When to reach for it
+## 언제 사용하는지
 
-Type `/pr`, or the agent reaches for it automatically whenever it is writing a PR body.
+`/pr`을 입력하거나, 에이전트가 PR 본문을 작성할 때마다 자동으로 이것을 선택합니다.
 
-| Your situation | Reach for |
+| 당신의 상황 | 사용할 것 |
 | --- | --- |
-| A branch is ready and needs a body a reviewer can scan | `pr` |
-| The code is written but nobody has reviewed it yet | [code-review](https://aihero.dev/skills-code-review) first, then `pr` |
-| The PR is open and review comments are coming back | Nothing in this set yet; `pr` only writes the body |
+| 브랜치가 준비되었고 리뷰어가 스캔할 수 있는 본문이 필요함 | `pr` |
+| 코드는 작성되었지만 아직 아무도 리뷰하지 않음 | 먼저 [code-review](https://aihero.dev/skills-code-review), 그 다음 `pr` |
+| PR이 열려 있고 리뷰 코멘트가 돌아오고 있음 | 이 세트에는 아직 없음; `pr`은 본문만 작성 |
 
-## The template
+## 템플릿
 
-Three sections, in this order:
+이 순서로 세 섹션:
 
-- **Summary**: one or more small visuals, each placed next to the short text it supports. Use one, sometimes several, rarely all of them. Keep only the calls, files, props, and boundaries the reviewer needs.
-- **Evidence**: a before and after. A screenshot is the strongest evidence when the change is visual and the [environment](https://www.aihero.dev/ai-coding-dictionary/environment) can take one. Otherwise, use the exact test that failed and now passes, written as pseudocode, or the console output that changed.
-- **Merge Danger**: whether the change is a **one-way door** or a **two-way door**, and its **blast radius**. A two-way door is cheap to reverse; a one-way door (a destructive migration, a public API removal, a hard-to-reverse decision) is not. Blast radius names what could break if the change is wrong: layout shift, consumers of an API, mobile responsiveness.
+- **Summary**: 지원하는 짧은 텍스트 옆에 배치된 하나 이상의 작은 시각적 요소. 하나를 사용하고, 때때로 여러 개, 드물게 모두. 리뷰어가 필요로 하는 호출, 파일, props, 경계만 유지하세요.
+- **Evidence**: before와 after. 변경이 시각적이고 [환경](https://www.aihero.dev/ai-coding-dictionary/environment)이 찍을 수 있을 때 스크린샷이 가장 강력한 증거입니다. 그렇지 않으면 실패했다가 이제 통과하는 정확한 테스트를 의사 코드로 작성하거나, 변경된 콘솔 출력을 사용합니다.
+- **Merge Danger**: 변경이 **one-way door**인지 **two-way door**인지, 그리고 그 **blast radius**. two-way door는 되돌리기 쉽습니다; one-way door(파괴적인 마이그레이션, 공개 API 제거, 되돌리기 어려운 결정)는 그렇지 않습니다. blast radius는 변경이 잘못되면 망가질 수 있는 것을 명명합니다: 레이아웃 시프트, API의 소비자, 모바일 반응성.
 
-The door call is the leading idea. It changes "is this safe to merge?" from a gut feeling into a stated claim the reviewer can disagree with. It also tells them where to spend their [human review](https://www.aihero.dev/ai-coding-dictionary/human-review). Skim a two-way door with a small blast radius, and read a one-way door slowly.
+door 판단이 주요 아이디어입니다. "이것을 병합해도 안전한가?"를 직감에서 리뷰어가 동의하지 않을 수 있는 명시된 주장으로 바꿉니다. 또한 [휴먼 리뷰](https://www.aihero.dev/ai-coding-dictionary/human-review)를 어디에 소비할지 알려줍니다. 작은 blast radius를 가진 two-way door는 훑어보고, one-way door는 천천히 읽습니다.
 
-## Common questions
+## 일반적인 질문
 
-**Can I trust the agent's own door call?**
+**에이전트 자체의 door 판단을 믿을 수 있나요?**
 
-Not blindly, and that is the point of stating it. The agent that wrote the change is the one grading it, so be most suspicious when it says "two-way, small blast radius". The diff also often hides whether a change can be reversed. As one user put it, "rolling back a commit won't unsend a batch of emails", and a flagged rollout stays two-way only until the first write lands in the new format. The skill gives the agent a definition (destructive actions and hard-to-reverse decisions are one-way), not a checklist, so check the Merge Danger line most carefully. Two things help: make sure the agent has the [ticket](https://www.aihero.dev/ai-coding-dictionary/ticket) or [spec](https://www.aihero.dev/ai-coding-dictionary/spec) in front of it, not just the diff, and write down the changes your repo always treats as one-way (schema migrations, anything that ships outward or deletes) where the agent will read them before it makes the call.
+맹목적으로는 아니며, 그것이 명시하는 요점입니다. 변경을 작성한 에이전트가 평가하는 것이므로 "two-way, 작은 blast radius"라고 말할 때 가장 의심하세요. diff도 종종 변경을 되돌릴 수 있는지 숨깁니다. 한 사용자가 말한 것처럼, "커밋을 롤백한다고 이메일 배치를 보내지 않은 것으로 할 수 없으며", 플래그가 지정된 롤아웃은 새 형식으로 첫 번째 쓰기가 도착할 때까지만 two-way로 유지됩니다. 스킬은 에이전트에게 체크리스트가 아니라 정의(파괴적인 작업과 되돌리기 어려운 결정은 one-way)를 제공하므로 Merge Danger 라인을 가장 주의 깊게 확인하세요. 두 가지가 도움이 됩니다: 에이전트가 diff뿐만 아니라 [티켓](https://www.aihero.dev/ai-coding-dictionary/ticket) 또는 [spec](https://www.aihero.dev/ai-coding-dictionary/spec)을 앞에 두도록 하고, 리포가 항상 one-way로 취급하는 변경(스키마 마이그레이션, 외부로 배송하거나 삭제하는 모든 것)을 에이전트가 판단하기 전에 읽을 곳에 적어두세요.
 
-**Does it open the PR for me?**
+**PR을 열어주나요?**
 
-No. `pr` covers only the body. [implement](https://aihero.dev/skills-implement) ends by committing to the current branch. Requests for a skill or option that opens the PR (a `/to-pr`, or `implement` opening a PR instead of committing) are still open proposals. One user's workaround is a one-sentence local override of `implement` that tells it to open a PR. [implement-spec](https://aihero.dev/skills-implement-spec) is the exception: it opens a draft PR when your issue tracker closes work through PRs or when you ask for one. Because `pr` is model-invoked, the agent uses this shape for the body whenever you ask it to open a PR.
+아니요. `pr`은 본문만 다룹니다. [implement](https://aihero.dev/skills-implement)는 현재 브랜치에 커밋하며 끝납니다. PR을 여는 스킬 또는 옵션에 대한 요청(`/to-pr`, 또는 커밋하는 대신 PR을 여는 `implement`)은 여전히 열린 제안입니다. 한 사용자의 해결 방법은 PR을 열라고 알려주는 `implement`의 한 문장 로컬 오버라이드입니다. [implement-spec](https://aihero.dev/skills-implement-spec)이 예외입니다: 이슈 트래커가 PR을 통해 작업을 닫거나 요청할 때 초안 PR을 엽니다. `pr`이 모델 호출이므로, PR을 열라고 요청할 때마다 에이전트는 본문에 이 형태를 사용합니다.
 
-**Won't it just produce another wall of text and diagrams?**
+**단지 또 다른 텍스트와 다이어그램의 벽을 생성하지 않을까요?**
 
-The skill is designed to prevent that, but it can still happen. Users' complaint about agent PR bodies is consistent: "a long summary but all I need to know is what changed, how it was verified, what could break, and whether it's safe to merge." The skill tells the agent to skip preambles, keep prose brief, and pick the smallest view, usually one visual and rarely all of them. If you still get a stack of diagrams, the agent has ignored that. If the body is huge because the diff is huge, the problem is the size of the PR, and `pr` will not split it for you.
+스킬은 이를 방지하도록 설계되었지만 여전히 발생할 수 있습니다. 에이전트 PR 본문에 대한 사용자의 불만은 일관됩니다: "긴 요약이지만 내가 알아야 할 것은 무엇이 변경되었는지, 어떻게 검증되었는지, 무엇이 망가질 수 있는지, 그리고 병합해도 안전한지입니다." 스킬은 에이전트에게 서문을 건너뛰고, 산문을 간결하게 유지하며, 가장 작은 뷰를 선택하라고 말합니다. 보통 하나의 시각적 요소이고 드물게 모두입니다. 여전히 다이어그램 스택을 받으면 에이전트가 이를 무시한 것입니다. diff가 크기 때문에 본문이 거대하면 문제는 PR의 크기이며, `pr`이 분할하지 않습니다.
 
-**My repo already has a PR template. Which one wins?**
+**리포에 이미 PR 템플릿이 있습니다. 어느 것이 이기나요?**
 
-Neither, by default. `pr` has its own template and does not look for `.github/pull_request_template.md` or anything like it. Several users asked for the skill to use the repo's template. If you do nothing, the agent has two competing instructions for the same document. Settle it in your repo's agent docs, for example by filling the repo template and putting Summary, Evidence and Merge Danger under it.
+기본적으로 둘 다 아닙니다. `pr`은 자체 템플릿이 있으며 `.github/pull_request_template.md` 또는 이와 유사한 것을 찾지 않습니다. 여러 사용자가 스킬이 리포의 템플릿을 사용하도록 요청했습니다. 아무것도 하지 않으면 에이전트는 동일한 문서에 대해 두 개의 경쟁하는 지침을 갖습니다. 리포의 에이전트 문서에서 해결하세요. 예를 들어 리포 템플릿을 채우고 그 아래에 Summary, Evidence 및 Merge Danger를 넣습니다.
 
-**Is the output HTML? Why doesn't the Mermaid diagram render?**
+**출력이 HTML인가요? Mermaid 다이어그램이 렌더링되지 않는 이유는?**
 
-The output is a markdown PR body, not an HTML page. GitHub and GitLab render Mermaid blocks in a PR description, but a terminal does not, so the diagram looks like raw text while the agent is still showing it to you locally. Users on CLI harnesses have worked around that with an ASCII Mermaid renderer or by having the agent attach an HTML version to the PR. Mermaid is one of six views. A call tree, file tree or shaped diff reads the same everywhere.
+출력은 HTML 페이지가 아니라 마크다운 PR 본문입니다. GitHub와 GitLab은 PR 설명에서 Mermaid 블록을 렌더링하지만, 터미널은 렌더링하지 않으므로 에이전트가 로컬에서 여전히 보여주는 동안 다이어그램이 원시 텍스트처럼 보입니다. CLI harness의 사용자는 ASCII Mermaid 렌더러 또는 에이전트가 PR에 HTML 버전을 첨부하도록 하여 이를 해결했습니다. Mermaid는 여섯 가지 뷰 중 하나입니다. 호출 트리, 파일 트리 또는 형태화된 diff는 어디서나 동일하게 읽힙니다.
 
-**Can it sort through the review comments that come back?**
+**돌아오는 리뷰 코멘트를 정리할 수 있나요?**
 
-No. It writes the body and stops. Users have asked more than once for a way to triage comments from other developers or review bots (which are worth acting on, which are non-issues). This skill does not do that.
+아니요. 본문을 작성하고 멈춥니다. 사용자는 다른 개발자 또는 리뷰 봇의 코멘트(어떤 것이 조치할 가치가 있고, 어떤 것이 문제가 아닌지)를 분류하는 방법을 두 번 이상 요청했습니다. 이 스킬은 그렇게 하지 않습니다.
 
-**Does it keep the body up to date as the PR changes?**
+**PR이 변경됨에 따라 본문을 최신 상태로 유지하나요?**
 
-No. It writes the body at one point in time, and a PR that changes under review leaves that body stale. Ask the agent to rewrite the body after a large change. The agent is writing a PR body again, so it uses the same shape.
+아니요. 한 시점에 본문을 작성하며, 리뷰 중에 변경되는 PR은 해당 본문을 오래된 상태로 남깁니다. 큰 변경 후 에이전트에게 본문을 다시 작성하도록 요청하세요. 에이전트가 다시 PR 본문을 작성하고 있으므로 동일한 형태를 사용합니다.
 
-**My change has no UI. What goes in Evidence?**
+**내 변경에 UI가 없습니다. Evidence에 무엇이 들어가나요?**
 
-Everything except the screenshot. The screenshot is the strongest evidence only when the change is visual. For a migration, a background job or a refactor, the evidence is the exact test that failed before and passes now, or the console output that changed. "Tests are green" on its own is a claim, not a before and after.
+스크린샷을 제외한 모든 것. 스크린샷은 변경이 시각적일 때만 가장 강력한 증거입니다. 마이그레이션, 백그라운드 작업 또는 리팩터링의 경우, 증거는 이전에 실패했다가 이제 통과하는 정확한 테스트 또는 변경된 콘솔 출력입니다. "테스트가 녹색"만으로는 주장이지 before와 after가 아닙니다.
 
-**Can it mark the body as written by an LLM?**
+**본문이 LLM에 의해 작성되었다고 표시할 수 있나요?**
 
-Not by itself. One user's approach is a standing instruction in the repo's agent docs that every issue, comment, and PR the agent writes ends with a disclosure line. That rule belongs in the repo, where it covers everything the agent posts, rather than in a template for one kind of document.
+스스로는 아닙니다. 한 사용자의 접근 방식은 에이전트가 작성하는 모든 이슈, 코멘트, PR이 공개 라인으로 끝난다는 리포의 에이전트 문서에 있는 상시 지침입니다. 해당 규칙은 한 종류의 문서에 대한 템플릿이 아니라 에이전트가 게시하는 모든 것을 다루는 리포에 속합니다.
 
-## It's working if
+## 제대로 작동하고 있다면
 
-- You can tell what the PR changes from the Summary visual alone, before opening the diff.
-- The body has no preamble: it starts at the Summary heading.
-- The Evidence section shows a before and an after, not a claim that tests pass.
-- Every PR states a door and a blast radius, and the one-way doors are the ones you slow down on.
+- diff를 열기 전에 Summary 시각적 요소만으로 PR이 무엇을 변경하는지 알 수 있습니다.
+- 본문에 서문이 없습니다: Summary 제목에서 시작합니다.
+- Evidence 섹션은 테스트가 통과한다는 주장이 아니라 before와 after를 보여줍니다.
+- 모든 PR이 door와 blast radius를 명시하며, one-way door가 천천히 진행하는 것입니다.
 
-## Where it fits
+## 어디에 적합한지
 
-`pr` comes between review and retro when the build ships as a pull request: `to-spec → to-tickets → implement → code-review → pr → retro`. It is model-invoked, so it also fires on its own any time the agent writes a PR body outside that chain.
+빌드가 풀 리퀘스트로 배송될 때 `pr`은 리뷰와 retro 사이에 옵니다: `to-spec → to-tickets → implement → code-review → pr → retro`. 모델 호출이므로 에이전트가 해당 체인 외부에서 PR 본문을 작성할 때마다 스스로 실행됩니다.
 
-- [code-review](https://aihero.dev/skills-code-review) runs before it, because a PR body should describe a diff that has already been reviewed.
-- [implement](https://aihero.dev/skills-implement) produces the commits the body describes.
+- [code-review](https://aihero.dev/skills-code-review)는 이전에 실행됩니다. PR 본문은 이미 리뷰된 diff를 설명해야 하기 때문입니다.
+- [implement](https://aihero.dev/skills-implement)는 본문이 설명하는 커밋을 생성합니다.
 
-[ask-matt](https://aihero.dev/skills-ask-matt) routes across the whole set when you are unsure which skill the situation wants.
+어떤 스킬이 상황에 원하는지 확실하지 않을 때 [ask-matt](https://aihero.dev/skills-ask-matt)가 전체 세트를 라우팅합니다.
