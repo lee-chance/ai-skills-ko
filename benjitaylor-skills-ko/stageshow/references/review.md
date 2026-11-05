@@ -1,26 +1,26 @@
-# Review
+# 리뷰
 
-The brief for a fresh-eye review after rehearsal. Give the reviewer this file, `verify.md`, the `examples/` folder, the scene's URL and the frames the builder filmed, with a one-line brief that names the gold and attaches its still beside the scene's. Nothing else: not the builder's plan, not its reasons, never its REHEARSAL.md.
+리허설 뒤 새로운 눈으로 보는 리뷰의 브리프입니다. 리뷰어에게 이 파일, `verify.md`, `examples/` 폴더, 장면의 URL, 빌더가 촬영한 프레임을 주고, 골드를 이름 짓고 그 스틸을 장면 옆에 붙인 한 줄 브리프를 주세요. 그 외에는 없습니다. 빌더의 계획도, 이유도, REHEARSAL.md도 주지 마세요.
 
-Your first question, before the checklist: does this composition answer this product and this page, or could it be any product in its category? A layout the brief did not shape (a window pinned with even margins whatever the product, the same phone framing every phone brief gets) is a finding, ranked with framing, even when every check passes. From the two stills, judge whether the scene gives its focal content as much of the frame as the gold does.
+체크리스트 전의 첫 질문: 이 구성이 이 제품과 이 페이지에 답하는가, 아니면 같은 범주의 아무 제품이나 될 수 있는가? 브리프가 빚지 않은 레이아웃(제품이 무엇이든 균일한 여백으로 고정된 창, 모든 휴대폰 브리프에 같은 휴대폰 프레이밍)은 모든 검사를 통과해도 프레이밍과 같은 급의 발견입니다. 두 스틸에서, 장면이 초점 콘텐츠에 골드만큼의 프레임을 주는지 판단하세요.
 
-Start from the brief's own words. If it says "white page", a tinted plate behind the device is the first thing on your list; if it names a size, a look or a page color, hold the scene to it before anything else.
+브리프 자신의 말에서 시작하세요. "흰 페이지"라고 하면 기기 뒤의 틴트 플레이트가 목록의 첫 항목입니다. 크기, 룩, 페이지 색을 이름 지으면, 다른 무엇보다 먼저 장면을 그것에 맞추세요.
 
-## The reviewer's brief
+## 리뷰어의 브리프
 
-You are reviewing a faux product UI scene someone else built. You have the frames, the URL, `references/verify.md` and the gold examples in `examples/`. You have not seen the brief's intent beyond the one-line brief, and you do not need it: you are judging the picture.
+다른 사람이 만든 가짜 제품 UI 장면을 리뷰하고 있습니다. 프레임, URL, `references/verify.md`, `examples/`의 골드 예시가 있습니다. 한 줄 브리프 너머의 의도는 보지 않았고, 볼 필요도 없습니다. 그림을 판단합니다.
 
-Look at the frames the way the most exacting designer you know would, the one who screenshots the single wrong thing and sends it back with "what is this?". Then answer every item in `verify.md` from a frame, not from the code. If a frame you need does not exist (a beat at 40ms, a 4x zoom of a glyph, the phone width, `--states`), film it with `scripts/film.mjs` yourself before answering; a predicted failure is not a finding, and neither is a predicted pass.
+당신이 아는 가장 까다로운 디자이너가 보듯 프레임을 보세요. 잘못된 것 하나를 스크린샷 찍어 "이게 뭐야?"라고 돌려보내는 사람입니다. 그런 다음 `verify.md`의 모든 항목을 코드가 아니라 프레임에서 답하세요. 필요한 프레임이 없으면(40ms의 비트, 글리프의 4배 확대, 휴대폰 너비, `--states`) 답하기 전에 `scripts/film.mjs`로 직접 촬영하세요. 예측된 실패는 발견이 아니고, 예측된 통과도 아닙니다.
 
-Put the scene beside the gold example it is closest to and say the one difference.
+장면을 가장 가까운 골드 예시 옆에 두고, 차이 하나를 말하세요.
 
-Return a ranked list, framing first, then hierarchy and density, then motion, then polish. Each item: what you would screenshot, which frame shows it, and what the fix is in one line. Say what you could not check. If there is nothing, say "nothing" and list the frames you looked at.
+순위가 있는 목록을 돌려주세요. 프레이밍, 그다음 계층과 밀도, 그다음 모션, 그다음 다듬기입니다. 각 항목: 무엇을 스크린샷할지, 어느 프레임이 보여 주는지, 수정을 한 줄로. 확인하지 못한 것을 말하세요. 없으면 "없음"이라고 하고 본 프레임을 나열하세요.
 
-Rules of the review:
-- The bar for a finding is a frame. Quote the frame file.
-- Rank by how much of the scene it spoils, not by how easy it is to fix.
-- A line the builder judged intentional is not settled: look at the frame and judge it again.
-- Do not fix anything. Do not soften a finding because the build is nearly there.
-- A whole window floating with even margins, rows with more air between them than they are tall, a pane whose content stops well above its bottom, a list of gray bars where the eye lands, a phone drawn small: these are findings even when no film line names them.
+리뷰의 규칙:
+- 발견의 기준은 프레임입니다. 프레임 파일을 인용하세요.
+- 고치기 쉬운 정도가 아니라, 장면을 얼마나 망치는지로 순위를 매기세요.
+- 빌더가 의도적이라고 판단한 줄은 확정되지 않습니다. 프레임을 보고 다시 판단하세요.
+- 아무것도 고치지 마세요. 빌드가 거의 끝났다고 발견을 누그러뜨리지 마세요.
+- 균일한 여백으로 떠 있는 전체 창, 높이보다 사이 공기가 더 많은 행, 콘텐츠가 바닥보다 훨씬 위에서 멈추는 창, 눈이 머무는 곳의 회색 바 목록, 작게 그려진 휴대폰: 필름 줄이 이름 짓지 않아도 발견입니다.
 
-Platform conventions are not placeholders. An iPhone messaging thread in Messages' blue with the plus and mic in its composer, a macOS window with its lights, an iOS banner at its true size: these are the product's chrome and stay. Send back an invented accent or a redrawn system control; never send back the convention.
+플랫폼 관례는 자리 표시자가 아닙니다. Messages의 파란색에 작성기의 플러스와 마이크가 있는 iPhone 메시지 스레드, 신호등이 있는 macOS 창, 실제 크기의 iOS 배너: 이것은 제품의 크롬이며 남습니다. 지어낸 액센트나 다시 그린 시스템 컨트롤은 돌려보내세요. 관례는 돌려보내지 마세요.
