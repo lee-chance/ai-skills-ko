@@ -11,21 +11,21 @@ AI 에이전트를 위한 스킬 모음의 원본과 한국어 번역을 제공�
 - **커밋**: `bb68f2365eceafa0cb2d253112f675acf5f144cc`
 - **설명**: Cursor의 공식 pstack 플러그인
 
-pstack-ko의 번역은 [lee-chance/plugins](https://github.com/lee-chance/plugins)의 PR #1에서 완성된 번역을 가져왔습니다.
+pstack-ko의 한국어 번역은 이 저장소에서 유지합니다.
 
-### 2. matt-pocock-skills (번역 완료 100%)
+### 2. matt-pocock-skills
 - **원본**: `matt-pocock-skills/`
 - **한국어**: `matt-pocock-skills-ko/`
 - **출처**: [mattpocock/skills](https://github.com/mattpocock/skills)
 - **커밋**: `4ae2317ddb22b046e26455e4f9c9b3aaaf62212d`
-- **설명**: Matt Pocock의 AI 코딩 스킬 모음. 모든 SKILL.md 파일과 문서 번역 완료.
+- **설명**: Matt Pocock의 AI 코딩 스킬 모음.
 
 ### 3. benjitaylor-skills
 - **원본**: `benjitaylor-skills/`
 - **한국어**: `benjitaylor-skills-ko/`
 - **출처**: [benjitaylor/skills](https://github.com/benjitaylor/skills)
 - **커밋**: `299140fafd08df55a9c234e610c3f64af3f45531`
-- **설명**: Benji Taylor의 디자인·모션 스킬 모음. Stageshow로 실제 제품처럼 보이는 가짜 제품 UI를 만듭니다. 마크다운 산문 번역 완료.
+- **설명**: Benji Taylor의 디자인·모션 스킬 모음. Stageshow로 실제 제품처럼 보이는 가짜 제품 UI를 만듭니다.
 
 ## 🚀 사용 방법
 
@@ -117,7 +117,7 @@ GitHub Actions가 매주 월요일 자동으로 업스트림 변경사항을 체
 - **[TRANSLATION_GUIDE.md](./TRANSLATION_GUIDE.md)** - 번역 규칙, 용어집, 스타일 가이드
 - **[AGENTS.md](./AGENTS.md)** - AI 에이전트를 위한 유지보수 가이드
 - **[sources.yaml](./sources.yaml)** - 소스 레지스트리
-- **각 폴더의 SOURCE.md** - 해당 폴더의 출처와 번역 상태
+- **각 폴더의 SOURCE.md** - 해당 폴더의 출처
 
 ## 🔧 시스템 구조
 
@@ -136,13 +136,13 @@ ai-skills-ko/
 │   └── ...
 │
 ├── matt-pocock-skills/       # 원본 (변경 금지)
-├── matt-pocock-skills-ko/    # 한국어 번역 (부분)
-│   ├── SOURCE.md             # 번역 상태 포함
+├── matt-pocock-skills-ko/    # 한국어 번역
+│   ├── SOURCE.md             # 출처 정보
 │   └── ...
 │
 ├── benjitaylor-skills/       # 원본 (변경 금지)
 ├── benjitaylor-skills-ko/    # 한국어 번역
-│   ├── SOURCE.md             # 번역 상태 포함
+│   ├── SOURCE.md             # 출처 정보
 │   └── ...
 │
 ├── TRANSLATION_GUIDE.md      # 번역 가이드
@@ -156,19 +156,9 @@ ai-skills-ko/
 
 1. 이 저장소를 포크하세요
 2. `TRANSLATION_GUIDE.md`를 읽어 번역 규칙을 숙지하세요
-3. 번역이 필요한 파일을 찾으세요 (각 `-ko` 폴더의 `SOURCE.md` 참조)
+3. 해당 `-ko` 폴더에서 번역을 수정하세요
 4. 일관된 스타일로 번역하세요
 5. 풀 리퀘스트를 제출하세요
-
-## 📊 번역 상태
-
-| 소스 | 원본 파일 수 | 번역 완료 | 진행률 |
-|------|-------------|-----------|--------|
-| pstack | ~60개 스킬 | ✅ 100% | 완료 |
-| matt-pocock-skills | ~113개 파일 | 🔄 ~5% | 진행 중 |
-| benjitaylor-skills | 377개 파일 (마크다운 24개) | ✅ 마크다운 산문 | 완료 |
-
-matt-pocock-skills의 완전한 번역은 진행 중입니다. 기여를 환영합니다!
 
 ## ⚖️ 라이선스
 
@@ -185,7 +175,6 @@ matt-pocock-skills의 완전한 번역은 진행 중입니다. 기여를 환영�
   - [cursor/plugins](https://github.com/cursor/plugins) - pstack
   - [mattpocock/skills](https://github.com/mattpocock/skills) - Matt Pocock Skills
   - [benjitaylor/skills](https://github.com/benjitaylor/skills) - Benji Taylor Skills
-  - [lee-chance/plugins](https://github.com/lee-chance/plugins) - pstack-ko 원본
 - **관련 문서**:
   - [Cursor Documentation](https://docs.cursor.com/)
   - [Matt Pocock's Newsletter](https://www.aihero.dev/s/skills-newsletter)
