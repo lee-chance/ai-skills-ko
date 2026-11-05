@@ -1,80 +1,80 @@
-# Example tasks
+# 예제 작업
 
-Tasks grouped by the problem they solve. Each names the trigger that starts its runs, what a run does, and what it triggers next. Most factories start as one of these and grow by chaining the next.
+해결하는 문제별로 그룹화된 작업. 각각은 실행을 시작하는 트리거, 실행이 하는 일, 다음에 트리거하는 것을 명명합니다. 대부분의 팩토리는 이 중 하나로 시작하고 다음을 연결하여 성장합니다.
 
-## Untriaged tickets pile up
+## 분류되지 않은 티켓이 쌓임
 
 **Explore task**
-- Trigger: a ticket is created, or a human labels it.
-- Does: checks the ticket against the codebase and sorts it into a category (easy call, needs a human, not a bug).
-- Triggers: an implementer run for easy calls. Anything else ends with the ticket labelled as waiting for a human.
+- Trigger: 티켓이 생성되거나, 사람이 라벨을 붙임.
+- Does: 코드베이스와 티켓을 확인하고 카테고리로 분류(쉬운 호출, 사람 필요, 버그 아님).
+- Triggers: 쉬운 호출에 대한 implementer 실행. 다른 모든 것은 사람을 기다리는 것으로 라벨이 붙은 티켓으로 끝남.
 
-## Ready tickets wait for someone to build them
+## 준비된 티켓이 빌드할 사람을 기다림
 
 **Implementer task**
-- Trigger: a ticket is labelled ready, by a human or an explore run.
-- Does: builds the ticket until the automated checks pass, and opens a draft PR.
-- Triggers: an automated review run.
+- Trigger: 사람이나 explore 실행에 의해 티켓이 ready로 라벨됨.
+- Does: 자동화된 체크가 통과할 때까지 티켓을 빌드하고, 드래프트 PR을 엶.
+- Triggers: 자동화된 리뷰 실행.
 
-## PRs wait for review
+## PR이 리뷰를 기다림
 
 **Automated review task**
-- Trigger: a PR opens with no automated review yet, or a human labels it.
-- Does: reviews the diff against the codebase's standards and the ticket it came from.
-- Triggers: a rework run on a fail. On a pass it ends, and the PR waits for human review before a human merges it.
+- Trigger: 아직 자동화된 리뷰가 없는 PR이 열리거나, 사람이 라벨을 붙임.
+- Does: 코드베이스의 표준과 그것이 온 티켓에 대해 diff를 리뷰.
+- Triggers: 실패 시 rework 실행. 통과 시 끝나고, PR은 사람이 병합하기 전에 인간 리뷰를 기다림.
 
-## Failed automated reviews sit unfixed
+## 실패한 자동화된 리뷰가 수정되지 않고 있음
 
 **Rework task**
-- Trigger: an automated review run fails a PR.
-- Does: fixes only what the automated review named, and pushes.
-- Triggers: an automated review run. After a set number of fails, it ends with the PR labelled as waiting for a human.
+- Trigger: 자동화된 리뷰 실행이 PR을 실패시킴.
+- Does: 자동화된 리뷰가 명명한 것만 수정하고 푸시.
+- Triggers: 자동화된 리뷰 실행. 설정된 횟수의 실패 후, 사람을 기다리는 것으로 라벨이 붙은 PR로 끝남.
 
-## Specs are too big for one run
+## 스펙이 한 실행에 너무 큼
 
 **Decompose task**
-- Trigger: a spec ticket is labelled.
-- Does: splits the spec into tickets, each recording which tickets it depends on.
-- Triggers: an implementer run.
+- Trigger: 스펙 티켓이 라벨됨.
+- Does: 스펙을 티켓으로 분할하고, 각각은 의존하는 티켓을 기록.
+- Triggers: implementer 실행.
 
-The implementer run here picks the next ticket whose dependencies are all closed, and triggers itself again until no ticket is left.
+여기서 implementer 실행은 의존성이 모두 닫힌 다음 티켓을 선택하고, 티켓이 남지 않을 때까지 자신을 다시 트리거합니다.
 
-## Migrating to a stricter automated check
+## 더 엄격한 자동화된 체크로 마이그레이션
 
-A new lint rule (or a stricter type setting) is switched on, but only some files pass it. The rule enforces on the passing files, and the failing ones sit on an exception list.
+새로운 lint 규칙(또는 더 엄격한 타입 설정)이 켜졌지만, 일부 파일만 통과합니다. 규칙은 통과하는 파일에 적용되고, 실패하는 파일은 예외 목록에 있습니다.
 
 **Ratchet task**
-- Trigger: a daily clock.
-- Does: takes one file off the exception list, fixes it until the stricter check passes, and opens a PR.
-- Triggers: an automated review run. Once the exception list is empty, the ratchet run has nothing to take and the migration is done.
+- Trigger: 일일 시계.
+- Does: 예외 목록에서 하나의 파일을 가져와, 더 엄격한 체크가 통과할 때까지 수정하고, PR을 엶.
+- Triggers: 자동화된 리뷰 실행. 예외 목록이 비면, ratchet 실행은 가져올 것이 없고 마이그레이션이 완료됨.
 
-One small PR a day keeps human review cheap, and the check only ever gets stricter.
+하루에 하나의 작은 PR은 인간 리뷰를 저렴하게 유지하고, 체크는 항상 더 엄격해질 뿐입니다.
 
-## Users report bugs nobody reads
+## 사용자가 아무도 읽지 않는 버그를 리포트함
 
-A feedback button in the app is a ticket source: it files each report as a ticket with the explore label already on it. The explore run does the rest.
+앱의 피드백 버튼은 티켓 소스입니다: 각 리포트를 이미 explore 라벨이 붙은 티켓으로 제출합니다. explore 실행이 나머지를 합니다.
 
-## Production problems are found late
+## 프로덕션 문제가 늦게 발견됨
 
-A monitor (slow queries, error rates) is a ticket source. It files a ticket per problem, and comments on the open ticket instead when it sees the same problem again. After a fix merges, it reopens the ticket if the problem persists.
+모니터(느린 쿼리, 에러율)는 티켓 소스입니다. 문제당 티켓을 제출하고, 같은 문제를 다시 보면 열린 티켓에 대신 댓글을 답니다. 수정이 병합된 후, 문제가 지속되면 티켓을 다시 엽니다.
 
-## The factory's own runs fail
+## 팩토리 자체의 실행이 실패함
 
 **Fix task**
-- Trigger: the orchestrator reports a failed run.
-- Does: files the failing log as a ticket, and attempts a fix as a PR when the failure is fixable.
-- Triggers: an automated review run. A failure in a fix run's own work triggers nothing, so fixes never chain. Because the fix changes the factory itself, it always gets human review.
+- Trigger: orchestrator가 실패한 실행을 보고.
+- Does: 실패 로그를 티켓으로 제출하고, 실패가 수정 가능한 경우 PR로 수정을 시도.
+- Triggers: 자동화된 리뷰 실행. fix 실행 자체 작업의 실패는 아무것도 트리거하지 않으므로, 수정은 절대 연결되지 않음. 수정이 팩토리 자체를 변경하므로, 항상 인간 리뷰를 받음.
 
-## The codebase drifts
+## 코드베이스가 표류함
 
 **Architecture task**
-- Trigger: a nightly clock.
-- Does: scans recent changes for refactoring candidates and files them as one ticket.
-- Triggers: nothing. A human picks a candidate and labels it, which starts the usual chain.
+- Trigger: 야간 시계.
+- Does: 최근 변경을 스캔하여 리팩토링 후보를 찾고 하나의 티켓으로 제출.
+- Triggers: 아무것도 없음. 사람이 후보를 선택하고 라벨을 붙이면, 일반적인 체인이 시작됨.
 
-## The same mistakes keep coming back
+## 같은 실수가 계속 돌아옴
 
 **Retro task**
-- Trigger: a PR merges, throttled to one merged PR in ten.
-- Does: reads the PR, its ticket, its automated reviews and its run logs, and proposes changes to the factory's own instructions as a PR.
-- Triggers: an automated review run.
+- Trigger: PR 병합, 10개 중 하나의 병합된 PR로 조절됨.
+- Does: PR, 그 티켓, 그 자동화된 리뷰와 그 실행 로그를 읽고, 팩토리 자체의 지침에 대한 변경을 PR로 제안.
+- Triggers: 자동화된 리뷰 실행.
