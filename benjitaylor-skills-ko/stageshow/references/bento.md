@@ -1,63 +1,63 @@
-# Bento
+# 벤토
 
-A bento grid is one picture made of tiles, not five demos side by side. Most of its quality is decided before any tile is built: which tiles show UI at all, which one is the hero, and what sits next to what. A grid where every tile is a cropped window reads as generated however well each window is made.
+벤토 그리드는 나란한 데모 다섯 개가 아니라 타일로 만든 그림 하나입니다. 품질의 대부분은 타일을 만들기 전에 결정됩니다. 어떤 타일이 UI를 보여 주는지, 어느 것이 히어로인지, 무엇이 옆에 앉는지입니다. 모든 타일이 크롭된 창인 그리드는 각 창을 아무리 잘 만들어도 생성된 것으로 읽힙니다.
 
-These are starting recipes for mixed feature grids; the product, brief and content decide the final composition. Single-tile framing (crops, satellites, gutters) is in `framing.md`; this file is about the set.
+이것은 섞인 기능 그리드의 시작 레시피입니다. 제품, 브리프, 콘텐츠가 최종 구성을 결정합니다. 단일 타일 프레이밍(크롭, 위성, 거터)은 `framing.md`에 있습니다. 이 파일은 세트에 대한 것입니다.
 
-## The rules
+## 규칙
 
-1. **Not every tile is UI.** About a third to a half of the tiles show product UI; the rest are other kinds (the table below). UI is the thing a bento is good at breaking up, not the thing it repeats.
-2. **One hero.** One tile is bigger (two columns, or two rows) and carries the richest picture or the main idea. The rest support it at a smaller size: a wide UI tile spanning two thirds of a row, or an object or photograph leading a taller composition. Equal tiles need a clear difference in content and weight.
-3. **A UI tile shows one thing, not a window.** Crop to the single component the tile is about (the button, the status stepper, the fee picker, the command row) and show it at real size or larger, so a third of the tile can be one control. Window chrome appears at most once in a grid, on the hero; four sets of traffic lights in one grid is four times the same signal.
-4. **Neighbors contrast.** Alternate kinds like a checkerboard, across and down: a picture next to a number, dense next to calm, a photo next to an icon and a sentence. Two window crops never sit side by side. Vary density and silhouette across rows and columns so the eye has a clear path.
-5. **Big type is a tile.** A stat tile is one real number at display size (48 to 72px as shown), a short lead ("Up to"), a one-line label, and at most one colored glyph such as a bolt or battery. A short statement in large type ("99.99% uptime", "More ports and faster charging.") is a tile too. These are the calm tiles that let the UI tiles breathe. Real figures, never "10x" filler. The number sits close under its copy or fills the tile; a stat pinned to the bottom of a tall tile with a void above it reads as missing content, not calm.
-6. **Copy is short and outside the picture.** A title of one to four words, or one sentence; at most one supporting sentence; never a paragraph or a bullet list. Two patterns work: the run-in, a bold lead and a gray continuation at the same size ("**Stay in sync.** Your files stay up to date."), or a large title alone. Tile copy is page type: 17 to 24px, set by the page, never the 12px of the UI inside the tile. A 15px title scaled to 10px is a caption, not a headline.
-7. **One frame, varied contents.** Tiles share radius, gap, padding and where the copy sits (all top or all bottom); the variety lives inside them, and grounds and materials may differ when the composition calls for it. Pick one family: rounded tiles on a gap, or a ruled grid with no gap and fine lines between cells. The gap equals the tiles' inner padding or a clear fraction of it. Judge the outside too: a grid on its own ground usually wants an even outer gutter, and a page that already gives that space shouldn't double it. A crop inside one tile is no reason to press the whole grid against its frame. Align left-led UI and diagrams to the copy gutter with one gap below the copy; don't center each by habit. A centered object is its own deliberate composition.
-8. **Use the tile edge deliberately.** The outer tile owns the bleed. An inner fixed-width Stage must not slice a window halfway across a wider tile and leave a blank strip beside it: measure the picture slot and match its width at every breakpoint, compact included, and inspect the right and bottom edges at the host's width. `scripts/layout.mjs` reports this as `nested-composition-crop`; look at the image and fix any unintended inner cut. A window or phone can enter from an edge and crop supporting content, as in `framing.md`, with its action and payoff whole. A UI fragment without chrome can dissolve into the tile ground; a solid window crops at a clear boundary. A centered object, lone control or statistic can be shown complete when its scale and the space around it are intentional. The boxed failure is shrinking a whole screen until its contents are unreadable, not leaving a margin.
-9. **Say each thing once across the set.** No real string, avatar, color mark or chrome repeats from tile to tile. One conversation threaded through five tiles ("Refund for order #4821" three times) is the same signal repeated, not a story.
-10. **Compose the grounds together.** A quiet feature grid can share one surface, with one photo, accent or inverted tile as punctuation. That is a starting recipe, not a limit: an expressive hero grid can use several grounds when their lightness, temperature and saturation make a rhythm. Keep neighbors distinct, give one tile the lead, and don't repeat the same gradient or spend every accent everywhere. See `backgrounds.md` and `examples/hero-grid/` for a multicolor composition.
-11. **Give motion one place to lead.** In a supporting feature grid a tile does one small thing: a number ticks, a dot grid changes, a bar fills, a button settles into its pressed state. It plays once as the grid scrolls in, staggered 80 to 120ms across tiles in reading order, or on hover for that tile alone. A hero grid can give its lead tile a short cursor story while the others hold still, as in `examples/hero-grid/`. Several competing loops leave the eye nowhere to land.
-12. **Shown at 1:1, one Stage per tile.** Each picture is its own `Stage`; the copy is page HTML beside it, never inside the stage. Never wrap the whole grid in one Stage: it scales every tile's type down with the grid (a 1000px grid in a 630px column draws 15px titles at 9.5px). Tiles change width as the grid reflows, so measure the picture slot, use that native width for a bleeding Stage, and recompose its contents for compact slots. Text stays at native size; changing a Stage's width is not a scale transform, and a host wrapper marked `data-ss-wide` scales the wide design only for a slot sized by height. Pin a deliberate crop to the tile edge. A centered object can keep a fixed design canvas when its inner boundary cuts only empty ground. `examples/bento/` uses both patterns.
-13. **Narrow, it recomposes.** Keep two columns only while each tile stays readable and deliberately framed: an article column around 550px may hold two, a phone column usually stacks, hero first. Pick the breakpoint from the content, not a universal screen width. Each UI picture gets a compact composition when it no longer fits; type tiles reflow by themselves. Important text stays at least 10px at a 320px host, gutters included.
-14. **A stat is one line.** The number and its unit sit together and never wrap: size the number to the tile with the unit on (`white-space: nowrap`), or move the unit into the lead line ("Works at 30,000 ft" becomes a lead of "Works at" and a number of "30,000 ft" that fits). The film names it `unit wrapped:`.
+1. **모든 타일이 UI는 아닙니다.** 타일의 약 1/3에서 절반이 제품 UI를 보여 주고, 나머지는 다른 종류입니다(아래 표). UI는 벤토가 깨는 데 능한 것이지, 반복하는 것이 아닙니다.
+2. **히어로 하나.** 타일 하나가 더 크고(두 열, 또는 두 행) 가장 풍부한 그림이나 주요 아이디어를 실습니다. 나머지는 더 작은 크기로 받칩니다. 행의 2/3에 걸친 넓은 UI 타일, 또는 더 높은 구성을 이끄는 사물이나 사진입니다. 같은 타일에는 콘텐츠와 무게의 분명한 차이가 필요합니다.
+3. **UI 타일은 창이 아니라 한 가지를 보여 줍니다.** 타일이 다루는 단일 컴포넌트(버튼, 상태 스테퍼, 수수료 선택기, 커맨드 행)로 크롭하고, 실제 크기나 더 크게 보여 타일의 1/3이 컨트롤 하나일 수 있게 하세요. 창 크롬은 그리드에서 많아야 한 번, 히어로에 나타납니다. 한 그리드의 신호등 네 세트는 같은 신호를 네 번입니다.
+4. **이웃이 대비됩니다.** 가로와 세로로 체커보드처럼 종류를 번갈아 두세요. 숫자 옆의 그림, 차분한 것 옆의 빽빽한 것, 아이콘과 문장 옆의 사진입니다. 창 크롭 둘은 나란히 앉지 않습니다. 행과 열에 걸쳐 밀도와 실루엣을 바꿔 눈에 분명한 경로를 주세요.
+5. **큰 타입은 타일입니다.** 통계 타일은 표시 크기의 실제 숫자 하나(보여 주는 대로 48~72px), 짧은 리드("Up to"), 한 줄 레이블, 많아야 볼트나 배터리 같은 색 글리프 하나입니다. 큰 타입의 짧은 문장("99.99% uptime", "More ports and faster charging.")도 타일입니다. 이것이 UI 타일이 숨 쉬게 하는 차분한 타일입니다. 실제 수치이지 "10x" 필러가 아닙니다. 숫자는 카피 바로 아래나 타일을 채웁니다. 위가 빈 채 높은 타일 바닥에 고정된 통계는 차분이 아니라 빠진 콘텐츠로 읽힙니다.
+6. **카피는 짧고 그림 밖에 있습니다.** 한 단어에서 네 단어의 제목, 또는 문장 하나. 받치는 문장은 많아야 하나. 문단이나 글머리 목록은 없습니다. 패턴 둘이 됩니다. 런인, 같은 크기의 굵은 리드와 회색 이어짐("**Stay in sync.** Your files stay up to date."), 또는 큰 제목만입니다. 타일 카피는 페이지 타입입니다. 17~24px, 페이지가 정하고, 타일 안 UI의 12px이 아닙니다. 10px로 스케일된 15px 제목은 헤드라인이 아니라 캡션입니다.
+7. **프레임 하나, 내용이 다양합니다.** 타일은 반지름, 간격, 패딩, 카피 위치를 공유합니다(모두 위 또는 모두 아래). 다양성은 안에 있고, 구성이 요구하면 그라운드와 재질이 다를 수 있습니다. 가족 하나를 고르세요. 간격이 있는 둥근 타일, 또는 간격 없고 셀 사이에 가는 선이 있는 규칙 그리드입니다. 간격은 타일의 안쪽 패딩과 같거나 분명한 분수입니다. 바깥도 판단하세요. 자기 그라운드의 그리드는 보통 균일한 바깥 거터를 원하고, 이미 그 공간을 주는 페이지는 두 배로 하지 않아야 합니다. 한 타일 안의 크롭이 그리드 전체를 프레임에 밀어붙일 이유는 아닙니다. 왼쪽이 이끄는 UI와 다이어그램은 카피 아래 간격 하나로 카피 거터에 맞추세요. 습관적으로 각각을 중앙에 두지 마세요. 중앙 객체는 그 자체로 의도된 구성입니다.
+8. **타일 가장자리를 의도적으로 쓰세요.** 바깥 타일이 블리드를 소유합니다. 안쪽 고정 너비 Stage가 더 넓은 타일에서 창을 반쯤 자르고 옆에 빈 띠를 남기면 안 됩니다. 그림 슬롯을 측정하고 컴팩트를 포함해 모든 중단점에서 너비를 맞추며, 호스트 너비에서 오른쪽과 아래 가장자리를 살펴보세요. `scripts/layout.mjs`는 이것을 `nested-composition-crop`으로 보고합니다. 이미지를 보고 의도하지 않은 안쪽 잘림을 고치세요. 창이나 휴대폰은 `framing.md`처럼 가장자리에서 들어와 받치는 콘텐츠를 크롭할 수 있고, 액션과 보상은 온전합니다. 크롬 없는 UI 조각은 타일 그라운드로 녹을 수 있습니다. 단단한 창은 분명한 경계에서 크롭됩니다. 중앙 객체, 단독 컨트롤, 통계는 스케일과 주위 공간이 의도적이면 온전히 보여 줄 수 있습니다. 박스 실패는 콘텐츠가 읽히지 않을 때까지 전체 화면을 줄이는 것이지, 여백을 남기는 것이 아닙니다.
+9. **세트에 걸쳐 각 것을 한 번만 말하세요.** 실제 문자열, 아바타, 색 마크, 크롬이 타일에서 타일로 반복되지 않습니다. 다섯 타일에 꿰어진 대화 하나("Refund for order #4821"이 세 번)는 스토리가 아니라 반복된 같은 신호입니다.
+10. **그라운드를 함께 구성하세요.** 조용한 기능 그리드는 표면 하나를 공유하고, 사진, 액센트, 반전 타일 하나가 구두점일 수 있습니다. 시작 레시피이지 한계가 아닙니다. 표현적인 히어로 그리드는 명도, 온도, 채도가 리듬을 만들 때 여러 그라운드를 쓸 수 있습니다. 이웃을 뚜렷하게 두고, 타일 하나에 리드를 주며, 같은 그라데이션을 반복하거나 모든 액센트를 모든 곳에 쓰지 마세요. `backgrounds.md`와 `examples/hero-grid/`의 여러 색 구성을 보세요.
+11. **모션에 이끄는 곳 하나를 주세요.** 받치는 기능 그리드에서 타일은 작은 일 하나를 합니다. 숫자가 틱하고, 점 그리드가 바뀌고, 바가 채워지고, 버튼이 눌린 상태로 정착합니다. 그리드가 스크롤되어 들어올 때 한 번, 읽기 순서로 타일 사이 80~120ms 스태거, 또는 그 타일만의 호버에서 재생됩니다. 히어로 그리드는 `examples/hero-grid/`처럼 리드 타일에 짧은 커서 스토리를 주고 나머지는 가만히 둘 수 있습니다. 경쟁하는 루프 여러 개는 눈이 머물 곳을 남기지 않습니다.
+12. **1:1로 보여 주고, 타일당 Stage 하나입니다.** 각 그림은 자기 `Stage`입니다. 카피는 스테이지 안이 아니라 옆의 페이지 HTML입니다. 그리드 전체를 Stage 하나로 감싸지 마세요. 그리드와 함께 모든 타일의 타입을 줄입니다(630px 열의 1000px 그리드는 15px 제목을 9.5px로 그립니다). 그리드가 리플로우하면 타일 너비가 바뀌므로, 그림 슬롯을 측정하고 블리드 Stage에는 그 네이티브 너비를 쓰며, 컴팩트 슬롯에 맞게 내용을 다시 구성하세요. 텍스트는 네이티브 크기로 남습니다. Stage 너비를 바꾸는 것은 스케일 변환이 아니고, `data-ss-wide`로 표시된 호스트 래퍼는 높이로 크기가 정해진 슬롯에서만 와이드 디자인을 스케일합니다. 의도된 크롭을 타일 가장자리에 고정하세요. 중앙 객체는 안쪽 경계가 빈 그라운드만 자를 때 고정 디자인 캔버스를 유지할 수 있습니다. `examples/bento/`는 두 패턴을 씁니다.
+13. **좁으면 다시 구성됩니다.** 각 타일이 읽히고 의도적으로 프레임되는 동안에만 두 열을 유지하세요. 약 550px의 기사 열은 둘을 담을 수 있고, 휴대폰 열은 보통 쌓이며 히어로가 먼저입니다. 보편적인 화면 너비가 아니라 콘텐츠에서 중단점을 고르세요. 각 UI 그림은 더 이상 맞지 않을 때 컴팩트 구성을 얻습니다. 타입 타일은 스스로 리플로우합니다. 중요한 텍스트는 거터를 포함해 320px 호스트에서 최소 10px입니다.
+14. **통계는 한 줄입니다.** 숫자와 단위가 함께 있고 줄바꿈되지 않습니다. 단위가 있는 채로 숫자를 타일에 맞추거나(`white-space: nowrap`), 단위를 리드 줄로 옮기세요("Works at 30,000 ft"는 "Works at" 리드와 맞는 "30,000 ft" 숫자가 됩니다). 필름은 이것을 `unit wrapped:`로 이름 짓습니다.
 
-## Kinds of tile
+## 타일의 종류
 
-| Kind | What it holds | Example |
+| 종류 | 담는 것 | 예시 |
 |---|---|---|
-| **One component** | A single control or panel at real size or larger, cropped by the tile | A backup control, keycaps or locale list |
-| **Hero UI** | The one tile with a real screen: window or phone, cropped per `framing.md` | Checkout or a conversation |
-| **Stat** | One big number, a lead, a label, maybe one colored glyph | Battery life, charging progress or measured uptime |
-| **Statement** | One sentence in large type, an icon in color beside or above | A short claim about connectivity or speed |
-| **Object** | A product, a card, a chip, an isometric drawing | A payment card, processor or physical control |
-| **Diagram** | An abstract picture of what the feature does: a grid, a heatmap, nodes and lines | A heatmap, sync relationship or shared canvas |
-| **Collection** | Logos, app icons, file tiles, emoji: many small marks, bleeding off | Integration marks, file thumbnails or emoji |
-| **Photo** | A real photo, with type over its quiet part. Never a scene drawn in SVG or CSS to stand in for one: however much grain and haze it gets, a drawn "photo" reads as generated. With no licensed photo to hand, pick another kind. A landscape photo rarely fits a tall tile with copy on top: it ends up a sliver, or the horizon crowds the headline. An illustration in its place is either purely graphic (a pattern, a motif from the place, like azulejo tiles for Portugal) or drawn in smooth, continuous curves, never lumpy or faceted, and it holds still | A licensed product or lifestyle photograph |
+| **컴포넌트 하나** | 실제 크기 이상의 단일 컨트롤이나 패널, 타일이 크롭 | 백업 컨트롤, 키캡, 로캘 목록 |
+| **히어로 UI** | 실제 화면이 있는 타일 하나: `framing.md`대로 크롭된 창이나 휴대폰 | 체크아웃이나 대화 |
+| **통계** | 큰 숫자 하나, 리드, 레이블, 색 글리프 하나일 수 있음 | 배터리 수명, 충전 진행, 측정된 가동 시간 |
+| **문장** | 큰 타입의 문장 하나, 옆이나 위의 색 아이콘 | 연결이나 속도에 대한 짧은 주장 |
+| **사물** | 제품, 카드, 칩, 아이소메트릭 그림 | 결제 카드, 프로세서, 물리적 컨트롤 |
+| **다이어그램** | 기능이 하는 일의 추상 그림: 그리드, 히트맵, 노드와 선 | 히트맵, 동기화 관계, 공유 캔버스 |
+| **모음** | 로고, 앱 아이콘, 파일 타일, 이모지: 벗어나는 작은 마크 여럿 | 연동 마크, 파일 썸네일, 이모지 |
+| **사진** | 조용한 부분 위의 타입이 있는 실제 사진. SVG나 CSS로 그려 대신하는 장면은 안 됩니다. 그레인과 헤이즈를 아무리 줘도 그린 "사진"은 생성된 것으로 읽힙니다. 라이선스 사진이 없으면 다른 종류를 고르세요. 풍경 사진은 위에 카피가 있는 높은 타일에 잘 맞지 않습니다. 조각이 되거나 수평선이 헤드라인을 밀어붙입니다. 그 자리의 일러스트는 순수 그래픽(패턴, 장소의 모티프, 포르투갈의 아줄레주 타일처럼)이거나 매끄럽고 연속된 곡선으로 그려지며, 울퉁불퉁하거나 면이 나뉘지 않고, 가만히 있습니다 | 라이선스된 제품이나 라이프스타일 사진 |
 
-A grid of five usually wants one hero UI, one or two components, one stat or statement, and one object, diagram or collection.
+다섯 개의 그리드는 보통 히어로 UI 하나, 컴포넌트 하나나 둘, 통계나 문장 하나, 사물·다이어그램·모음 하나를 원합니다.
 
-## Layouts
+## 레이아웃
 
-| Layout | Shape | Use for |
+| 레이아웃 | 형태 | 용도 |
 |---|---|---|
-| **Hero and strip** | A row of 2/3 + 1/3, then three equal tiles | The default for five or six features |
-| **Staggered pair** | Two columns, tall and short tiles alternating, offset between columns | Four to six claims with photos |
-| **Even grid** | 3 × 2 equal tiles | Only when every neighbor is a different kind |
-| **Big square** | Four columns, a 2 × 2 hero, small tiles round it | Many products, one flagship |
-| **Ruled** | One rounded container, 1px rules, no gaps, mixed spans | Technical or developer pages |
+| **히어로와 스트립** | 2/3 + 1/3 행, 그다음 같은 타일 셋 | 기능 다섯이나 여섯의 기본 |
+| **엇갈린 쌍** | 두 열, 높고 짧은 타일이 번갈아, 열 사이 오프셋 | 사진이 있는 주장 넷에서 여섯 |
+| **균등 그리드** | 3 × 2 같은 타일 | 모든 이웃이 다른 종류일 때만 |
+| **큰 정사각형** | 네 열, 2 × 2 히어로, 주위의 작은 타일 | 많은 제품, 플래그십 하나 |
+| **규칙** | 둥근 컨테이너 하나, 1px 규칙, 간격 없음, 섞인 스팬 | 기술이나 개발자 페이지 |
 
-**Every width is its own design.** Check the grid at each width it will meet, down to an article column (about 550, so half tiles near 270). Two columns work there when each picture has been composed for its narrower tile; stack when the content needs more width. At each width every picture lines up with its tile's copy: left edge on the copy's gutter, and a matching gutter on the right or a clear crop off the right or bottom. Never center a picture about as wide as the tile, so it touches both edges or loses a few pixels to each; resize it, re-lay it out or swap the card for that width.
+**모든 너비는 자기 디자인입니다.** 만날 각 너비에서 그리드를 확인하세요. 기사 열(약 550, 그래서 절반 타일은 약 270)까지입니다. 각 그림이 더 좁은 타일에 맞게 구성되었으면 그곳에서 두 열이 됩니다. 콘텐츠가 더 많은 너비가 필요하면 쌓으세요. 각 너비에서 모든 그림이 타일 카피와 맞습니다. 왼쪽 가장자리는 카피 거터에, 오른쪽에는 맞는 거터나 오른쪽 또는 아래로의 분명한 크롭입니다. 타일만큼 넓은 그림을 중앙에 두어 양쪽 가장자리에 닿거나 각쪽에 몇 픽셀을 잃지 마세요. 크기를 바꾸거나, 다시 배치하거나, 그 너비의 카드를 바꾸세요.
 
-## Planning a grid
+## 그리드 계획
 
-Write the tile list before building anything:
+무엇이든 만들기 전에 타일 목록을 쓰세요.
 
-| Tile | Span | Kind | The one thing | Words |
+| 타일 | 스팬 | 종류 | 한 가지 | 단어 |
 |---|---|---|---|---|
-| Inbox | 2 × 1 | Hero UI | One conversation arriving, selected | "Shared inbox" + one sentence |
-| SLAs | 1 × 1 | Stat | "14m" left, in the warning color | "Never miss a reply." |
-| Assign | 1 × 1 | Component | The assignee menu, Maya checked | "Assignments" |
-| AI drafts | 1 × 2 | Component | The draft reply and its Send button | "Drafts that sound like you." |
-| Integrations | 1 × 1 | Collection | App marks bleeding off the right | "Works with your tools." |
+| Inbox | 2 × 1 | 히어로 UI | 도착해 선택된 대화 하나 | "Shared inbox" + 문장 하나 |
+| SLAs | 1 × 1 | 통계 | 경고 색으로 남은 "14m" | "Never miss a reply." |
+| Assign | 1 × 1 | 컴포넌트 | Maya가 체크된 담당자 메뉴 | "Assignments" |
+| AI drafts | 1 × 2 | 컴포넌트 | 초안 답장과 Send 버튼 | "Drafts that sound like you." |
+| Integrations | 1 × 1 | 모음 | 오른쪽으로 벗어나는 앱 마크 | "Works with your tools." |
 
-Then check the plan against rules 1, 2, 3, 4 and 9: how many tiles are UI, which is the hero, does any tile sit next to the same kind, does any real string appear twice. Inspect the built grid and each crop at the widest and narrowest host; a good tile can still be the wrong neighbor. The still questions are in `verify.md`.
+그런 다음 계획을 규칙 1, 2, 3, 4, 9와 대조하세요. UI인 타일이 몇 개인지, 히어로가 어느 것인지, 같은 종류 옆에 앉는 타일이 있는지, 실제 문자열이 두 번 나타나는지입니다. 만든 그리드와 각 크롭을 가장 넓은 호스트와 가장 좁은 호스트에서 살펴보세요. 좋은 타일도 잘못된 이웃일 수 있습니다. 스틸 질문은 `verify.md`에 있습니다.
