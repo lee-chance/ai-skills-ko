@@ -1,36 +1,36 @@
-## What it does
+## 작동 방식
 
-You type `wait-what` when you did not understand a message. The [agent](https://www.aihero.dev/ai-coding-dictionary/agent) then re-pitches what it just said. It adds the context you were missing, writes in plain English, and uses the vocabulary from your project's `GLOSSARY.md`.
+메시지를 이해하지 못했을 때 `wait-what`을 입력하세요. [에이전트](https://www.aihero.dev/ai-coding-dictionary/agent)는 방금 말한 내용을 다시 설명합니다. 누락되었던 컨텍스트를 추가하고, 평이한 영어로 작성하며, 프로젝트의 `GLOSSARY.md`에 있는 어휘를 사용합니다.
 
-The skill is three lines long. That is the design, not an unfinished draft. Skills against verbosity usually fail because they grow too long. A four-hundred-line concision skill still leaves the [model](https://www.aihero.dev/ai-coding-dictionary/model) verbose, because the model copies the length of the skill, not its request. This one has a single precise leading word and nothing else.
+이 스킬은 세 줄 길이입니다. 이것은 설계이지, 미완성 초안이 아닙니다. 장황함에 대응하는 스킬들은 너무 길어지기 때문에 보통 실패합니다. 400줄짜리 간결함 스킬도 여전히 [모델](https://www.aihero.dev/ai-coding-dictionary/model)을 장황하게 만드는데, 모델이 스킬의 요청이 아니라 길이를 복사하기 때문입니다. 이 스킬은 하나의 정확한 선도어(leading word)만 있고 다른 것은 없습니다.
 
-## When to reach for it
+## 언제 사용하나요
 
-You invoke it by typing `/wait-what`. The agent will not reach for it on its own, and it shouldn't. Only you know when you stopped following.
+`/wait-what`을 입력하여 호출하세요. 에이전트는 스스로 이것을 사용하지 않으며, 그래서는 안 됩니다. 언제 이해가 안 되기 시작했는지는 여러분만 알 수 있습니다.
 
-Use it as soon as you notice you're skimming. For example, the agent has started to use jargon it invented, put five acronyms in one sentence, or explained a decision whose premise you never saw. It fixes the conversation you're already in. To stop the jargon arriving at all, use [grill-with-docs](https://aihero.dev/skills-grill-with-docs), which builds the shared language upfront.
+내용을 건너뛰며 읽고 있다는 것을 알아차리는 즉시 사용하세요. 예를 들어, 에이전트가 스스로 만든 전문용어를 사용하기 시작했거나, 한 문장에 다섯 개의 약어를 넣었거나, 전제를 본 적이 없는 결정을 설명했을 때입니다. 이것은 이미 진행 중인 대화를 고쳐줍니다. 전문용어가 아예 등장하지 않게 하려면 [grill-with-docs](https://aihero.dev/skills-grill-with-docs)를 사용하세요. 이것은 공유 언어를 미리 구축합니다.
 
-## The name is the mechanism
+## 이름이 곧 메커니즘입니다
 
-The leading word is **wait**. "Be concise" is an instruction about the agent's output, and the model obeys it by clipping words and losing you further. **Wait** is about *your* state. It says you stopped understanding here. An agent that hears "be brief" writes clipped fragments. An agent that hears "wait, you lost me" backs up and explains.
+선도어는 **wait**입니다. "Be concise"는 에이전트의 출력에 대한 지시이며, 모델은 단어를 잘라내고 여러분을 더 잃게 만드는 방식으로 이를 따릅니다. **Wait**는 *여러분의* 상태에 대한 것입니다. 여기서 이해가 멈췄다고 말하는 것입니다. "be brief"를 듣는 에이전트는 잘린 조각들을 작성합니다. "wait, you lost me"를 듣는 에이전트는 뒤로 물러나서 설명합니다.
 
-That difference is the whole skill. Every popular fix for verbosity names the *output*: `/tldr`, `/no-fluff`, `/talk-normal`. The model over-corrects into clipped fragments that are shorter and no clearer. Naming the *listener* asks for both halves at once: fewer words **and** the context you were missing.
+그 차이가 전체 스킬입니다. 장황함에 대한 모든 인기 있는 수정 방법은 *출력*을 명명합니다: `/tldr`, `/no-fluff`, `/talk-normal`. 모델은 더 짧지만 더 명확하지 않은 잘린 조각들로 과도하게 교정합니다. *청자*를 명명하는 것은 두 가지를 동시에 요청합니다: 더 적은 단어 **그리고** 누락되었던 컨텍스트.
 
-The skill says re-pitch **that**, not "that last message". What lost you is usually bigger than one paragraph, so the agent decides how far back to go.
+스킬은 "that last message"가 아니라 **that**을 다시 설명하라고 합니다. 여러분을 잃게 만든 것은 보통 한 단락보다 크기 때문에, 에이전트가 얼마나 뒤로 돌아갈지 결정합니다.
 
-## It plugs into the language you already have
+## 이미 가지고 있는 언어에 연결됩니다
 
-The body reuses the leading words already in your global `CLAUDE.md` and your project's `GLOSSARY.md`. ASD-STE100 Simplified Technical English sets the register. The ubiquitous language supplies the nouns. The skill, `CLAUDE.md` and `GLOSSARY.md` use the same [tokens](https://www.aihero.dev/ai-coding-dictionary/token), so invoking it is not a new instruction. It is a reminder of one the agent already agreed to.
+본문은 글로벌 `CLAUDE.md`와 프로젝트의 `GLOSSARY.md`에 이미 있는 선도어를 재사용합니다. ASD-STE100 Simplified Technical English가 레지스터를 설정합니다. 유비쿼터스 언어가 명사를 제공합니다. 스킬, `CLAUDE.md`, `GLOSSARY.md`는 동일한 [토큰](https://www.aihero.dev/ai-coding-dictionary/token)을 사용하므로, 이것을 호출하는 것은 새로운 지시가 아닙니다. 에이전트가 이미 동의한 것을 상기시키는 것입니다.
 
-If you have no `GLOSSARY.md` (and no `GLOSSARY-MAP.md` pointing to one for the context at hand), the skill still works. You lose only the domain-vocabulary half.
+`GLOSSARY.md`가 없는 경우(그리고 현재 컨텍스트에 대한 것을 가리키는 `GLOSSARY-MAP.md`도 없는 경우), 스킬은 여전히 작동합니다. 도메인 어휘 부분만 잃게 됩니다.
 
-## It's working if
+## 제대로 작동하는지 확인하기
 
-- The re-pitch is **shorter and clearer**, not shorter and blunter.
-- It adds the premise you were missing, instead of only deleting words.
-- Project nouns replace invented ones. The terms in your `GLOSSARY.md` come back.
-- You can use it twice in a row, and it does not degrade into terseness.
+- 재설명이 **더 짧고 명확**하며, 더 짧고 무뚝뚝하지 않습니다.
+- 단어만 삭제하는 대신, 누락되었던 전제를 추가합니다.
+- 프로젝트 명사가 발명된 명사를 대체합니다. `GLOSSARY.md`의 용어가 돌아옵니다.
+- 연속으로 두 번 사용할 수 있으며, 간결함으로 저하되지 않습니다.
 
-## Where it fits
+## 어디에 맞는가
 
-You can use `wait-what` at any point, in any conversation, inside any other skill. It repairs one message after the fact. The real fix is a shared language agreed upfront, and that is [grill-with-docs](https://aihero.dev/skills-grill-with-docs): a [grilling](https://www.aihero.dev/ai-coding-dictionary/grilling) session that runs [domain-modeling](https://aihero.dev/skills-domain-modeling) as it goes, so it records the words you both use in your `GLOSSARY.md`. If you're unsure which skill fits the moment, [ask-matt](https://aihero.dev/skills-ask-matt) routes you.
+`wait-what`은 어떤 시점에든, 어떤 대화에서든, 다른 어떤 스킬 안에서든 사용할 수 있습니다. 사후에 하나의 메시지를 복구합니다. 진짜 수정 방법은 미리 합의된 공유 언어이며, 그것이 [grill-with-docs](https://aihero.dev/skills-grill-with-docs)입니다: 진행하면서 [domain-modeling](https://aihero.dev/skills-domain-modeling)을 실행하는 [grilling](https://www.aihero.dev/ai-coding-dictionary/grilling) 세션으로, 여러분 모두가 사용하는 단어를 `GLOSSARY.md`에 기록합니다. 어느 순간에 어떤 스킬이 맞는지 확실하지 않다면, [ask-matt](https://aihero.dev/skills-ask-matt)가 안내합니다.

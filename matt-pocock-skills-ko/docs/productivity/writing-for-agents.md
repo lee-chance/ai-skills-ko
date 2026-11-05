@@ -1,70 +1,70 @@
-## What it does
+## 작동 방식
 
-`writing-for-agents` is the reference for writing agent-facing documents: a skill, an `AGENTS.md` or `CLAUDE.md`, a [spec](https://www.aihero.dev/ai-coding-dictionary/spec), a runtime prompt, a README, any doc an [agent](https://www.aihero.dev/ai-coding-dictionary/agent) reads. The format differs, but the writing does not. The same levers make each one predictable, so the agent follows the same *process* on every run (not necessarily to the same output).
+`writing-for-agents`는 에이전트 대면 문서를 작성하기 위한 참조입니다: 스킬, `AGENTS.md` 또는 `CLAUDE.md`, [스펙](https://www.aihero.dev/ai-coding-dictionary/spec), 런타임 프롬프트, README, [에이전트](https://www.aihero.dev/ai-coding-dictionary/agent)가 읽는 모든 문서. 형식은 다르지만 작성 방식은 같지 않습니다. 동일한 레버가 각각을 예측 가능하게 만들어, 에이전트가 모든 실행에서 동일한 *프로세스*를 따르게 합니다(반드시 동일한 출력이 아니더라도).
 
-Its default fix is to delete, not to explain. Ask an agent to write instructions for another agent and it spends most of its words explaining what the [model](https://www.aihero.dev/ai-coding-dictionary/model) already knows. Each of those lines is a **no-op**: it costs [context](https://www.aihero.dev/ai-coding-dictionary/context) and changes no behaviour. This reference helps you find them, so it is as useful on a document you already have as on a blank file.
+기본 수정 방법은 설명하는 것이 아니라 삭제하는 것입니다. 에이전트에게 다른 에이전트를 위한 지시를 작성하라고 요청하면 [모델](https://www.aihero.dev/ai-coding-dictionary/model)이 이미 알고 있는 것을 설명하는 데 대부분의 단어를 사용합니다. 그러한 각 줄은 **no-op**입니다: [컨텍스트](https://www.aihero.dev/ai-coding-dictionary/context)를 소비하고 동작을 변경하지 않습니다. 이 참조는 이를 찾는 데 도움을 주므로, 이미 가지고 있는 문서나 빈 파일에나 똑같이 유용합니다.
 
-It was called `writing-great-skills` until v1.1. The new name fits what it always was. Almost none of it is specific to skills. The skill-only mechanics (frontmatter, the model- versus user-invoked choice, router skills) live in a linked `SKILL-MECHANICS.md` that you read only when the document in front of you is a skill.
+v1.1까지는 `writing-great-skills`라고 불렸습니다. 새 이름이 항상 그래왔던 것에 맞습니다. 거의 대부분이 스킬에만 특정적이지 않습니다. 스킬 전용 메커니즘(frontmatter, 모델 대 사용자 호출 선택, 라우터 스킬)은 연결된 `SKILL-MECHANICS.md`에 있으며, 눈앞의 문서가 스킬일 때만 읽습니다.
 
-## When to reach for it
+## 언제 사용하나요
 
-Type `/writing-for-agents`, or the agent reaches for it on its own when you're creating or editing a skill, or modifying `AGENTS.md` or `CLAUDE.md`.
+`/writing-for-agents`를 입력하거나, 스킬을 생성하거나 편집할 때, 또는 `AGENTS.md`나 `CLAUDE.md`를 수정할 때 에이전트가 스스로 사용합니다.
 
-Reach for it by hand for everything else an agent reads: your docs, specs and [tickets](https://www.aihero.dev/ai-coding-dictionary/ticket), system and [AFK](https://www.aihero.dev/ai-coding-dictionary/afk) prompts. The test is one question: does an agent read this? It does not matter how the agent gets the document: a pointer names it, a human pastes it, or it is in the repo. To find out what a codebase contains, use [grill-with-docs](https://aihero.dev/skills-grill-with-docs). This reference controls how a document reads, not what it knows.
+에이전트가 읽는 다른 모든 것에 대해 수동으로 사용하세요: 문서, 스펙, [티켓](https://www.aihero.dev/ai-coding-dictionary/ticket), 시스템 및 [AFK](https://www.aihero.dev/ai-coding-dictionary/afk) 프롬프트. 테스트는 하나의 질문입니다: 에이전트가 이것을 읽나요? 에이전트가 문서를 얻는 방법은 중요하지 않습니다: 포인터가 명명하거나, 사람이 붙여넣거나, 저장소에 있습니다. 코드베이스에 무엇이 포함되어 있는지 알아보려면 [grill-with-docs](https://aihero.dev/skills-grill-with-docs)를 사용하세요. 이 참조는 문서가 어떻게 읽히는지를 제어하며, 무엇을 알고 있는지가 아닙니다.
 
-## The two loads
+## 두 가지 부하
 
-The central idea is two budgets that every document and pointer spends:
+핵심 아이디어는 모든 문서와 포인터가 소비하는 두 가지 예산입니다:
 
-- **Context load**: the cost of always-loaded material on the agent's window: an `AGENTS.md` line, a skill description, anything sitting in context every [turn](https://www.aihero.dev/ai-coding-dictionary/turn) whether or not it fires.
-- **Cognitive load**: the cost to you of remembering which documents exist and when to reach for each. You are the index. Do not try to minimise this cost, because it is the price of human agency.
+- **컨텍스트 부하**: 에이전트의 윈도우에 항상 로드되는 자료의 비용: `AGENTS.md` 줄, 스킬 설명, 실행 여부와 관계없이 매 [턴](https://www.aihero.dev/ai-coding-dictionary/turn)마다 컨텍스트에 있는 모든 것.
+- **인지 부하**: 어떤 문서가 존재하고 각각을 언제 사용할지 기억하는 데 드는 비용. 여러분이 인덱스입니다. 이 비용을 최소화하려고 하지 마세요. 인간 주체성의 대가이기 때문입니다.
 
-Once you think in these two loads, most authoring decisions (split or don't, inline or disclose, point or push) become the same trade made in different places.
+이 두 부하로 생각하면, 대부분의 저작 결정(분할할지 말지, 인라인할지 공개할지, 포인트할지 푸시할지)이 다른 장소에서 이루어진 동일한 트레이드오프가 됩니다.
 
-## The levers
+## 레버들
 
-- **[Context pointers](https://www.aihero.dev/ai-coding-dictionary/context-pointer)**: the reference held in context that names out-of-context material and encodes when to reach it. A skill description and an `AGENTS.md` line naming a doc are the same thing. The pointer's *wording*, not its target, decides how reliably the agent follows it.
-- **Information hierarchy**: the ladder from in-file step, to in-file reference, to disclosed reference behind a pointer. **[Progressive disclosure](https://www.aihero.dev/ai-coding-dictionary/progressive-disclosure)** is moving material down that ladder so the top stays easy to read.
-- **Completion criteria**: how clear and demanding each step's done-condition is, and the **legwork** that demand causes. They are the defence against **premature completion**.
-- **Leading words**: a compact concept already in the model's pretraining (*tight*, *red*, *tracer bullet*) that the agent thinks with while running the document. It works in two places. In the body it guides execution, and in the pointer it triggers invocation.
-- **Pruning**: single source of truth, relevance, and the no-op test applied sentence by sentence, against **duplication**, **sediment** and **sprawl**.
+- **[컨텍스트 포인터](https://www.aihero.dev/ai-coding-dictionary/context-pointer)**: 컨텍스트 외부 자료를 명명하고 언제 도달할지 인코딩하는, 컨텍스트에 보유된 참조. 스킬 설명과 문서를 명명하는 `AGENTS.md` 줄은 같은 것입니다. 포인터의 *표현*, 대상이 아니라, 에이전트가 얼마나 안정적으로 따르는지를 결정합니다.
+- **정보 계층**: 파일 내 단계에서, 파일 내 참조로, 포인터 뒤의 공개된 참조로 가는 사다리. **[점진적 공개](https://www.aihero.dev/ai-coding-dictionary/progressive-disclosure)**는 최상위를 읽기 쉽게 유지하기 위해 자료를 그 사다리 아래로 이동시키는 것입니다.
+- **완료 기준**: 각 단계의 완료 조건이 얼마나 명확하고 요구하는지, 그리고 그 요구가 야기하는 **legwork**. 이것들은 **조기 완료**에 대한 방어입니다.
+- **선도어**: 모델의 사전 학습에 이미 있는 간결한 개념(*tight*, *red*, *tracer bullet*)으로, 에이전트가 문서를 실행하는 동안 함께 생각하는 것. 두 곳에서 작동합니다. 본문에서는 실행을 안내하고, 포인터에서는 호출을 트리거합니다.
+- **가지치기**: 단일 진실 소스, 관련성, 그리고 **중복**, **침전**, **확산**에 대해 문장별로 적용되는 no-op 테스트.
 
-## Common questions
+## 자주 묻는 질문
 
-**Where did `/writing-great-skills` go?**
-It is this skill, renamed in v1.1. Users pointed it at `AGENTS.md`, docs, specs, tickets and runtime prompts long before the rename. Structure, leading words and pruning apply to any text an agent reads. There is no alias. Reinstall under the new name.
+**`/writing-great-skills`는 어디로 갔나요?**
+이 스킬입니다. v1.1에서 이름이 변경되었습니다. 사용자들은 이름 변경 전부터 오래 전에 `AGENTS.md`, 문서, 스펙, 티켓, 런타임 프롬프트에 이것을 지정했습니다. 구조, 선도어, 가지치기는 에이전트가 읽는 모든 텍스트에 적용됩니다. 별칭은 없습니다. 새 이름으로 다시 설치하세요.
 
-**"Writing for agents": so the agent does the writing?**
-The other way round. You are the author; the agent is the reader. That is what makes it hard. You write for a reader that has already read everything, so explanation is waste and precision is the whole job.
+**"에이전트를 위한 작성": 그러면 에이전트가 작성하나요?**
+반대입니다. 여러분이 저자이고, 에이전트가 독자입니다. 그것이 어렵게 만드는 것입니다. 이미 모든 것을 읽은 독자를 위해 작성하므로, 설명은 낭비이고 정확성이 전체 작업입니다.
 
-**Can't I just ask the agent to write it for me?**
-You can, and it will produce something verbose. Left alone the model explains what it already knows, and it will not apply the no-op test or reach for a leading word on its own. Use the reference to review the draft. Most of its value comes from that review pass.
+**에이전트에게 대신 작성해 달라고 요청할 수 없나요?**
+할 수 있으며, 장황한 것을 생성할 것입니다. 혼자 두면 모델은 이미 알고 있는 것을 설명하고, no-op 테스트를 적용하거나 스스로 선도어를 찾지 않습니다. 초안을 검토하는 데 참조를 사용하세요. 대부분의 가치는 그 검토 단계에서 나옵니다.
 
-**I asked an agent to trim a document and it cut the functionality.**
-Agents told to "streamline" optimise for length, because length is the thing they can see. The no-op test checks behaviour, not style: delete the line and ask whether the agent's behaviour changed. When a sentence fails, delete the whole sentence rather than trim words from it, and settle a disagreement about it by running the document, not by arguing.
+**에이전트에게 문서를 다듬으라고 요청했는데 기능을 잘라냈어요.**
+"간소화"하라고 들은 에이전트는 길이에 최적화합니다. 길이가 그들이 볼 수 있는 것이기 때문입니다. no-op 테스트는 스타일이 아니라 동작을 확인합니다: 줄을 삭제하고 에이전트의 동작이 변경되었는지 물어보세요. 문장이 실패하면, 단어를 다듬는 대신 전체 문장을 삭제하고, 이에 대한 불일치는 논쟁이 아니라 문서를 실행하여 해결하세요.
 
-**How do I know when it's done?**
-When it works, and you can no longer find duplication, sediment or no-ops. There is no automated eval. You check by running the document by hand and using the failure-mode vocabulary to diagnose problems. When a document misbehaves, the same vocabulary helps you fix it: name the failure mode first, then fix that.
+**언제 완료되었는지 어떻게 알 수 있나요?**
+작동할 때, 그리고 더 이상 중복, 침전, no-op을 찾을 수 없을 때입니다. 자동화된 평가는 없습니다. 수동으로 문서를 실행하고 실패 모드 어휘를 사용하여 문제를 진단하여 확인합니다. 문서가 오작동하면, 동일한 어휘가 수정하는 데 도움이 됩니다: 먼저 실패 모드를 명명한 다음, 그것을 수정하세요.
 
-**Should this live in `CLAUDE.md` or somewhere else?**
-Ask which load you want to pay. `CLAUDE.md` loads into every [session](https://www.aihero.dev/ai-coding-dictionary/session) unconditionally. Material behind a pointer costs only the pointer's own line until it fires. Anything that applies in one session out of ten costs context load in the other nine.
+**이것은 `CLAUDE.md`에 있어야 하나요, 아니면 다른 곳에 있어야 하나요?**
+어떤 부하를 지불하고 싶은지 물어보세요. `CLAUDE.md`는 무조건 모든 [세션](https://www.aihero.dev/ai-coding-dictionary/session)에 로드됩니다. 포인터 뒤의 자료는 실행될 때까지 포인터 자체 줄만 소비합니다. 10개 세션 중 1개에 적용되는 것은 다른 9개에서 컨텍스트 부하를 소비합니다.
 
-**Do I need to rewrite my documents for each new model?**
-Mostly no, and over-fitting to one model causes its own problems. Updating for a new model is usually another no-op pass rather than a rewrite.
+**각 새 모델에 대해 문서를 다시 작성해야 하나요?**
+대부분 아니오이며, 하나의 모델에 과적합하면 자체 문제가 발생합니다. 새 모델에 대한 업데이트는 보통 재작성이 아니라 또 다른 no-op 단계입니다.
 
-**My skill only works on the exact task I built it from.**
-The common method (do the work once, then have the agent write it up as a skill) fits that one run too closely, and the examples come out too specific. Keep the run as evidence, then generalise on purpose: strip what belonged to that repo and those files, and write for the class of task.
+**제 스킬은 제가 만든 정확한 작업에서만 작동해요.**
+일반적인 방법(한 번 작업을 수행한 다음 에이전트가 스킬로 작성하게 함)은 그 한 번의 실행에 너무 밀접하게 맞추고, 예제가 너무 구체적으로 나옵니다. 실행을 증거로 보관한 다음, 의도적으로 일반화하세요: 그 저장소와 그 파일에 속한 것을 제거하고, 작업 클래스에 대해 작성하세요.
 
-**English isn't my first language. Do I lose the leading-word advantage?**
-No. Finding the word that packs the most behaviour into the fewest [tokens](https://www.aihero.dev/ai-coding-dictionary/token) is work the reference does for you.
+**영어가 모국어가 아닙니다. 선도어 이점을 잃나요?**
+아니요. 가장 적은 [토큰](https://www.aihero.dev/ai-coding-dictionary/token)에 가장 많은 동작을 담는 단어를 찾는 것은 참조가 여러분을 위해 하는 일입니다.
 
-## It's working if
+## 제대로 작동하는지 확인하기
 
-- The document gets shorter as it gets better, and you are surprised how little is left.
-- You can point at a leading word and see it change the agent's behaviour in more than one place.
-- Nothing is stated twice, in any form. Duplication is the most reliable sign a document was never tested.
-- Reference that only one branch needs sits behind a pointer rather than in the main file.
+- 문서가 더 나아질수록 더 짧아지고, 얼마나 적게 남았는지 놀랍습니다.
+- 선도어를 가리키고 한 곳 이상에서 에이전트의 동작을 변경하는 것을 볼 수 있습니다.
+- 어떤 형태로든 두 번 진술되는 것이 없습니다. 중복은 문서가 결코 테스트되지 않았다는 가장 확실한 신호입니다.
+- 하나의 분기만 필요한 참조는 메인 파일이 아니라 포인터 뒤에 있습니다.
 
-## Where it fits
+## 어디에 맞는가
 
-This is a reach-for-it-anytime standalone reference. It applies to the whole set, not to one skill. Every skill here was written with it, and it also covers the documents the other skills produce (a `GLOSSARY.md` and its ADRs, a spec, a ticket) once an agent has to read them. Its one direct caller is [retro](https://aihero.dev/skills-retro), which loads it before proposing any steering file or skill. When you're unsure which skill or flow fits a task, [ask-matt](https://aihero.dev/skills-ask-matt) routes you over the whole set.
+이것은 언제든지 사용할 수 있는 독립 참조입니다. 하나의 스킬이 아니라 전체 세트에 적용됩니다. 여기의 모든 스킬은 이것으로 작성되었으며, 에이전트가 읽어야 하면 다른 스킬이 생성하는 문서(`GLOSSARY.md`와 그 ADR, 스펙, 티켓)도 다룹니다. 직접 호출자는 [retro](https://aihero.dev/skills-retro) 하나이며, 이는 스티어링 파일이나 스킬을 제안하기 전에 이것을 로드합니다. 어떤 스킬이나 플로우가 작업에 맞는지 확실하지 않을 때, [ask-matt](https://aihero.dev/skills-ask-matt)가 전체 세트에 대해 안내합니다.
