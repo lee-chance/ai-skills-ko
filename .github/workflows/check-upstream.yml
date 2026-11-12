@@ -27,24 +27,32 @@ jobs:
         id: check
         run: |
           echo "Checking upstream sources..."
-          
-          # sync.js를 check 모드로 실행
-          # 변경사항이 있으면 exit code 1을 반환하도록 설계됨
-          if node scripts/sync.js check > check-output.txt 2>&1; then
-            echo "has_changes=false" >> $GITHUB_OUTPUT
-            echo "No changes detected"
-          else
-            echo "has_changes=true" >> $GITHUB_OUTPUT
-            echo "Changes detected!"
-          fi
-          
-          # 출력 저장
+
+          # sync.js 종료 코드:
+          #   0 = 변경 없음, 1 = upstream_path 안에서 변경 감지, 2 = 스크립트 오류
+          set +e
+          node scripts/sync.js check > check-output.txt 2>&1
+          code=$?
+          set -e
+
           cat check-output.txt
-          echo "EOF" >> $GITHUB_ENV
-          echo "CHECK_OUTPUT<<EOF" >> $GITHUB_ENV
-          cat check-output.txt >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
-        continue-on-error: true
+
+          case "$code" in
+            0)
+              echo "has_changes=false" >> "$GITHUB_OUTPUT"
+              echo "No changes detected"
+              ;;
+            1)
+              echo "has_changes=true" >> "$GITHUB_OUTPUT"
+              echo "Changes detected!"
+              ;;
+            *)
+              # 변경 감지가 아니므로 이슈를 만들지 않고 워크플로를 실패시킨다.
+              echo "has_changes=error" >> "$GITHUB_OUTPUT"
+              echo "::error::sync.js failed with exit code $code (not a change detection)"
+              exit 1
+              ;;
+          esac
       
       - name: Extract JSON output
         if: steps.check.outputs.has_changes == 'true'
