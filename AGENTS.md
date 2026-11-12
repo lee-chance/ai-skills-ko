@@ -141,6 +141,12 @@ node scripts/sync.js check pstack
 - 최신 업스트림 SHA
 - 추가/수정/삭제된 파일 목록
 
+**변경 감지 기준**: 업스트림 저장소 전체의 HEAD가 아니라, 기록된 SHA와 최신 HEAD 사이에서 `upstream_path` 아래 파일이 실제로 바뀌었는지(`git diff <기록된 SHA> HEAD -- <upstream_path>`)를 봅니다. 경로 밖 커밋만 있으면 "변경 없음"이고, 이때 `last_synced_sha`는 올리지 않습니다(SHA는 로컬 원본 스냅샷을 만든 커밋이며 `SOURCE.md`·README와 맞춰 둡니다). 기록된 SHA가 비어 있거나 업스트림에서 사라졌으면(첫 동기화, force push) 로컬 원본 폴더와 직접 비교합니다.
+
+**종료 코드**: `0` 변경 없음 · `1` 변경 감지(check 모드) · `2` 스크립트 오류(네트워크, git, 설정). 2는 변경 감지가 아니므로 변경 없음으로도, 변경 있음으로도 처리하지 말고 원인을 해결하세요.
+
+**보존 파일**: 이 저장소가 원본 폴더에 직접 더한 파일(기본: 루트의 `SOURCE.md`)은 비교에서 빼고, 동기화할 때도 지우거나 덮어쓰지 않습니다. 소스별로 더 보존할 파일이 있으면 `sources.yaml`에 `preserve: a.md, docs/b.md`처럼 원본 폴더 기준 경로를 쉼표로 적습니다.
+
 ### 동기화 실행
 
 ```bash
@@ -152,8 +158,8 @@ npm run sync pstack
 ```
 
 동기화 후:
-1. 원본 폴더가 최신 상태로 업데이트됨
-2. `sources.yaml`의 SHA가 자동 업데이트됨
+1. 변경된 파일만 원본 폴더에 반영됨 (`SOURCE.md` 등 보존 파일은 그대로)
+2. `upstream_path` 안에 변경이 있었던 소스는 `sources.yaml`의 SHA가 자동 업데이트됨
 3. **번역은 자동으로 업데이트되지 않음**
 
 ### 번역 업데이트
@@ -248,9 +254,10 @@ npm run sync              # 모든 소스 동기화
 1. **스케줄**: 매주 월요일 오전 9시 (UTC) 자동 실행
 2. **수동 실행**: Actions 탭에서 "Run workflow" 클릭
 3. **동작**:
-   - `npm run sync:check` 실행
-   - 변경사항이 있으면 GitHub Issue 생성/업데이트
-   - Issue에는 변경된 파일 목록이 포함됨
+   - `node scripts/sync.js check` 실행 후 종료 코드로 분기
+   - 종료 코드 1(`upstream_path` 안 변경 감지)이면 GitHub Issue 생성/업데이트. Issue에는 변경된 파일 목록이 포함됨
+   - 종료 코드 0이면 아무것도 하지 않음
+   - 종료 코드 2(스크립트 오류)면 이슈를 만들지 않고 워크플로를 실패 처리
 
 ### Issue 처리
 
