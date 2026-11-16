@@ -156,7 +156,7 @@ number and no command in this column is an aspiration, not a constraint.
 | 성능: 페이지 | Lighthouse | `npm i -D lighthouse` | `lighthouse $URL --output=json --quiet` | LCP, CLS, 성능 점수 |
 | 성능: 번들 | size-limit | `npm i -D size-limit` | `size-limit --json` | 엔트리별 바이트 예산 |
 | 접근성 | axe-core | `npm i -D @axe-core/cli` | `npm run check:a11y` (아래) | critical 또는 serious 0건 |
-| 아키텍처 | dependency-cruiser | `npm i -D dependency-cruiser` | `depcruise --validate src` | 위반이 하나라도 있으면 |
+| 아키텍처 | dependency-cruiser | `npm i -D dependency-cruiser` | `depcruise src` | 위반이 하나라도 있으면 |
 | 어서션 품질 | Stryker | `npm i -D @stryker-mutator/core` | `stryker run --mutate <changed files>` | 뮤테이션 점수 |
 
 빼먹으면 바로 문제가 되는 다섯 가지:

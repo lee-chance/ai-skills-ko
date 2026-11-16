@@ -211,18 +211,20 @@ res.status(500).json({
 
 ## OWASP Top 10 빠른 참조
 
+번호는 [OWASP Top 10:2025](https://owasp.org/Top10/2025/)를 따릅니다. 2021년판은 같은 범주 여러 개에 다른 번호를 썼으므로, 범주를 인용할 때는 연도를 붙이세요 (`A06:2025`).
+
 | # | 취약점 | 예방 |
 |---|---|---|
-| 1 | 취약한 접근 제어 (Broken Access Control) | 모든 엔드포인트에서 인증을 확인하고, 소유권을 검증하세요 |
-| 2 | 암호화 실패 (Cryptographic Failures) | HTTPS, 강한 해시, 코드에 시크릿 없음 |
-| 3 | 인젝션 (Injection) | 파라미터화 쿼리, 입력 검증 |
-| 4 | 안전하지 않은 설계 (Insecure Design) | 위협 모델링, 스펙 주도 개발 |
-| 5 | 보안 설정 오류 (Security Misconfiguration) | 보안 헤더, 최소 권한, 의존성 감사 |
-| 6 | 취약한 구성요소 (Vulnerable Components) | 그 생태계의 의존성 감사(`npm audit`, `pip-audit`, ...), 의존성을 갱신하고, 의존성을 최소화하세요 |
-| 7 | 인증 실패 (Auth Failures) | 강한 비밀번호, 속도 제한, 세션 관리 |
-| 8 | 데이터 무결성 실패 (Data Integrity Failures) | 업데이트와 의존성을 검증하고, 서명된 아티팩트를 사용하세요 |
-| 9 | 로깅 실패 (Logging Failures) | 보안 이벤트를 로그하고, 시크릿은 로그하지 마세요 |
-| 10 | SSRF | URL을 검증하고 허용 목록으로 제한하세요. 아웃바운드 요청을 제한하세요 |
+| A01 | 취약한 접근 제어 (Broken Access Control, 이제 SSRF를 포함) | 모든 엔드포인트에서 인증을 확인하고, 소유권을 검증하세요. 서버 측 fetch URL을 검증하고 허용 목록으로 제한하며, 아웃바운드 요청을 제한하세요 |
+| A02 | 보안 설정 오류 (Security Misconfiguration) | 보안 헤더, 최소 권한, 안전한 기본값 |
+| A03 | 소프트웨어 공급망 실패 (Software Supply Chain Failures) | 그 생태계의 의존성 감사(`npm audit`, `pip-audit`, ...), 의존성을 갱신하고, 의존성을 최소화하며, 새 패키지와 설치 스크립트를 검토하세요 |
+| A04 | 암호화 실패 (Cryptographic Failures) | HTTPS, 강한 해시, 코드에 시크릿 없음 |
+| A05 | 인젝션 (Injection) | 파라미터화 쿼리, 입력 검증 |
+| A06 | 안전하지 않은 설계 (Insecure Design) | 위협 모델링, 스펙 주도 개발 |
+| A07 | 인증 실패 (Authentication Failures) | 강한 비밀번호, 속도 제한, 세션 관리 |
+| A08 | 소프트웨어 또는 데이터 무결성 실패 (Software or Data Integrity Failures) | 업데이트를 검증하고, 서명된 아티팩트를 사용하며, 신뢰할 수 없는 데이터는 역직렬화하지 마세요 |
+| A09 | 보안 로깅 및 알림 실패 (Security Logging and Alerting Failures) | 보안 이벤트를 로그하고 알리며, 시크릿은 로그하지 마세요 |
+| A10 | 예외 상황의 잘못된 처리 (Mishandling of Exceptional Conditions) | 실패 시 닫힘(fail closed), 모든 오류 경로를 처리, 일반적인 오류 본문 |
 
 ## LLM용 OWASP Top 10 빠른 참조
 

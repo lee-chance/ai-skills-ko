@@ -10,7 +10,7 @@ disable-model-invocation: true
 
 **Task**:
 팩토리가 수행하는 일의 한 종류. 한 번 정의하고 여러 번 실행합니다. review, explore, implement, ratchet. 작업은 티켓, PR, 또는 코드베이스 전체를 다룰 수 있습니다.
-_피하세요_: job, workflow, action
+_피하세요_: 작업의 이름으로서의 job, workflow, action. CI 벤더의 workflow 파일과 그 안의 job은 작업을 연결하는 곳이지, 작업 자체가 아닙니다.
 
 **Trigger**:
 런을 시작하는 이벤트. 티켓 트래커나 Git 호스트의 변경, 오케스트레이터의 시계, 또는 다른 런.

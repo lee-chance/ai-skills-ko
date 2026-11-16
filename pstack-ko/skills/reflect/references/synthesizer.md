@@ -26,7 +26,7 @@
 - "SHA `bd91aa7`의 린터는 chars/4 휴리스틱을 쓴다"
 - "`<specific-skill-name>`은 한도 80에서 토큰이 175개다"
 - "Bugbot이 5월 2일에 regex 백트래킹을 지적했다"
-- "`encodingForModel`에서 `gpt-4`를 `gpt-4o`로 바꿨다"
+- "`settings.ts`에서 `parseConfig`를 `loadConfig`로 바꿨다"
 
 남기세요 (내구성 있는 패턴):
 

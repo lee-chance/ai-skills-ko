@@ -4,8 +4,8 @@
 
 - **저장소**: https://github.com/cursor/plugins
 - **경로**: `/pstack`
-- **커밋 SHA**: `bb68f2365eceafa0cb2d253112f675acf5f144cc`
-- **동기화 날짜**: 2026-11-05
+- **커밋 SHA**: `bf0c7cd80abdbf7fe47b634978a7d1b4071f71a7`
+- **동기화 날짜**: 2026-11-16
 - **라이선스**: MIT (LICENSE 파일 참조)
 
 ## 설명

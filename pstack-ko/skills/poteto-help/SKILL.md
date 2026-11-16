@@ -45,7 +45,7 @@ pstack에 대한 사용자의 질문에 답하고, 보낼 수 있는 프롬프�
 
 pstack은 Cursor를 위해 빌드되었으며, `/plugin marketplace add cursor/plugins`, 그 다음 `/plugin install pstack@cursor-plugins`로 Claude Code에도 설치됩니다. 거기서 각 명령은 `/pstack:poteto-mode`와 같이 `pstack:` 접두사를 취합니다. [Claude Code 어댑터](../../docs/harness/claude-code.md)는 Cursor 이름을 매핑하고, Bugbot 또는 Automations와 같이 Cursor 전용 기능이 필요한 단계는 한 줄 노트와 함께 건너뜁니다.
 
-다른 도구는 Agent Skills 형식을 사용하기 때문에 스킬을 읽을 수 있습니다. 그러나 `/poteto-mode`, `/how`, `/why`, `/teach`를 포함한 대부분의 워크플로우 스킬은 역할별 모델로 Cursor 서브에이전트를 생성하고, Custom Modes와 `/loop`는 Cursor 기능이므로 해당 부분은 거기서 작동하지 않을 수 있습니다.
+다른 도구는 Agent Skills 형식을 사용하기 때문에 스킬을 읽을 수 있습니다. 그러나 `/poteto-mode`, `/how`, `/teach`를 포함한 대부분의 워크플로우 스킬은 Cursor 서브에이전트를 생성하고, 그중 일부는 역할별 모델을 쓰며, Custom Modes와 `/loop`는 Cursor 기능이므로 해당 부분은 거기서 작동하지 않을 수 있습니다.
 
 ## `/poteto-mode`로 작업 시작
 
