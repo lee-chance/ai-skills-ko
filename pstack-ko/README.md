@@ -44,7 +44,7 @@ claude code는 리포지토리 루트의 [`harness/pstack/`](https://github.com/
 
 여기가 처음이신가요? [pstack 가이드](./docs/guide/README.md)가 설정과 프롬프팅부터 검증과 야간 실행까지 첫 실제 작업을 안내합니다. 막히거나 어떤 스킬이 맞는지 확실하지 않나요? [`/poteto-help`](./skills/poteto-help/SKILL.md)에 물어보세요.
 
-그게 전부입니다. 다른 스킬들은 상황에 따라 필요하며, mode 스킬이 필요에 따라 사용합니다. 기본적으로 mode는 모델 강도별로 작업을 나눕니다: 코드 위임(기능, 리팩토링, 버그 수정, 성능, hillclimb)은 grok으로 가고, 가장 어려운 변경, 산문, 판단은 opus 5.5로 갑니다. 기본 패널은 opus 5.5 / grok입니다. [`/setup-pstack`](./skills/setup-pstack/SKILL.md)은 이것들을 변경할 수 있습니다.
+그게 전부입니다. 다른 스킬들은 상황에 따라 필요하며, mode 스킬이 필요에 따라 사용합니다. 기본적으로 mode는 모델 강도별로 작업을 나눕니다: 코드 위임(기능, 리팩토링, 버그 수정, 성능, hillclimb), 산문, 판단은 opus 5.5로 가고, 가장 어려운 변경은 fable 5.2로 갑니다. 기본 패널은 fable 5.2 / opus 5.5 / gemini 4 carbon입니다. [`/setup-pstack`](./skills/setup-pstack/SKILL.md)은 이것들을 변경할 수 있습니다.
 
 ## 사용법
 
@@ -111,7 +111,7 @@ morning.
 
 ## 스킬들
 
-[`/poteto-mode`](./skills/poteto-mode/SKILL.md)는 단계가 필요할 때 이들 대부분을 실행합니다(`how`, `why`, `architect`, `arena`, `swarm`, `interrogate`, `unslop`, `no-comments`, `technical-writing`, `tdd`, 그리고 원칙들). 아래 표는 직접 원하는 것을 위한 것입니다:
+[`/poteto-mode`](./skills/poteto-mode/SKILL.md)는 단계가 필요할 때 이들 대부분을 실행합니다(`why`, `architect`, `arena`, `swarm`, `interrogate`, `unslop`, `no-comments`, `technical-writing`, `tdd`, 그리고 원칙들). 아래 표는 직접 원하는 것을 위한 것입니다:
 
 ```
 /how do we cancel runs? do we have an n+1 when we look up every run to cancel?
@@ -129,9 +129,9 @@ morning.
 | [`/poteto-mode`](./skills/poteto-mode/SKILL.md) | 중요하지 않은 작업에 대한 기본 진입점. |
 | [`/poteto-help`](./skills/poteto-help/SKILL.md) | pstack이 처음이거나 어떤 스킬, 플레이북 또는 원칙이 맞는지 확실하지 않을 때. 무엇을 하려는지 알아내고, 그 부분에 답하고, 입력할 프롬프트를 제공. `/poteto-help`를 입력할 때만 실행. |
 | [`/in-your-own-words`](./skills/in-your-own-words/SKILL.md) | 에이전트가 시작하기 전에 목표와 문제를 다시 말하기를 원할 때. `/in-your-own-words`를 입력할 때만 실행. |
-| [`/sharpen`](./skills/sharpen/SKILL.md) | 프롬프트를 보내기 전에 더 크게가 아니라 더 깊게 만들고 싶을 때: 당신이 요청하지 않은 것을 최고의 전문가가 할 것, 그들이 시작할 원자료, 그들의 방법과 도구, 그리고 결과가 옳은지에 대한 외부 점검. 재작성된 프롬프트를 돌려주고 선택권을 열어둠. 작업을 수행하지 않음. `/sharpen`을 입력할 때만 실행. |
+| [`/sharpen`](./skills/sharpen/SKILL.md) | 프롬프트를 보내기 전에 더 크게가 아니라 더 깊게 만들고 싶을 때: 당신이 요청하지 않은 것을 최고의 전문가가 할 것, 그들이 시작할 원자료, 그들의 방법과 도구, 그리고 결과가 옳은지에 대한 외부 점검. 재작성된 프롬프트를 돌려주며, 그 프롬프트는 실험으로 정할 수 있는 선택을 에이전트가 프로토타입하도록 요청하고 제품과 선호 선택은 당신에게 남김. 작업을 수행하지 않음. `/sharpen`을 입력할 때만 실행. |
 | [`/how`](./skills/how/SKILL.md) | 서브시스템이 어떻게 작동하는지에 대한 워크스루를 원할 때. |
-| [`/why`](./skills/why/SKILL.md) | 뭔가가 왜 이런 방식으로 만들어졌는지 알고 싶을 때. 런타임에 사용 가능한 MCP를 발견하고 각 증거 카테고리를 병렬로 쿼리(소스 컨트롤, 이슈 트래커, 긴 형식 문서, 실시간 채팅, 인프라 관찰성, 에러 추적, 분석 웨어하우스). |
+| [`/why`](./skills/why/SKILL.md) | 뭔가가 왜 이런 방식으로 만들어졌는지 알고 싶을 때. 코드가 아니라 기록에서 답함: 그것을 도입한 커밋과 풀 리퀘스트 토론, 이후 각 변경, 그리고 그 흔적이 얇을 때의 다른 소스. 저자가 쓴 것을 인용하고, 자신의 추론을 표시하고, 기록이 답하지 않는 것을 말함. |
 | [`/recall`](./skills/recall/SKILL.md) | 작업을 시작하거나 재개하고 특정 주제에 대한 최근 컨텍스트를 자신의 채팅 히스토리와 공유 기록에서 재구축하여 간결한 현재 상태 브리프로 받고 싶을 때. |
 | [`/ketchup`](./skills/ketchup/SKILL.md) | 마지막 메시지 이후 이 채팅에서 변경된 것을 명확한 단어와 작은 시각 자료로 원할 때, 답변만으로 결정 가능하도록 기다리고 있는 모든 항목이 나열되며, 그것이 답변을 길게 만들더라도. |
 | [`/ketchup-video`](./skills/ketchup-video/SKILL.md) | `/ketchup` 캐치업을 슬라이드의 짧은 자막이 있는 비디오로 원할 때, 기다리고 있는 호출은 그 아래 텍스트로. |
@@ -277,7 +277,7 @@ cursor는 이미 pstack과 잘 작동하는 훌륭한 plan 모드를 가지고 �
 
 모델도 구성 가능합니다. [`/setup-pstack`](./skills/setup-pstack/SKILL.md)를 입력하세요. 액세스할 수 있는 모델을 감지하고 각 역할(코드, 판단, 리뷰 패널)을 모델에 매핑하는 작은 항상 적용 규칙을 작성합니다. 모든 스킬이 그것을 읽고 규칙이 없을 때 합리적인 기본값으로 폴백하므로, 원하는 것만 오버라이드합니다.
 
-기본값이 변경되면, 변경 전에 작성된 규칙은 여전히 이전 기본값을 고정합니다. 해당 역할 라인을 삭제하거나 파일을 삭제한 다음 `/setup-pstack`을 다시 실행하세요. 재실행은 모델이 기본값과 다른 역할을 유지합니다.
+기본값이 변경되면, 변경 전에 작성된 규칙은 `/setup-pstack`을 다시 실행할 때까지 이전 기본값을 고정합니다. 그 실행은 인식하는 이전 기본값을 교체하고, 모델이 기본값과 다른 나머지 역할은 유지합니다. 인식하지 못하는 고정을 제거하려면, 먼저 해당 역할의 라인이나 파일을 삭제하세요.
 
 ## 자동화
 

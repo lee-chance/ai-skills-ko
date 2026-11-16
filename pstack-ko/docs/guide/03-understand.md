@@ -14,7 +14,7 @@ pstack은 네 가지 방법을 제공합니다. `/how`는 코드가 지금 무�
 /poteto-mode investigate why background jobs time out every few hours. give me what we know, what data you used, and your best hypotheses. don't change any code yet.
 ```
 
-"don't change any code yet"는 이것을 [Investigation 플레이북](../../skills/poteto-mode/playbooks/investigation.md)으로 라우팅합니다. `/how`를 실행하고, 동기에 대한 질문을 위해 `/why`를 추가하고, 인용된 설명을 반환합니다. 옵션 간의 선택의 경우, 트레이드오프 테이블과 함께 권장 사항을 반환합니다. "what data you used"를 묻는 것은 에이전트가 증거를 추측과 분리하도록 만듭니다. 발견이 수정을 가리킬 때, 새 작업으로 수정을 시작하세요.
+"don't change any code yet"는 이것을 [Investigation 플레이북](../../skills/poteto-mode/playbooks/investigation.md)으로 라우팅합니다. 코드를 추적하고, 동기에 대한 질문을 위해 `/why`를 추가하고, 인용된 설명을 반환합니다. 옵션 간의 선택의 경우, 트레이드오프 테이블과 함께 권장 사항을 반환합니다. "what data you used"를 묻는 것은 에이전트가 증거를 추측과 분리하도록 만듭니다. 발견이 수정을 가리킬 때, 새 작업으로 수정을 시작하세요.
 
 ## `/how`로 동작 추적
 
@@ -22,7 +22,7 @@ pstack은 네 가지 방법을 제공합니다. `/how`는 코드가 지금 무�
 /how do we dedupe notifications? is there an n+1 when we look up subscribers?
 ```
 
-실제로 가진 질문을 하세요. [`/how`](../../skills/how/SKILL.md)는 코드를 읽고 서브시스템에 당신을 온보딩하는 시니어 엔지니어 수준에서 런타임 플로우, 키 타입, 명백하지 않은 부분과 함께 답변합니다. 큰 서브시스템의 경우 먼저 2~4개의 읽기 전용 탐색기를 펼칩니다. 좁은 질문의 경우 그냥 읽고 설명합니다.
+실제로 가진 질문을 하세요. [`/how`](../../skills/how/SKILL.md)는 코드를 읽고 서브시스템에 당신을 온보딩하는 시니어 엔지니어 수준에서 런타임 플로우, 키 타입, 명백하지 않은 부분과 함께 답변합니다. 코드를 탐색하고 설명을 작성하는 읽기 전용 서브에이전트 하나를 시작합니다.
 
 ## `/why`로 히스토리 파헤치기
 
@@ -30,7 +30,7 @@ pstack은 네 가지 방법을 제공합니다. `/how`는 코드가 지금 무�
 /why was the retry limit set to five? does the reason still hold?
 ```
 
-[`/why`](../../skills/why/SKILL.md)는 소스 컨트롤에서 시작한 다음, 이슈 트래커, 긴 형식 문서, 팀 채팅, 관찰성, 에러 추적, 분석과 같이 MCP가 노출하는 증거 카테고리를 모두 병렬로 쿼리합니다. 보고서는 모든 것을 인용하고, 직접 증거를 추론과 분리하고, 기록이 얇을 때 "appears to"라고 말합니다. 널 결과도 보고되는데, "아무도 왜 적지 않았다"는 그 자체로 답이기 때문입니다.
+[`/why`](../../skills/why/SKILL.md)는 코드가 아니라 기록에서 답합니다. 코드를 도입한 커밋과 풀 리퀘스트 토론, 그리고 이후의 각 변경을 읽고, 그 흔적이 얇을 때 다른 소스를 봅니다. 답은 저자가 쓴 것을 인용하고, 에이전트 자신의 추론을 추론으로 표시하고, 기록이 답하지 않는 것을 말합니다. "아무도 왜 적지 않았다"는 그 자체로 답이기 때문입니다.
 
 둘은 자연스럽게 결합됩니다. `do why first then how`는 히스토리가 혼란을 설명한다고 의심될 때 좋은 프롬프트입니다.
 

@@ -5,7 +5,7 @@ sources:
     upstream_path: pstack
     local_original: pstack
     local_korean: pstack-ko
-    last_synced_sha: bb68f2365eceafa0cb2d253112f675acf5f144cc
+    last_synced_sha: bf0c7cd80abdbf7fe47b634978a7d1b4071f71a7
     description: Cursor의 공식 pstack 플러그인
 
   - id: matt-pocock-skills
@@ -14,7 +14,7 @@ sources:
     upstream_path: .
     local_original: matt-pocock-skills
     local_korean: matt-pocock-skills-ko
-    last_synced_sha: 4ae2317ddb22b046e26455e4f9c9b3aaaf62212d
+    last_synced_sha: 5863806dd4e15c63174bee4e7515a4256792ecfa
     description: Matt Pocock의 TypeScript/React 스킬 모음
 
   - id: benjitaylor-skills
@@ -32,5 +32,5 @@ sources:
     upstream_path: .
     local_original: agent-skills
     local_korean: agent-skills-ko
-    last_synced_sha: 301b02b12bff98e4688e6984af6556802322bbde
+    last_synced_sha: 39b723ceebf81474d0557c1fecd01eddab585563
     description: Addy Osmani의 프로덕션급 엔지니어링 스킬 모음

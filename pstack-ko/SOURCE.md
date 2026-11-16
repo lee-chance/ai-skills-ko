@@ -4,5 +4,5 @@
 
 - **원본 저장소**: https://github.com/cursor/plugins
 - **원본 경로**: `/pstack`
-- **번역 기준 커밋**: `bb68f2365eceafa0cb2d253112f675acf5f144cc`
+- **번역 기준 커밋**: `bf0c7cd80abdbf7fe47b634978a7d1b4071f71a7`
 - **라이선스**: MIT (원본과 동일)

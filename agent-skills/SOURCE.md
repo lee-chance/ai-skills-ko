@@ -4,8 +4,8 @@
 
 - **저장소**: https://github.com/addyosmani/agent-skills
 - **경로**: `/` (루트)
-- **커밋 SHA**: `301b02b12bff98e4688e6984af6556802322bbde`
-- **동기화 날짜**: 2026-11-05
+- **커밋 SHA**: `39b723ceebf81474d0557c1fecd01eddab585563`
+- **동기화 날짜**: 2026-11-16
 - **라이선스**: MIT (LICENSE 파일 참조)
 
 ## 설명
