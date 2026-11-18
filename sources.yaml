@@ -5,7 +5,7 @@ sources:
     upstream_path: pstack
     local_original: pstack
     local_korean: pstack-ko
-    last_synced_sha: bf0c7cd80abdbf7fe47b634978a7d1b4071f71a7
+    last_synced_sha: 93b916d4a1e806507e22f4716b352fa91f2b227e
     description: Cursor의 공식 pstack 플러그인
 
   - id: matt-pocock-skills

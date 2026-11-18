@@ -8,7 +8,7 @@ AI 에이전트를 위한 스킬 모음의 원본과 한국어 번역을 제공�
 - **원본**: `pstack/`
 - **한국어**: `pstack-ko/`
 - **출처**: [cursor/plugins](https://github.com/cursor/plugins)
-- **커밋**: `bf0c7cd80abdbf7fe47b634978a7d1b4071f71a7`
+- **커밋**: `93b916d4a1e806507e22f4716b352fa91f2b227e`
 - **설명**: Cursor의 공식 pstack 플러그인
 
 pstack-ko의 한국어 번역은 이 저장소에서 유지합니다.

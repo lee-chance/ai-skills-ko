@@ -8,7 +8,7 @@ pstack 스킬은 Cursor 이름을 사용합니다. Claude Code에서는 세션�
 | --- | --- |
 | `Task` | `Agent` |
 | `AskQuestion` | `AskUserQuestion`. `-p` 모드에서는 없으므로 일반 텍스트로 물으세요. |
-| todolist 열기 | 세션이 제공하는 경우 `TodoWrite`를 사용하세요. 그렇지 않으면 답변에 리스트를 유지하고 각 단계에서 업데이트하세요. |
+| todolist 열기, 또는 단계를 todolist 도구로 복사 | 세션이 제공하는 경우 `TodoWrite`를 사용하세요. 그렇지 않으면 답변에 리스트를 유지하고 각 단계에서 업데이트하세요. |
 | 다른 pstack 스킬 실행(`/name` 또는 "the **name** skill") | `<pstack>/skills/<name>/SKILL.md`를 `Read`하고 따르세요. `Skill` 도구는 대부분의 pstack 스킬을 거부합니다. 사용자에게 입력하라고 말할 때는 `/pstack:<name>`으로 작성하세요. |
 | `Grep`, `Glob` | 세션에 `Grep`이나 `Glob`이 없을 때 `rg`와 함께 `Bash`. |
 
@@ -18,6 +18,7 @@ pstack 스킬은 Cursor 이름을 사용합니다. Claude Code에서는 세션�
 | --- | --- |
 | `subagent_type: generalPurpose` | `subagent_type: "general-purpose"` |
 | `poteto-agent`, `comment-sicko` | `pstack:poteto-agent`, `pstack:comment-sicko` |
+| `poteto-agent` 파일의 `model:` 라인 | Cursor 슬러그를 담고 있습니다. `pstack:poteto-agent`를 생성하는 모든 `Agent` 호출에 `model`과 `effort`를 전달하고, Models 표로 매핑하여 그 슬러그가 API에 도달하지 않게 하세요. |
 | `readonly: true` | `subagent_type: "Explore"`. `Bash`를 유지하므로, 브리프도 "do not edit files"라고 말하고, 나중에 `git status`를 확인하세요. |
 | `readonly: false` | `general-purpose`. 세션의 MCP 서버를 유지합니다. |
 | `environment: "cloud"` | `isolation: "worktree"`. 워커가 체크아웃하는 브랜치나 커밋을 명명하세요. |
@@ -42,7 +43,7 @@ pstack 스킬은 Cursor 이름을 사용합니다. Claude Code에서는 세션�
 Claude Code는 `~/.claude/rules/`의 모든 `.md` 파일을 각 새 세션에 로드하므로, `setup-pstack`은 규칙을 거기에 작성합니다. 다음 변경 사항으로 단계를 따르세요:
 
 - 감지. 감지된 모델은 `Agent` 도구 스키마가 나열하는 `model` 값이며, 각각은 `effort` 값에서 effort를 가집니다. 실제 모델을 `<model> <effort>`로 작성하세요, 예: `opus xhigh`. effort는 마지막 토큰이므로, 예산 단계는 작성된 대로 작동합니다.
-- 기본값. 위의 행으로 각 기본 슬러그를 매핑하세요: `claude-opus-5-5-xhigh`는 `opus xhigh`이고, `claude-opus-5-5-high-fast`는 `opus high`이고, `claude-fable-5-2-max`는 `fable max`이고, `gemini-4-carbon-high`는 `inherit-parent`입니다.
+- 기본값. 위의 행으로 각 기본 슬러그를 매핑하세요: `claude-opus-5-5-xhigh-fast`는 `opus xhigh`이고, `claude-opus-5-5-high-fast`는 `opus high`이고, `claude-fable-5-2-high`는 `fable high`이고, `gemini-4-carbon-high`는 `inherit-parent`입니다.
 - 작성. frontmatter 없이 `~/.claude/rules/pstack-models.md`를 작성한 다음, 주석 라인, `# budget` 라인, 단계 5의 역할당 한 라인. 전체 파일을 덮어쓰세요. 역할 라인을 `CLAUDE.md`나 `AGENTS.md`에 절대 넣지 마세요.
 
 ## 경로

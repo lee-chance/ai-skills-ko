@@ -28,7 +28,7 @@ poteto-mode는 한 사람의 스타일입니다. 그 아래의 플레이북, 라
 /reflect that took way too long. capture what we learned so the next run doesn't repeat it.
 ```
 
-[`/reflect`](../../skills/reflect/SKILL.md)는 transcript를 세 명의 병렬 리뷰어에게 보낸 다음, 합성기가 제안을 `Accepted`, `Rejected`, `Backlog`로 정렬하고 스킬 변경 전에 승인을 기다립니다. 미래 결정을 변경할 경우에만 제안을 승인하세요. 하나의 이상한 세션은 일화이지, 규칙이 아닙니다.
+[`/reflect`](../../skills/reflect/SKILL.md)는 transcript를 읽고, 미래 에이전트의 작업을 바꿀 교훈만 남긴 다음, 제안을 `Accepted`, `Rejected`, `Backlog`로 정렬합니다. 스킬 변경 전에 승인을 기다립니다. 미래 결정을 변경할 경우에만 제안을 승인하세요. 하나의 이상한 세션은 일화이지, 규칙이 아닙니다.
 
 ## `/correct`로 환경 수정
 
