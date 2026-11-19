@@ -33,7 +33,8 @@ Task arrives
     ├── Reviewing code? ───────────────→ code-review-and-quality
     │   ├── Too complex? ─────────────→ code-simplification
     │   ├── Security concerns? ───────→ security-and-hardening
-    │   └── Performance concerns? ────→ performance-optimization
+    │   ├── Performance concerns? ────→ performance-optimization
+    │   └── Accessibility concerns? ──→ accessibility-engineering
     ├── Committing/branching? ─────────→ git-workflow-and-versioning
     ├── CI/CD pipeline work? ──────────→ ci-cd-and-automation
     ├── Deprecating/migrating? ────────→ deprecation-and-migration
@@ -184,6 +185,7 @@ Task arrives
 | 리뷰 | code-simplification | 동작을 유지하면서 불필요한 복잡성을 줄입니다 |
 | 리뷰 | security-and-hardening | OWASP 예방, 입력 검증, 최소 권한 |
 | 리뷰 | performance-optimization | 먼저 측정하고, 중요한 것만 최적화합니다 |
+| 리뷰 | accessibility-engineering | 기존 인터페이스를 WCAG 2.2 AA로 감사하고 발견한 위반을 수정합니다 |
 | 출시 | git-workflow-and-versioning | 원자적 커밋, 깨끗한 이력 |
 | 출시 | ci-cd-and-automation | 모든 변경에 자동화된 품질 게이트 |
 | 출시 | deprecation-and-migration | 옛 시스템을 제거하고 사용자를 안전하게 마이그레이션합니다 |

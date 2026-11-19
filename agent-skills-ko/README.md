@@ -21,7 +21,7 @@
 
 ## 커맨드
 
-개발 생명주기에 대응하는 슬래시 커맨드 9개입니다. 각각이 알맞은 스킬을 자동으로 활성화합니다.
+개발 생명주기에 대응하는 슬래시 커맨드 10개입니다. 각각이 알맞은 스킬을 자동으로 활성화합니다.
 
 | 하고 있는 일 | 커맨드 | 핵심 원칙 |
 |-------------------|---------|---------------|
@@ -32,6 +32,7 @@
 | 품질 기준을 정하기 | `/constraints` | 한 번 정하고, 어디서나 강제한다 |
 | 머지 전에 리뷰 | `/review` | 코드 건강도를 높인다 |
 | 웹 성능을 감사 | `/webperf` | 최적화하기 전에 측정한다 |
+| 접근성을 감사 | `/a11y` | 자동화는 연기 테스트이고, 수동 검증이 감사를 완성한다 |
 | 코드를 단순화 | `/code-simplify` | 기교보다 명확함 |
 | 프로덕션에 출시 | `/ship` | 더 빠를수록 더 안전하다 |
 
@@ -50,7 +51,7 @@ Claude Code에서는 플러그인 커맨드로 설치됩니다. `/review`처럼 
 **가장 빠른 경로. 어떤 에이전트든 명령 하나.** 공개된 [skills CLI](https://github.com/vercel-labs/skills)는 70개 이상의 에이전트(Claude Code, Cursor, Codex, Copilot, Cline 등)에 설치됩니다.
 
 ```bash
-npx skills add addyosmani/agent-skills            # install all 25 skills
+npx skills add addyosmani/agent-skills            # install all 26 skills
 npx skills add addyosmani/agent-skills --list     # browse before installing
 ```
 
@@ -224,9 +225,9 @@ cmd skills add addyosmani/agent-skills -s spec-driven-development  # install a s
 
 <a id="all-25-skills"></a>
 
-## 스킬 25개 전체
+## 스킬 26개 전체
 
-위의 커맨드는 진입점입니다. 팩에는 스킬이 모두 25개 있습니다. 생명주기 스킬 24개와 메타 스킬 `using-agent-skills`입니다. 각 스킬은 단계, 검증 게이트, 합리화 방지 표가 있는 구조화된 워크플로우입니다. 어떤 스킬이든 직접 참조할 수도 있습니다.
+위의 커맨드는 진입점입니다. 팩에는 스킬이 모두 26개 있습니다. 생명주기 스킬 25개와 메타 스킬 `using-agent-skills`입니다. 각 스킬은 단계, 검증 게이트, 합리화 방지 표가 있는 구조화된 워크플로우입니다. 어떤 스킬이든 직접 참조할 수도 있습니다.
 
 ### 메타 (Meta) - 어떤 스킬이 적용되는지 찾기
 
@@ -276,6 +277,7 @@ cmd skills add addyosmani/agent-skills -s spec-driven-development  # install a s
 | [code-simplification](skills/code-simplification/SKILL.md) | Chesterton's Fence, Rule of 500. 동작을 그대로 유지하면서 복잡도를 줄입니다 | 코드는 동작하지만 읽거나 유지하기가 필요 이상으로 어려울 때 |
 | [security-and-hardening](skills/security-and-hardening/SKILL.md) | OWASP Top 10 예방, 인증 패턴, 시크릿 관리, 의존성 감사, 3단계 경계 시스템 | 사용자 입력, 인증, 데이터 저장, 외부 통합을 다룰 때 |
 | [performance-optimization](skills/performance-optimization/SKILL.md) | 측정 우선 접근. Core Web Vitals 목표, 프로파일링 워크플로우, 번들 분석, 안티패턴 탐지 | 성능 요구 사항이 있거나 회귀가 의심될 때 |
+| [accessibility-engineering](skills/accessibility-engineering/SKILL.md) | 기존 인터페이스를 WCAG 2.2 AA 준수 여부로 감사하고 발견한 위반을 수정. axe-core와 pa11y 명령, 키보드·스크린 리더 테스트, 심각도 분류 | 출시 전에 페이지나 컴포넌트의 접근성을 감사할 때 |
 
 ### 출시 (Ship) - 자신 있게 배포하기
 
@@ -300,6 +302,7 @@ cmd skills add addyosmani/agent-skills -s spec-driven-development  # install a s
 | [test-engineer](agents/test-engineer.md) | QA 전문가 | 테스트 전략, 커버리지 분석, Prove-It 패턴 |
 | [security-auditor](agents/security-auditor.md) | 보안 엔지니어 | 취약점 탐지, 위협 모델링, OWASP 평가 |
 | [web-performance-auditor](agents/web-performance-auditor.md) | 웹 성능 엔지니어 | Quick/Deep 모드와 메트릭 정직 규칙이 있는 Core Web Vitals 감사. `/webperf`로 실행합니다 |
+| [accessibility-auditor](agents/accessibility-auditor.md) | 접근성 엔지니어 | 점수표와 실제 사용자 영향 순으로 정렬한 발견 사항이 있는 WCAG 2.2 AA 감사. `/a11y`로 실행합니다 |
 
 의사결정 매트릭스, 오케스트레이션 규칙, 페르소나가 스킬 및 슬래시 커맨드와 어떻게 조합되는지는 [docs/agents.md](docs/agents.md)를 보세요.
 
@@ -358,14 +361,14 @@ cmd skills add addyosmani/agent-skills -s spec-driven-development  # install a s
 
 | 계층 / 소비자 | 저장소 경로 | 목적 |
 |---|---|---|
-| 공유 워크플로우 핵심 | `skills/` (스킬 25개) | 모든 통합이 쓰는 이식 가능한 `SKILL.md` 워크플로우 |
-| 공유 리뷰 자료 | `agents/` (페르소나 4개), `references/` (체크리스트 7개) | 저장소 전체 설치에 포함되는 전문 리뷰어와 팩 수준 체크리스트 |
-| Claude Code 어댑터 | `.claude/commands/` (커맨드 9개), `.claude-plugin/`, `hooks/` | 슬래시 커맨드 래퍼, 마켓플레이스 메타데이터, 생명주기 훅 |
-| Gemini CLI 어댑터 | `.gemini/commands/` (커맨드 9개) | Gemini 네이티브 TOML 커맨드 래퍼 |
-| Antigravity CLI 어댑터 | `commands/` (커맨드 9개), `plugin.json` | 레거시 TOML 래퍼와 루트 플러그인 매니페스트. [알려진 래퍼 제한](docs/antigravity-setup.md#lifecycle-workflows-and-command-compatibility)을 보세요 |
+| 공유 워크플로우 핵심 | `skills/` (스킬 26개) | 모든 통합이 쓰는 이식 가능한 `SKILL.md` 워크플로우 |
+| 공유 리뷰 자료 | `agents/` (페르소나 5개), `references/` (체크리스트 7개) | 저장소 전체 설치에 포함되는 전문 리뷰어와 팩 수준 체크리스트 |
+| Claude Code 어댑터 | `.claude/commands/` (커맨드 10개), `.claude-plugin/`, `hooks/` | 슬래시 커맨드 래퍼, 마켓플레이스 메타데이터, 생명주기 훅 |
+| Gemini CLI 어댑터 | `.gemini/commands/` (커맨드 10개) | Gemini 네이티브 TOML 커맨드 래퍼 |
+| Antigravity CLI 어댑터 | `commands/` (커맨드 10개), `plugin.json` | 레거시 TOML 래퍼와 루트 플러그인 매니페스트. [알려진 래퍼 제한](docs/antigravity-setup.md#lifecycle-workflows-and-command-compatibility)을 보세요 |
 | Codex 어댑터 | `.codex-plugin/`, `.agents/plugins/` | Codex 플러그인 메타데이터와 마켓플레이스 등록. Codex는 `skills/`를 직접 사용합니다 |
 | GitHub Copilot CLI 어댑터 | `plugin.json` | 루트 플러그인 메타데이터. Copilot CLI는 관례에 따라 `skills/`를 찾고, 생명주기 래퍼는 등록하지 않습니다 |
-| 기여자 도구 | `scripts/` (스크립트 13개), `evals/` (케이스 파일 25개), `.github/workflows/` | 검증, 라우팅 평가, CI |
+| 기여자 도구 | `scripts/` (스크립트 13개), `evals/` (케이스 파일 26개), `.github/workflows/` | 검증, 라우팅 평가, CI |
 | 문서 | `docs/` | 공통 안내와 도구별 설정 가이드 |
 
 체크인된 어댑터 디렉터리가 없는 도구는 공유 `skills/` 핵심을 각자의 네이티브 위치에 설치하거나 복사합니다. [빠른 시작](#quick-start)이 지원하는 호스트마다 설정 가이드로 연결합니다.

@@ -30,6 +30,7 @@ OpenCode는 `skill` 도구와 이 저장소의 `/skills` 디렉터리가 이끄�
 - 리팩터 / 단순화 → `code-simplification`
 - API 또는 인터페이스 설계 → `api-and-interface-design`
 - UI 작업 → `frontend-ui-engineering`
+- 접근성 감사 / a11y 리뷰 → `accessibility-engineering`
 
 ### 생명주기 매핑 (암시적 커맨드)
 

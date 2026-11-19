@@ -8,9 +8,9 @@
 
 ```
 skills/       → 핵심 스킬 (디렉터리마다 SKILL.md)
-agents/       → 재사용 가능한 에이전트 페르소나 (code-reviewer, test-engineer, security-auditor, web-performance-auditor)
+agents/       → 재사용 가능한 에이전트 페르소나 (code-reviewer, test-engineer, security-auditor, web-performance-auditor, accessibility-auditor)
 hooks/        → 세션 생명주기 훅
-.claude/commands/ → 슬래시 커맨드 (/spec, /plan, /build, /test, /review, /code-simplify, /ship, 그리고 전문 감사 /webperf)
+.claude/commands/ → 슬래시 커맨드 (/spec, /plan, /build, /test, /review, /code-simplify, /ship, 그리고 전문 감사 /webperf와 /a11y)
 references/   → 보충 체크리스트 (테스트, 성능, 보안, 접근성, 옵저버빌리티)
 evals/        → 스킬 평가 케이스와 프레임워크 (evals/README.md 참고)
 docs/         → 도구별 설정 가이드
@@ -22,7 +22,7 @@ docs/         → 도구별 설정 가이드
 **계획 (Plan):** planning-and-task-breakdown
 **구현 (Build):** incremental-implementation, test-driven-development, context-engineering, source-driven-development, doubt-driven-development, frontend-ui-engineering, api-and-interface-design
 **검증 (Verify):** browser-testing-with-devtools, debugging-and-error-recovery
-**리뷰 (Review):** code-review-and-quality, code-simplification, security-and-hardening, performance-optimization
+**리뷰 (Review):** code-review-and-quality, code-simplification, security-and-hardening, performance-optimization, accessibility-engineering
 **출시 (Ship):** git-workflow-and-versioning, ci-cd-and-automation, deprecation-and-migration, documentation-and-adrs, observability-and-instrumentation, shipping-and-launch
 
 ## 관례

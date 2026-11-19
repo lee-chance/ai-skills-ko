@@ -100,6 +100,7 @@ Copilot Chat에서 목적에 맞는 리뷰 워크플로우에는 이 에이전�
 | 빌드 (Build) | `/incremental-implementation` | `/test-driven-development`와 함께 사용합니다. 한 번에 하나의 슬라이스입니다 |
 | 검증 (Verify) | `/test-driven-development` | red-green-refactor. 버그에는 Prove-It |
 | 리뷰 (Review) | `/code-review-and-quality` | 다섯 축 리뷰 |
+| 접근성 감사 | `/accessibility-engineering` | WCAG 2.2 AA 감사. 저장소의 짧은 커맨드 래퍼는 `/a11y`입니다 |
 | 출시 (Ship) | `/shipping-and-launch` | 출시 준비 |
 
 이 워크스페이스에 실제로 불러온 항목은 `/`를 입력해 둘러보세요.

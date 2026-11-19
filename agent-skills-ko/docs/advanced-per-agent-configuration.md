@@ -35,22 +35,23 @@ Claude Code는 발견을 위해 `name`과 `description`을 읽습니다. 커스�
 
 Gemini CLI와 Antigravity는 같은 방식으로 스킬을 찾습니다. `name`과 `description`을 맞춘 다음, 필요할 때 스킬 전체를 로드합니다. 런타임 오케스트레이션은 스킬 frontmatter가 아니라 별도의 리소스에 있습니다.
 
-- **서브에이전트 정의**는 스킬과 구분되는 `.gemini/agents/*.md`에 있습니다. 스키마는 `kind`(`local` 또는 `remote`), `model`, `temperature`, `max_turns`, `tools`입니다. 이것은 서브에이전트 스키마이며, 스킬 스키마가 아닙니다. 둘을 하나의 `SKILL.md`로 합치면 안 됩니다.
+- **서브에이전트 정의**는 스킬과 구분되는 `.gemini/agents/*.md`에 있습니다. 스키마는 `name`과 `description`이 필수이고, `kind`(`local` 또는 `remote`), `model`, `temperature`, `max_turns`, `tools`를 받습니다. 이것은 서브에이전트 스키마이며, 스킬 스키마가 아닙니다. 둘을 하나의 `SKILL.md`로 합치면 안 됩니다.
 - **모델 라우팅**은 더 가벼운 작업(서식, 문서, git 작업)을 더 빠른 모델로 보내고, 인지적으로 무거운 작업(디버깅, 보안 감사, 인터페이스 설계)에는 더 강한 모델을 남겨 둡니다.
 - **도구 제한**은 서브에이전트마다 최소 권한을 강제하고, 쓰이지 않는 도구 스키마를 프롬프트에서 덜어 내기도 합니다.
 - **턴 제한**(`max_turns`)은 폭주하는 수정 루프를 피하도록 실행에 상한을 둡니다.
 
 ### 모델 안내
 
-Google은 Gemini 3.x 모델에서 `temperature`를 생략하고 대신 `thinking_level`을 쓰라고 권합니다. 3.x 모델로 라우팅되는 스킬이나 서브에이전트에 `temperature`를 하드코딩하지 마세요. `thinking_level`을 선호하고, 모델이 진화하면 이 안내를 다시 보세요.
+Google은 Gemini 3.x 모델에서 `temperature`를 생략하고 대신 `thinking_level`을 쓰라고 권합니다. 3.x 모델로 라우팅되는 스킬이나 서브에이전트에 `temperature`를 하드코딩하지 마세요. 모델이 진화하면 이 안내를 다시 보세요. `thinking_level`은 서브에이전트 필드가 아니라 모델 설정입니다. 에이전트 파일이 아니라 Gemini CLI의 모델 설정에서 지정하세요.
 
 ```yaml
 # .gemini/agents/security-auditor.md
 ---
+name: security-auditor
+description: Finds security vulnerabilities in code.
 kind: local
-model: gemini-3-pro
-thinking_level: high   # not: temperature: 0.1
-tools: [read_file, grep]
+model: gemini-3-pro   # no temperature for 3.x models
+tools: [read_file, grep_search]
 max_turns: 10
 ---
 ```

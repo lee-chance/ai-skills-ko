@@ -32,5 +32,5 @@ sources:
     upstream_path: .
     local_original: agent-skills
     local_korean: agent-skills-ko
-    last_synced_sha: 39b723ceebf81474d0557c1fecd01eddab585563
+    last_synced_sha: 8c99fa36d90068c82d547f7c12a9d67a3e95f4ee
     description: Addy Osmani의 프로덕션급 엔지니어링 스킬 모음

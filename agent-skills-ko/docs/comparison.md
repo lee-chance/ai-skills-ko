@@ -18,9 +18,9 @@
 |---|---|---|---|
 | **핵심 아이디어** | 시니어 엔지니어링 수명 주기 전체를 스킬로 부호화합니다 | 조합 가능한 스킬 위에 세운 완전한 개발 *방법론* | 한 전문가의 Claude Code 워크플로우를 오픈소스로 공개하고 계속 발전시킵니다 |
 | **구성 원리** | 메타 스킬 라우터 뒤에 둔 SDLC **단계**(정의(Define)에서 출시(Ship)까지) | 하나의 규율 있는 루프: 브레인스토밍, 계획, 실행, 리뷰 | 초점이 분명하고 조합 가능한 명령을 모은 큐레이션된 도구 상자 |
-| **카탈로그 규모** | 수명 주기 전체를 아우르는 스킬 25개 | 내부 빌드 루프에 깊이 있는 스킬 약 14개 | 엔지니어링 / 생산성 / in-progress(진행 중) / deprecated(지원 종료)로 묶인 스킬 약 30개 |
+| **카탈로그 규모** | 수명 주기 전체를 아우르는 스킬 26개 | 내부 빌드 루프에 깊이 있는 스킬 약 14개 | 엔지니어링 / 생산성 / in-progress(진행 중) / deprecated(지원 종료)로 묶인 스킬 약 30개 |
 | **수명 주기 범위** | 넓음: 아이디어 정제, API와 UI 설계, 보안, 성능, CI/CD, 옵저버빌리티, 지원 종료, ADR, 출시 | 깊지만 좁음: TDD, 디버깅, 계획, 리뷰, 스킬 작성 | 정의(Define)와 빌드(Build) 비중이 큼: grilling, PRD, 이슈, TDD, 아키텍처, 버그 분류, 지식 관리 |
-| **진입점** | 단계와 1:1로 대응되는 슬래시 커맨드(`/spec` `/plan` `/build` `/test` `/review` `/code-simplify` `/ship`, 그리고 `/webperf`). `/build auto` 전체 계획 모드 포함 | 스킬이 이어지는 파이프라인(`brainstorming`, `writing-plans`, `subagent-driven-development`) | 슬래시 커맨드(`/grill-me`, `/tdd`, `/to-prd`, `/diagnosing-bugs`, `/grill-with-docs`) |
+| **진입점** | 단계와 1:1로 대응되는 슬래시 커맨드(`/spec` `/plan` `/build` `/test` `/review` `/code-simplify` `/ship`, 그리고 전문 감사 `/webperf`와 `/a11y`). `/build auto` 전체 계획 모드 포함 | 스킬이 이어지는 파이프라인(`brainstorming`, `writing-plans`, `subagent-driven-development`) | 슬래시 커맨드(`/grill-me`, `/tdd`, `/to-prd`, `/diagnosing-bugs`, `/grill-with-docs`) |
 | **특징적인 장치** | 모든 스킬의 합리화 방지 표와 레드 플래그. `/ship`의 병렬 리뷰 **페르소나**. 참조 체크리스트. CI의 **3티어 eval 프레임워크** | 작업 리뷰어(스펙과 품질)와 수정 루프가 있는 서브에이전트 주도 개발. git worktree 격리. 압박 테스트를 거친, 스킬을 작성하는 스킬 | **grilling** 기본 요소(한 번에 질문 하나, 설계 트리 순회). 심(seam) 기반 TDD. 사용자 호출과 모델 호출의 명시적 분리. 이슈 트래커 연동 |
 | **품질 측정** | 카탈로그를 대상으로 트리거, 라우팅, 행동 eval을 실행합니다(저장소 안, 일부는 CI) | 압박 테스트 방법론이 철학의 핵심입니다. eval 스위트 자체는 이제 별도 저장소에 있습니다 | 저장소에 포함된 것은 없습니다 |
 | **도구 범위** | Claude Code, Cursor, Gemini CLI, Antigravity, OpenCode, Windsurf, Copilot, Kiro, Codex, Command Code, 그리고 `npx skills` CLI | 가장 넓고 변경이 잦은 지원 범위 중 하나: Claude Code, Codex, Cursor, Copilot CLI, OpenCode, Kimi, Factory Droid, Antigravity, Pi | Claude Code가 우선입니다. `npx skills add`로 배포합니다. 다른 에이전트는 충실도가 제각각입니다 |

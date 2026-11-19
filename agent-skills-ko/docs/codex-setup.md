@@ -22,7 +22,7 @@ codex plugin add agent-skills@agent-skills
 
 ## 사용법
 
-설치 후 Codex 채팅에서 `@`로 스킬을 호출하거나(예: `@spec-driven-development`), 작업을 설명하고 Codex가 알맞은 스킬을 고르게 하세요. `skills/` 아래의 스킬 25개를 모두 사용할 수 있습니다.
+설치 후 Codex 채팅에서 `@`로 스킬을 호출하거나(예: `@spec-driven-development`), 작업을 설명하고 Codex가 알맞은 스킬을 고르게 하세요. `skills/` 아래의 스킬 26개를 모두 사용할 수 있습니다.
 
 [Codex는 점진적 공개를 사용합니다](https://developers.openai.com/codex/skills). 각 스킬의 `name`과 `description`에서 시작하고, 필요할 때 스킬을 고른 다음, 선택된 경우에만 전체 `SKILL.md`를 불러옵니다. `using-agent-skills/SKILL.md`를 `AGENTS.md`, 시스템 프롬프트, 또는 다른 상시 컨텍스트에 추가로 붙여 넣지 마세요. 그러면 팩의 메타 라우터가 Codex의 네이티브 라우터 위에 겹치고, 불필요한 라우팅 작업이 늘어납니다. 메타 스킬은 팩과 함께 설치된 상태로 두어도 됩니다. 경고는 그 전체 지시문을 미리 불러오지 말라는 점에만 해당합니다.
 
