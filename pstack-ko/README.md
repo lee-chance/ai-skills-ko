@@ -44,7 +44,7 @@ claude code는 리포지토리 루트의 [`harness/pstack/`](https://github.com/
 
 여기가 처음이신가요? [pstack 가이드](./docs/guide/README.md)가 설정과 프롬프팅부터 검증과 야간 실행까지 첫 실제 작업을 안내합니다. 막히거나 어떤 스킬이 맞는지 확실하지 않나요? [`/poteto-help`](./skills/poteto-help/SKILL.md)에 물어보세요.
 
-그게 전부입니다. 다른 스킬들은 상황에 따라 필요하며, mode 스킬이 필요에 따라 사용합니다. 기본적으로 코드 위임(기능, 리팩토링, 버그 수정, 성능, hillclimb), 산문, 판단은 xhigh의 opus 5.5로 가며, xhigh를 넘겨 실행되는 역할은 없습니다. 리뷰 패널 밖에서 fable 5.2는 사용자가 직접 지정하거나 같은 브리프로 opus 5.5를 두 번 실행해 실패했을 때만 실행됩니다. 기본 패널은 fable 5.2 / opus 5.5 / gemini 4 carbon입니다. [`/setup-pstack`](./skills/setup-pstack/SKILL.md)은 이것들을 변경할 수 있습니다.
+그게 전부입니다. 다른 스킬들은 상황에 따라 필요하며, mode 스킬이 필요에 따라 사용합니다. 기본적으로 코드 위임(기능, 리팩토링, 버그 수정, 성능, hillclimb), 산문, 판단은 xhigh의 opus 5.5로 가며, xhigh를 넘겨 실행되는 역할은 없습니다. 리뷰 패널 밖에서 fable 5.2는 사용자가 직접 지정하거나 같은 브리프로 opus 5.5를 두 번 실행해 실패했을 때만 실행됩니다. 기본 패널은 fable 5.2 / opus 5.5 / gemini 4 neon입니다. [`/setup-pstack`](./skills/setup-pstack/SKILL.md)은 이것들을 변경할 수 있습니다.
 
 ## 사용법
 

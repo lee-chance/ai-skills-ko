@@ -14,7 +14,7 @@ disable-model-invocation: true
 
 1. 각 후보가 생산하는 아티팩트를 명시하세요.
 2. 루브릭을 도출하세요. *이* 작업에서 성공이 어떻게 보이는지에 대한 3-6개의 구체적이고 채점 가능한 기준. 이것은 단계 D에서 선택자의 도구입니다. 후보는 작업만 봅니다.
-3. `~/.cursor/rules/pstack-models.mdc`의 `arena runners` 라인에서 러너를 선택하세요. 기본값은 `claude-fable-5-2-high`, `claude-opus-5-5-high-fast`, `gemini-4-carbon-high`입니다. `auto` 또는 `inherit-parent` 항목은 부모 모델이므로 `model`을 생략하고 `generalPurpose`를 생성하세요. Task 도구가 슬러그를 거부하면 동일한 패밀리의 가장 가까운 유효한 슬러그를 사용하거나 해당 시트를 삭제하되, 러너를 최소 두 개는 유지하고 그렇게 말하세요. 패밀리는 접두사로 구분되며 가장 길게 일치하는 접두사가 이깁니다: 선행 `cursor-`를 제거한 뒤 `claude-fable-*`, `claude-*`, `gemini-*`. 다른 슬러그의 패밀리는 첫 하이픈 앞의 텍스트입니다. 여러 설계 방향을 다룰 때는 더 많이 생성하고, 작업이 판단에 민감하기보다 생성에 바인딩되어 있을 때는 하나의 모델을 반복하세요. **poteto-mode** 스킬의 Subagents 섹션에 따라 각 서브에이전트의 추론 수준을 선택하세요.
+3. `~/.cursor/rules/pstack-models.mdc`의 `arena runners` 라인에서 러너를 선택하세요. 기본값은 `claude-fable-5-2-high`, `claude-opus-5-5-high-fast`, `gemini-4-neon-xhigh`입니다. `auto` 또는 `inherit-parent` 항목은 부모 모델이므로 `model`을 생략하고 `generalPurpose`를 생성하세요. Task 도구가 슬러그를 거부하면 동일한 패밀리의 가장 가까운 유효한 슬러그를 사용하거나 해당 시트를 삭제하되, 러너를 최소 두 개는 유지하고 그렇게 말하세요. 패밀리는 접두사로 구분되며 가장 길게 일치하는 접두사가 이깁니다: 선행 `cursor-`를 제거한 뒤 `claude-fable-*`, `claude-*`, `gemini-*`. 다른 슬러그의 패밀리는 첫 하이픈 앞의 텍스트입니다. 여러 설계 방향을 다룰 때는 더 많이 생성하고, 작업이 판단에 민감하기보다 생성에 바인딩되어 있을 때는 하나의 모델을 반복하세요. **poteto-mode** 스킬의 Subagents 섹션에 따라 각 서브에이전트의 추론 수준을 선택하세요.
 4. 각 후보에게 자체 출력 위치를 제공하세요 (가능하면 git 워크트리, 그렇지 않으면 `/tmp/arena-<slug>/candidate-<n>/`), **separate-before-serializing-shared-state** 원칙 스킬에 따라.
 
 ## 단계 B: 팬 아웃
@@ -25,7 +25,7 @@ disable-model-invocation: true
 
 ## 단계 C: 교차 판정
 
-모든 단계 B 후보가 완료된 후, `~/.cursor/rules/pstack-models.mdc`의 `arena cross-judge pool` 라인에서 읽기 전용 판정자 하나를 생성하세요. 기본값은 `claude-opus-5-5-high-fast`, `gemini-4-carbon-high`입니다. 판정자는 부모의 벤더에서 절대 나오지 않으며, 이 확인에서 Fable은 Claude로 취급하므로 다른 벤더의 첫 번째 항목을 사용하세요. `auto` 또는 `inherit-parent` 항목은 부모 모델입니다. 부모의 모델을 모르면 첫 번째 실제 슬러그를 사용하고 벤더 확인이 실행되지 않았다고 말하세요. Task 도구가 슬러그를 거부하면 동일한 패밀리의 가장 가까운 유효한 슬러그를 사용하고, 그것도 없으면 다음 해당 항목을 사용하거나 판정자를 건너뛰고 그렇게 말하세요. 단계 D에서 당신이 읽는 동안 판정자는 각 후보를 경로 레이블별로, 각 루브릭 기준에 대해 채점하고 베이스를 추천합니다.
+모든 단계 B 후보가 완료된 후, `~/.cursor/rules/pstack-models.mdc`의 `arena cross-judge pool` 라인에서 읽기 전용 판정자 하나를 생성하세요. 기본값은 `claude-opus-5-5-high-fast`, `gemini-4-neon-xhigh`입니다. 판정자는 부모의 벤더에서 절대 나오지 않으며, 이 확인에서 Fable은 Claude로 취급하므로 다른 벤더의 첫 번째 항목을 사용하세요. `auto` 또는 `inherit-parent` 항목은 부모 모델입니다. 부모의 모델을 모르면 첫 번째 실제 슬러그를 사용하고 벤더 확인이 실행되지 않았다고 말하세요. Task 도구가 슬러그를 거부하면 동일한 패밀리의 가장 가까운 유효한 슬러그를 사용하고, 그것도 없으면 다음 해당 항목을 사용하거나 판정자를 건너뛰고 그렇게 말하세요. 단계 D에서 당신이 읽는 동안 판정자는 각 후보를 경로 레이블별로, 각 루브릭 기준에 대해 채점하고 베이스를 추천합니다.
 
 ## 단계 D: 베이스 선택
 

@@ -8,7 +8,7 @@ AI 에이전트를 위한 스킬 모음의 원본과 한국어 번역을 제공�
 - **원본**: `pstack/`
 - **한국어**: `pstack-ko/`
 - **출처**: [cursor/plugins](https://github.com/cursor/plugins)
-- **커밋**: `93b916d4a1e806507e22f4716b352fa91f2b227e`
+- **커밋**: `0b46ec399d55f2829e88822998f53b84944837d3`
 - **설명**: Cursor의 공식 pstack 플러그인
 
 pstack-ko의 한국어 번역은 이 저장소에서 유지합니다.
@@ -17,7 +17,7 @@ pstack-ko의 한국어 번역은 이 저장소에서 유지합니다.
 - **원본**: `matt-pocock-skills/`
 - **한국어**: `matt-pocock-skills-ko/`
 - **출처**: [mattpocock/skills](https://github.com/mattpocock/skills)
-- **커밋**: `5863806dd4e15c63174bee4e7515a4256792ecfa`
+- **커밋**: `abeeaf95660ba9e8b7c753eb38f441ca707a8823`
 - **설명**: Matt Pocock의 AI 코딩 스킬 모음.
 
 ### 3. benjitaylor-skills

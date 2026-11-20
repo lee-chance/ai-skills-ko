@@ -16,7 +16,7 @@ disable-model-invocation: true
 <skill dir>/scripts/statechart SPEC.tla [--config FILE] [--view FILE] [--out DIR]
 ```
 
-`scripts/statechart.ts`는 TypeScript이므로 TypeScript를 실행할 수 있는 런타임으로 실행하세요.
+`scripts/statechart.ts`는 TypeScript이므로 TypeScript를 실행할 수 있는 런타임으로 실행하세요. `scripts/statechart`는 그중 하나를 골라 주는 POSIX 셸 스크립트입니다. 네이티브 Windows에서는 Node 22.18~22.x 또는 Node 23.6 이상으로 `node --disable-warning=ExperimentalWarning <skill dir>/scripts/statechart.ts`를 실행하세요.
 
 첫 실행은 mise로 TLC와 Java를 설치하며 네트워크가 필요합니다.
 

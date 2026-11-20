@@ -5,7 +5,7 @@ sources:
     upstream_path: pstack
     local_original: pstack
     local_korean: pstack-ko
-    last_synced_sha: 93b916d4a1e806507e22f4716b352fa91f2b227e
+    last_synced_sha: 0b46ec399d55f2829e88822998f53b84944837d3
     description: Cursor의 공식 pstack 플러그인
 
   - id: matt-pocock-skills
@@ -14,7 +14,7 @@ sources:
     upstream_path: .
     local_original: matt-pocock-skills
     local_korean: matt-pocock-skills-ko
-    last_synced_sha: 5863806dd4e15c63174bee4e7515a4256792ecfa
+    last_synced_sha: abeeaf95660ba9e8b7c753eb38f441ca707a8823
     description: Matt Pocock의 TypeScript/React 스킬 모음
 
   - id: benjitaylor-skills
