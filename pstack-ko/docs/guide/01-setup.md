@@ -24,7 +24,7 @@ Claude Code에서는 `/plugin marketplace add cursor/plugins`를 실행한 다�
 
 [`/setup-pstack`](../../skills/setup-pstack/SKILL.md)은 액세스할 수 있는 모델을 감지하고, 추론 예산을 묻고, 각 역할(코드 위임자, 판단, 리뷰 패널)을 보여주고, 원하는 것을 묻습니다. 질문에 답하세요. `~/.cursor/rules/pstack-models.mdc`를 작성하며, 이는 모든 pstack 스킬이 읽는 작은 규칙입니다.
 
-기본값은 `large` 예산과 동일합니다. 대부분의 역할은 `xhigh` 추론으로 실행됩니다. 가장 어려운 변경은 `max`로 실행되고, 리뷰 패널과 swarm 워커는 `high`로 실행됩니다. `unlimited`는 각 역할을 `max`까지 한 단계 올립니다. Gemini는 `high`에서 최고이므로 거기에 머뭅니다. `medium`은 각 역할을 한 단계 낮추고 `small`은 두 단계 낮추며, 둘 다 더 적은 토큰을 소비합니다.
+기본값은 `large` 예산과 동일합니다. 코드, 산문, 판단은 `xhigh` 추론의 Opus 5.5로 실행되고, 리뷰 패널과 swarm 워커는 `high`로 실행됩니다. `xhigh`를 넘겨 실행되는 역할은 없습니다. 리뷰 패널 밖에서 Fable 5.2는 작업에 직접 지정했을 때, 또는 같은 브리프로 Opus 5.5를 두 번 실행해 검사에 실패했을 때만 실행됩니다. `medium`은 각 역할을 한 단계 낮추고 `small`은 두 단계 낮추며, 둘 다 더 적은 토큰을 소비합니다.
 
 신경 쓰는 것만 오버라이드하면 됩니다. 규칙에 라인이 없는 역할은 스킬의 기본값을 유지합니다. 기본값을 복원하려면 해당 역할의 라인을 삭제하세요. `/setup-pstack`을 재실행하면 모델이 기본값과 다른 역할을 유지합니다. 기본값이 변경되면, 변경 전에 작성된 규칙은 `/setup-pstack`을 다시 실행할 때까지 이전 기본값을 고정합니다. 그 실행은 인식하는 이전 기본값을 교체하고, 어느 것인지 알려 주며, 다른 선택은 유지합니다. 인식하지 못하는 고정을 제거하려면, 먼저 해당 역할의 라인이나 파일을 삭제하세요.
 
@@ -59,7 +59,7 @@ pstack은 서브에이전트와 리뷰 패널에 추가 토큰을 소비합니�
 /poteto-mode add a --json flag to this command. text output stays byte-identical. verify both.
 ```
 
-todo 리스트를 관찰하세요. 첫 번째 항목은 복사된 매칭된 플레이북의 단계이며, 이 프롬프트의 경우 Feature 플레이북입니다. `/poteto-mode`가 단계를 건너뛰면, 단계는 `skip: <reason>`과 함께 리스트에 남아있으므로, 무엇을 하지 않기로 선택했는지 볼 수 있습니다.
+todo 리스트를 관찰하세요. 첫 번째 항목은 복사된 매칭된 플레이북의 단계이며, 이 프롬프트의 경우 Feature 플레이북입니다.
 
 여기에서 일반 후속 조치를 입력할 수 있습니다. 전체 채팅에 대해 `/poteto-mode`를 유지하려면, Enter 대신 Option+Enter(Mac) 또는 Alt+Enter(Windows)로 `/` 메뉴에서 선택하세요. 그러면 [커스텀 모드](https://cursor.com/docs/skills#using-a-skill-as-a-custom-mode)가 되어, 종료할 때까지 매 턴마다 컨텍스트에 유지됩니다. 커스텀 모드는 에이전트 창과 CLI에서 사용할 수 있습니다. 일반 Enter는 스킬을 하나의 메시지에 첨부하고, 채팅이 진행되면서 희미해집니다.
 

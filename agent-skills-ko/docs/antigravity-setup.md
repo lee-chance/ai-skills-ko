@@ -47,7 +47,7 @@ agy plugin list
 
 ## 라이프사이클 워크플로우와 커맨드 호환성
 
-Antigravity의 [마이그레이션 도구](https://www.agy.dev/docs/cli/gcli-migration/)는 `commands/*.toml`의 레거시 정의 9개를 "converted to skills"로 보고합니다. 영향을 받는 `agy` 1.1.x 릴리스에서는 검증은 성공하지만, 변환된 래퍼가 슬래시 커맨드나 스킬 카탈로그에 나타나지 않습니다. 따라서 `agy plugin validate`가 성공해도 파일이 올바른 형식이라는 뜻이지, `/build`와 다른 짧은 래퍼를 쓸 수 있다는 뜻은 아닙니다. 이 문제는 [agent-skills #445](https://github.com/addyosmani/agent-skills/issues/445)와 업스트림 [antigravity-cli #788](https://github.com/google-antigravity/antigravity-cli/issues/788)에서 추적 중입니다.
+Antigravity의 [마이그레이션 도구](https://www.agy.dev/docs/cli/gcli-migration/)는 `commands/*.toml`의 레거시 정의 10개를 "converted to skills"로 보고합니다. 영향을 받는 `agy` 1.1.x 릴리스에서는 검증은 성공하지만, 변환된 래퍼가 슬래시 커맨드나 스킬 카탈로그에 나타나지 않습니다. 따라서 `agy plugin validate`가 성공해도 파일이 올바른 형식이라는 뜻이지, `/build`와 다른 짧은 래퍼를 쓸 수 있다는 뜻은 아닙니다. 이 문제는 [agent-skills #445](https://github.com/addyosmani/agent-skills/issues/445)와 업스트림 [antigravity-cli #788](https://github.com/google-antigravity/antigravity-cli/issues/788)에서 추적 중입니다.
 
 그 임포터 제한이 적용되는 동안에는 네이티브 플러그인 스킬을 직접 사용하세요.
 
@@ -62,6 +62,7 @@ Antigravity의 [마이그레이션 도구](https://www.agy.dev/docs/cli/gcli-mig
 | `/code-simplify` | `/agent-skills:code-simplification` | 동작을 바꾸지 않고 단순화합니다 |
 | `/ship` | `/agent-skills:shipping-and-launch` | 래퍼의 자동 페르소나 팬아웃은 사용할 수 없습니다. 전문 에이전트를 따로 호출하세요 |
 | `/webperf` | `/agents`에서 `web-performance-auditor`를 선택합니다 | 이 워크플로우는 스킬이 아니라 페르소나입니다 |
+| `/a11y` | `/agent-skills:accessibility-engineering` | 인터페이스를 WCAG 2.2 AA로 감사하고 발견한 위반을 수정합니다 |
 
 우회 방법으로 TOML 파일에 YAML 프론트매터를 추가하지 마세요. Gemini CLI는 대응하는 TOML 커맨드 형식을 엄격한 파서로 읽으며, `---` 프론트매터는 그 파일을 잘못된 TOML로 만들 뿐 Antigravity의 변환 동작은 바꾸지 않습니다.
 

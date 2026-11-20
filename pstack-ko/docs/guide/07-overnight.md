@@ -71,7 +71,7 @@ flowchart TD
 
 ## 밤이 작업이 아니라 큐를 보유할 때
 
-위의 계약은 하나의 작업을 하나의 완료 조건으로 구동합니다. 일부 밤은 더 많은 것을 보유하며, 독립적인 변경의 큐 또는 전체 프로그램입니다. 세 가지 플레이북이 동일한 신뢰를 확장합니다.
+위의 계약은 하나의 작업을 하나의 완료 조건으로 구동합니다. 일부 밤은 더 많은 것을 보유하며, 독립적인 변경의 큐 또는 전체 프로그램입니다. 두 개의 플레이북과 하나의 스킬이 동일한 신뢰를 확장합니다.
 
 [Autopilot-full](../../skills/poteto-mode/playbooks/autopilot-full.md)은 독립적인 PR의 큐를 병합까지 실행합니다. 각 PR은 빌드부터 병합까지 운반하는 하나의 소유자 에이전트를 얻으며, 어떤 소유자도 자체 판결로 병합하지 않습니다. 새로운 검증기 스웜이 소유자의 코드 준비 헤드를 확인합니다. 나중 리베이스나 사소한 수정은 하나의 새로운 검증기를 얻고, 새 동작이나 큰 새 diff만 전체 스웜을 다시 호출합니다. 병합하는 패치에 대한 깨끗한 판결만 병합을 승인합니다:
 
@@ -85,15 +85,15 @@ flowchart TD
 /poteto-mode autopilot these five changes, but don't merge. i'll land them in the morning.
 ```
 
-[Orchestrate](../../skills/poteto-mode/playbooks/orchestrate.md)는 단일 에이전트를 넘어 생존하는 프로그램을 위한 것입니다: 여러 날, 많은 스택된 PR, 하나의 지속적인 코디네이터 채팅 아래의 서브에이전트 함대. 코디네이터는 어떤 에이전트가 각 작업 조각을 수행할지 결정하고, 각각이 생산하는 것을 확인하고, 결코 직접 코드를 작성하지 않습니다. 한 에이전트가 세션에서 작업을 완료할 수 있다면, 플레이북 자체는 위의 야간 계약으로 다시 라우팅합니다:
+여러 패키지에 걸친 마이그레이션 같은 전체 프로그램에는 전용 플레이북이 없습니다. `/poteto-mode`는 크거나 여러 영역에 걸친 작업을 [`/figure-it-out`](../../skills/figure-it-out/SKILL.md)으로 라우팅하며, 이 스킬이 그 작업을 위한 하나의 엄격한 실행을 설계합니다:
 
 ```text
-/poteto-mode orchestrate the store migration. own it until every package is converted and merged. i'll check in twice a day.
+/poteto-mode migrate every package to the new store. own it until each one is converted and merged. i'll check in twice a day.
 ```
 
 ## 많은 프로젝트를 병렬로 실행
 
-[Cursor 프로젝트](https://cursor.com/blog/projects)는 하나의 코디네이터 에이전트에게 지속적인 스레드를 제공합니다. 코디네이터는 코드를 작성하지 않습니다. 기본적으로 클라우드에서 실행되는 서브에이전트를 지시하므로, 노트북이 닫혀 있을 때 작업이 계속됩니다. 그것이 Orchestrate 플레이북이 예상하는 형태입니다. 코디네이터에 대한 프롬프트를 `/poteto-mode`로 시작하면, 생성하는 서브에이전트가 플레이북을 따릅니다.
+[Cursor 프로젝트](https://cursor.com/blog/projects)는 하나의 코디네이터 에이전트에게 지속적인 스레드를 제공합니다. 코디네이터는 코드를 작성하지 않습니다. 기본적으로 클라우드에서 실행되는 서브에이전트를 지시하므로, 노트북이 닫혀 있을 때 작업이 계속됩니다. 코디네이터에 대한 프롬프트를 `/poteto-mode`로 시작하면, 생성하는 서브에이전트가 플레이북을 따릅니다. 코디네이터가 시작하는 각 에이전트는 먼저 [`worker.md`](../../skills/poteto-mode/worker.md)를 읽으므로, 워커는 킥오프의 기준을 지키고, 되돌릴 수 있는 결정은 묻지 않고 스스로 결정하며, 리뷰 준비가 된 PR을 엽니다.
 
 몇 가지 습관이 도움이 됩니다:
 

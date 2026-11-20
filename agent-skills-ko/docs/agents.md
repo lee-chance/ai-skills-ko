@@ -8,6 +8,7 @@
 | [security-auditor](../agents/security-auditor.md) | 보안 엔지니어 | 취약점 탐지, OWASP 스타일 감사 |
 | [test-engineer](../agents/test-engineer.md) | QA 엔지니어 | 테스트 전략, 커버리지 분석, Prove-It 패턴 |
 | [web-performance-auditor](../agents/web-performance-auditor.md) | 웹 성능 엔지니어 | Core Web Vitals 감사, 로딩/렌더링/네트워크 분석 |
+| [accessibility-auditor](../agents/accessibility-auditor.md) | 접근성 엔지니어 | WCAG 2.2 AA 준수 감사, 키보드·스크린 리더 검토, 대비 |
 
 ## 페르소나, 스킬, 명령의 관계
 
@@ -30,11 +31,13 @@
 - "`auth.ts`에 보안 문제가 있나?" → `security-auditor`를 직접 호출
 - "체크아웃 흐름에 어떤 테스트가 빠졌나?" → `test-engineer`를 직접 호출
 - "제품 페이지의 Core Web Vitals를 감사해 줘" → `web-performance-auditor`를 직접 호출
+- "이 페이지는 스크린 리더로 쓸 수 있나?" → `accessibility-auditor`를 직접 호출
 
 ### 슬래시 커맨드(뒤에 페르소나 하나)
 그렇지 않으면 매번 다시 설명하게 되는, 반복 가능한 워크플로우가 있을 때 이것을 고르세요.
 
 - `/webperf` → 웹 앱의 성능 중심 감사를 위해 `web-performance-auditor`를 감쌉니다
+- `/a11y` → WCAG 2.2 AA 감사를 위해 `accessibility-auditor`를 감쌉니다
 
 `/review`와 `/test`는 페르소나 래퍼가 아닙니다. 대화의 컨텍스트가 있는 메인 세션에서 `code-review-and-quality`와 `test-driven-development` 스킬을 실행합니다. 새 컨텍스트에서 `code-reviewer`나 `test-engineer`를 쓰려면, 페르소나를 직접 호출하거나 `/ship`을 실행하세요.
 

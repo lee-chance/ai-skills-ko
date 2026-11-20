@@ -107,7 +107,7 @@ Use the @skills/test-driven-development/SKILL.md skill to implement this fix.
 
 ## 슬래시 커맨드
 
-이 저장소는 `.gemini/commands/` 아래에 슬래시 커맨드 9개를 포함합니다. 라이프사이클 커맨드 8개와 전문 점검 `/webperf`입니다. 프로젝트 루트에서 실행하면 Gemini CLI가 자동으로 탐색합니다.
+이 저장소는 `.gemini/commands/` 아래에 슬래시 커맨드 10개를 포함합니다. 라이프사이클 커맨드 8개와 전문 점검 `/webperf`, `/a11y`입니다. 프로젝트 루트에서 실행하면 Gemini CLI가 자동으로 탐색합니다.
 
 | 커맨드 | 하는 일 |
 |---------|--------------|
@@ -120,6 +120,7 @@ Use the @skills/test-driven-development/SKILL.md skill to implement this fix.
 | `/code-simplify` | 동작을 바꾸지 않고 복잡도를 줄입니다 |
 | `/ship` | 병렬 페르소나 팬아웃으로 출시 전 체크리스트를 확인합니다 |
 | `/webperf` | 브라우저에 노출되는 앱의 Core Web Vitals와 성능 문제를 점검합니다 |
+| `/a11y` | 인터페이스를 WCAG 2.2 AA 준수 여부로 감사하고 발견한 위반을 분류합니다 |
 
 각 커맨드는 대응 스킬을 자동으로 호출합니다. 스킬을 수동으로 불러올 필요가 없습니다.
 

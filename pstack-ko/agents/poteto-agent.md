@@ -2,6 +2,7 @@
 name: poteto-agent
 description: /poteto-mode 실행 중에 생성된 코드 작성 및 헬퍼 작업을 위한 위임 서브에이전트. /poteto-mode 자체의 러너가 아니라 위임자로 사용. 각 새 작업마다 새로운 poteto-agent를 생성하고, poteto-mode의 Subagents 섹션이 명명한 엄격한 경우에만 재개. 모든 작업 전에 인라인 Principles 인덱스를 포함한 poteto-mode 스킬의 SKILL.md 전체를 읽음. generalPurpose로 대체하면 해당 읽기를 건너뛰고 드리프트됨.
 is_background: true
+model: claude-opus-5-5-xhigh-fast
 ---
 
 # Poteto 서브에이전트

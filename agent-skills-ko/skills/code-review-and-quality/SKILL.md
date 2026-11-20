@@ -206,6 +206,8 @@ For each file changed:
 - Is there a before/after comparison?
 ```
 
+직접 테스트나 프로브를 실행하기 전에, 체크아웃이 깨끗하고 리뷰 대상 ref에 있는지 확인하고(`git status --short`가 비어 있고 `git rev-parse HEAD`가 PR head와 일치), 리뷰에 그 ref를 명시하세요. 작업 사본에는 다른 세션의 커밋되지 않은 수정이 남아 있을 수 있어서, 거기서 얻은 증거가 변경에 포함되지 않은 코드를 설명할 수 있습니다.
+
 ## 다중 모델 리뷰 패턴
 
 리뷰 관점마다 다른 모델을 사용하세요.

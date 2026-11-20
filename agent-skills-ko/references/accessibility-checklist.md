@@ -1,6 +1,6 @@
 # 접근성 체크리스트
 
-WCAG 2.1 AA 준수를 위한 빠른 참조입니다. `frontend-ui-engineering` 스킬과 함께 사용하세요.
+WCAG 2.2 AA 준수를 위한 빠른 참조입니다. 인터페이스를 만들 때는 `frontend-ui-engineering`을, 감사하고 수정할 때는 `accessibility-engineering`을 사용하세요.
 
 ## 목차
 
@@ -51,7 +51,7 @@ WCAG 2.1 AA 준수를 위한 빠른 참조입니다. `frontend-ui-engineering` �
 - [ ] 언어를 선언합니다(`<html lang="en">`)
 - [ ] 페이지에 설명하는 `<title>`이 있습니다
 - [ ] 링크가 주변 텍스트와 구분됩니다. 색만으로 구분하지 않습니다
-- [ ] 모바일 터치 대상이 44x44px 이상입니다
+- [ ] 터치 대상이 24x24 CSS px을 충족합니다 (SC 2.5.8, AA). 간격과 예외 규칙도 포함합니다. 44x44 CSS px은 강화된 AAA 목표입니다 (SC 2.5.5)
 - [ ] 빈 상태가 의미를 전달합니다. 빈 화면으로 두지 않습니다
 
 <a id="common-html-patterns"></a>
@@ -130,8 +130,8 @@ WCAG 2.1 AA 준수를 위한 빠른 참조입니다. `frontend-ui-engineering` �
 
 ```bash
 # Automated audit
-npx --package=@axe-core/cli axe http://localhost:3000
-npx pa11y             # CLI accessibility checker
+npx --yes @axe-core/cli@4.13.0 http://localhost:3000 --exit
+npx --yes pa11y@9.1.1 http://localhost:3000
 
 # In browser
 # Chrome DevTools → Lighthouse → Accessibility

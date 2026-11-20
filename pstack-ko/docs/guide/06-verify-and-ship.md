@@ -131,7 +131,7 @@
 /poteto-mode open the pr. small ordered commits, evidence in the description.
 ```
 
-[PR 열기 플레이북](../../skills/poteto-mode/playbooks/opening-a-pr.md)은 워크트리에서 작동하고, 작업을 작은 순서있는 커밋으로 리베이스하고, diff를 정리하고, 산문을 unslop하고, PR 링크를 반환합니다. 5개의 좁은 PR이 하나의 뚱뚱한 것보다 낫고, 스택된 후속 조치가 성장하는 브랜치보다 낫습니다.
+[PR 열기 플레이북](../../skills/poteto-mode/playbooks/opening-a-pr.md)은 워크트리에서 작동하고, 작업을 작고 병합 가능한 커밋으로 리베이스하고, diff를 정리하고, 1분 분량의 브리핑을 본문으로 작성하고, 준비된 상태로 PR을 엽니다. 스택된 후속 조치가 성장하는 브랜치보다 낫습니다.
 
 ## Babysit으로 PR을 병합 준비 상태로 주도
 
@@ -141,7 +141,7 @@
 /poteto-mode babysit this pr. get it green.
 ```
 
-Babysit은 GitHub의 번들된 감시자 또는 사용 가능한 경우 Origin CLI로 PR을 감시하고, 순서대로 블로커를 취합니다: 충돌, 그 다음 리뷰 스레드, 그 다음 CI. 알려진 모든 수정은 하나의 푸시로 일괄 처리되므로, 체크가 모든 수정 후가 아니라 한 번 재시작됩니다. 주석 분류는 회의적인데, 사람과 봇이 동일한 리스트에 실제 캐치와 노이즈를 제출하기 때문입니다. 실제 발견은 수정을 얻고, 노이즈는 스레드에 게시된 반증과 함께 기각됩니다. 상태만 원할 때, 더 작게 물어보면 Babysit이 루프를 시작하지 않고 답변합니다:
+Babysit은 GitHub의 번들된 감시자 또는 사용 가능한 경우 Origin CLI로 PR을 감시하고, 순서대로 블로커를 취합니다: 충돌, 그 다음 리뷰 스레드, 그 다음 CI. 절대 리베이스하거나 force-push하지 않습니다. 충돌이나 오래된 베이스는 리베이스가 필요한 브랜치와 함께 당신에게 돌아옵니다. 주석 분류는 회의적인데, 사람과 봇이 동일한 리스트에 실제 캐치와 노이즈를 제출하기 때문입니다. 실제 발견은 수정을 얻고, 노이즈는 스레드에 게시된 반증과 함께 기각됩니다. 상태만 원할 때, 더 작게 물어보면 Babysit이 루프를 시작하지 않고 답변합니다:
 
 ```text
 /poteto-mode check on pr 123. anything outstanding?

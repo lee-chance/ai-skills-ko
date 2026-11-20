@@ -113,6 +113,7 @@ YAML frontmatter (name, description)
 | `test-engineer.md` | 테스트 전략과 작성 |
 | `security-auditor.md` | 취약점 탐지 |
 | `web-performance-auditor.md` | Core Web Vitals와 성능 감사 (`/webperf` 경유) |
+| `accessibility-auditor.md` | WCAG 2.2 AA 준수 감사 (`/a11y` 경유) |
 
 전문 리뷰가 필요할 때 에이전트 정의를 로드하세요. 예를 들어 코딩 에이전트에게 "review this change using the code-reviewer agent persona"(이 변경을 code-reviewer 에이전트 페르소나로 리뷰하세요)라고 요청하고, 에이전트 정의를 함께 주세요.
 
@@ -132,6 +133,7 @@ YAML frontmatter (name, description)
 | `/code-simplify` | code-simplification |
 | `/ship` | shipping-and-launch |
 | `/webperf` | web-performance-auditor (전문 에이전트, 웹 앱만) |
+| `/a11y` | accessibility-engineering + accessibility-auditor (전문 감사, 인터페이스만) |
 
 > **참고:** Claude Code 플러그인으로 설치하면 다음과 같은 경고가 보일 수 있습니다.
 > _"Default commands/ folder is ignored because the manifest sets 'commands'"_.

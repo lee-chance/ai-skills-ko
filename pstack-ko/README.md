@@ -44,7 +44,7 @@ claude code는 리포지토리 루트의 [`harness/pstack/`](https://github.com/
 
 여기가 처음이신가요? [pstack 가이드](./docs/guide/README.md)가 설정과 프롬프팅부터 검증과 야간 실행까지 첫 실제 작업을 안내합니다. 막히거나 어떤 스킬이 맞는지 확실하지 않나요? [`/poteto-help`](./skills/poteto-help/SKILL.md)에 물어보세요.
 
-그게 전부입니다. 다른 스킬들은 상황에 따라 필요하며, mode 스킬이 필요에 따라 사용합니다. 기본적으로 mode는 모델 강도별로 작업을 나눕니다: 코드 위임(기능, 리팩토링, 버그 수정, 성능, hillclimb), 산문, 판단은 opus 5.5로 가고, 가장 어려운 변경은 fable 5.2로 갑니다. 기본 패널은 fable 5.2 / opus 5.5 / gemini 4 carbon입니다. [`/setup-pstack`](./skills/setup-pstack/SKILL.md)은 이것들을 변경할 수 있습니다.
+그게 전부입니다. 다른 스킬들은 상황에 따라 필요하며, mode 스킬이 필요에 따라 사용합니다. 기본적으로 코드 위임(기능, 리팩토링, 버그 수정, 성능, hillclimb), 산문, 판단은 xhigh의 opus 5.5로 가며, xhigh를 넘겨 실행되는 역할은 없습니다. 리뷰 패널 밖에서 fable 5.2는 사용자가 직접 지정하거나 같은 브리프로 opus 5.5를 두 번 실행해 실패했을 때만 실행됩니다. 기본 패널은 fable 5.2 / opus 5.5 / gemini 4 neon입니다. [`/setup-pstack`](./skills/setup-pstack/SKILL.md)은 이것들을 변경할 수 있습니다.
 
 ## 사용법
 
@@ -54,7 +54,7 @@ claude code는 리포지토리 루트의 [`harness/pstack/`](https://github.com/
 
 ### 그냥 [`/poteto-mode`](./skills/poteto-mode/SKILL.md)를 사용하세요
 
-이 스킬은 주요 단축키입니다. 에이전트가 엄격한 엔지니어링 작업을 수행해야 할 때마다 사용합니다. 23개의 플레이북이 제공됩니다:
+이 스킬은 주요 단축키입니다. 에이전트가 엄격한 엔지니어링 작업을 수행해야 할 때마다 사용합니다. 22개의 플레이북이 제공됩니다:
 
 ```
 /poteto-mode this pr has a subtle bug where the scroll drifts every 750ms even when idle. repro
@@ -67,7 +67,7 @@ morning.
 ```
 
 <details>
-<summary>23개 플레이북 모두 보기</summary>
+<summary>22개 플레이북 모두 보기</summary>
 
 | 플레이북 | 용도 |
 |---|---|
@@ -86,7 +86,6 @@ morning.
 | [babysit](./skills/poteto-mode/playbooks/babysit.md) | PR 또는 스택을 병합 준비 상태로 유도: 충돌, 리뷰 스레드, CI. |
 | [shipping](./skills/poteto-mode/playbooks/shipping.md) | 그린 스택을 독립적으로 검증한 다음, 기본적으로 github를 통해 또는 가능한 경우 origin을 통해 연속된 검증된 실행을 상향식으로 병합. |
 | [autonomous run](./skills/poteto-mode/playbooks/autonomous-run.md) | 멈추지 않고 긴 작업을 완료까지 주도. |
-| [orchestrate](./skills/poteto-mode/playbooks/orchestrate.md) | 하나의 코디네이터 채팅에 전달된 지속적인 프로젝트: 며칠, 많은 스택된 PR, 서브에이전트 함대. |
 | [autopilot-full](./skills/poteto-mode/playbooks/autopilot-full.md) | PR당 하나의 소유자로 독립적인 PR을 병합까지 실행. 각 코드 준비 헤드를 스웜이 검증하고, 패치에 대한 모든 이후 변경은 새로운 체크를 받음. |
 | [autopilot-stack](./skills/poteto-mode/playbooks/autopilot-stack.md) | 병합 없는 autopilot-full. 운영자가 검토하고 병합할 PR을 빌드하고 검증하며, 빌드되는 PR 위에만 PR을 스택. |
 | [session pickup](./skills/poteto-mode/playbooks/session-pickup.md) | 이전 에이전트의 진행 중인 작업을 재개하거나 인수. |

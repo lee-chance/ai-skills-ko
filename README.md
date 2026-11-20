@@ -8,7 +8,7 @@ AI 에이전트를 위한 스킬 모음의 원본과 한국어 번역을 제공�
 - **원본**: `pstack/`
 - **한국어**: `pstack-ko/`
 - **출처**: [cursor/plugins](https://github.com/cursor/plugins)
-- **커밋**: `bf0c7cd80abdbf7fe47b634978a7d1b4071f71a7`
+- **커밋**: `0b46ec399d55f2829e88822998f53b84944837d3`
 - **설명**: Cursor의 공식 pstack 플러그인
 
 pstack-ko의 한국어 번역은 이 저장소에서 유지합니다.
@@ -17,7 +17,7 @@ pstack-ko의 한국어 번역은 이 저장소에서 유지합니다.
 - **원본**: `matt-pocock-skills/`
 - **한국어**: `matt-pocock-skills-ko/`
 - **출처**: [mattpocock/skills](https://github.com/mattpocock/skills)
-- **커밋**: `5863806dd4e15c63174bee4e7515a4256792ecfa`
+- **커밋**: `abeeaf95660ba9e8b7c753eb38f441ca707a8823`
 - **설명**: Matt Pocock의 AI 코딩 스킬 모음.
 
 ### 3. benjitaylor-skills
@@ -31,8 +31,8 @@ pstack-ko의 한국어 번역은 이 저장소에서 유지합니다.
 - **원본**: `agent-skills/`
 - **한국어**: `agent-skills-ko/`
 - **출처**: [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills)
-- **커밋**: `39b723ceebf81474d0557c1fecd01eddab585563`
-- **설명**: Addy Osmani의 프로덕션급 엔지니어링 스킬 모음. 스펙, 구현, 테스트, 리뷰, 출시까지 개발 라이프사이클을 다루는 25개 스킬과 슬래시 커맨드를 포함합니다.
+- **커밋**: `8c99fa36d90068c82d547f7c12a9d67a3e95f4ee`
+- **설명**: Addy Osmani의 프로덕션급 엔지니어링 스킬 모음. 스펙, 구현, 테스트, 리뷰, 출시까지 개발 라이프사이클을 다루는 26개 스킬과 슬래시 커맨드를 포함합니다.
 
 ## 🚀 사용 방법
 
@@ -51,7 +51,7 @@ claude plugin install matt-pocock-skills-ko --local /path/to/this/repo/matt-poco
 # benjitaylor-skills-ko의 Stageshow 설치
 npx skills add /path/to/this/repo/benjitaylor-skills-ko --skill stageshow
 
-# agent-skills-ko 설치 (25개 스킬)
+# agent-skills-ko 설치 (26개 스킬)
 npx skills add /path/to/this/repo/agent-skills-ko
 ```
 
